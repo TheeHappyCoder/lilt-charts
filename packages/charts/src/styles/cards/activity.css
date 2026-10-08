@@ -1,0 +1,79 @@
+@layer lilt {
+  .lilt-activity {
+    position: relative;
+    width: fit-content;
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 100%;
+    color: var(--lilt-text);
+    font: inherit;
+  }
+
+  .lilt-activity__plot {
+    position: relative;
+    max-width: 100%;
+    flex: none;
+  }
+
+  .lilt-activity__plot svg {
+    display: block;
+    max-width: 100%;
+    outline: none;
+  }
+
+  .lilt-activity__plot [data-hour] {
+    cursor: pointer;
+  }
+
+  .lilt-activity__plot [data-hour] circle {
+    transition:
+      r 140ms ease,
+      opacity 140ms ease;
+  }
+
+  .lilt-activity__center {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    display: grid;
+    justify-items: center;
+    gap: 2px;
+    text-align: center;
+  }
+
+  .lilt-activity__center strong {
+    font-size: 24px;
+    font-weight: 600;
+    line-height: 1.1;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .lilt-activity__center span {
+    font-size: 11px;
+    color: var(--lilt-muted);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .lilt-activity__plot [data-hour] circle {
+      transition: none;
+    }
+  }
+
+  .lilt-activity[data-motion='none'] .lilt-activity__plot [data-hour] circle {
+    transition: none;
+  }
+
+  /* Activity ring card: the ring centered in the card, with tiles and a note beneath. */
+  .lilt-activity-card__ring {
+    align-self: center;
+  }
+  .lilt-activity-card__footer {
+    margin: 0;
+    color: var(--lilt-muted);
+    font-size: 11.5px;
+    font-weight: 500;
+    line-height: 16px;
+  }
+}

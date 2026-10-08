@@ -1,0 +1,110 @@
+@layer lilt {
+  /* Radar card: dimensions on spokes, one outline per profile. */
+  .lilt-radar-card__plot {
+    position: relative;
+    width: 100%;
+    border-radius: 10px;
+    outline: none;
+    cursor: crosshair;
+  }
+  .lilt-radar-card__plot:focus-visible {
+    outline: 2px solid var(--lilt-focus);
+    outline-offset: 4px;
+  }
+  .lilt-radar-card__plot[data-loading] {
+    cursor: default;
+  }
+  .lilt-radar-card__svg {
+    position: absolute;
+    inset: 0;
+    display: block;
+    overflow: visible;
+  }
+  .lilt-radar-card__grid :is(path, circle) {
+    fill: none;
+    stroke: var(--lilt-grid, var(--lilt-border));
+  }
+  .lilt-radar-card__grid line {
+    stroke: var(--lilt-grid, var(--lilt-border));
+    transition: stroke var(--lilt-duration-quick) ease;
+  }
+  .lilt-radar-card__grid line[data-active] {
+    stroke: color-mix(in srgb, var(--lilt-text) 55%, transparent);
+    stroke-dasharray: 3 3;
+  }
+  .lilt-radar-card__ring-label {
+    font-size: 10.5px;
+  }
+  .lilt-radar-card__profile {
+    transition: opacity var(--lilt-duration-quick) ease;
+  }
+  .lilt-radar-card__profile[data-muted] {
+    opacity: 0.2;
+  }
+  .lilt-radar-card__profile[data-hidden] {
+    opacity: 0;
+    pointer-events: none;
+  }
+  .lilt-radar-card__fill {
+    fill: currentColor;
+    fill-opacity: 0.16;
+    stroke: none;
+  }
+  .lilt-radar-card__outline {
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linejoin: round;
+    stroke-linecap: round;
+  }
+  .lilt-radar-card__profile[data-dashed] .lilt-radar-card__outline {
+    stroke-width: 1.5;
+    stroke-dasharray: 5 4;
+  }
+  .lilt-radar-card__vertex {
+    fill: var(--lilt-card-raised, var(--lilt-surface));
+    stroke: currentColor;
+    stroke-width: 1.75;
+    transition: r var(--lilt-duration-quick) ease;
+  }
+  .lilt-radar-card__vertex[data-active] {
+    fill: currentColor;
+  }
+  .lilt-radar-card__label {
+    fill: var(--lilt-muted);
+    font-size: 12px;
+    font-weight: 500;
+    transition: fill var(--lilt-duration-quick) ease;
+  }
+  .lilt-radar-card__label[data-active] {
+    fill: var(--lilt-text);
+  }
+  .lilt-radar-card__skeleton {
+    fill: var(--lilt-skeleton-paint, color-mix(in srgb, var(--lilt-skeleton) 18%, transparent));
+  }
+  /* Spokes and rings stay still and faint; the shimmer passes over the profile only. */
+  .lilt-radar-card__skeleton-grid {
+    fill: none;
+    stroke: color-mix(in srgb, var(--lilt-skeleton) 22%, transparent);
+    stroke-width: 1;
+  }
+  .lilt-radar-card__skeleton-outline {
+    fill: none;
+    stroke: var(--lilt-skeleton-paint, color-mix(in srgb, var(--lilt-skeleton) 46%, transparent));
+    stroke-width: 2;
+    stroke-linejoin: round;
+  }
+  .lilt-radar-card__skeleton-vertex {
+    fill: var(--lilt-skeleton-paint, color-mix(in srgb, var(--lilt-skeleton) 56%, transparent));
+  }
+  .lilt-radar-card__footer {
+    margin: 0;
+    color: var(--lilt-muted);
+    font-size: 11.5px;
+    font-weight: 500;
+    line-height: 16px;
+  }
+  .lilt-radar-card__plot[data-motion='none'] * {
+    transition: none;
+  }
+}

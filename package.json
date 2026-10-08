@@ -1,0 +1,41 @@
+{
+  "name": "lilt-charts-workspace",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@11.9.0",
+  "engines": {
+    "node": ">=22.13.0"
+  },
+  "scripts": {
+    "dev": "pnpm --filter @lilt-ui/charts build && pnpm --filter @lilt/showcase dev",
+    "build": "pnpm --filter @lilt-ui/charts build && pnpm --filter @lilt/showcase build",
+    "typecheck": "pnpm --recursive --if-present typecheck",
+    "lint": "pnpm --recursive --if-present lint && pnpm lint:css",
+    "lint:css": "stylelint \"packages/charts/src/**/*.css\" \"apps/showcase/app/**/*.css\" \"apps/showcase/components/**/*.css\" && node scripts/check-styles.mjs",
+    "format:check": "prettier --check .",
+    "test": "pnpm --filter @lilt-ui/charts test && pnpm exec vitest run --maxWorkers=4 apps/showcase/lib/generated-source.test.ts apps/showcase/lib/api-docs.test.ts apps/showcase/lib/card-docs/card-docs.test.ts apps/showcase/lib/card-docs/public-props.test.ts apps/showcase/lib/card-docs/example-data.test.ts apps/showcase/lib/llms.test.ts apps/showcase/lib/github-stars.test.ts",
+    "test:package": "pnpm --filter @lilt-ui/charts build && pnpm --filter @lilt-ui/charts pack --out .local-pack/lilt-ui-charts.tgz && pnpm --dir examples/consumers/react install --ignore-workspace --no-frozen-lockfile --force && pnpm --dir examples/consumers/react check:package && pnpm --dir examples/consumers/react build",
+    "start": "pnpm --filter @lilt/showcase start"
+  },
+  "devDependencies": {
+    "@eslint/js": "9.39.1",
+    "@types/d3-array": "3.2.1",
+    "@types/d3-scale": "4.0.9",
+    "@types/d3-shape": "3.1.7",
+    "@types/node": "24.10.1",
+    "@types/react": "19.2.4",
+    "@types/react-dom": "19.2.3",
+    "@vitejs/plugin-react": "6.1.1",
+    "eslint": "9.39.1",
+    "globals": "16.5.0",
+    "jsdom": "27.0.1",
+    "postcss": "8.5.28",
+    "prettier": "3.6.2",
+    "stylelint": "17.15.0",
+    "typescript": "5.9.3",
+    "typescript-eslint": "8.46.3",
+    "vite": "8.3.0",
+    "vite-plugin-dts": "4.5.4",
+    "vitest": "4.1.8"
+  }
+}

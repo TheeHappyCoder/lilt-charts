@@ -1,0 +1,74 @@
+@layer lilt {
+  /* When marks rearrange (bars, slices, rows), they soften at their fastest and land sharp: a
+     light motion blur on whatever group carries the attribute. Two identical keyframes
+     alternate so every change restarts it. */
+  [data-lilt-snap='0'] {
+    animation: lilt-snap-blur-a 620ms cubic-bezier(0.23, 1, 0.32, 1);
+  }
+  [data-lilt-snap='1'] {
+    animation: lilt-snap-blur-b 620ms cubic-bezier(0.23, 1, 0.32, 1);
+  }
+  @keyframes lilt-snap-blur-a {
+    0% {
+      filter: blur(0);
+    }
+    28% {
+      filter: blur(1.5px);
+    }
+    100% {
+      filter: blur(0);
+    }
+  }
+  @keyframes lilt-snap-blur-b {
+    0% {
+      filter: blur(0);
+    }
+    28% {
+      filter: blur(1.5px);
+    }
+    100% {
+      filter: blur(0);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    [data-lilt-snap] {
+      animation: none;
+    }
+  }
+
+  /* Marks that travel to a new shape or place (a radar profile, sankey flows) blur up to 3px on
+     the way and land sharp, like a row moving to a new rank. Alternates to restart. */
+  [data-lilt-travel='0'] {
+    animation: lilt-travel-blur-a 600ms cubic-bezier(0.23, 1, 0.32, 1);
+  }
+  [data-lilt-travel='1'] {
+    animation: lilt-travel-blur-b 600ms cubic-bezier(0.23, 1, 0.32, 1);
+  }
+  @keyframes lilt-travel-blur-a {
+    0% {
+      filter: blur(0);
+    }
+    30% {
+      filter: blur(3px);
+    }
+    100% {
+      filter: blur(0);
+    }
+  }
+  @keyframes lilt-travel-blur-b {
+    0% {
+      filter: blur(0);
+    }
+    30% {
+      filter: blur(3px);
+    }
+    100% {
+      filter: blur(0);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    [data-lilt-travel] {
+      animation: none;
+    }
+  }
+}

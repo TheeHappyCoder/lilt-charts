@@ -1,0 +1,134 @@
+@layer lilt {
+  /* Lilt's period select: the card's range pill opens a frosted list of periods. */
+  .lilt-card__range--select {
+    padding: 0;
+  }
+  .lilt-range-select__trigger {
+    display: inline-flex;
+    align-items: center;
+    height: 100%;
+    padding: 0 30px 0 12px;
+    border: 0;
+    border-radius: inherit;
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    cursor: pointer;
+    transition:
+      background 150ms ease,
+      scale 150ms ease-out;
+  }
+  .lilt-range-select__trigger:hover,
+  .lilt-card__range--select[data-open] .lilt-range-select__trigger {
+    background: color-mix(in srgb, var(--lilt-text) 5%, transparent);
+  }
+  .lilt-range-select__trigger:active {
+    scale: 0.97;
+  }
+  .lilt-range-select__trigger:focus-visible {
+    outline: 2px solid var(--lilt-focus);
+    outline-offset: 2px;
+  }
+  .lilt-range-select__trigger > svg {
+    position: absolute;
+    right: 11px;
+    pointer-events: none;
+    color: var(--lilt-muted);
+    transition: rotate 200ms cubic-bezier(0.23, 1, 0.32, 1);
+  }
+  .lilt-card__range--select[data-open] .lilt-range-select__trigger > svg {
+    rotate: 180deg;
+  }
+  /* The value swaps with a blur; the slot keeps its own place while the two overlap. */
+  .lilt-range-select__value {
+    position: relative;
+    display: inline-flex;
+  }
+  .lilt-range-select__value > span {
+    white-space: nowrap;
+  }
+
+  .lilt-range-select__list {
+    position: absolute;
+    z-index: 30;
+    top: calc(100% + 6px);
+    right: 0;
+    min-width: max(100%, 148px);
+    margin: 0;
+    padding: 4px;
+    border: 1px solid color-mix(in srgb, var(--lilt-text) 9%, transparent);
+    border-radius: 14px;
+    background: color-mix(
+      in srgb,
+      color-mix(in srgb, var(--lilt-card-raised, var(--lilt-surface)) 94%, var(--lilt-text)) 82%,
+      transparent
+    );
+    box-shadow:
+      inset 0 1px 0 rgb(255 255 255 / 0.07),
+      0 2px 3px -1px rgb(0 0 0 / 0.16),
+      0 16px 32px -12px rgb(0 0 0 / 0.36);
+    color: var(--lilt-text);
+    isolation: isolate;
+    list-style: none;
+    outline: none;
+    transform-origin: top right;
+    -webkit-backdrop-filter: blur(16px) saturate(160%);
+    backdrop-filter: blur(16px) saturate(160%);
+  }
+  .lilt-range-select__option {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    height: 30px;
+    padding: 0 10px;
+    border-radius: 10px;
+    font-size: 12px;
+    font-weight: 500;
+    white-space: nowrap;
+    cursor: pointer;
+  }
+  .lilt-range-select__option[aria-selected='true'] {
+    font-weight: 600;
+  }
+  .lilt-range-select__highlight {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    left: 4px;
+    height: 30px;
+    border-radius: 10px;
+    pointer-events: none;
+    background: color-mix(in srgb, var(--lilt-text) 8%, transparent);
+    z-index: -1;
+  }
+  .lilt-range-select__label,
+  .lilt-range-select__check {
+    position: relative;
+  }
+  .lilt-range-select__check {
+    color: var(--lilt-focus);
+  }
+  .lilt-card__range-slot {
+    display: inline-flex;
+  }
+
+  @media (prefers-reduced-transparency: reduce) {
+    .lilt-range-select__list {
+      background: color-mix(
+        in srgb,
+        var(--lilt-card-raised, var(--lilt-surface)) 94%,
+        var(--lilt-text)
+      );
+      -webkit-backdrop-filter: none;
+      backdrop-filter: none;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .lilt-range-select__trigger,
+    .lilt-range-select__trigger > svg {
+      transition: none;
+    }
+  }
+}

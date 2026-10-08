@@ -1,0 +1,509 @@
+/* The home page's story after the hero: looks, interactions, scale, code, gallery, close.
+   An open editorial layout, connected by a level meter. Neutral surfaces give the live cards
+   room; the chart marks, scroll rail and closing skyline carry the colour. */
+.lilt-home {
+  --story-gap: 136px;
+  --story-pad: 48px;
+  --story-line: color-mix(in srgb, var(--foreground) 9%, transparent);
+  /* The iris palette's first two series: the hero's violet and rose. */
+  --story-violet: #8b6dff;
+  --story-rose: #ee5aa6;
+}
+:root:not(.dark) .lilt-home {
+  --story-violet: #7c5cff;
+  --story-rose: #e5489a;
+}
+
+/* The track follows the palette the reader picks in the looks studio (home-story-rail.tsx).
+   Registered, so a change of palette glides down the whole rail instead of snapping. */
+@property --track-a {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: #8b6dff;
+}
+@property --track-b {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: #ee5aa6;
+}
+.lilt-story[data-palette='cobalt'] {
+  --track-a: #2f6fed;
+  --track-b: #0fb3d3;
+}
+.lilt-story[data-palette='emerald'] {
+  --track-a: #0e9a77;
+  --track-b: #84cc16;
+}
+/* ── The frame ───────────────────────────────────────────────────────────────────────────── */
+.lilt-story {
+  --track-a: var(--story-violet);
+  --track-b: var(--story-rose);
+  position: relative;
+  width: min(var(--home-width), calc(100% - 2 * var(--home-gutter)));
+  margin: 104px auto 0;
+  transition:
+    --track-a 900ms var(--home-ease),
+    --track-b 900ms var(--home-ease);
+}
+@media (prefers-reduced-motion: reduce) {
+  .lilt-story {
+    transition: none;
+  }
+}
+.lilt-story > section {
+  position: relative;
+  padding: 64px var(--story-pad) var(--story-gap);
+}
+/* A soft change of paper, feathered into the page without an enclosing panel. */
+.lilt-story > section::after {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
+  content: '';
+  pointer-events: none;
+}
+
+/* The left rail: dim cells the whole way down, lit as far as the reader has come, with a
+   glowing playhead at the tip. */
+.lilt-story-rail {
+  position: absolute;
+  z-index: 3;
+  top: 0;
+  bottom: 0;
+  left: -2px;
+  width: 3px;
+  background: repeating-linear-gradient(to bottom, var(--story-line) 0 5px, transparent 5px 9px);
+  pointer-events: none;
+}
+.lilt-story-rail__fill {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom in oklch, var(--track-a), var(--track-b));
+  clip-path: inset(0 0 calc(100% - var(--story-head, 0px)) 0);
+  -webkit-mask-image: repeating-linear-gradient(to bottom, #000 0 5px, transparent 5px 9px);
+  mask-image: repeating-linear-gradient(to bottom, #000 0 5px, transparent 5px 9px);
+}
+.lilt-story-rail__head {
+  --head: color-mix(in oklch, var(--track-b) calc(var(--story-progress, 0) * 100%), var(--track-a));
+  position: absolute;
+  top: var(--story-head, 0px);
+  left: -3px;
+  width: 9px;
+  height: 16px;
+  border-radius: 3px;
+  background: var(--head);
+  box-shadow:
+    0 0 0 4px color-mix(in srgb, var(--head) 22%, transparent),
+    0 0 22px 2px color-mix(in srgb, var(--head) 70%, transparent);
+  translate: 0 -50%;
+}
+
+/* A small chart signature and a sentence-case label, without badge chrome or chapter numbers. */
+.lilt-story-index {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 28px;
+  color: var(--muted-foreground);
+  font-size: 13px;
+  font-weight: 550;
+  letter-spacing: 0.01em;
+}
+.lilt-story-index__line {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 64px;
+  height: 1px;
+  background: linear-gradient(90deg in oklch, var(--track-a), var(--track-b), transparent);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 1200ms var(--home-ease);
+}
+.lilt-story > section[data-reached] .lilt-story-index__line {
+  transform: scaleX(1);
+}
+.lilt-story-index__mark {
+  display: flex;
+  width: 18px;
+  height: 16px;
+  align-items: end;
+  gap: 3px;
+  color: var(--muted-foreground);
+  transition: color 400ms ease;
+}
+.lilt-story-index__mark i {
+  width: 4px;
+  height: 9px;
+  border-radius: 1px;
+  background: currentColor;
+}
+.lilt-story-index__mark i:nth-child(2) {
+  height: 16px;
+}
+.lilt-story-index__mark i:nth-child(3) {
+  height: 12px;
+}
+.lilt-story > section[data-reached] .lilt-story-index__mark {
+  color: var(--track-a);
+}
+
+/* ── Shared voice ────────────────────────────────────────────────────────────────────────── */
+/* Every section opens the same way: the headline on the left, its explanation on the right. */
+.lilt-story-head {
+  display: grid;
+  grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+  align-items: end;
+  gap: 24px 48px;
+  margin-bottom: 72px;
+}
+.lilt-story-head__aside {
+  display: grid;
+  gap: 18px;
+}
+.lilt-home .lilt-story h2 {
+  font-size: clamp(40px, 4.8vw, 66px);
+  font-weight: 550;
+  letter-spacing: -0.055em;
+  line-height: 1.06;
+  text-wrap: initial;
+}
+/* Serif is an occasional change of voice, while the charts keep the strongest colour. */
+.lilt-home .lilt-story h2 em {
+  padding-right: 0.04em;
+  color: inherit;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+}
+.lilt-home .lilt-story .lilt-story-closing h2 em {
+  color: var(--brand-primary);
+}
+.lilt-story-lede {
+  max-width: 46ch;
+  margin: 0;
+  color: var(--muted-foreground);
+  font-size: 16px;
+  line-height: 1.65;
+  text-wrap: pretty;
+}
+.lilt-story-link {
+  display: inline-flex;
+  width: fit-content;
+  align-items: center;
+  gap: 6px;
+  color: var(--foreground);
+  font-size: 14.5px;
+  font-weight: 600;
+  text-decoration: none;
+}
+.lilt-story-link svg {
+  transition: transform 200ms var(--home-ease);
+}
+@media (hover: hover) and (pointer: fine) {
+  .lilt-story-link:hover svg {
+    transform: translateX(3px);
+  }
+}
+
+/* ── 01. Looks: steps on the left restyle the pinned card on the right ───────────────────── */
+/* The steps' own tail keeps the card pinned through the last one, so the section needs less. */
+.lilt-story > .lilt-story-studio {
+  padding-bottom: 48px;
+}
+.lilt-story-studio__scrolly {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  align-items: start;
+  gap: 0 64px;
+}
+.lilt-story-steps {
+  display: grid;
+  margin: 0;
+  padding: 0 0 30svh;
+  list-style: none;
+}
+.lilt-story-step {
+  display: grid;
+  min-height: 58svh;
+  align-content: center;
+  justify-items: start;
+  gap: 14px;
+  opacity: 0.55;
+  transition: opacity 400ms var(--home-ease);
+}
+.lilt-story-step:first-child {
+  min-height: 46svh;
+  align-content: start;
+  padding-top: 40px;
+}
+.lilt-story-step:is([data-active], :focus-within),
+.lilt-story-steps:not(:has([data-active])) .lilt-story-step:first-child {
+  opacity: 1;
+}
+.lilt-story-step__count {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--muted-foreground);
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 11.5px;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.08em;
+}
+.lilt-story-step[data-active] .lilt-story-step__count {
+  color: var(--foreground);
+}
+/* A short meter of its own: four cells that fill once the step has been reached. */
+.lilt-story-step__count i {
+  width: 34px;
+  height: 4px;
+  background: linear-gradient(90deg in oklch, var(--track-a), var(--track-b)) left / 0% 100%
+    no-repeat var(--story-line);
+  -webkit-mask-image: repeating-linear-gradient(90deg, #000 0 7px, transparent 7px 9px);
+  mask-image: repeating-linear-gradient(90deg, #000 0 7px, transparent 7px 9px);
+  transition: background-size 700ms var(--home-ease);
+}
+.lilt-story-step:is([data-active], [data-past]) .lilt-story-step__count i {
+  background-size: 100% 100%;
+}
+.lilt-story-step h3 {
+  margin: 0;
+  color: var(--foreground);
+  font-size: 26px;
+  font-weight: 650;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+}
+.lilt-story-step p {
+  max-width: 36ch;
+  margin: 0 0 6px;
+  color: var(--muted-foreground);
+  font-size: 15.5px;
+  line-height: 1.6;
+  text-wrap: pretty;
+}
+.lilt-story-step .lilt-seg {
+  --lilt-seg-min: 0px;
+  display: inline-flex;
+}
+.lilt-story-step .lilt-seg__option {
+  height: 30px;
+  padding: 0 12px;
+}
+.lilt-story-step__load {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+.lilt-story-studio__stage {
+  position: sticky;
+  z-index: 2;
+  top: max(112px, calc(50svh - 250px));
+  display: grid;
+  min-width: 0;
+  gap: 14px;
+}
+/* The whole card as one line of code; the props the steps add light up as they arrive. */
+.lilt-story-codeline {
+  display: grid;
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--foreground) 9%, transparent);
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--surface) 70%, var(--background));
+  color: var(--muted-foreground);
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 12.5px;
+  line-height: 1.6;
+}
+.lilt-story-codeline code > span:first-child {
+  color: var(--foreground);
+}
+.lilt-story-codeline code > span[data-changed] {
+  padding: 0 6px;
+  border-radius: 6px;
+  background: color-mix(in srgb, var(--story-violet) 16%, transparent);
+  color: color-mix(in srgb, var(--story-violet) 60%, var(--foreground));
+}
+@media (prefers-reduced-motion: no-preference) {
+  .lilt-story-codeline code > span[data-changed] {
+    animation: story-token-in 480ms var(--home-ease) both;
+  }
+}
+@keyframes story-token-in {
+  from {
+    opacity: 0;
+    filter: blur(4px);
+    transform: translateY(4px) scale(0.96);
+  }
+}
+.lilt-story-swatches {
+  display: flex;
+  gap: 8px;
+  padding: 3px 0;
+}
+.lilt-story-swatch {
+  width: 26px;
+  height: 26px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.18);
+  cursor: pointer;
+  transition:
+    scale 150ms ease-out,
+    box-shadow 150ms ease;
+}
+.lilt-story-swatch[aria-checked='true'] {
+  box-shadow:
+    inset 0 0 0 1px rgb(255 255 255 / 0.18),
+    0 0 0 2px var(--background),
+    0 0 0 4px var(--foreground);
+}
+.lilt-story-swatch:active {
+  scale: 0.92;
+}
+.lilt-story-play {
+  display: inline-flex;
+  height: 34px;
+  align-items: center;
+  gap: 7px;
+  padding: 0 14px 0 11px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--foreground);
+  color: var(--background);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: scale 150ms ease-out;
+}
+.lilt-story-play:active {
+  scale: 0.96;
+}
+.lilt-story-studio :is(button, [role='radio']):focus-visible {
+  outline: 2px solid var(--brand-primary);
+  outline-offset: 2px;
+}
+
+/* ── Closing: the hero's promise once more, standing on a skyline of its cells ───────────── */
+.lilt-story > .lilt-story-closing {
+  --skyline: 220px;
+  display: grid;
+  justify-items: center;
+  gap: 28px;
+  padding-block: 128px calc(var(--skyline) + 72px);
+  overflow: hidden;
+  text-align: center;
+}
+.lilt-story-closing > :not(.lilt-story-skyline) {
+  position: relative;
+  z-index: 1;
+}
+.lilt-home .lilt-story .lilt-story-closing h2 {
+  font-size: clamp(40px, 6.2vw, 80px);
+  letter-spacing: -0.05em;
+  line-height: 1;
+}
+.lilt-story-skyline {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: var(--skyline);
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 14%, #000 86%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 14%, #000 86%, transparent);
+}
+.lilt-story-closing__install {
+  display: flex;
+  width: min(440px, 100%);
+  padding: 6px 6px 6px 18px;
+  border: 1px solid color-mix(in srgb, var(--foreground) 10%, transparent);
+  border-radius: 999px;
+  background: var(--surface);
+  box-shadow: 0 12px 32px -16px rgb(0 0 0 / 0.35);
+}
+.lilt-story-closing .lilt-home__cta {
+  margin-top: 0;
+}
+
+/* ── Narrower screens ────────────────────────────────────────────────────────────────────── */
+@media (max-width: 1080px) {
+  .lilt-story-studio__scrolly {
+    grid-template-columns: minmax(0, 4fr) minmax(0, 6fr);
+    gap: 0 40px;
+  }
+}
+@media (max-width: 900px) {
+  .lilt-home {
+    --story-gap: 104px;
+    --story-pad: 24px;
+  }
+  .lilt-story-head {
+    grid-template-columns: minmax(0, 1fr);
+    margin-bottom: 44px;
+  }
+  /* The card pins above the steps, which scroll up beneath it. */
+  .lilt-story-studio__scrolly {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .lilt-story-studio__stage {
+    top: 84px;
+    grid-row: 1;
+    padding-bottom: 16px;
+    background: linear-gradient(var(--background) 85%, transparent);
+  }
+  .lilt-story-codeline {
+    display: none;
+  }
+  .lilt-story-step,
+  .lilt-story-step:first-child {
+    min-height: 44svh;
+    align-content: center;
+    padding-top: 0;
+  }
+}
+/* The chapter signature carries the colour on phones; the rail yields its space to the cards. */
+@media (max-width: 720px) {
+  .lilt-home {
+    --story-gap: 88px;
+    --story-pad: var(--home-gutter);
+  }
+  .lilt-story {
+    width: 100%;
+    margin-top: 72px;
+    border-inline: 0;
+  }
+  .lilt-story-rail {
+    display: none;
+  }
+  .lilt-story-index {
+    margin-bottom: 24px;
+  }
+  .lilt-story > section {
+    padding-top: 40px;
+  }
+  .lilt-story-index__line {
+    left: var(--story-pad);
+  }
+  .lilt-story > .lilt-story-closing {
+    --skyline: 150px;
+    padding-block: 88px calc(var(--skyline) + 48px);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .lilt-story-link svg,
+  .lilt-story-swatch,
+  .lilt-story-play,
+  .lilt-story-step,
+  .lilt-story-step__count i,
+  .lilt-story-index__line,
+  .lilt-story-index__mark {
+    transition: none;
+  }
+}

@@ -1,0 +1,88 @@
+{
+  "name": "@lilt-ui/charts",
+  "version": "0.13.1",
+  "description": "Beautiful, key-typed React chart cards with linked hover, targets, forecasts, finance charts, and calm motion.",
+  "keywords": [
+    "react",
+    "charts",
+    "chart",
+    "dashboard",
+    "data-visualization",
+    "area-chart",
+    "bar-chart",
+    "line-chart",
+    "sparkline",
+    "candlestick",
+    "finance",
+    "box-plot",
+    "typescript"
+  ],
+  "author": "Lilt UI",
+  "homepage": "https://liltui.vercel.app",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TheeHappyCoder/lilt-charts.git",
+    "directory": "packages/charts"
+  },
+  "bugs": {
+    "url": "https://github.com/TheeHappyCoder/lilt-charts/issues"
+  },
+  "license": "MIT",
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    },
+    "./data": {
+      "types": "./dist/data.d.ts",
+      "import": "./dist/data.js",
+      "default": "./dist/data.js"
+    },
+    "./finance": {
+      "types": "./dist/finance/index.d.ts",
+      "import": "./dist/finance.js",
+      "default": "./dist/finance.js"
+    },
+    "./styles.css": "./dist/styles.css",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist",
+    "media",
+    "README.md",
+    "CHANGELOG.md",
+    "LICENSE",
+    "THIRD_PARTY_NOTICES.md"
+  ],
+  "sideEffects": [
+    "./dist/styles.css"
+  ],
+  "scripts": {
+    "build": "vite build",
+    "prepublishOnly": "pnpm build",
+    "typecheck": "tsc --noEmit && pnpm build && pnpm run typecheck:consumer",
+    "typecheck:consumer": "tsc --noEmit --strict --target ES2022 --module ESNext --moduleResolution Bundler --skipLibCheck consumer/typecheck.ts",
+    "lint": "eslint src",
+    "test": "pnpm build && vitest run",
+    "format:check": "prettier --check src vite.config.ts tsconfig.json"
+  },
+  "dependencies": {
+    "@number-flow/react": "^0.6.2",
+    "d3-array": "^3.2.4",
+    "d3-scale": "^4.0.2",
+    "d3-shape": "^3.2.0",
+    "motion": "^13.4.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "peerDependencies": {
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  }
+}

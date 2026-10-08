@@ -1,0 +1,71 @@
+.lilt-github-stars {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 40px;
+  border-radius: 10px;
+  color: inherit;
+  text-decoration: none;
+}
+
+.lilt-github-stars__heading {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.lilt-github-stars__total {
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}
+
+.lilt-github-stars:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 4px;
+}
+
+.lilt-github-card {
+  position: relative;
+}
+
+.lilt-github-stars[data-variant='card'] {
+  flex: 1;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  color: var(--lilt-text);
+}
+
+.lilt-github-stars[data-variant='card']::after {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  content: '';
+}
+
+.lilt-github-stars[data-variant='card'] .lilt-github-stars__heading {
+  color: var(--lilt-muted);
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 18px;
+}
+
+.lilt-github-stars[data-variant='card'] .lilt-github-stars__total {
+  font-size: 28px;
+  font-weight: 600;
+  line-height: 34px;
+  letter-spacing: -0.025em;
+}
+
+.lilt-github-stars[data-variant='card'] .lilt-github-stars__caption {
+  margin-top: auto;
+  padding-top: 20px;
+  color: var(--lilt-muted);
+  font-size: 13px;
+}
+
+@media (hover: hover) {
+  .lilt-github-stars:hover .lilt-github-stars__caption {
+    color: var(--brand-primary, currentColor);
+  }
+}

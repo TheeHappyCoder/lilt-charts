@@ -1,0 +1,180 @@
+@layer lilt {
+  [data-lilt-chart] {
+    --lilt-chart-height: var(--lilt-default-height, 340px);
+    box-sizing: border-box;
+    display: block;
+    position: relative;
+    width: 100%;
+    height: auto;
+    min-width: 0;
+    color: var(--lilt-text);
+    font: inherit;
+    overflow: visible;
+  }
+
+  .lilt-chart__plot-host {
+    position: relative;
+    width: 100%;
+    height: var(--lilt-chart-height);
+    min-width: 0;
+  }
+  .lilt-chart__plot-host[data-lilt-fill='true'] {
+    height: auto;
+    min-height: 180px;
+    flex: 1 1 0;
+  }
+
+  .lilt-chart__plot-host:focus-visible {
+    outline: 2px solid var(--lilt-focus);
+    outline-offset: 3px;
+  }
+
+  .lilt-chart__plot-host[data-lilt-adaptive='true'] {
+    height: auto;
+  }
+
+  .lilt-chart__sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+  }
+
+  [data-lilt-chart] *,
+  [data-lilt-chart] *::before,
+  [data-lilt-chart] *::after {
+    box-sizing: border-box;
+  }
+
+  .lilt-chart__svg,
+  .lilt-chart__inspection-svg {
+    display: block;
+    overflow: visible;
+  }
+
+  .lilt-chart__svg {
+    position: relative;
+    z-index: 0;
+    width: 100%;
+    height: var(--lilt-chart-height);
+    color: var(--lilt-text);
+    user-select: none;
+    -webkit-user-select: none;
+  }
+
+  .lilt-chart__data-layer {
+    transform-origin: center;
+  }
+
+  .lilt-chart__grid line {
+    fill: none;
+    stroke-width: var(--lilt-grid-width, 1);
+    vector-effect: non-scaling-stroke;
+  }
+
+  .lilt-chart__bar-mark {
+    stroke: var(--lilt-bar-stroke, none);
+    stroke-width: var(--lilt-bar-stroke-width, 0);
+    vector-effect: non-scaling-stroke;
+  }
+
+  .lilt-chart__area {
+    pointer-events: none;
+    transition: opacity 260ms var(--lilt-ease-reveal);
+  }
+
+  .lilt-chart__line path {
+    fill: none;
+  }
+
+  .lilt-chart__isolated-point {
+    vector-effect: non-scaling-stroke;
+  }
+
+  .lilt-chart__axis {
+    fill: var(--lilt-axis-color, var(--lilt-muted));
+    font-size: var(--lilt-axis-size, 12px);
+    font-weight: 400;
+    line-height: 16px;
+    font-variant-numeric: tabular-nums;
+    pointer-events: none;
+  }
+
+  .lilt-chart__axis-label {
+    transition: fill 150ms ease;
+  }
+  /* The inspected observation's label brightens when no pill sits over it. */
+  .lilt-chart__x-axis .lilt-chart__axis-label {
+    fill: color-mix(
+      in srgb,
+      var(--lilt-text) calc(var(--lilt-label-lit, 0) * 100%),
+      var(--lilt-axis-color, var(--lilt-muted))
+    );
+    font-weight: calc(400 + var(--lilt-label-lit, 0) * 200);
+  }
+
+  .lilt-chart__axis-baseline {
+    stroke: var(--lilt-border);
+    stroke-width: 1;
+    vector-effect: non-scaling-stroke;
+  }
+  /* Dotted axis: a node beside each label and a dotted leader carrying it across the plot. */
+  .lilt-chart__y-leader-node {
+    fill: color-mix(in srgb, var(--lilt-muted) 70%, transparent);
+  }
+  .lilt-chart__y-leader-line {
+    fill: none;
+    stroke: color-mix(in srgb, var(--lilt-muted) 45%, transparent);
+    stroke-width: 1.25;
+  }
+  /* Segmented axis: rounded segments between ticks; a gradient fill overrides this color. */
+  .lilt-chart__axis-segment {
+    fill: var(--lilt-axis-segment, color-mix(in srgb, var(--lilt-muted) 45%, transparent));
+  }
+  .lilt-scatter__svg,
+  .lilt-sankey__svg,
+  .lilt-radar__svg {
+    display: block;
+    max-width: 100%;
+    overflow: visible;
+    touch-action: pan-y;
+  }
+  .lilt-scatter__svg:focus-visible,
+  .lilt-sankey__svg:focus-visible,
+  .lilt-radar__svg:focus-visible {
+    outline: 2px solid var(--lilt-focus);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+  .lilt-radar__svg [data-axis-active] {
+    stroke: var(--lilt-series-1);
+    stroke-width: 1.5;
+  }
+
+  /* Plot texture */
+  .lilt-chart__texture-base circle {
+    fill: var(--lilt-texture);
+    opacity: var(--lilt-texture-opacity);
+  }
+  .lilt-chart__texture-base path {
+    fill: none;
+    stroke: var(--lilt-texture);
+    stroke-width: 1;
+    opacity: calc(var(--lilt-texture-opacity) * 0.4);
+  }
+  .lilt-chart__texture-spot circle {
+    fill: var(--lilt-texture-spot);
+    opacity: var(--lilt-texture-spot-opacity);
+  }
+  .lilt-chart__texture-spot path {
+    fill: none;
+    stroke: var(--lilt-texture-spot);
+    stroke-width: 1;
+    opacity: calc(var(--lilt-texture-spot-opacity) * 0.45);
+  }
+
+  .lilt-chart__line-point {
+    vector-effect: non-scaling-stroke;
+  }
+}

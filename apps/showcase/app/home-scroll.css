@@ -1,0 +1,130 @@
+/* The home page's scroll-linked motion. Every effect is a native scroll-driven animation on
+   transform and opacity only, so the browser runs it on the same thread that scrolls the page:
+   it can never trail the scroll by a frame, and nothing repaints while the reader scrolls.
+   Browsers without scroll timelines, and reduced motion, show the finished layout. */
+
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    /* ── Hero: steps back as the chart leaves it ──────────────────────────────────────────── */
+    .lilt-home__hero-copy {
+      animation: home-hero-recede linear both;
+      animation-timeline: scroll(nearest block);
+      animation-range: 0 60vh;
+    }
+    .lilt-home__backdrop {
+      animation: home-backdrop-sink linear both;
+      animation-timeline: scroll(nearest block);
+      animation-range: 0 80vh;
+    }
+    /* The install tab stays behind and fades as the card lifts off it. */
+    .lilt-home__hero-chart .lilt-card-badge {
+      animation: home-fade-out linear both;
+      animation-timeline: scroll(nearest block);
+      animation-range: 0 22vh;
+    }
+
+    /* ── Sheets are set down into place, tilting back to flat ─────────────────────────────── */
+    [data-rise] {
+      transform-origin: 50% 0%;
+      will-change: transform, opacity;
+      animation: home-rise both;
+      /* Ease in and out over the sheet's first stretch on screen: the tilt starts softly,
+         unwinds evenly while the reader watches, and settles flat without a snap. */
+      animation-timing-function: cubic-bezier(0.37, 0, 0.63, 1);
+      animation-timeline: view();
+      animation-range: cover 0% cover 45%;
+    }
+
+    /* ── Scale: the figure comes forward ──────────────────────────────────────────────────── */
+    .lilt-story-band__figure {
+      will-change: transform, opacity;
+      animation: home-forward both;
+      animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+      animation-timeline: view();
+      animation-range: entry 0% cover 45%;
+    }
+
+    /* ── Interactions: the partner slides out from behind the reader's chart ──────────────── */
+    .lilt-theatre-partner {
+      animation: home-partner-below both;
+      animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+      animation-timeline: view();
+      animation-range: cover 30% cover 55%;
+    }
+    @media (min-width: 1081px) {
+      .lilt-theatre-partner {
+        animation-name: home-partner-beside;
+      }
+    }
+
+    /* ── Closing: the headline settles ────────────────────────────────────────────────────── */
+    .lilt-story-closing h2 {
+      animation: home-settle both;
+      animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+      animation-timeline: view();
+      animation-range: entry 0% cover 40%;
+    }
+  }
+}
+
+@keyframes home-hero-recede {
+  to {
+    opacity: 0.12;
+    transform: translateY(-48px);
+  }
+}
+@keyframes home-backdrop-sink {
+  to {
+    opacity: 0.35;
+    transform: translateY(140px);
+  }
+}
+@keyframes home-fade-out {
+  to {
+    opacity: 0;
+  }
+}
+@keyframes home-rise {
+  from {
+    opacity: 0;
+    transform: perspective(1600px) translateY(120px) rotateX(16deg);
+  }
+  35% {
+    opacity: 1;
+  }
+  to {
+    opacity: 1;
+    transform: perspective(1600px) translateY(0) rotateX(0deg);
+  }
+}
+@keyframes home-forward {
+  from {
+    opacity: 0.2;
+    transform: scale(0.86);
+  }
+}
+@keyframes home-partner-beside {
+  from {
+    opacity: 0;
+    transform: perspective(1400px) translateX(-72%) rotateY(14deg) scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: perspective(1400px) translateX(0) rotateY(0deg) scale(1);
+  }
+}
+@keyframes home-partner-below {
+  from {
+    opacity: 0;
+    transform: perspective(1400px) translateY(-55%) rotateX(-12deg) scale(0.92);
+  }
+  to {
+    opacity: 1;
+    transform: perspective(1400px) translateY(0) rotateX(0deg) scale(1);
+  }
+}
+@keyframes home-settle {
+  from {
+    transform: scale(0.92);
+  }
+}

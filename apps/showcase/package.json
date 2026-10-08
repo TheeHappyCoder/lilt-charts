@@ -1,0 +1,37 @@
+{
+  "name": "@lilt/showcase",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "next dev --hostname 0.0.0.0 --port 5173",
+    "build": "next build --webpack",
+    "start": "next start --hostname 0.0.0.0 --port 5173",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint app components lib",
+    "format:check": "prettier --check app components lib next.config.ts postcss.config.mjs tsconfig.json"
+  },
+  "dependencies": {
+    "@base-ui/react": "1.6.0",
+    "@hugeicons/core-free-icons": "4.3.5",
+    "@hugeicons/react": "1.1.10",
+    "@lilt-ui/charts": "workspace:*",
+    "@vercel/analytics": "^2.0.1",
+    "clsx": "2.1.1",
+    "motion": "13.4.0",
+    "next": "16.3.8",
+    "next-themes": "0.4.6",
+    "react": "19.3.0",
+    "react-dom": "19.3.0",
+    "tailwind-merge": "3.3.0"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "4.3.2",
+    "@types/node": "24.10.1",
+    "@types/react": "19.2.4",
+    "@types/react-dom": "19.2.3",
+    "postcss": "8.5.6",
+    "tailwindcss": "4.3.2",
+    "typescript": "5.9.3"
+  }
+}

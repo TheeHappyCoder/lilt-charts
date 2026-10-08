@@ -1,0 +1,63 @@
+@layer lilt {
+  .lilt-chart__annotation {
+    outline: none;
+    cursor: pointer;
+  }
+
+  .lilt-chart__annotation:has(.lilt-chart__annotation-trigger:focus-visible) circle {
+    stroke: var(--lilt-focus);
+    stroke-width: 5;
+    stroke-opacity: 0.25;
+  }
+
+  .lilt-chart__annotation-trigger {
+    width: 20px;
+    height: 20px;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: transparent;
+    cursor: pointer;
+  }
+
+  .lilt-chart__annotation-label-bg {
+    fill: var(--lilt-surface);
+    stroke: var(--lilt-border);
+  }
+
+  .lilt-chart__annotation-label,
+  .lilt-chart__annotation-description,
+  .lilt-chart__reference-band-label {
+    fill: var(--lilt-text);
+    font-size: 11px;
+  }
+
+  .lilt-chart__annotation-description {
+    fill: var(--lilt-muted);
+    font-size: 10px;
+  }
+
+  .lilt-chart__reference-band-label {
+    fill: var(--lilt-muted);
+  }
+
+  .lilt-chart__reference-line {
+    pointer-events: none;
+  }
+  .lilt-chart__reference-line line {
+    stroke: currentColor;
+    stroke-width: 1.25;
+    stroke-dasharray: 5 4;
+    opacity: 0.85;
+  }
+  .lilt-chart__reference-line text {
+    fill: currentColor;
+    font-size: 11px;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    paint-order: stroke;
+    stroke: var(--lilt-surface);
+    stroke-width: 3px;
+    stroke-linejoin: round;
+  }
+}

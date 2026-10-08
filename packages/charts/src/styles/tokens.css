@@ -1,0 +1,224 @@
+@layer lilt {
+  /* Tokens follow shadcn-style theme variables (--card, --card-foreground, --muted-foreground,
+   --border, --ring, --chart-1…5) when the app defines them; Lilt's own values are the
+   fallbacks. An explicit palette prop still sets its own series colors. Tokens resolve once, on
+   the outermost chart root; charts nested inside a card inherit them, so a card's color or
+   palette reaches every part of it. */
+  [data-lilt-chart]:not(:where([data-lilt-chart] *)) {
+    --lilt-surface: var(--card, #ffffff);
+    --lilt-text: var(--card-foreground, #37352f);
+    --lilt-muted: var(--muted-foreground, #787771);
+    --lilt-grid: var(--border, #e7e7e4);
+    --lilt-border: var(--border, #e7e7e4);
+    --lilt-series-1: var(--chart-1, #7c5cff);
+    --lilt-series-2: var(--chart-2, #e5489a);
+    --lilt-series-3: var(--chart-3, #f29a1d);
+    --lilt-series-4: var(--chart-4, #c03fd6);
+    --lilt-series-5: var(--chart-5, #f2665a);
+    --lilt-series-6: #5b4bd1;
+    --lilt-reference: #89968d;
+    --lilt-positive: #168267;
+    --lilt-negative: #b65d54;
+    /* Rising and falling observations in finance marks; they follow the positive and negative
+       tokens, so dark mode and app themes reach them too. */
+    --lilt-candle-up: var(--lilt-positive);
+    --lilt-candle-down: var(--lilt-negative);
+    --lilt-sequential-1: #dceee7;
+    --lilt-sequential-2: #a8d8c2;
+    --lilt-sequential-3: #6db99a;
+    --lilt-sequential-4: #168267;
+    --lilt-area-fill-start: 0.34;
+    --lilt-area-fill-end: 0;
+    --lilt-focus: var(--ring, #7c5cff);
+    --lilt-tooltip-bg: var(--lilt-axis-active);
+    --lilt-tooltip-text: var(--lilt-axis-active-text);
+    --lilt-tooltip-muted: #c1c9c6;
+    --lilt-tooltip-accent: #83e5bf;
+    --lilt-tooltip-border: rgb(255 255 255 / 0.16);
+    --lilt-tooltip-focus: #8de5c2;
+    --lilt-tooltip-shadow: 0 12px 34px rgb(8 14 12 / 0.22), 0 2px 8px rgb(8 14 12 / 0.14);
+    --lilt-axis-active: #37352f;
+    --lilt-axis-active-text: #ffffff;
+    --lilt-skeleton: #c9c8d0;
+    --lilt-skeleton-sheen: #9d98b8;
+    --lilt-skeleton-area-opacity: 0.1;
+    --lilt-annotation: #b7742d;
+    --lilt-texture: var(--lilt-muted);
+    --lilt-texture-opacity: 0.28;
+    --lilt-texture-spot: var(--lilt-text);
+    --lilt-texture-spot-opacity: 0.55;
+    --lilt-card-raised: var(--card, #ffffff);
+    /* Soft cards: lifted by a hairline ring and shadow rather than a border. */
+    --lilt-card-edge: transparent;
+    --lilt-card-highlight: rgb(255 255 255 / 0);
+    --lilt-card-shadow:
+      0 0 0 1px rgb(15 23 20 / 0.045), 0 1px 2px rgb(15 23 20 / 0.04),
+      0 12px 32px -16px rgb(15 23 20 / 0.12);
+    --lilt-duration-quick: 150ms;
+    --lilt-duration-fast: 250ms;
+    --lilt-ease-reveal: cubic-bezier(0.22, 1, 0.36, 1);
+    /* Lilt's spring as a CSS curve: the same 0.55s damped spring bars and slices land on, with
+       its 2% overshoot, for marks that move by CSS transition. */
+    --lilt-ease-spring: linear(
+      0,
+      0.0491,
+      0.1635,
+      0.3059,
+      0.4518,
+      0.5868,
+      0.703,
+      0.7979,
+      0.8717,
+      0.9265,
+      0.9652,
+      0.991,
+      1.007,
+      1.0157,
+      1.0194,
+      1.0198,
+      1.0182,
+      1.0157,
+      1.0128,
+      1.0099,
+      1.0074,
+      1.0052,
+      1.0035,
+      1.0021,
+      1.0012,
+      1
+    );
+    --lilt-duration-spring: 750ms;
+  }
+
+  [data-lilt-chart][data-lilt-theme='dark']:not(:where([data-lilt-chart] *)),
+  [data-theme='dark'] [data-lilt-chart]:not(:where([data-lilt-chart] *)),
+  .dark [data-lilt-chart]:not(:where([data-lilt-chart] *)) {
+    --lilt-surface: var(--card, #191919);
+    --lilt-text: var(--card-foreground, #d9d9d8);
+    --lilt-muted: var(--muted-foreground, #9b9b98);
+    --lilt-grid: var(--border, #333331);
+    --lilt-border: var(--border, #333331);
+    --lilt-series-1: var(--chart-1, #8b6dff);
+    --lilt-series-2: var(--chart-2, #ee5aa6);
+    --lilt-series-3: var(--chart-3, #f2a43a);
+    --lilt-series-4: var(--chart-4, #cf55e3);
+    --lilt-series-5: var(--chart-5, #f47a6c);
+    --lilt-series-6: #6f62e8;
+    --lilt-reference: #879a8c;
+    --lilt-positive: #67d9af;
+    --lilt-negative: #ec9a91;
+    --lilt-sequential-1: #203d33;
+    --lilt-sequential-2: #2e7056;
+    --lilt-sequential-3: #4eac81;
+    --lilt-sequential-4: #94dfb7;
+    --lilt-area-fill-start: 0.3;
+    --lilt-area-fill-end: 0;
+    --lilt-focus: var(--ring, #8b6dff);
+    --lilt-tooltip-muted: #3d403c;
+    --lilt-tooltip-accent: #13745c;
+    --lilt-tooltip-border: rgb(0 0 0 / 0.12);
+    --lilt-tooltip-focus: #13745c;
+    --lilt-tooltip-shadow: 0 16px 40px rgb(0 0 0 / 0.38), 0 3px 10px rgb(0 0 0 / 0.22);
+    --lilt-axis-active: #d9d9d8;
+    --lilt-axis-active-text: #191919;
+    --lilt-skeleton: #5e5d66;
+    --lilt-skeleton-sheen: #c9c2e6;
+    --lilt-skeleton-area-opacity: 0.065;
+    --lilt-annotation: #edbd7b;
+    --lilt-texture-opacity: 0.3;
+    --lilt-texture-spot-opacity: 0.5;
+    --lilt-card-raised: color-mix(in srgb, var(--lilt-surface) 93%, white);
+    /* Soft cards: separated from the page by tone, with only a faint edge. */
+    --lilt-card-edge: rgb(255 255 255 / 0.04);
+    --lilt-card-highlight: rgb(255 255 255 / 0.05);
+    --lilt-card-shadow: 0 1px 2px rgb(0 0 0 / 0.25), 0 16px 40px -16px rgb(0 0 0 / 0.6);
+  }
+
+  /* Validated categorical palettes (adjacent CVD ΔE ≥ 8, normal-vision ΔE ≥ 15, both modes). Each
+     has its own family: iris is violet, rose, and amber; cobalt blue, cyan, and indigo; emerald
+     green, lime, and deep teal. */
+  [data-lilt-chart][data-lilt-palette='cobalt']:not(:where([data-lilt-chart] *)),
+  [data-lilt-palette='cobalt'] [data-lilt-chart]:not(:where([data-lilt-chart] *)) {
+    --lilt-series-1: #2f6fed;
+    --lilt-series-2: #0fb3d3;
+    --lilt-series-3: #4338ca;
+    --lilt-series-4: #6fb0f6;
+    --lilt-series-5: #177f96;
+    --lilt-series-6: #8f8af3;
+    --lilt-focus: #2f6fed;
+  }
+  :is([data-theme='dark'], .dark)
+    [data-lilt-chart][data-lilt-palette='cobalt']:not(:where([data-lilt-chart] *)),
+  :is([data-theme='dark'], .dark)
+    [data-lilt-palette='cobalt']
+    [data-lilt-chart]:not(:where([data-lilt-chart] *)),
+  [data-lilt-chart][data-lilt-palette='cobalt'][data-lilt-theme='dark']:not(
+      :where([data-lilt-chart] *)
+    ),
+  [data-lilt-palette='cobalt'][data-lilt-theme='dark']
+    [data-lilt-chart]:not(:where([data-lilt-chart] *)) {
+    --lilt-series-1: #3f80f7;
+    --lilt-series-2: #22c3e0;
+    --lilt-series-3: #5650e6;
+    --lilt-series-4: #86c0fa;
+    --lilt-series-5: #1a8aa2;
+    --lilt-series-6: #a7a3f9;
+    --lilt-focus: #3f80f7;
+  }
+  [data-lilt-chart][data-lilt-palette='iris']:not(:where([data-lilt-chart] *)),
+  [data-lilt-palette='iris'] [data-lilt-chart]:not(:where([data-lilt-chart] *)) {
+    --lilt-series-1: #7c5cff;
+    --lilt-series-2: #e5489a;
+    --lilt-series-3: #f29a1d;
+    --lilt-series-4: #c03fd6;
+    --lilt-series-5: #f2665a;
+    --lilt-series-6: #5b4bd1;
+    --lilt-focus: #7c5cff;
+  }
+  :is([data-theme='dark'], .dark)
+    [data-lilt-chart][data-lilt-palette='iris']:not(:where([data-lilt-chart] *)),
+  :is([data-theme='dark'], .dark)
+    [data-lilt-palette='iris']
+    [data-lilt-chart]:not(:where([data-lilt-chart] *)),
+  [data-lilt-chart][data-lilt-palette='iris'][data-lilt-theme='dark']:not(
+      :where([data-lilt-chart] *)
+    ),
+  [data-lilt-palette='iris'][data-lilt-theme='dark']
+    [data-lilt-chart]:not(:where([data-lilt-chart] *)) {
+    --lilt-series-1: #8b6dff;
+    --lilt-series-2: #ee5aa6;
+    --lilt-series-3: #f2a43a;
+    --lilt-series-4: #cf55e3;
+    --lilt-series-5: #f47a6c;
+    --lilt-series-6: #6f62e8;
+    --lilt-focus: #8b6dff;
+  }
+  [data-lilt-chart][data-lilt-palette='emerald']:not(:where([data-lilt-chart] *)),
+  [data-lilt-palette='emerald'] [data-lilt-chart]:not(:where([data-lilt-chart] *)) {
+    --lilt-series-1: #0e9a77;
+    --lilt-series-2: #86c234;
+    --lilt-series-3: #0f6e6a;
+    --lilt-series-4: #d1a417;
+    --lilt-series-5: #3fb59a;
+    --lilt-series-6: #5d8a1f;
+    --lilt-focus: #0e9a77;
+  }
+  :is([data-theme='dark'], .dark)
+    [data-lilt-chart][data-lilt-palette='emerald']:not(:where([data-lilt-chart] *)),
+  :is([data-theme='dark'], .dark)
+    [data-lilt-palette='emerald']
+    [data-lilt-chart]:not(:where([data-lilt-chart] *)),
+  [data-lilt-chart][data-lilt-palette='emerald'][data-lilt-theme='dark']:not(
+      :where([data-lilt-chart] *)
+    ),
+  [data-lilt-palette='emerald'][data-lilt-theme='dark']
+    [data-lilt-chart]:not(:where([data-lilt-chart] *)) {
+    --lilt-series-1: #16a582;
+    --lilt-series-2: #97d145;
+    --lilt-series-3: #1c8a85;
+    --lilt-series-4: #dbb02a;
+    --lilt-series-5: #4cc4a8;
+    --lilt-series-6: #74a332;
+    --lilt-focus: #16a582;
+  }
+}

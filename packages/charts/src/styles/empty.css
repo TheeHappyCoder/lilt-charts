@@ -1,0 +1,131 @@
+@layer lilt {
+  /* The empty state. The slot places it: over a plot it fills the plot area, inset to the card's
+     padding where the plot bleeds to the card's edges; in place of a card's body it holds the
+     body's height. Everything inside is ChartEmpty or the consumer's own element. Nothing here
+     moves, so an empty chart never reads as loading. */
+  .lilt-chart__empty {
+    position: absolute;
+    z-index: 4;
+    inset: 0;
+    display: grid;
+    pointer-events: none;
+  }
+  .lilt-card__chart--bleed .lilt-chart__empty {
+    inset: 0 var(--lilt-card-padding, 20px);
+  }
+  .lilt-chart__empty[data-block] {
+    position: relative;
+    inset: auto;
+    min-height: var(--lilt-empty-height, 200px);
+  }
+  .lilt-chart__empty > * {
+    pointer-events: auto;
+  }
+
+  .lilt-chart-empty {
+    display: grid;
+    min-width: 0;
+    min-height: 0;
+    place-items: center;
+    pointer-events: none;
+  }
+  .lilt-chart-empty > * {
+    grid-area: 1 / 1;
+  }
+  .lilt-chart-empty__text {
+    position: relative;
+    max-width: calc(100% - 24px);
+    margin: 0;
+    color: var(--lilt-muted);
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 18px;
+    text-align: center;
+    text-wrap: balance;
+  }
+
+  /* Dots: Lilt's dot texture, clear around the words and fading out before the edges. */
+  .lilt-chart-empty__dots {
+    width: 100%;
+    height: 100%;
+    background-image: radial-gradient(
+      circle,
+      color-mix(in srgb, var(--lilt-text) 24%, transparent) 1px,
+      transparent 1.4px
+    );
+    background-position: center;
+    background-size: 12px 12px;
+    mask-image: radial-gradient(
+      ellipse 50% 50% at 50% 50%,
+      transparent 24%,
+      black 44%,
+      transparent 100%
+    );
+  }
+
+  /* Shape: the family's own outline at a whisper, fading toward the bottom. */
+  .lilt-chart-empty__shape {
+    --lilt-empty-ink: color-mix(in srgb, var(--lilt-text) 6%, transparent);
+    width: 100%;
+    height: 100%;
+    fill: var(--lilt-empty-ink);
+    mask-image: linear-gradient(to bottom, black 30%, transparent);
+  }
+  .lilt-chart-empty__shape > i {
+    display: block;
+    border-radius: 4px;
+    background: var(--lilt-empty-ink);
+  }
+  .lilt-chart-empty__shape[data-shape='bars'] {
+    display: flex;
+    align-items: flex-end;
+    gap: clamp(6px, 3%, 14px);
+    mask-image: linear-gradient(to top, black, transparent 95%);
+  }
+  .lilt-chart-empty__shape[data-shape='bars'] > i {
+    flex: 1;
+    border-radius: 4px 4px 0 0;
+  }
+  .lilt-chart-empty__shape[data-shape='rows'] {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 10px;
+    mask-image: linear-gradient(to right, black, transparent 105%);
+  }
+  .lilt-chart-empty__shape[data-shape='rows'] > i {
+    height: 14px;
+  }
+  .lilt-chart-empty__shape[data-shape='tiles'] {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 4px;
+    align-content: center;
+  }
+  .lilt-chart-empty__shape[data-shape='tiles'] > i {
+    aspect-ratio: 1;
+    max-height: 100%;
+    border-radius: 3px;
+  }
+  .lilt-chart-empty__shape[data-shape='ring'],
+  .lilt-chart-empty__shape[data-shape='web'] {
+    width: auto;
+    max-width: 100%;
+    height: min(100%, 220px);
+    mask-image: none;
+  }
+  .lilt-chart-empty__shape[data-shape='ring'] circle {
+    fill: none;
+    stroke: var(--lilt-empty-ink);
+    stroke-width: 16;
+  }
+  .lilt-chart-empty__shape[data-shape='web'] polygon {
+    fill: none;
+    stroke: color-mix(in srgb, var(--lilt-text) 10%, transparent);
+    stroke-linejoin: round;
+    stroke-width: 1;
+  }
+  .lilt-chart-empty__shape[data-shape='web'] polygon:first-child {
+    fill: var(--lilt-empty-ink);
+  }
+}

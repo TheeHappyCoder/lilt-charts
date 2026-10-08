@@ -1,0 +1,155 @@
+@layer lilt {
+  .lilt-scatter-card__trail {
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-dasharray: 1;
+    animation: lilt-scatter-trail-in 700ms ease both;
+    transition: opacity var(--lilt-duration-quick) ease;
+  }
+  .lilt-scatter-card__plot[data-motion='none'] .lilt-scatter-card__trail {
+    animation: none;
+    transition: none;
+  }
+  @keyframes lilt-scatter-trail-in {
+    from {
+      stroke-dashoffset: 1;
+    }
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+  /* Scatter card: points placed by two measures, optionally sized by a third and grouped. */
+  .lilt-scatter-card__plot {
+    position: relative;
+    width: 100%;
+    border-radius: 10px;
+    outline: none;
+    cursor: crosshair;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .lilt-scatter-card__plot:focus-visible {
+    outline: 2px solid var(--lilt-focus);
+    outline-offset: 4px;
+  }
+  .lilt-scatter-card__plot[data-loading] {
+    cursor: default;
+  }
+  .lilt-scatter-card__svg {
+    position: absolute;
+    inset: 0;
+    display: block;
+    overflow: visible;
+  }
+  .lilt-scatter-card__grid line {
+    stroke: var(--lilt-grid, var(--lilt-border));
+    stroke-dasharray: 2 4;
+    shape-rendering: crispEdges;
+  }
+  .lilt-scatter-card__axis-title {
+    fill: var(--lilt-muted);
+    font-size: 11px;
+    font-weight: 500;
+  }
+  /* Points travel on Lilt's spring, land with its slight overshoot, and pop in from a blur. */
+  .lilt-scatter-card__point {
+    transition:
+      transform var(--lilt-duration-spring) var(--lilt-ease-spring),
+      opacity var(--lilt-duration-quick) ease;
+  }
+  .lilt-scatter-card__point circle {
+    fill-opacity: 0.72;
+    stroke: currentColor;
+    stroke-width: 1.25;
+    transform-box: fill-box;
+    transform-origin: center;
+    transition:
+      fill-opacity var(--lilt-duration-quick) ease,
+      stroke-width var(--lilt-duration-quick) ease;
+    animation: lilt-scatter-card-in 460ms var(--lilt-ease-reveal) backwards;
+    animation-delay: var(--lilt-scatter-card-delay);
+  }
+  .lilt-scatter-card__point[data-active] circle {
+    fill-opacity: 1;
+    stroke: var(--lilt-text);
+    stroke-width: 1.75;
+  }
+  .lilt-scatter-card__point[data-muted] {
+    opacity: 0.22;
+  }
+  /* Depth: solid lit spheres, ringed only when inspected. */
+  .lilt-scatter-card__svg[data-depth] .lilt-scatter-card__point circle {
+    fill-opacity: 1;
+    stroke: none;
+  }
+  .lilt-scatter-card__svg[data-depth] .lilt-scatter-card__point[data-active] circle {
+    stroke: var(--lilt-text);
+    stroke-width: 1.5;
+  }
+  .lilt-scatter-card__guides line {
+    stroke: var(--lilt-muted);
+    stroke-dasharray: 3 3;
+    stroke-opacity: 0.7;
+  }
+  .lilt-scatter-card__trend {
+    stroke: var(--lilt-text);
+    stroke-opacity: 0.42;
+    stroke-width: 1.5;
+    stroke-dasharray: 5 5;
+    stroke-linecap: round;
+  }
+  .lilt-scatter-card__skeleton {
+    fill: var(--lilt-skeleton-paint, color-mix(in srgb, var(--lilt-skeleton) 30%, transparent));
+  }
+  .lilt-scatter-card__pill {
+    z-index: 1;
+    pointer-events: none;
+  }
+  .lilt-scatter-card__footer {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 6px 16px;
+    color: var(--lilt-muted);
+    font-size: 11.5px;
+    font-weight: 500;
+    line-height: 16px;
+  }
+  .lilt-scatter-card__fit {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-left: auto;
+    font-variant-numeric: tabular-nums;
+  }
+  .lilt-scatter-card__fit-line {
+    width: 16px;
+    border-top: 1.5px dashed color-mix(in srgb, var(--lilt-text) 45%, transparent);
+  }
+  .lilt-scatter-card__plot[data-motion='none'] .lilt-scatter-card__point,
+  .lilt-scatter-card__plot[data-motion='none'] circle {
+    animation: none;
+    transition: none;
+  }
+  @keyframes lilt-scatter-card-in {
+    from {
+      opacity: 0;
+      transform: scale(0.4);
+      filter: blur(4px);
+    }
+  }
+  /* A point that left with a period change shrinks, softens and fades where it was. */
+  .lilt-scatter-card__point[data-departing] {
+    pointer-events: none;
+  }
+  .lilt-scatter-card__point[data-departing] circle {
+    animation: lilt-scatter-card-out 380ms cubic-bezier(0.65, 0, 0.35, 1) forwards;
+  }
+  @keyframes lilt-scatter-card-out {
+    to {
+      opacity: 0;
+      transform: scale(0.5);
+      filter: blur(3px);
+    }
+  }
+}

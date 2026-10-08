@@ -1,0 +1,102 @@
+/* Segmented choice and switch: the sidebar's track, as a control. */
+.lilt-seg {
+  --lilt-seg-min: 60px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(var(--lilt-seg-min), 1fr));
+  gap: 3px;
+  padding: 3px;
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--foreground) 2.5%, transparent);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--foreground) 8%, transparent);
+}
+.lilt-seg__option {
+  position: relative;
+  display: inline-flex;
+  min-width: 0;
+  height: 30px;
+  align-items: center;
+  justify-content: center;
+  padding: 0 8px;
+  border: 0;
+  border-radius: 9px;
+  background: transparent;
+  color: var(--muted-foreground);
+  font: inherit;
+  font-size: 12.5px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: color 160ms ease;
+}
+.lilt-seg__label {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  min-width: 0;
+  align-items: center;
+  gap: 6px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.lilt-seg__option[aria-pressed='true'] {
+  color: var(--foreground);
+}
+.lilt-seg__thumb {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  border-radius: 9px;
+  background: color-mix(in srgb, var(--foreground) 10%, transparent);
+  box-shadow: 0 1px 2px rgb(0 0 0 / 0.12);
+}
+@media (hover: hover) {
+  .lilt-seg__option:hover {
+    color: var(--foreground);
+  }
+}
+.lilt-seg__option:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 1px;
+}
+
+.lilt-switch {
+  position: relative;
+  width: 34px;
+  height: 20px;
+  flex: 0 0 auto;
+  padding: 0;
+  border: 0;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--foreground) 16%, transparent);
+  cursor: pointer;
+  transition: background 200ms ease;
+}
+.lilt-switch[aria-checked='true'] {
+  background: var(--brand-primary);
+}
+.lilt-switch__knob {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 1px 3px rgb(0 0 0 / 0.3);
+  transition: translate 240ms cubic-bezier(0.34, 1.4, 0.64, 1);
+}
+.lilt-switch[aria-checked='true'] .lilt-switch__knob {
+  translate: 14px 0;
+}
+.lilt-switch:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lilt-seg__option,
+  .lilt-switch,
+  .lilt-switch__knob {
+    transition: none;
+  }
+}

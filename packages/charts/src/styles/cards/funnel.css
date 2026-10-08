@@ -1,0 +1,97 @@
+@layer lilt {
+  /* Funnel card: stages as columns, bands sized by share of the first stage. */
+  .lilt-funnel-card {
+    container-type: inline-size;
+  }
+  .lilt-funnel-card__plot {
+    position: relative;
+    width: 100%;
+  }
+  .lilt-funnel-card__svg {
+    position: absolute;
+    inset: 0;
+    display: block;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+  }
+  .lilt-funnel-card__band {
+    transition: opacity var(--lilt-duration-quick) ease;
+  }
+  .lilt-funnel-card__band[data-muted] {
+    opacity: 0.3;
+  }
+  .lilt-funnel-card__pipe {
+    transition: opacity var(--lilt-duration-quick) ease;
+  }
+  .lilt-funnel-card__pipe[data-muted] {
+    opacity: 0.3;
+  }
+  .lilt-funnel-card__track {
+    fill: color-mix(in srgb, var(--lilt-muted) 9%, transparent);
+  }
+  .lilt-funnel-card__skeleton {
+    fill: var(--lilt-skeleton-paint, color-mix(in srgb, var(--lilt-skeleton) 26%, transparent));
+  }
+  /* Dividers take the card's own color, so they read as clean gaps between stages. */
+  .lilt-funnel-card__divider,
+  .lilt-funnel-card__seam {
+    stroke: var(--lilt-card-background, var(--lilt-surface));
+    stroke-width: 3;
+  }
+  .lilt-card[data-surface='elevated'] :is(.lilt-funnel-card__divider, .lilt-funnel-card__seam) {
+    stroke: var(--lilt-card-raised);
+  }
+  .lilt-funnel-card__column {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    display: grid;
+    place-items: center;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .lilt-funnel-card__pill {
+    display: inline-flex;
+    align-items: center;
+    height: 22px;
+    padding: 0 7px;
+    border-radius: 7px;
+    background: color-mix(in srgb, var(--lilt-surface) 86%, var(--lilt-text));
+    box-shadow:
+      inset 0 0 0 1px color-mix(in srgb, var(--lilt-border) 80%, transparent),
+      0 4px 14px rgb(0 0 0 / 0.1);
+    color: var(--lilt-text);
+    font-size: 11.5px;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    transition: opacity var(--lilt-duration-fast) ease;
+  }
+  .lilt-funnel-card__tiles.lilt-chart__legend[data-variant='cards'] {
+    grid-template-columns: repeat(var(--lilt-funnel-stages), minmax(0, 1fr));
+  }
+  .lilt-funnel-card__tiles .lilt-chart__legend-name {
+    min-width: 0;
+  }
+  .lilt-funnel-card__tiles .lilt-chart__legend-label {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  /* Tiles line up under their stages until they get too narrow to read, then wrap. */
+  @container (max-width: 420px) {
+    .lilt-funnel-card__tiles.lilt-chart__legend[data-variant='cards'] {
+      grid-template-columns: repeat(auto-fit, minmax(96px, 1fr));
+    }
+    .lilt-funnel-card__pill {
+      padding: 0 5px;
+      font-size: 10.5px;
+    }
+  }
+}

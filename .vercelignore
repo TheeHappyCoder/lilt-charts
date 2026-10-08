@@ -1,0 +1,12 @@
+# Upload source only; Vercel installs and builds everything itself.
+node_modules
+**/node_modules
+**/.next
+**/dist
+.local-pack
+.local-bundles
+.claude
+examples
+docs/handoffs
+docs/reviews
+docs/redesign-2026-09-24

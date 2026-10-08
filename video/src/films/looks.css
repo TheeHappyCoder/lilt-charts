@@ -1,0 +1,65 @@
+/* The stage follows the main card's theme, so a theme flip changes the whole frame on the beat. */
+.looks[data-stage='light'] {
+  --film-bg: #ececef;
+  --film-ink: #121216;
+  background: var(--film-bg);
+  color: var(--film-ink);
+}
+
+.looks[data-stage='light'] .film-light {
+  background:
+    radial-gradient(60% 46% at 50% 58%, rgb(124 92 255 / 0.1), transparent 70%),
+    radial-gradient(90% 70% at 50% 40%, rgb(255 255 255 / 0.6), transparent 70%);
+}
+
+.looks-wall {
+  position: absolute;
+  left: 40px;
+  top: 60px;
+  display: grid;
+  grid-template-columns: repeat(3, 560px);
+  gap: 90px 70px;
+  align-items: center;
+}
+
+/* Each cell carries its own theme, so the wall mixes light and dark cards. */
+.looks-theme {
+  border-radius: 24px;
+}
+
+.looks-theme[data-theme='light'] {
+  color-scheme: light;
+}
+
+.looks[data-stage='light'] .film-ticker {
+  background: rgb(255 255 255 / 0.92);
+  box-shadow:
+    inset 0 0 0 1px rgb(0 0 0 / 0.08),
+    0 18px 50px rgb(0 0 0 / 0.12);
+  color: #18181c;
+}
+
+.looks[data-stage='light'] .film-ticker__name {
+  color: #55555e;
+}
+
+.looks[data-stage='light'] .film-ticker__value {
+  color: #5b3fe0;
+}
+
+.looks[data-stage='light'] .film-caption__line {
+  text-shadow: none;
+}
+
+.looks[data-stage='light'] .film-caption__scrim {
+  background: linear-gradient(
+    to top,
+    rgb(236 236 239 / 0.94) 0%,
+    rgb(236 236 239 / 0.7) 45%,
+    transparent
+  );
+}
+
+.looks[data-stage='light'] .film-end__veil {
+  background: radial-gradient(56% 46% at 50% 50%, rgb(236 236 239 / 0.88), rgb(236 236 239 / 0.55));
+}

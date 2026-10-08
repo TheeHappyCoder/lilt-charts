@@ -1,0 +1,15 @@
+{
+  "name": "lilt-launch-video",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@11.9.0",
+  "scripts": {
+    "snapshot": "node snapshot.mjs",
+    "build": "node ../node_modules/vite/bin/vite.js build",
+    "render": "node render.mjs"
+  },
+  "dependencies": {
+    "ffmpeg-static": "5.2.0",
+    "playwright-core": "1.56.1"
+  }
+}

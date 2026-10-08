@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-24.5 16 365 365">
+  <style>.ink{fill:#201f1f}.dot{fill:#7c5cff}@media (prefers-color-scheme:dark){.ink{fill:#f7f6f7}.dot{fill:#8b6dff}}</style>
+  <path class="ink" d="M31 65.5A39.5 39.5 0 0 1 110 65.5L110 255C110 278 130 294 148 294C172 294 214 262 214 222L214 184A35.5 35.5 0 0 1 285 184L285 292Q285 302 277 303L268 305C260 306.5 255 309 250 314L236 331C210 358 180 370.5 143 370.5A112 112 0 0 1 31 258.5Z"/>
+  <path class="dot" d="M285.3 94A35.3 35.3 0 1 1 214.7 94A35.3 35.3 0 1 1 285.3 94Z"/>
+</svg>

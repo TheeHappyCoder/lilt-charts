@@ -1,0 +1,444 @@
+@layer lilt {
+  .lilt-chart__tooltip-total {
+    display: flex;
+    gap: 9px;
+    margin: 8px 3px 0;
+    padding: 7px 6px 0;
+    border-top: 1px solid var(--lilt-tooltip-border);
+    font-size: 11px;
+    color: var(--lilt-tooltip-muted);
+  }
+  .lilt-chart__tooltip-total strong {
+    margin-left: auto;
+    color: var(--lilt-tooltip-text);
+    font-weight: 650;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Above the hover marks and highlight segments, so nothing draws over the panel. */
+  .lilt-chart__tooltip {
+    position: absolute;
+    z-index: 6;
+    pointer-events: none;
+    /* The panel hugs its rows, so a short reading stays a small object. */
+    width: var(--lilt-panel-width, max-content);
+    min-width: 176px;
+    max-width: min(280px, calc(100% - 16px));
+    color: var(--lilt-tooltip-text);
+    font-size: 12px;
+    line-height: 18px;
+  }
+
+  .lilt-chart__tooltip[data-pinned='true'] {
+    pointer-events: auto;
+  }
+
+  .lilt-chart__tooltip-panel {
+    position: relative;
+    z-index: 1;
+    padding: var(--lilt-tooltip-padding, 7px 7px 11px);
+    border: 1px solid var(--lilt-tooltip-border, var(--lilt-border));
+    border-radius: var(--lilt-tooltip-radius, 18px);
+    background:
+      radial-gradient(ellipse at 15% 0, rgb(255 255 255 / 0.045), transparent 65%),
+      linear-gradient(
+        165deg,
+        color-mix(in srgb, var(--lilt-tooltip-text) 3%, var(--lilt-tooltip-bg)),
+        var(--lilt-tooltip-bg) 65%
+      );
+    box-shadow:
+      inset 0 1px 0 rgb(255 255 255 / 0.09),
+      inset 0 -1px 0 rgb(0 0 0 / 0.08),
+      var(--lilt-tooltip-shadow);
+    /* Never taller than the plot: compact first, then the panel scrolls as a last resort. */
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    scrollbar-width: thin;
+  }
+
+  /* Soft: frosted glass with a hairline edge, like the soft pill. The plot shows through, blurred;
+     reduced transparency makes it opaque. */
+  .lilt-chart__tooltip:is([data-variant='soft'], [data-variant='accent']) {
+    --lilt-tooltip-glass: color-mix(
+      in srgb,
+      color-mix(in srgb, var(--lilt-card-raised, var(--lilt-surface)) 94%, var(--lilt-text)) 74%,
+      transparent
+    );
+    --lilt-tooltip-bg: var(--lilt-tooltip-glass);
+    --lilt-tooltip-text: var(--lilt-text);
+    --lilt-tooltip-muted: var(--lilt-muted);
+    --lilt-tooltip-border: color-mix(in srgb, var(--lilt-text) 9%, transparent);
+    --lilt-tooltip-focus: var(--lilt-focus);
+    --lilt-tooltip-shadow:
+      0 2px 3px -1px rgb(0 0 0 / 0.18), 0 8px 16px -8px rgb(0 0 0 / 0.24),
+      0 24px 40px -16px rgb(0 0 0 / 0.3);
+  }
+  .lilt-chart__tooltip:is([data-variant='soft'], [data-variant='accent'])
+    .lilt-chart__tooltip-panel {
+    -webkit-backdrop-filter: blur(16px) saturate(160%);
+    backdrop-filter: blur(16px) saturate(160%);
+  }
+  @media (prefers-reduced-transparency: reduce) {
+    .lilt-chart__tooltip:is([data-variant='soft'], [data-variant='accent']) {
+      --lilt-tooltip-glass: color-mix(
+        in srgb,
+        var(--lilt-card-raised, var(--lilt-surface)) 94%,
+        var(--lilt-text)
+      );
+    }
+    .lilt-chart__tooltip:is([data-variant='soft'], [data-variant='accent'])
+      .lilt-chart__tooltip-panel {
+      -webkit-backdrop-filter: none;
+      backdrop-filter: none;
+    }
+  }
+  /* Accent: the same surface, faintly tinted by the series under the pointer. No glow. */
+  .lilt-chart__tooltip[data-variant='accent'] {
+    --lilt-tooltip-bg: color-mix(in srgb, var(--lilt-tooltip-series) 7%, var(--lilt-tooltip-glass));
+    --lilt-tooltip-border: color-mix(in srgb, var(--lilt-tooltip-series) 30%, transparent);
+    --lilt-tooltip-focus: var(--lilt-tooltip-series);
+  }
+  .lilt-chart__tooltip[data-variant='accent'] .lilt-chart__tooltip-title {
+    color: color-mix(in srgb, var(--lilt-tooltip-series) 62%, var(--lilt-text));
+  }
+
+  /* A softly lit date badge sits above the quieter data surface. Its radius is
+     the panel's less the padding around it. */
+  .lilt-chart__tooltip-title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 7px;
+    padding: 6px 10px;
+    border-radius: calc(var(--lilt-tooltip-radius, 18px) - 7px);
+    background:
+      radial-gradient(ellipse at 25% 0, rgb(255 255 255 / 0.1), transparent 75%),
+      linear-gradient(180deg, rgb(255 255 255 / 0.035), transparent),
+      color-mix(in srgb, var(--lilt-tooltip-text) 3%, transparent);
+    box-shadow:
+      inset 0 0 0 1px var(--lilt-tooltip-border),
+      inset 0 1px 0 rgb(255 255 255 / 0.16),
+      0 1px 2px rgb(0 0 0 / 0.08),
+      0 -3px 12px -5px rgb(255 255 255 / 0.12);
+    color: color-mix(in srgb, var(--lilt-tooltip-text) 78%, var(--lilt-tooltip-muted));
+    font-size: 11px;
+    font-weight: 550;
+    letter-spacing: 0.015em;
+    white-space: nowrap;
+  }
+
+  /* Stable value alignment lets the eye compare rows without chasing their labels. */
+  .lilt-chart__tooltip-row {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 6px;
+    padding-inline: 10px;
+    white-space: nowrap;
+  }
+
+  /* Rows away from the pointer step back through their text; swatches keep full color. */
+  .lilt-chart__tooltip-row[data-muted] strong {
+    color: var(--lilt-tooltip-muted);
+  }
+  .lilt-chart__tooltip-row[data-active] .lilt-chart__tooltip-label {
+    color: var(--lilt-tooltip-text);
+  }
+
+  .lilt-chart__tooltip-row strong {
+    transition: color 150ms ease;
+    display: flex;
+    margin-left: auto;
+    color: var(--lilt-tooltip-text);
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: -0.015em;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .lilt-chart__tooltip-swatch {
+    width: 10px;
+    height: 10px;
+    flex: 0 0 10px;
+    border-radius: 3px;
+  }
+
+  .lilt-chart__tooltip[data-indicator='dot'] .lilt-chart__tooltip-swatch {
+    width: 8px;
+    height: 8px;
+    flex-basis: 8px;
+    margin-inline: 1px;
+    border-radius: 50%;
+  }
+  .lilt-chart__tooltip[data-indicator='line'] .lilt-chart__tooltip-swatch {
+    width: 3px;
+    height: 14px;
+    flex-basis: 3px;
+    margin-inline: 3.5px;
+    border-radius: 2px;
+  }
+
+  .lilt-chart__tooltip-label {
+    color: var(--lilt-tooltip-muted);
+  }
+  .lilt-chart__tooltip-status {
+    color: var(--lilt-tooltip-muted);
+    font-size: 10px;
+    text-transform: capitalize;
+  }
+  .lilt-chart__tooltip-fields {
+    display: flex;
+    flex-basis: 100%;
+    flex-wrap: wrap;
+    gap: 2px 10px;
+    padding-left: 18px;
+    color: var(--lilt-tooltip-muted);
+    font-size: 10px;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+  .lilt-chart__tooltip-field-label {
+    opacity: 0.8;
+  }
+  .lilt-chart__tooltip-custom {
+    margin: 8px 3px 0;
+    padding: 7px 6px 0;
+    border-top: 1px solid var(--lilt-tooltip-border);
+    color: var(--lilt-tooltip-muted);
+    font-size: 11px;
+    line-height: 1.4;
+    overflow-wrap: anywhere;
+  }
+
+  .lilt-chart__tooltip-custom :is(button, a):focus-visible {
+    outline: 2px solid var(--lilt-tooltip-focus);
+    outline-offset: 2px;
+  }
+
+  .lilt-chart__tooltip-pin-status {
+    display: inline-flex;
+    align-items: center;
+    flex: 0 0 auto;
+    gap: 4px;
+    color: var(--lilt-tooltip-muted);
+    letter-spacing: normal;
+    font-size: 10px;
+    font-weight: 500;
+    line-height: 14px;
+  }
+
+  .lilt-chart__tooltip-pin-icon {
+    display: inline-flex;
+    width: 12px;
+    height: 12px;
+    flex: 0 0 12px;
+    align-items: center;
+    justify-content: center;
+    color: inherit;
+  }
+
+  .lilt-chart__tooltip-pin-icon svg {
+    width: 100%;
+    height: 100%;
+  }
+
+  .lilt-chart__tooltip-actions {
+    display: flex;
+    gap: 6px;
+    margin: 10px 3px 0;
+    padding-top: 10px;
+    border-top: 1px solid var(--lilt-tooltip-border);
+  }
+  .lilt-chart__tooltip-actions button {
+    flex: 1 1 auto;
+    min-height: 26px;
+    padding: 3px 8px;
+    border: 1px solid var(--lilt-tooltip-border);
+    border-radius: 7px;
+    background: transparent;
+    color: var(--lilt-tooltip-text);
+    font: inherit;
+    font-size: 11px;
+    font-weight: 500;
+    cursor: pointer;
+  }
+  .lilt-chart__tooltip-actions button:hover {
+    background: color-mix(in srgb, var(--lilt-tooltip-text) 7%, transparent);
+  }
+  .lilt-chart__tooltip-actions button:focus-visible {
+    outline: 2px solid var(--lilt-tooltip-focus);
+    outline-offset: 2px;
+  }
+
+  /* The hint wraps to the panel's width rather than setting it. */
+  .lilt-chart__tooltip-hint {
+    width: 0;
+    min-width: calc(100% - 6px);
+    margin: 8px 3px 0;
+    padding: 6px 6px 0;
+    border-top: 1px solid var(--lilt-tooltip-border);
+    color: var(--lilt-tooltip-muted);
+    font-size: 10px;
+    line-height: 14px;
+    white-space: normal;
+  }
+
+  /* Compact: values in two columns, Unpin beside the date, less air. For small fixed plots. */
+  .lilt-chart__tooltip[data-density='compact'] {
+    --lilt-tooltip-padding: 4px 4px 6px;
+    min-width: 0;
+    font-size: 11px;
+    line-height: 16px;
+  }
+  .lilt-chart__tooltip[data-density='compact'] .lilt-chart__tooltip-title {
+    min-height: 24px;
+    margin-bottom: 2px;
+    padding: 2px 3px 2px 8px;
+  }
+  .lilt-chart__tooltip[data-density='compact'] .lilt-chart__tooltip-rows {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, auto));
+    justify-content: start;
+    gap: 2px 12px;
+    padding: 2px 8px 0;
+  }
+  .lilt-chart__tooltip[data-density='compact'] .lilt-chart__tooltip-row {
+    min-width: 0;
+    flex-wrap: nowrap;
+    gap: 5px;
+    margin-top: 0;
+    padding-inline: 0;
+  }
+  .lilt-chart__tooltip[data-density='compact'] .lilt-chart__tooltip-label {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .lilt-chart__tooltip[data-density='compact'] .lilt-chart__tooltip-row strong {
+    margin-left: 2px;
+    font-size: 12px;
+  }
+  .lilt-chart__tooltip[data-density='compact'] .lilt-chart__tooltip-swatch {
+    width: 8px;
+    height: 8px;
+    flex-basis: 8px;
+  }
+  .lilt-chart__tooltip[data-density='compact'] .lilt-chart__tooltip-fields {
+    display: none;
+  }
+  .lilt-chart__tooltip[data-density='compact'] .lilt-chart__tooltip-custom {
+    margin: 4px 3px 0;
+  }
+  .lilt-chart__tooltip[data-density='compact'] .lilt-chart__tooltip-actions {
+    margin: 6px 3px 0;
+    padding-top: 6px;
+  }
+  .lilt-chart__tooltip[data-density='compact'] .lilt-chart__tooltip-hint {
+    margin: 5px 3px 0;
+    padding: 4px 5px 0;
+  }
+  .lilt-chart__tooltip-release {
+    height: 20px;
+    padding: 0 8px;
+    border: 0;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--lilt-tooltip-text) 8%, transparent);
+    color: var(--lilt-tooltip-text);
+    font: inherit;
+    font-size: 11px;
+    font-weight: 500;
+    cursor: pointer;
+  }
+  .lilt-chart__tooltip-release:hover {
+    background: color-mix(in srgb, var(--lilt-tooltip-text) 13%, transparent);
+  }
+  .lilt-chart__tooltip-release:focus-visible {
+    outline: 2px solid var(--lilt-tooltip-focus);
+    outline-offset: 2px;
+  }
+
+  /* Strip: the same reading on one line, docked above the plot as a capsule. */
+  .lilt-chart__tooltip[data-layout='strip'] {
+    width: max-content;
+    min-width: 0;
+    max-width: calc(100% - 16px);
+  }
+  .lilt-chart__strip .lilt-chart__tooltip-panel {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    height: 32px;
+    padding: 0 6px 0 4px;
+    overflow: hidden;
+    border-radius: 999px;
+    white-space: nowrap;
+  }
+  .lilt-chart__strip-title {
+    display: flex;
+    align-items: center;
+    height: 24px;
+    padding: 0 10px;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--lilt-tooltip-text) 6%, transparent);
+    box-shadow: inset 0 0 0 1px var(--lilt-tooltip-border);
+    color: var(--lilt-tooltip-text);
+    font-weight: 600;
+  }
+  .lilt-chart__strip-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: opacity 150ms ease;
+  }
+  .lilt-chart__strip-item[data-muted] {
+    opacity: 0.6;
+  }
+  .lilt-chart__strip-item strong {
+    color: var(--lilt-tooltip-text);
+    font-size: 13px;
+    font-weight: 650;
+    font-variant-numeric: tabular-nums;
+  }
+  .lilt-chart__strip .lilt-chart__tooltip-custom {
+    margin: 0;
+    padding: 0;
+    border: 0;
+  }
+  .lilt-chart__strip-release {
+    height: 22px;
+    padding: 0 9px;
+    border: 0;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--lilt-tooltip-text) 8%, transparent);
+    color: var(--lilt-tooltip-text);
+    font: inherit;
+    font-size: 11px;
+    font-weight: 500;
+    cursor: pointer;
+  }
+  .lilt-chart__strip-release:focus-visible {
+    outline: 2px solid var(--lilt-tooltip-focus);
+    outline-offset: 2px;
+  }
+
+  .lilt-chart__compare-from-pin {
+    width: 100%;
+    min-height: 28px;
+    margin-top: 10px;
+    padding: 3px 7px;
+    border: 1px solid var(--lilt-tooltip-border);
+    border-radius: 6px;
+    background: transparent;
+    color: var(--lilt-tooltip-text);
+    font: inherit;
+    font-size: 11px;
+    cursor: pointer;
+  }
+
+  .lilt-chart__compare-from-pin:focus-visible {
+    outline: 2px solid var(--lilt-tooltip-focus);
+    outline-offset: 2px;
+  }
+}

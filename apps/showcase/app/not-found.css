@@ -1,0 +1,91 @@
+/* The 404 page (not-found.tsx): a short way back near the top, over the home skyline's level
+   meter, which fills the page, surges once on arrival and leaves "404" at its centre
+   (lost-meter.tsx). */
+.lilt-lost {
+  --lost-violet: #8b6dff;
+  --lost-rose: #ee5aa6;
+  --home-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  position: relative;
+  min-height: max(100svh, 600px);
+  overflow: hidden;
+  background: var(--background);
+  color: var(--foreground);
+  text-align: center;
+}
+:root:not(.dark) .lilt-lost {
+  --lost-violet: #7c5cff;
+  --lost-rose: #e5489a;
+}
+.lilt-lost__brand {
+  position: absolute;
+  z-index: 1;
+  top: 24px;
+  left: 28px;
+  display: block;
+  width: 116px;
+  border-radius: 8px;
+}
+.lilt-lost__brand:focus-visible {
+  outline: 2px solid var(--brand-primary);
+  outline-offset: 4px;
+}
+.lilt-lost__brand svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.lilt-lost__copy {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  justify-items: center;
+  gap: 18px;
+  padding: clamp(96px, 17svh, 184px) 24px 0;
+}
+.lilt-lost h1 {
+  max-width: 14ch;
+  margin: 0;
+  font-size: clamp(40px, 6.2vw, 76px);
+  font-weight: 600;
+  letter-spacing: -0.05em;
+  line-height: 1;
+  text-wrap: balance;
+}
+.lilt-lost__actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 10px;
+}
+.lilt-lost__meter {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 14%, #000 86%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 14%, #000 86%, transparent);
+}
+
+/* Inside the docs shell (a missing chart or topic), the rail already carries the brand and the
+   page sits in the sheet rather than filling the window. */
+.lilt-shell .lilt-lost {
+  min-height: calc(100svh - 120px);
+  margin: -24px -40px -40px -24px;
+  background: transparent;
+}
+.lilt-shell .lilt-lost__brand {
+  display: none;
+}
+
+@media (max-width: 640px) {
+  .lilt-lost__brand {
+    top: 18px;
+    left: 20px;
+    width: 96px;
+  }
+  .lilt-lost__copy {
+    padding-top: clamp(88px, 14svh, 120px);
+  }
+}

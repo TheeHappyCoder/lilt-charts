@@ -1,0 +1,431 @@
+@layer lilt {
+  .lilt-chart__legend {
+    display: flex;
+    min-height: 34px;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 4px 12px;
+  }
+  .lilt-chart__legend button,
+  .lilt-chart__legend-static {
+    display: inline-flex;
+    min-height: 34px;
+    min-width: 0;
+    align-items: center;
+    gap: 8px;
+    margin: 0;
+    padding: 6px 8px;
+    border: 0;
+    border-radius: 7px;
+    background: transparent;
+    color: color-mix(in srgb, var(--lilt-text) 84%, var(--lilt-muted));
+    font: inherit;
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 20px;
+    text-align: left;
+    transition:
+      color 160ms,
+      background 160ms,
+      opacity 160ms;
+  }
+  .lilt-chart__legend button {
+    cursor: pointer;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .lilt-chart__direct-label {
+    font: inherit;
+    font-size: 11px;
+    font-weight: 600;
+    pointer-events: none;
+  }
+  .lilt-chart__legend-label {
+    min-width: 0;
+    overflow-wrap: anywhere;
+    transition: color 180ms;
+  }
+  .lilt-chart__legend-value {
+    margin-left: auto;
+    color: var(--lilt-text);
+    font-variant-numeric: tabular-nums;
+    font-size: 11px;
+  }
+  .lilt-chart__legend-item[data-visible='false'] .lilt-chart__legend-label {
+    color: var(--lilt-muted);
+  }
+  .lilt-chart__legend button.lilt-chart__legend-isolate {
+    position: relative;
+    width: 26px;
+    min-width: 26px;
+    flex: 0 0 26px;
+    padding: 0;
+    justify-content: center;
+    color: var(--lilt-muted);
+    opacity: 0.45;
+  }
+  .lilt-chart__legend-isolate svg {
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .lilt-chart__legend-item:focus-within {
+    position: relative;
+    z-index: 2;
+    background: color-mix(in srgb, var(--lilt-border) 30%, transparent);
+  }
+  .lilt-chart__legend-item:focus-within .lilt-chart__legend-isolate {
+    opacity: 1;
+  }
+  .lilt-chart__legend button.lilt-chart__legend-isolate[aria-pressed='true'] {
+    color: var(--lilt-legend-color);
+    opacity: 1;
+  }
+  @media (hover: hover) {
+    .lilt-chart__legend-item[data-interactive]:hover {
+      position: relative;
+      z-index: 2;
+      background: color-mix(in srgb, var(--lilt-border) 30%, transparent);
+    }
+    .lilt-chart__legend-item:hover .lilt-chart__legend-isolate {
+      opacity: 1;
+    }
+    .lilt-chart__legend button:hover {
+      color: var(--lilt-text);
+    }
+    .lilt-chart__legend button.lilt-chart__legend-isolate:hover {
+      background: color-mix(in srgb, var(--lilt-legend-color) 12%, transparent);
+      color: var(--lilt-legend-color);
+    }
+  }
+  @media (pointer: coarse) {
+    .lilt-chart__legend button {
+      min-height: 44px;
+    }
+    .lilt-chart__legend button.lilt-chart__legend-isolate {
+      width: 36px;
+      min-width: 36px;
+      flex-basis: 36px;
+      opacity: 0.7;
+    }
+  }
+  .lilt-chart__legend[data-motion='none'],
+  .lilt-chart__legend[data-motion='none'] * {
+    transition: none;
+  }
+
+  @media (max-width: 560px) {
+    .lilt-chart__legend button {
+      min-height: 38px;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .lilt-chart__legend button {
+      transition: none;
+    }
+  }
+
+  .lilt-chart__legend-show-all {
+    min-height: 30px;
+    padding: 4px 8px;
+    border: 1px solid var(--lilt-border) !important;
+    border-radius: 6px;
+    background: transparent;
+    color: var(--lilt-text);
+    font: inherit;
+    font-size: 11px;
+    cursor: pointer;
+  }
+
+  .lilt-chart__legend[data-variant='cards'] {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 132px), 1fr));
+    gap: 8px;
+    width: 100%;
+  }
+  .lilt-chart__legend[data-variant='inline'] {
+    display: inline-flex;
+    width: auto;
+    gap: 4px 14px;
+  }
+  .lilt-chart__legend-item {
+    display: inline-flex;
+    align-items: center;
+    border-radius: 8px;
+    transition: background 160ms var(--lilt-ease-reveal);
+    min-width: 0;
+    max-width: none;
+  }
+  .lilt-chart__legend[data-variant='cards'] .lilt-chart__legend-item {
+    background: color-mix(
+      in srgb,
+      var(--lilt-legend-card, var(--lilt-text)) 5%,
+      var(--lilt-surface)
+    );
+    border: 1px solid transparent;
+    border-radius: 14px;
+  }
+  .lilt-chart__legend[data-variant='cards'] .lilt-chart__legend-toggle,
+  .lilt-chart__legend[data-variant='cards'] .lilt-chart__legend-static {
+    display: grid;
+    gap: 5px;
+    width: 100%;
+    min-height: 65px;
+    padding: 10px 12px;
+  }
+  .lilt-chart__legend-name {
+    display: inline-flex;
+    min-width: 0;
+    align-items: center;
+    gap: 8px;
+    color: var(--lilt-muted);
+  }
+  .lilt-chart__legend-swatch {
+    display: inline-block;
+    width: 11px;
+    height: 11px;
+    flex: 0 0 11px;
+    border-radius: 3px;
+    background: var(--lilt-legend-color);
+  }
+  .lilt-chart__legend[data-variant='inline'] .lilt-chart__legend-swatch {
+    width: 8px;
+    height: 8px;
+    flex-basis: 8px;
+    border-radius: 2.5px;
+  }
+  .lilt-chart__legend[data-variant='cards'] .lilt-chart__legend-value {
+    margin: 0;
+    font-size: 16px;
+    line-height: 1.2;
+    font-weight: 650;
+    text-align: left;
+  }
+  .lilt-chart__legend-inline-value {
+    color: var(--lilt-text);
+    font-variant-numeric: tabular-nums;
+  }
+  .lilt-chart__legend-item[data-active] {
+    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--lilt-legend-color) 54%, transparent);
+  }
+  .lilt-chart__legend-item[data-visible='false'] {
+    opacity: 0.48;
+  }
+  .lilt-chart__legend-item[data-pinned] {
+    box-shadow: inset 0 0 0 1.5px var(--lilt-legend-color);
+  }
+
+  /* Legends that hide and show series: click a tile to toggle it; "Only" and "Show all" appear
+     on hover and keyboard focus, and stay visible on touch screens. */
+  .lilt-chart__legend[data-toggles] .lilt-chart__legend-item {
+    position: relative;
+  }
+  .lilt-radial-card__legend .lilt-chart__legend-actions {
+    top: 50%;
+    bottom: auto;
+    transform: translateY(-50%);
+  }
+  .lilt-radial-card__legend > li:is(:hover, :focus-within) .lilt-chart__legend-actions {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .lilt-radial-card__legend
+    > li[data-hidden]
+    :is(.lilt-radial-card__label, .lilt-radial-card__value, .lilt-radial-card__share) {
+    opacity: 0.45;
+  }
+  .lilt-chart__legend[data-toggles] .lilt-chart__legend-toggle {
+    cursor: pointer;
+  }
+  .lilt-chart__legend-item[data-visible='false'] .lilt-chart__legend-swatch {
+    background: transparent;
+    box-shadow: inset 0 0 0 1.5px var(--lilt-legend-color);
+  }
+  /* Bottom right of a tile, beside the value, so they never cover the label. */
+  .lilt-chart__legend-actions {
+    position: absolute;
+    right: 8px;
+    bottom: 10px;
+    display: flex;
+    gap: 2px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity var(--lilt-duration-quick) ease;
+  }
+  .lilt-chart__legend[data-variant='inline'] .lilt-chart__legend-actions {
+    position: static;
+    margin-left: 2px;
+  }
+  .lilt-chart__legend-item:hover .lilt-chart__legend-actions,
+  .lilt-chart__legend-item:focus-within .lilt-chart__legend-actions {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  @media (hover: none) {
+    .lilt-chart__legend-actions {
+      opacity: 1;
+      pointer-events: auto;
+    }
+  }
+  button.lilt-chart__legend-action {
+    min-height: 0;
+    padding: 1px 6px;
+    border-radius: 6px;
+    background: color-mix(in srgb, var(--lilt-surface) 80%, var(--lilt-text));
+    color: var(--lilt-text);
+    font-size: 11px;
+    font-weight: 600;
+    line-height: 18px;
+    white-space: nowrap;
+  }
+  button.lilt-chart__legend-action:hover {
+    background: color-mix(in srgb, var(--lilt-surface) 68%, var(--lilt-text));
+  }
+  button.lilt-chart__legend-action:focus-visible {
+    outline: 2px solid var(--lilt-focus);
+    outline-offset: 1px;
+  }
+  /* A hidden tile is dimmed, but its actions stay fully readable. */
+  .lilt-chart__legend-item[data-visible='false']:is(:hover, :focus-within) {
+    opacity: 1;
+  }
+  .lilt-chart__legend-item[data-visible='false']:is(:hover, :focus-within)
+    :is(.lilt-chart__legend-name, .lilt-chart__legend-value) {
+    opacity: 0.55;
+  }
+
+  /* List: one row per entry, value aligned right, hairlines between rows. */
+  .lilt-chart__legend[data-variant='list'] {
+    display: grid;
+    gap: 0;
+    width: 100%;
+  }
+  .lilt-chart__legend[data-variant='list'] .lilt-chart__legend-item {
+    position: relative;
+    display: flex;
+    border-radius: 8px;
+  }
+  .lilt-chart__legend[data-variant='list'] .lilt-chart__legend-item + .lilt-chart__legend-item {
+    border-top: 1px solid color-mix(in srgb, var(--lilt-border) 55%, transparent);
+    border-radius: 0 0 8px 8px;
+  }
+  .lilt-chart__legend[data-variant='list']
+    :is(.lilt-chart__legend-toggle, .lilt-chart__legend-static) {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    width: 100%;
+    min-height: 38px;
+    padding: 7px 10px;
+  }
+  .lilt-chart__legend[data-variant='list'] .lilt-chart__legend-value {
+    font-size: 13px;
+    font-weight: 600;
+  }
+
+  /* Pills: rounded chips tinted with their series color. */
+  .lilt-chart__legend[data-variant='pills'] {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .lilt-chart__legend[data-variant='pills'] .lilt-chart__legend-item {
+    border-radius: 999px;
+    background: color-mix(in oklab, var(--lilt-legend-color) 13%, transparent);
+  }
+  .lilt-chart__legend[data-variant='pills']
+    :is(.lilt-chart__legend-toggle, .lilt-chart__legend-static) {
+    min-height: 28px;
+    gap: 8px;
+    padding: 3px 11px 3px 9px;
+    border-radius: 999px;
+  }
+  .lilt-chart__legend[data-variant='pills'] .lilt-chart__legend-name {
+    color: var(--lilt-text);
+  }
+  .lilt-chart__legend[data-variant='pills'] .lilt-chart__legend-swatch {
+    width: 8px;
+    height: 8px;
+    flex-basis: 8px;
+  }
+  .lilt-chart__legend[data-variant='pills'] .lilt-chart__legend-value {
+    font-size: 12px;
+    font-weight: 650;
+  }
+  .lilt-chart__legend[data-variant='pills'] .lilt-chart__legend-item[data-visible='false'] {
+    background: transparent;
+    box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--lilt-legend-color) 40%, transparent);
+  }
+  .lilt-chart__legend[data-variant='pills'] .lilt-chart__legend-actions {
+    position: static;
+    margin-right: 6px;
+  }
+
+  /* Bars: each value with a thin bar measured against the largest one shown. */
+  .lilt-chart__legend[data-variant='bars'] {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 150px), 1fr));
+    gap: 4px 16px;
+    width: 100%;
+  }
+  .lilt-chart__legend[data-variant='bars'] .lilt-chart__legend-item {
+    position: relative;
+    display: flex;
+  }
+  .lilt-chart__legend[data-variant='bars']
+    :is(.lilt-chart__legend-toggle, .lilt-chart__legend-static) {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    row-gap: 7px;
+    width: 100%;
+    padding: 8px;
+  }
+  .lilt-chart__legend[data-variant='bars'] .lilt-chart__legend-value {
+    font-size: 13px;
+    font-weight: 600;
+  }
+  .lilt-chart__legend-meter {
+    grid-column: 1 / -1;
+    display: block;
+    height: 4px;
+    overflow: hidden;
+    border-radius: 2px;
+    background: color-mix(in srgb, var(--lilt-muted) 16%, transparent);
+  }
+  .lilt-chart__legend-meter > span {
+    display: block;
+    height: 100%;
+    border-radius: inherit;
+    background: var(--lilt-legend-color);
+    transition: width 420ms var(--lilt-ease-reveal);
+  }
+  .lilt-chart__legend[data-motion='none'] .lilt-chart__legend-meter > span {
+    transition: none;
+  }
+
+  /* In rows and bars the actions sit over the value, which steps aside while they show. */
+  .lilt-chart__legend:is([data-variant='list'], [data-variant='bars']) .lilt-chart__legend-actions {
+    top: 8px;
+    bottom: auto;
+  }
+  .lilt-chart__legend[data-variant='list'] .lilt-chart__legend-actions {
+    top: 50%;
+    transform: translateY(-50%);
+  }
+  .lilt-chart__legend[data-toggles]:is([data-variant='list'], [data-variant='bars'])
+    .lilt-chart__legend-item:is(:hover, :focus-within)
+    .lilt-chart__legend-value {
+    opacity: 0;
+  }
+
+  /* Swatch marks: a dot, or a short line for line charts. Last, so they win in every layout. */
+  .lilt-chart__legend[data-swatch='dot'] .lilt-chart__legend-swatch {
+    border-radius: 50%;
+  }
+  .lilt-chart__legend[data-swatch='line'] .lilt-chart__legend-swatch {
+    width: 14px;
+    height: 3px;
+    flex-basis: 14px;
+    border-radius: 2px;
+  }
+}

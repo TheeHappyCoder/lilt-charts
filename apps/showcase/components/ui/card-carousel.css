@@ -1,0 +1,254 @@
+.lilt-card-carousel {
+  position: relative;
+  width: 100%;
+  min-width: 0;
+  outline-offset: 4px;
+}
+.lilt-card-carousel__stage {
+  /* The card in focus's width, so the fade spans exactly the gutter its neighbours peek into. */
+  --lilt-carousel-focus: min(68%, 1040px);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  place-items: center;
+  isolation: isolate;
+  overflow: clip;
+  padding: 22px 0 46px;
+  touch-action: pan-y;
+  /* Neighbours dissolve towards the stage's edges instead of meeting a hard clip. */
+  -webkit-mask-image: linear-gradient(
+    90deg,
+    transparent,
+    #000 calc((100% - var(--lilt-carousel-focus)) / 2),
+    #000 calc((100% + var(--lilt-carousel-focus)) / 2),
+    transparent
+  );
+  mask-image: linear-gradient(
+    90deg,
+    transparent,
+    #000 calc((100% - var(--lilt-carousel-focus)) / 2),
+    #000 calc((100% + var(--lilt-carousel-focus)) / 2),
+    transparent
+  );
+}
+.lilt-card-carousel[data-single] .lilt-card-carousel__stage {
+  -webkit-mask-image: none;
+  mask-image: none;
+}
+.lilt-card-carousel[data-compact] .lilt-card-carousel__stage {
+  --lilt-carousel-focus: min(64%, 440px);
+}
+.lilt-card-carousel__stage[data-size='narrow'] {
+  --lilt-carousel-focus: min(64%, 560px);
+}
+.lilt-card-carousel__card {
+  position: relative;
+  grid-area: 1 / 1;
+  width: min(68%, 1040px);
+  min-width: 0;
+  align-self: center;
+  transform-origin: center;
+}
+.lilt-card-carousel[data-compact] .lilt-card-carousel__card {
+  width: min(64%, 440px);
+}
+/* A single stat card reads at a comfortable width, wide enough for the stage's tab above it. */
+.lilt-card-carousel__card[data-size='narrow'] {
+  width: min(64%, 560px);
+}
+/* A neighbour veils the part of itself that sits under the card in focus, so an outline or ghost
+   card never shows another chart's numbers through its middle. Registered, so the veil eases. */
+@property --lilt-carousel-veil {
+  syntax: '<percentage>';
+  inherits: false;
+  initial-value: -20%;
+}
+.lilt-card-carousel__preview {
+  --lilt-carousel-veil: -20%;
+  min-width: 0;
+  border-radius: 24px;
+  filter: drop-shadow(0 16px 14px rgb(0 0 0 / 0.05));
+}
+.lilt-card-carousel__card:not([data-active]) .lilt-card-carousel__preview {
+  pointer-events: none;
+  user-select: none;
+}
+.lilt-card-carousel__card[data-side] .lilt-card-carousel__preview {
+  --lilt-carousel-veil: 34%;
+  /* Only neighbours carry the mask: the card in focus keeps its overflow, hover pills included.
+     It tiles down without clipping, so a blurred neighbour's top and bottom stay soft. */
+  -webkit-mask-image: linear-gradient(
+    var(--lilt-carousel-veil-direction, 90deg),
+    transparent var(--lilt-carousel-veil),
+    #000 calc(var(--lilt-carousel-veil) + 18%)
+  );
+  mask-image: linear-gradient(
+    var(--lilt-carousel-veil-direction, 90deg),
+    transparent var(--lilt-carousel-veil),
+    #000 calc(var(--lilt-carousel-veil) + 18%)
+  );
+  -webkit-mask-repeat: repeat-y;
+  mask-repeat: repeat-y;
+  mask-clip: no-clip;
+  transition:
+    opacity 320ms ease-out,
+    --lilt-carousel-veil 420ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.lilt-card-carousel__card[data-side='before'] {
+  --lilt-carousel-veil-direction: 270deg;
+}
+/* A neighbour waiting for idle time arrives as a quiet fade once it renders. */
+.lilt-card-carousel__card:not([data-active]) .lilt-card-carousel__preview[data-pending] {
+  opacity: 0;
+}
+.lilt-card-carousel__pick {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  border: 0;
+  border-radius: 24px;
+  background: transparent;
+  cursor: pointer;
+  touch-action: pan-y;
+}
+.lilt-card-carousel__footer {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  gap: 2px;
+  min-width: 0;
+  padding: 0 8px 8px;
+  touch-action: pan-y;
+  user-select: none;
+}
+.lilt-card-carousel__navigation {
+  display: grid;
+  grid-template-columns: 44px minmax(120px, 260px) 44px;
+  align-items: center;
+  gap: 20px;
+  max-width: 100%;
+}
+.lilt-card-carousel__arrow {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  background: var(--surface);
+  color: var(--foreground);
+  box-shadow: 0 3px 8px rgb(0 0 0 / 0.04);
+  cursor: pointer;
+  transition:
+    background 160ms ease,
+    transform 160ms ease;
+}
+.lilt-card-carousel__arrow:hover:not(:disabled) {
+  background: var(--hover);
+}
+.lilt-card-carousel__arrow:active:not(:disabled) {
+  transform: scale(0.94);
+}
+.lilt-card-carousel__arrow:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+.lilt-card-carousel__caption {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  min-width: 0;
+  color: var(--foreground);
+  font-size: 13px;
+  font-weight: 600;
+  text-align: center;
+}
+.lilt-card-carousel__count {
+  flex-shrink: 0;
+  color: var(--muted-foreground);
+  font-size: 11px;
+  font-weight: 400;
+  font-variant-numeric: tabular-nums;
+}
+.lilt-card-carousel__dots {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  max-width: 100%;
+}
+.lilt-card-carousel__dots button {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 32px;
+  padding: 3px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  cursor: pointer;
+}
+.lilt-card-carousel__dots span {
+  width: 100%;
+  height: 4px;
+  border-radius: 4px;
+  background: color-mix(in srgb, var(--foreground) 13%, transparent);
+  transition: background 180ms ease;
+}
+.lilt-card-carousel__dots [aria-pressed='true'] span {
+  background: var(--brand-primary);
+}
+.lilt-card-carousel__extra {
+  position: absolute;
+  right: 8px;
+  top: 0;
+}
+@media (max-width: 1100px) {
+  .lilt-card-carousel__card {
+    width: 78%;
+  }
+  .lilt-card-carousel__stage {
+    --lilt-carousel-focus: 78%;
+  }
+  .lilt-card-carousel__extra {
+    position: static;
+    margin-top: 4px;
+  }
+}
+@media (max-width: 640px) {
+  .lilt-card-carousel__stage,
+  .lilt-card-carousel__stage[data-size='narrow'],
+  .lilt-card-carousel[data-compact] .lilt-card-carousel__stage {
+    --lilt-carousel-focus: min(calc(100% - 28px), 440px);
+    padding: 12px 0 32px;
+  }
+  .lilt-card-carousel__card,
+  .lilt-card-carousel[data-compact] .lilt-card-carousel__card {
+    width: calc(100% - 28px);
+    max-width: 440px;
+  }
+  .lilt-card-carousel__navigation {
+    width: 100%;
+    grid-template-columns: 44px minmax(0, 1fr) 44px;
+    gap: 10px;
+  }
+  .lilt-card-carousel__caption {
+    flex-direction: column;
+    gap: 3px;
+    font-size: 12px;
+  }
+  .lilt-card-carousel__dots button {
+    width: 32px;
+    height: 44px;
+  }
+  .lilt-card-carousel__extra {
+    margin-top: 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .lilt-card-carousel__arrow,
+  .lilt-card-carousel__dots span,
+  .lilt-card-carousel__card .lilt-card-carousel__preview {
+    transition: none;
+  }
+}

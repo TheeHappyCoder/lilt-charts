@@ -1,0 +1,251 @@
+@layer lilt {
+  /* Linked panes under a card's plot, such as volume or indicators. A hairline separates each
+     pane; its name and live reading sit in the top-left corner. */
+  .lilt-card__pane {
+    margin-top: -8px;
+    padding-top: 8px;
+    border-top: 1px dashed color-mix(in srgb, var(--lilt-border) 80%, transparent);
+  }
+  .lilt-card__chart--axis-below .lilt-chart__x-badge {
+    display: none;
+  }
+  .lilt-card__pane-caption {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    min-height: 16px;
+    color: var(--lilt-muted);
+    font-size: 11px;
+    font-weight: 500;
+    line-height: 16px;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+  .lilt-card__pane-name {
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    font-size: 10px;
+  }
+  .lilt-card__pane-value {
+    color: var(--lilt-text);
+    font-weight: 600;
+  }
+
+  /* A ticker heading: optional logo, the symbol, and its name. */
+  .lilt-card__ticker {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 0;
+  }
+  .lilt-card__ticker-icon {
+    display: inline-grid;
+    place-items: center;
+    width: 20px;
+    height: 20px;
+    overflow: hidden;
+    border-radius: 999px;
+  }
+  .lilt-card__ticker-symbol {
+    color: var(--lilt-text);
+    font-weight: 600;
+    letter-spacing: 0.01em;
+  }
+  .lilt-card__ticker-name {
+    overflow: hidden;
+    color: var(--lilt-muted);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  /* Compact label-over-value stats, such as a depth chart's spread and total depth. */
+  .lilt-card__stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 96px), 1fr));
+    gap: 10px;
+    margin: 0;
+  }
+  .lilt-card__stats > div {
+    display: grid;
+    gap: 2px;
+    padding-left: 10px;
+    border-left: 2px solid var(--lilt-border);
+  }
+  .lilt-card__stats > [data-side='bid'] {
+    border-left-color: var(--lilt-candle-up);
+  }
+  .lilt-card__stats > [data-side='ask'] {
+    border-left-color: var(--lilt-candle-down);
+  }
+  .lilt-card__stats dt {
+    color: var(--lilt-muted);
+    font-size: 11px;
+    font-weight: 500;
+  }
+  .lilt-card__stats dd {
+    margin: 0;
+    font-size: 13px;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+  }
+  .lilt-card__depth-mid line {
+    stroke: var(--lilt-muted);
+    stroke-opacity: 0.6;
+  }
+  .lilt-card__depth-mid text {
+    fill: var(--lilt-muted);
+    font-size: 10px;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* The order book ladder. Depth bars grow from the right edge, like a trading ladder; a changed
+     level flashes once. */
+  .lilt-order-book {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 2px;
+    font-size: 12px;
+    font-variant-numeric: tabular-nums;
+  }
+  .lilt-order-book caption {
+    margin-bottom: 8px;
+    color: var(--lilt-muted);
+    font-size: 13px;
+    font-weight: 500;
+    text-align: left;
+  }
+  .lilt-order-book thead th {
+    padding: 0 8px 6px;
+    color: var(--lilt-muted);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-align: right;
+    text-transform: uppercase;
+  }
+  .lilt-order-book thead th:first-child,
+  .lilt-order-book tbody th {
+    text-align: left;
+  }
+  .lilt-order-book__level > * {
+    padding: 3px 8px;
+    font-weight: 500;
+    text-align: right;
+  }
+  .lilt-order-book__placeholder > td {
+    height: 24px;
+    padding: 6px 8px;
+  }
+  .lilt-order-book__placeholder .lilt-skeleton__block {
+    margin-left: auto;
+    height: 10px;
+  }
+  .lilt-order-book__level {
+    --lilt-side: var(--lilt-candle-down);
+    background: linear-gradient(
+        to left,
+        color-mix(in srgb, var(--lilt-side) 16%, transparent) var(--lilt-depth),
+        transparent var(--lilt-depth)
+      )
+      no-repeat;
+    transition: background-color var(--lilt-duration-fast) ease-out;
+  }
+  .lilt-order-book__level[data-side='bid'] {
+    --lilt-side: var(--lilt-candle-up);
+  }
+  .lilt-order-book__level > th {
+    color: var(--lilt-side);
+    font-weight: 600;
+  }
+  .lilt-order-book__level > :first-child {
+    border-radius: 6px 0 0 6px;
+  }
+  .lilt-order-book__level > :last-child {
+    border-radius: 0 6px 6px 0;
+  }
+  /* Depth: each level's total is a solid block, anchored at the right like the flat bar, with a
+     lit roof and a shaded end on the shared slope (rise 4 per 7 of depth). It sits behind the
+     row's text. */
+  .lilt-order-book[data-depth] {
+    isolation: isolate;
+  }
+  .lilt-order-book[data-depth] .lilt-order-book__level {
+    position: relative;
+    background: none;
+  }
+  .lilt-order-book__bar {
+    --lilt-bar-depth: 7px;
+    --lilt-bar-rise: 4px;
+    position: absolute;
+    z-index: -1;
+    top: calc(2px + var(--lilt-bar-rise));
+    right: var(--lilt-bar-depth);
+    bottom: 2px;
+    width: max(0px, calc(var(--lilt-depth) - var(--lilt-bar-depth)));
+    background: linear-gradient(
+      color-mix(in oklab, color-mix(in oklab, var(--lilt-side) 34%, var(--lilt-surface)), white 8%),
+      color-mix(in oklab, color-mix(in oklab, var(--lilt-side) 34%, var(--lilt-surface)), black 10%)
+    );
+  }
+  .lilt-order-book__bar::before,
+  .lilt-order-book__bar::after {
+    content: '';
+    position: absolute;
+  }
+  .lilt-order-book__bar::before {
+    right: 0;
+    bottom: 100%;
+    left: 0;
+    height: var(--lilt-bar-rise);
+    background: color-mix(
+      in oklab,
+      color-mix(in oklab, var(--lilt-side) 34%, var(--lilt-surface)),
+      white 26%
+    );
+    transform: skewX(-60.26deg);
+    transform-origin: bottom left;
+  }
+  .lilt-order-book__bar::after {
+    top: 0;
+    bottom: 0;
+    left: 100%;
+    width: var(--lilt-bar-depth);
+    background: color-mix(
+      in oklab,
+      color-mix(in oklab, var(--lilt-side) 34%, var(--lilt-surface)),
+      black 34%
+    );
+    transform: skewY(-29.74deg);
+    transform-origin: top left;
+  }
+  .lilt-order-book__level[data-flash] {
+    animation: lilt-order-book-flash 600ms var(--lilt-ease-reveal);
+  }
+  @keyframes lilt-order-book-flash {
+    from {
+      background-color: color-mix(in srgb, var(--lilt-side) 22%, transparent);
+    }
+    to {
+      background-color: transparent;
+    }
+  }
+  .lilt-order-book__spread > * {
+    padding: 8px;
+    border-block: 1px solid var(--lilt-border);
+    color: var(--lilt-muted);
+    font-size: 11px;
+    text-align: right;
+  }
+  .lilt-order-book__spread > th {
+    color: var(--lilt-text);
+    font-size: 14px;
+    font-weight: 600;
+    text-align: left;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .lilt-order-book__level[data-flash] {
+      animation: none;
+    }
+  }
+}

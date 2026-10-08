@@ -1,0 +1,47 @@
+/* transitions-dev's icon-swap pattern; token names follow Lilt's CSS scope. */
+:root {
+  --lilt-ui-icon-swap-duration: 250ms;
+  --lilt-ui-icon-swap-blur: 2px;
+  --lilt-ui-icon-swap-start-scale: 0.25;
+  --lilt-ui-icon-swap-ease: ease-in-out;
+}
+
+.t-icon-swap {
+  position: relative;
+  display: inline-grid;
+}
+
+.t-icon-swap .t-icon {
+  grid-area: 1 / 1;
+  transition:
+    opacity var(--lilt-ui-icon-swap-duration) var(--lilt-ui-icon-swap-ease),
+    filter var(--lilt-ui-icon-swap-duration) var(--lilt-ui-icon-swap-ease),
+    transform var(--lilt-ui-icon-swap-duration) var(--lilt-ui-icon-swap-ease);
+  will-change: opacity, filter, transform;
+}
+
+.t-icon-swap[data-state='a'] .t-icon[data-icon='a'],
+.t-icon-swap[data-state='b'] .t-icon[data-icon='b'] {
+  opacity: 1;
+  filter: blur(0);
+  transform: scale(1);
+}
+
+.t-icon-swap[data-state='a'] .t-icon[data-icon='b'],
+.t-icon-swap[data-state='b'] .t-icon[data-icon='a'] {
+  opacity: 0;
+  filter: blur(var(--lilt-ui-icon-swap-blur));
+  transform: scale(var(--lilt-ui-icon-swap-start-scale));
+}
+
+.lilt-ui-icon-swap {
+  flex: none;
+  line-height: 0;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .t-icon-swap .t-icon {
+    transition: none !important;
+  }
+}

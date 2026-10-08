@@ -1,0 +1,812 @@
+@layer lilt {
+  /* Moving skeletons. Every placeholder mark names how it moves with `data-skeleton`, and its
+     container's `data-style` picks draw or breathe. Each mark moves on its own, offset by its
+     `--lilt-skeleton-step`, so the placeholder builds the way the chart reads: a line draws from
+     its start, points pop in one after another, slices sweep round, cells ripple across. The
+     shared clock (a negative delay read from the wall clock) keeps every card on a page in step.
+
+       stroke  a path with pathLength 1 draws along itself, then fades
+       pop     scales up from its own center
+       bloom   scales up from an origin it sets, e.g. a ring's center
+       grow    grows from its left edge
+       rise    grows from its own middle, up and down, like a candle or a range
+
+     Draw builds, holds, and fades; breathe rises and settles but never to nothing, so it still
+     reads as a placeholder rather than a reading. */
+  :where(.lilt-skeleton, .lilt-chart__loading) {
+    --lilt-skeleton-stagger: 70ms;
+  }
+  /* Resolved on each mark, where its own step is known. */
+  :where(
+    [data-skeleton],
+    .lilt-skeleton__block,
+    .lilt-heatmap-card__skeleton,
+    .lilt-chart__skeleton-head,
+    .lilt-chart__skeleton-pen,
+    .lilt-chart__skeleton-swell,
+    .lilt-chart__skeleton-wave
+  ) {
+    --lilt-skeleton-delay: calc(
+      var(--lilt-skeleton-clock, 0ms) + var(--lilt-skeleton-step, 0) * var(--lilt-skeleton-stagger)
+    );
+    --lilt-skeleton-ripple: calc(
+      var(--lilt-skeleton-clock, 0ms) + var(--lilt-skeleton-step, 0) *
+        var(--lilt-skeleton-stagger) * 1.6
+    );
+  }
+  [data-skeleton='pop'],
+  [data-skeleton='rise'] {
+    transform-box: fill-box;
+    transform-origin: 50% 50%;
+  }
+  [data-skeleton='grow'] {
+    transform-box: fill-box;
+    transform-origin: 0 50%;
+  }
+  [data-skeleton='bloom'] {
+    transform-box: view-box;
+  }
+
+  :where(.lilt-skeleton, .lilt-chart__loading)[data-style='draw'] [data-skeleton] {
+    animation: lilt-skeleton-pop-draw 2.8s var(--lilt-ease-reveal) infinite both;
+    animation-delay: var(--lilt-skeleton-delay);
+  }
+  :where(.lilt-skeleton, .lilt-chart__loading)[data-style='draw'] [data-skeleton='stroke'] {
+    animation-name: lilt-skeleton-stroke-draw;
+    animation-timing-function: cubic-bezier(0.45, 0, 0.2, 1);
+  }
+  :where(.lilt-skeleton, .lilt-chart__loading)[data-style='draw'] [data-skeleton='grow'] {
+    animation-name: lilt-skeleton-grow-draw;
+  }
+  :where(.lilt-skeleton, .lilt-chart__loading)[data-style='draw'] [data-skeleton='rise'] {
+    animation-name: lilt-skeleton-rise-draw;
+  }
+
+  :where(.lilt-skeleton, .lilt-chart__loading)[data-style='breathe'] [data-skeleton] {
+    animation: lilt-skeleton-pop-breathe 2.8s ease-in-out infinite both;
+    animation-delay: var(--lilt-skeleton-ripple);
+  }
+  :where(.lilt-skeleton, .lilt-chart__loading)[data-style='breathe'] [data-skeleton='stroke'] {
+    animation-name: lilt-skeleton-ripple;
+  }
+  :where(.lilt-skeleton, .lilt-chart__loading)[data-style='breathe'] [data-skeleton='grow'] {
+    animation-name: lilt-skeleton-grow-breathe;
+  }
+  :where(.lilt-skeleton, .lilt-chart__loading)[data-style='breathe'] [data-skeleton='rise'] {
+    animation-name: lilt-skeleton-rise-breathe;
+  }
+
+  @keyframes lilt-skeleton-stroke-draw {
+    0% {
+      stroke-dashoffset: 1;
+      opacity: 1;
+    }
+    40%,
+    72% {
+      stroke-dashoffset: 0;
+      opacity: 1;
+    }
+    92%,
+    100% {
+      stroke-dashoffset: 0;
+      opacity: 0;
+    }
+  }
+  @keyframes lilt-skeleton-pop-draw {
+    0% {
+      transform: scale(0);
+      opacity: 0;
+    }
+    20% {
+      transform: scale(1.08);
+      opacity: 1;
+    }
+    30%,
+    72% {
+      transform: scale(1);
+      opacity: 1;
+    }
+    92%,
+    100% {
+      transform: scale(1);
+      opacity: 0;
+    }
+  }
+  @keyframes lilt-skeleton-grow-draw {
+    0% {
+      transform: scaleX(0);
+      opacity: 1;
+    }
+    34%,
+    72% {
+      transform: scaleX(1);
+      opacity: 1;
+    }
+    92%,
+    100% {
+      transform: scaleX(1);
+      opacity: 0;
+    }
+  }
+  @keyframes lilt-skeleton-rise-draw {
+    0% {
+      transform: scaleY(0);
+      opacity: 0;
+    }
+    6% {
+      opacity: 1;
+    }
+    32%,
+    72% {
+      transform: scaleY(1);
+      opacity: 1;
+    }
+    92%,
+    100% {
+      transform: scaleY(1);
+      opacity: 0;
+    }
+  }
+  @keyframes lilt-skeleton-ripple {
+    0%,
+    100% {
+      opacity: 0.45;
+    }
+    50% {
+      opacity: 1;
+    }
+  }
+  @keyframes lilt-skeleton-pop-breathe {
+    0%,
+    100% {
+      transform: scale(0.84);
+      opacity: 0.55;
+    }
+    50% {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+  @keyframes lilt-skeleton-grow-breathe {
+    0%,
+    100% {
+      transform: scaleX(0.68);
+    }
+    50% {
+      transform: scaleX(1);
+    }
+  }
+  @keyframes lilt-skeleton-rise-breathe {
+    0%,
+    100% {
+      transform: scaleY(0.62);
+    }
+    50% {
+      transform: scaleY(1);
+    }
+  }
+
+  /* Rings draw by sweeping round from the top, and breathe by filling and emptying part of the
+     way, like a value that has not settled yet. */
+  .lilt-skeleton[data-style='draw'] .lilt-skeleton__sweep {
+    animation: lilt-skeleton-sweep-draw 2.8s cubic-bezier(0.45, 0, 0.2, 1) infinite both;
+    animation-delay: var(--lilt-skeleton-clock, 0ms);
+  }
+  .lilt-skeleton[data-style='breathe'] .lilt-skeleton__sweep {
+    animation: lilt-skeleton-sweep-breathe 2.8s ease-in-out infinite both;
+    animation-delay: var(--lilt-skeleton-clock, 0ms);
+  }
+  @keyframes lilt-skeleton-sweep-draw {
+    0% {
+      stroke-dashoffset: 1;
+      opacity: 1;
+    }
+    44%,
+    72% {
+      stroke-dashoffset: 0;
+      opacity: 1;
+    }
+    92%,
+    100% {
+      stroke-dashoffset: 0;
+      opacity: 0;
+    }
+  }
+  @keyframes lilt-skeleton-sweep-breathe {
+    0%,
+    100% {
+      stroke-dashoffset: 0.42;
+    }
+    50% {
+      stroke-dashoffset: 0.04;
+    }
+  }
+
+  /* HTML placeholders: a plain bar, or a CSS prism when its container has depth. */
+  .lilt-skeleton:where([data-depth]) {
+    opacity: 0.74;
+  }
+  .lilt-skeleton__block {
+    position: relative;
+    display: block;
+    height: 12px;
+    border-radius: 3px;
+    background: color-mix(in srgb, var(--lilt-skeleton) 28%, transparent);
+    background-image: linear-gradient(
+      100deg,
+      transparent 35%,
+      color-mix(in srgb, var(--lilt-skeleton-sheen) 42%, transparent) 50%,
+      transparent 65%
+    );
+    background-size: 300% 100%;
+    animation: lilt-skeleton-shine 2.1s linear infinite;
+  }
+  .lilt-list__skeleton .lilt-skeleton__block {
+    height: 100%;
+  }
+  .lilt-skeleton[data-depth] .lilt-skeleton__block {
+    --lilt-skeleton-face: color-mix(in srgb, var(--lilt-skeleton) 64%, var(--lilt-surface));
+    border-radius: 0;
+    background-color: var(--lilt-skeleton-face);
+    box-shadow: 0 4px 8px -3px rgb(0 0 0 / 0.2);
+  }
+  .lilt-skeleton[data-depth] .lilt-skeleton__block::before,
+  .lilt-skeleton[data-depth] .lilt-skeleton__block::after {
+    position: absolute;
+    content: '';
+  }
+  .lilt-skeleton[data-depth] .lilt-skeleton__block::before {
+    right: 0;
+    bottom: 100%;
+    left: 0;
+    height: 4px;
+    background: color-mix(in oklab, var(--lilt-skeleton-face), white 26%);
+    transform: skewX(-60.26deg);
+    transform-origin: bottom left;
+  }
+  .lilt-skeleton[data-depth] .lilt-skeleton__block::after {
+    top: 0;
+    bottom: 0;
+    left: 100%;
+    width: 7px;
+    background: color-mix(in oklab, var(--lilt-skeleton-face), black 24%);
+    transform: skewY(-29.745deg);
+    transform-origin: top left;
+  }
+  .lilt-skeleton[data-depth] .lilt-heatmap-card__skeleton {
+    background-color: color-mix(in srgb, var(--lilt-skeleton) 54%, var(--lilt-surface));
+    box-shadow:
+      inset 0 1px 0 rgb(255 255 255 / 0.22),
+      0 2px 0 color-mix(in srgb, var(--lilt-skeleton) 48%, black),
+      0 3px 5px -2px rgb(0 0 0 / 0.22);
+  }
+  /* Blocks grow from the left, as horizontal bars do; a clip keeps a prism's end cap square
+     while it grows. Heatmap cells pop in a diagonal wave from the top-left corner. */
+  .lilt-skeleton[data-style='draw'] .lilt-skeleton__block {
+    background-image: none;
+    animation: lilt-skeleton-block-draw 2.8s var(--lilt-ease-reveal) infinite both;
+    animation-delay: var(--lilt-skeleton-delay);
+  }
+  .lilt-skeleton[data-style='breathe'] .lilt-skeleton__block {
+    background-image: none;
+    animation: lilt-skeleton-block-breathe 2.8s ease-in-out infinite both;
+    animation-delay: var(--lilt-skeleton-ripple);
+  }
+  .lilt-skeleton[data-style] .lilt-heatmap-card__skeleton {
+    --lilt-skeleton-stagger: 45ms;
+  }
+  .lilt-skeleton[data-style='draw'] .lilt-heatmap-card__skeleton {
+    background-image: none;
+    animation: lilt-skeleton-pop-draw 2.8s var(--lilt-ease-reveal) infinite both;
+    animation-delay: var(--lilt-skeleton-delay);
+  }
+  .lilt-skeleton[data-style='breathe'] .lilt-heatmap-card__skeleton {
+    background-image: none;
+    animation: lilt-skeleton-pop-breathe 2.8s ease-in-out infinite both;
+    animation-delay: var(--lilt-skeleton-ripple);
+  }
+  @keyframes lilt-skeleton-block-draw {
+    0% {
+      clip-path: inset(-8px 100% -8px -8px);
+      opacity: 1;
+    }
+    34%,
+    72% {
+      clip-path: inset(-8px -8px -8px -8px);
+      opacity: 1;
+    }
+    92%,
+    100% {
+      clip-path: inset(-8px -8px -8px -8px);
+      opacity: 0;
+    }
+  }
+  @keyframes lilt-skeleton-block-breathe {
+    0%,
+    100% {
+      clip-path: inset(-8px 32% -8px -8px);
+    }
+    50% {
+      clip-path: inset(-8px -8px -8px -8px);
+    }
+  }
+
+  .lilt-chart__skeleton-bars {
+    fill: var(--lilt-skeleton);
+    opacity: 0.34;
+  }
+  .lilt-chart__skeleton-bars[data-depth] {
+    opacity: 0.6;
+  }
+
+  /* Moving bars. Each bar scales from its own base, and its step staggers it into a wave from
+     left to right. */
+  .lilt-chart__skeleton-bar {
+    transform-box: fill-box;
+    transform-origin: 50% 100%;
+  }
+  .lilt-chart__loading[data-style='draw'] .lilt-chart__skeleton-bar {
+    animation: lilt-skeleton-draw 2.8s var(--lilt-ease-reveal) infinite both;
+    animation-delay: calc(var(--lilt-skeleton-clock, 0ms) + var(--lilt-skeleton-step, 0) * 60ms);
+  }
+  .lilt-chart__loading[data-style='breathe'] .lilt-chart__skeleton-bar {
+    animation: lilt-skeleton-breathe 2.8s ease-in-out infinite both;
+    animation-delay: calc(var(--lilt-skeleton-clock, 0ms) + var(--lilt-skeleton-step, 0) * 110ms);
+  }
+  /* Slide prisms through the floor clip so their caps keep the same perspective. */
+  .lilt-chart__loading[data-style='draw'] .lilt-chart__skeleton-bar:where([data-depth]) {
+    animation-name: lilt-skeleton-depth-draw;
+  }
+  .lilt-chart__loading[data-style='breathe'] .lilt-chart__skeleton-bar:where([data-depth]) {
+    animation-name: lilt-skeleton-depth-breathe;
+  }
+  /* Build up, hold, fold away, and build again. */
+  @keyframes lilt-skeleton-draw {
+    0% {
+      transform: scaleY(0);
+      opacity: 0;
+    }
+    6% {
+      opacity: 1;
+    }
+    32%,
+    74% {
+      transform: scaleY(1);
+      opacity: 1;
+    }
+    92%,
+    100% {
+      transform: scaleY(0);
+      opacity: 0;
+    }
+  }
+  /* Rise and settle, never to nothing: still a placeholder, never a reading. */
+  @keyframes lilt-skeleton-breathe {
+    0%,
+    100% {
+      transform: scaleY(0.6);
+    }
+    50% {
+      transform: scaleY(1);
+    }
+  }
+  @keyframes lilt-skeleton-depth-draw {
+    0% {
+      transform: translateY(var(--lilt-skeleton-bar-height));
+      opacity: 0;
+    }
+    6% {
+      opacity: 1;
+    }
+    32%,
+    74% {
+      transform: translateY(0);
+      opacity: 1;
+    }
+    92%,
+    100% {
+      transform: translateY(var(--lilt-skeleton-bar-height));
+      opacity: 0;
+    }
+  }
+  @keyframes lilt-skeleton-depth-breathe {
+    0%,
+    100% {
+      transform: translateY(calc(var(--lilt-skeleton-bar-height) * 0.4));
+    }
+    50% {
+      transform: translateY(0);
+    }
+  }
+
+  /* Lines and areas. Draw runs a pen along the contour with a bright head riding its tip; the
+     area fills in behind the pen and the whole wave fades before the next pass. Breathe swells
+     each contour up from the floor and lets it settle, layer after layer. */
+  .lilt-chart__skeleton-reveal {
+    transform-box: fill-box;
+    transform-origin: 0 50%;
+  }
+  .lilt-chart__loading[data-style='draw'] .lilt-chart__skeleton-reveal {
+    animation: lilt-skeleton-contour-draw 2.8s var(--lilt-skeleton-run) infinite both;
+    animation-delay: var(--lilt-skeleton-clock, 0ms);
+  }
+  .lilt-chart__loading[data-style='draw'] .lilt-chart__skeleton-wave {
+    animation: lilt-skeleton-contour-fade 2.8s linear infinite both;
+    animation-delay: var(--lilt-skeleton-delay);
+  }
+  .lilt-chart__loading[data-style='draw'] .lilt-chart__skeleton-pen {
+    animation: lilt-skeleton-pen 2.8s var(--lilt-skeleton-run) infinite both;
+    animation-delay: var(--lilt-skeleton-delay);
+  }
+  .lilt-chart__skeleton-head {
+    fill: none;
+    stroke: var(--lilt-skeleton-sheen);
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    opacity: 0;
+    vector-effect: non-scaling-stroke;
+  }
+  .lilt-chart__loading[data-style='draw'] .lilt-chart__skeleton-head {
+    animation: lilt-skeleton-head 2.8s var(--lilt-skeleton-run) infinite both;
+    animation-delay: var(--lilt-skeleton-delay);
+  }
+  .lilt-chart__loading[data-style='draw'] .lilt-chart__skeleton-head[data-tail] {
+    animation-name: lilt-skeleton-tail;
+  }
+  .lilt-chart__skeleton-swell {
+    transform-box: view-box;
+    transform-origin: 0 var(--lilt-skeleton-floor, 100%);
+  }
+  .lilt-chart__loading[data-style='breathe'] .lilt-chart__skeleton-swell {
+    animation: lilt-skeleton-swell 2.8s ease-in-out infinite both;
+    animation-delay: var(--lilt-skeleton-ripple);
+  }
+  /* The run goes from 0.1 before the line's start to 0.15 past its end, over the first half
+     of the cycle. Every keyframe below maps that same run onto its own property. */
+  @keyframes lilt-skeleton-contour-draw {
+    0% {
+      transform: scaleX(-0.1);
+    }
+    50%,
+    100% {
+      transform: scaleX(1.15);
+    }
+  }
+  /* With a 1.2 dash and 1.4 gap, an offset of 1.2 - run puts the tip at the run. */
+  @keyframes lilt-skeleton-pen {
+    0% {
+      stroke-dashoffset: 1.3;
+    }
+    50%,
+    100% {
+      stroke-dashoffset: 0.05;
+    }
+  }
+  /* Held out for the first moment of each pass, while the last pen resets, then in; out
+     together once every series has drawn. */
+  @keyframes lilt-skeleton-contour-fade {
+    0% {
+      opacity: 0;
+    }
+    4%,
+    72% {
+      opacity: 1;
+    }
+    90%,
+    100% {
+      opacity: 0;
+    }
+  }
+  /* The head is a short dash whose offset tracks the pen: for a dash h, an offset of h - run
+     puts it at the tip. It starts off the line, sweeps along it, and coasts off the end, while
+     the edge mask in the loading layer fades it in and out. The tail is a longer, fainter dash
+     on the same track. Literal offsets, since a var() would not ease. */
+  @keyframes lilt-skeleton-head {
+    0% {
+      stroke-dashoffset: 0.135;
+      opacity: 1;
+    }
+    50% {
+      stroke-dashoffset: -1.115;
+      opacity: 1;
+    }
+    50.1%,
+    100% {
+      stroke-dashoffset: -1.115;
+      opacity: 0;
+    }
+  }
+  @keyframes lilt-skeleton-tail {
+    0% {
+      stroke-dashoffset: 0.26;
+      opacity: 1;
+    }
+    50% {
+      stroke-dashoffset: -0.99;
+      opacity: 1;
+    }
+    50.1%,
+    100% {
+      stroke-dashoffset: -0.99;
+      opacity: 0;
+    }
+  }
+  @keyframes lilt-skeleton-swell {
+    0%,
+    100% {
+      transform: scaleY(0.78);
+      opacity: 0.6;
+    }
+    50% {
+      transform: scaleY(1);
+      opacity: 1;
+    }
+  }
+
+  :where(.lilt-skeleton, .lilt-chart__loading)[data-reduced-motion]
+    :is(
+      [data-skeleton],
+      .lilt-skeleton__sweep,
+      .lilt-skeleton__block,
+      .lilt-heatmap-card__skeleton,
+      .lilt-chart__skeleton-bar,
+      .lilt-chart__skeleton-reveal,
+      .lilt-chart__skeleton-wave,
+      .lilt-chart__skeleton-swell,
+      .lilt-chart__skeleton-pen,
+      .lilt-chart__skeleton-head
+    ) {
+    animation: none;
+    background-image: none;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    [data-skeleton],
+    .lilt-skeleton__sweep,
+    .lilt-skeleton__block,
+    .lilt-heatmap-card__skeleton,
+    .lilt-chart__skeleton-bar,
+    .lilt-chart__skeleton-reveal,
+    .lilt-chart__skeleton-wave,
+    .lilt-chart__skeleton-swell,
+    .lilt-chart__skeleton-pen,
+    .lilt-chart__skeleton-head {
+      animation: none !important;
+      background-image: none;
+    }
+  }
+
+  .lilt-chart__skeleton-host,
+  .lilt-chart__loading {
+    position: absolute;
+    z-index: 1;
+    inset: 0 auto auto 0;
+    width: 100%;
+    height: var(--lilt-chart-height);
+    color: var(--lilt-muted);
+    pointer-events: none;
+  }
+
+  /* Every skeleton leaves the same way (lifecycle/skeleton-exit.tsx): it holds the frame it is
+     on, whichever loop it is in, and sinks toward where its data will grow from as it fades;
+     the data's entrance starts there. Transform and opacity only, so the browser keeps it
+     smooth while the data's first render is busy. Doubled attribute for weight over each
+     skeleton's own animation; the pause is important, since each loop's shorthand would
+     otherwise set it running again. */
+  [data-skeleton-leaving][data-skeleton-leaving] {
+    transform-box: fill-box;
+    transform-origin: 50% 100%;
+    animation: lilt-skeleton-exit-bottom 240ms cubic-bezier(0.4, 0, 0.2, 1) both;
+    pointer-events: none;
+    will-change: transform, opacity;
+  }
+  [data-skeleton-leaving='left'][data-skeleton-leaving] {
+    transform-origin: 0% 50%;
+    animation-name: lilt-skeleton-exit-left;
+  }
+  [data-skeleton-leaving='center'][data-skeleton-leaving] {
+    transform-origin: 50% 50%;
+    animation-name: lilt-skeleton-exit-center;
+  }
+  [data-skeleton-leaving] :is(*, *::before, *::after) {
+    animation-play-state: paused !important;
+  }
+  @keyframes lilt-skeleton-exit-bottom {
+    to {
+      opacity: 0;
+      transform: scaleY(0.72);
+    }
+  }
+  @keyframes lilt-skeleton-exit-left {
+    to {
+      opacity: 0;
+      transform: scaleX(0.82);
+    }
+  }
+  @keyframes lilt-skeleton-exit-center {
+    to {
+      opacity: 0;
+      transform: scale(0.88);
+    }
+  }
+
+  .lilt-chart__loading {
+    /* One run for a contour's pen, head, and fill: it picks up speed off the left edge and
+       slows as it nears the end without stopping, so the head coasts out past it. */
+    --lilt-skeleton-run: cubic-bezier(0.4, 0, 0.3, 1);
+    opacity: var(--lilt-skeleton-opacity, 1);
+  }
+
+  .lilt-chart__loading-svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+  }
+
+  .lilt-chart__skeleton-grid line {
+    stroke: var(--lilt-grid);
+    stroke-width: 1;
+    opacity: 0.72;
+    vector-effect: non-scaling-stroke;
+  }
+
+  .lilt-chart__skeleton-area {
+    fill: var(--lilt-skeleton);
+    fill-opacity: var(--lilt-skeleton-area-opacity);
+  }
+
+  .lilt-chart__skeleton-contour {
+    fill: none;
+    stroke: var(--lilt-skeleton);
+    stroke-width: 2.5;
+    stroke-opacity: 0.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    vector-effect: non-scaling-stroke;
+  }
+
+  .lilt-chart__skeleton-axis-bars rect {
+    fill: var(--lilt-skeleton);
+    fill-opacity: 0.42;
+  }
+
+  .lilt-chart__skeleton-sheen {
+    pointer-events: none;
+    animation: lilt-chart-sheen 2.1s linear infinite;
+  }
+  @keyframes lilt-chart-sheen {
+    0% {
+      transform: translateX(var(--lilt-sheen-start));
+    }
+    85.714%,
+    100% {
+      transform: translateX(var(--lilt-sheen-end));
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .lilt-chart__skeleton-sheen {
+      display: none;
+      animation: none;
+    }
+  }
+
+  .lilt-chart__updating {
+    position: absolute;
+    z-index: 2;
+    left: 50%;
+    bottom: 7px;
+    display: inline-flex;
+    min-height: 22px;
+    align-items: center;
+    gap: 6px;
+    padding: 3px 8px;
+    border: 1px solid color-mix(in srgb, var(--lilt-border) 88%, transparent);
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--lilt-surface) 94%, transparent);
+    color: var(--lilt-muted);
+    font-size: 12px;
+    line-height: 16px;
+    transform: translateX(-50%);
+  }
+
+  .lilt-chart__status {
+    position: absolute;
+    z-index: 5;
+    top: 50%;
+    left: 50%;
+    display: inline-flex;
+    min-width: min(240px, calc(100% - 32px));
+    flex-direction: column;
+    gap: 8px;
+    align-items: center;
+    padding: 12px 14px;
+    border: 1px solid var(--lilt-border);
+    border-radius: 10px;
+    background: var(--lilt-surface);
+    color: var(--lilt-muted);
+    text-align: center;
+    transform: translate(-50%, -50%);
+  }
+
+  .lilt-chart__status--error,
+  .lilt-chart__status--refresh-error {
+    border-color: color-mix(in srgb, var(--lilt-series-3) 55%, var(--lilt-border));
+  }
+
+  .lilt-chart__status button {
+    min-height: 30px;
+    padding: 4px 10px;
+    border: 1px solid var(--lilt-border);
+    border-radius: 7px;
+    background: var(--lilt-surface);
+    color: var(--lilt-text);
+    font: inherit;
+    cursor: pointer;
+  }
+
+  /* Loading shimmer. SVG skeletons sweep a highlight through a mask of their own shapes (see
+     SkeletonSheen); HTML placeholders run the same sweep as a moving gradient, on the same
+     2.1s beat, so every card's loading state reads as one system. */
+  .lilt-stat__ring-track[data-loading],
+  .lilt-progress__track[data-loading] {
+    stroke: var(--lilt-skeleton-paint, color-mix(in srgb, var(--lilt-skeleton) 26%, transparent));
+  }
+  .lilt-activity__skeleton-dot {
+    fill: var(--lilt-skeleton-paint, color-mix(in srgb, var(--lilt-skeleton) 34%, transparent));
+  }
+  .lilt-card__skeleton,
+  .lilt-list__skeleton span,
+  .lilt-radial-card__skeleton-row span,
+  .lilt-heatmap-card__skeleton {
+    background-image: linear-gradient(
+      100deg,
+      transparent 35%,
+      color-mix(in srgb, var(--lilt-skeleton-sheen) 42%, transparent) 50%,
+      transparent 65%
+    );
+    background-repeat: no-repeat;
+    background-size: 300% 100%;
+    animation: lilt-skeleton-shine 2.1s linear infinite;
+    animation-delay: var(--lilt-shine-delay, 0s);
+  }
+  @keyframes lilt-skeleton-shine {
+    0% {
+      background-position: 100% 0;
+    }
+    85.714%,
+    100% {
+      background-position: 0% 0;
+    }
+  }
+  /* With draw or breathe, the headline and tile placeholders drop the sweep and pulse softly,
+     so the plot's own motion leads. */
+  @media (prefers-reduced-motion: no-preference) {
+    [data-lilt-chart]:not([data-motion='none']):has(
+        :is(.lilt-chart__loading, .lilt-skeleton)[data-style='draw'],
+        :is(.lilt-chart__loading, .lilt-skeleton)[data-style='breathe']
+      )
+      :is(.lilt-card__skeleton, .lilt-list__skeleton span, .lilt-radial-card__skeleton-row span) {
+      background-image: none;
+      animation: lilt-skeleton-ripple 2.8s ease-in-out infinite both;
+    }
+  }
+  [data-lilt-chart][data-motion='none']
+    :is(
+      .lilt-card__skeleton,
+      .lilt-list__skeleton span,
+      .lilt-radial-card__skeleton-row span,
+      .lilt-heatmap-card__skeleton
+    ) {
+    animation: none;
+    background-image: none;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .lilt-card__skeleton,
+    .lilt-list__skeleton span,
+    .lilt-radial-card__skeleton-row span,
+    .lilt-heatmap-card__skeleton {
+      animation: none;
+      background-image: none;
+    }
+  }
+}

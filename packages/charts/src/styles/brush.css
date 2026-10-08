@@ -1,0 +1,251 @@
+@layer lilt {
+  .lilt-chart__brush-host {
+    margin: 12px 0 4px;
+  }
+  .lilt-chart__brush {
+    display: grid;
+    gap: 7px;
+    color: var(--lilt-muted);
+    font-size: 11px;
+  }
+  .lilt-chart__brush-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    min-height: 28px;
+  }
+  .lilt-chart__brush-title {
+    color: var(--lilt-text);
+    font-weight: 600;
+  }
+  .lilt-chart__brush-meta {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 0;
+  }
+  .lilt-chart__brush-summary {
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+  }
+  .lilt-chart__brush-reset {
+    min-height: 28px;
+    padding: 3px 6px;
+    border: 0;
+    border-radius: 4px;
+    background: transparent;
+    color: var(--lilt-series-1);
+    font: inherit;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background var(--lilt-duration-quick) ease;
+  }
+  .lilt-chart__brush-reset:hover {
+    background: color-mix(in srgb, var(--lilt-series-1) 9%, transparent);
+  }
+  .lilt-chart__brush-reset:focus-visible {
+    outline: 2px solid var(--lilt-focus);
+    outline-offset: 2px;
+  }
+  .lilt-chart__brush-track {
+    position: relative;
+    height: var(--lilt-brush-height, 78px);
+    border: 1px solid var(--lilt-border);
+    border-radius: var(--lilt-brush-radius, 6px);
+    background: var(
+      --lilt-brush-background,
+      color-mix(in srgb, var(--lilt-border) 6%, var(--lilt-surface))
+    );
+    cursor: crosshair;
+    touch-action: pan-y;
+    overflow: hidden;
+    transition: border-color var(--lilt-duration-quick) ease;
+  }
+  .lilt-chart__brush-track::before {
+    position: absolute;
+    inset: 0 0 calc(var(--lilt-brush-handle-size, 20px) - 2px);
+    background-image: radial-gradient(
+      circle,
+      var(--lilt-brush-grid-color, color-mix(in srgb, var(--lilt-grid) 85%, var(--lilt-muted)))
+        var(--lilt-brush-dot-radius, 0.7px),
+      transparent var(--lilt-brush-dot-stop, 1px)
+    );
+    background-size: var(--lilt-brush-dot-spacing, 9px) var(--lilt-brush-dot-spacing, 9px);
+    content: '';
+    opacity: var(--lilt-brush-grid-opacity, 0.58);
+    pointer-events: none;
+  }
+  .lilt-chart__brush-track:hover,
+  .lilt-chart__brush-track:focus-within {
+    border-color: color-mix(in srgb, var(--lilt-series-1) 43%, var(--lilt-border));
+  }
+  .lilt-chart__brush-rail {
+    position: absolute;
+    inset: 0 13px;
+  }
+  .lilt-chart__brush-rail::after {
+    position: absolute;
+    right: 0;
+    bottom: calc(var(--lilt-brush-handle-size, 20px) / 2 - var(--lilt-brush-rail-height, 4px) / 2);
+    left: 0;
+    height: var(--lilt-brush-rail-height, 4px);
+    border-radius: 99px;
+    background: var(
+      --lilt-brush-rail-color,
+      color-mix(in srgb, var(--lilt-muted) 22%, var(--lilt-surface))
+    );
+    content: '';
+    pointer-events: none;
+  }
+  .lilt-chart__brush-rail svg {
+    position: absolute;
+    inset: 0 0 auto;
+    display: block;
+    width: 100%;
+    height: 56px;
+    pointer-events: none;
+  }
+  .lilt-chart__brush-area {
+    fill: var(--lilt-muted);
+    opacity: 0.055;
+  }
+  .lilt-chart__brush-area--active {
+    opacity: 1;
+  }
+  .lilt-chart__brush-line path {
+    fill: none;
+    stroke: var(--lilt-muted);
+    stroke-width: 1.4;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    opacity: 0.68;
+    vector-effect: non-scaling-stroke;
+  }
+  .lilt-chart__brush-line--active path {
+    stroke: var(--lilt-series-1);
+    stroke-width: 2;
+    opacity: 1;
+  }
+  .lilt-chart__brush-line circle {
+    fill: var(--lilt-muted);
+    opacity: 0.68;
+  }
+  .lilt-chart__brush-line--active circle {
+    fill: var(--lilt-series-1);
+    opacity: 1;
+  }
+  .lilt-chart__brush-bars rect {
+    fill: var(--lilt-muted);
+    opacity: 0.55;
+  }
+  .lilt-chart__brush-bars--active rect {
+    fill: var(--lilt-series-1);
+    opacity: 0.95;
+  }
+  .lilt-chart__brush-selection {
+    position: absolute;
+    top: 0;
+    bottom: calc(var(--lilt-brush-handle-size, 20px) - 2px);
+    background: linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--lilt-series-1) 3%, transparent),
+      color-mix(in srgb, var(--lilt-series-1) 9%, transparent)
+    );
+    cursor: grab;
+    filter: blur(var(--lilt-brush-selection-blur, 8px));
+  }
+  .lilt-chart__brush-track[data-dragging] .lilt-chart__brush-selection {
+    cursor: grabbing;
+  }
+  .lilt-chart__brush-range-track {
+    position: absolute;
+    z-index: 1;
+    bottom: calc(var(--lilt-brush-handle-size, 20px) / 2 - var(--lilt-brush-rail-height, 4px) / 2);
+    height: var(--lilt-brush-rail-height, 4px);
+    border-radius: 99px;
+    background: var(--lilt-series-1);
+    box-shadow: 0 0 10px color-mix(in srgb, var(--lilt-series-1) 28%, transparent);
+    pointer-events: none;
+  }
+  .lilt-chart__brush-handle {
+    position: absolute;
+    z-index: 2;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--lilt-brush-handle-size, 20px);
+    height: var(--lilt-brush-handle-size, 20px);
+    border: var(--lilt-brush-handle-border, 2px solid var(--lilt-series-1));
+    border-radius: 50%;
+    background: var(--lilt-brush-handle-background, var(--lilt-surface));
+    box-shadow: 0 1px 5px rgb(0 0 0 / 15%);
+    cursor: ew-resize;
+    touch-action: pan-y;
+    transform: translateX(-50%);
+    transition:
+      border-color var(--lilt-duration-quick) ease,
+      box-shadow var(--lilt-duration-quick) ease,
+      transform var(--lilt-duration-quick) var(--lilt-ease-reveal);
+  }
+  .lilt-chart__brush-handle:hover,
+  .lilt-chart__brush-handle:focus-visible {
+    border-color: var(--lilt-series-1);
+    box-shadow:
+      0 2px 8px rgb(0 0 0 / 16%),
+      0 0 0 3px color-mix(in srgb, var(--lilt-series-1) 12%, transparent);
+    transform: translateX(-50%) scale(1.08);
+  }
+  .lilt-chart__brush-handle:focus-visible {
+    outline: 2px solid var(--lilt-focus);
+    outline-offset: 3px;
+  }
+  .lilt-chart__brush-tooltip-anchor {
+    position: absolute;
+    bottom: calc(var(--lilt-brush-handle-size, 20px) + 8px);
+    left: 50%;
+    display: block;
+    white-space: nowrap;
+    transform: translateX(-50%);
+    pointer-events: none;
+  }
+  .lilt-chart__brush-handle[data-edge='start'] .lilt-chart__brush-tooltip-anchor {
+    left: 0;
+    transform: none;
+  }
+  .lilt-chart__brush-handle[data-edge='end'] .lilt-chart__brush-tooltip-anchor {
+    right: 0;
+    left: auto;
+    transform: none;
+  }
+  .lilt-chart__brush-tooltip {
+    display: block;
+    padding: 4px 7px;
+    border: 1px solid var(--lilt-border);
+    border-radius: 5px;
+    background: var(--lilt-surface);
+    box-shadow: 0 3px 12px rgb(0 0 0 / 12%);
+    color: var(--lilt-text);
+    font-size: 10px;
+    font-variant-numeric: tabular-nums;
+    line-height: 14px;
+  }
+  .lilt-chart__brush-endpoints {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    padding-inline: 13px;
+    color: var(--lilt-muted);
+    font-size: 10px;
+    font-variant-numeric: tabular-nums;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .lilt-chart__brush-track,
+    .lilt-chart__brush-reset,
+    .lilt-chart__brush-handle,
+    .lilt-chart__brush-selection {
+      transition: none;
+    }
+  }
+}

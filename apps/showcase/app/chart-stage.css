@@ -1,0 +1,615 @@
+/* The chart is the stage; its neighbouring variants replace the permanent inspector column. */
+.lilt-shell .lilt-main.lilt-docs[data-carousel] {
+  display: block;
+  width: 100%;
+  max-width: none;
+}
+.lilt-docs[data-carousel] .lilt-docs__main {
+  min-width: 0;
+}
+.lilt-docs[data-carousel] .lilt-docs__section {
+  max-width: 1120px;
+  margin-inline: auto;
+}
+.lilt-docs[data-carousel] .lilt-stage .lilt-docs-example__head,
+.lilt-docs[data-carousel] .lilt-stage .lilt-docs-example__subject {
+  width: 100%;
+}
+.lilt-docs[data-carousel] .lilt-stage .lilt-docs-example__subject {
+  animation: none;
+}
+.lilt-docs[data-carousel] .lilt-stage .lilt-docs-example__code {
+  width: min(1120px, 100%);
+  margin-inline: auto;
+}
+.lilt-stage__tune-trigger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 0 19px;
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  background: var(--surface);
+  color: var(--foreground);
+  font: inherit;
+  font-size: 13px;
+  cursor: pointer;
+  transition: background 160ms ease;
+}
+.lilt-stage__tune-trigger:hover {
+  background: var(--hover);
+}
+/* Props speaks the chart style's language: small spaced labels, the prop beside its track, no
+   boxed panel, and a hairline foot with the way to what every chart shares. */
+.lilt-stage__tune-popup {
+  --lilt-ui-surface: #fff;
+  --lilt-ui-foreground: #37352f;
+  --lilt-ui-muted: #787771;
+  --lilt-ui-border: #e7e7e4;
+  --lilt-ui-highlight-bg: rgb(0 0 0 / 0.05);
+  --lilt-ui-shadow: 0 12px 50px rgb(0 0 0 / 0.12);
+  color-scheme: light;
+  display: flex;
+  flex-direction: column;
+  width: min(320px, calc(100vw - 24px));
+  max-width: var(--available-width);
+  max-height: min(520px, 80svh, var(--available-height));
+  padding: 0;
+  border-radius: 20px;
+}
+.dark .lilt-stage__tune-popup {
+  --lilt-ui-surface: #171717;
+  --lilt-ui-foreground: #d9d9d8;
+  --lilt-ui-muted: #9b9b98;
+  --lilt-ui-border: rgb(255 255 255 / 0.08);
+  --lilt-ui-highlight-bg: rgb(255 255 255 / 0.08);
+  color-scheme: dark;
+}
+.lilt-stage__tune-heading {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 4px;
+  padding: 14px 12px 4px 18px;
+}
+.lilt-stage__tune-title {
+  display: grid;
+  gap: 5px;
+  min-width: 0;
+  margin-right: auto;
+}
+.lilt-stage__tune-heading .lilt-ui-popover-title {
+  overflow: hidden;
+  margin: 0;
+  font-size: 13.5px;
+  font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.lilt-stage__tune-popup .lilt-notch__close {
+  font-size: 0;
+}
+.lilt-stage__tune-scroll {
+  min-height: 0;
+  flex: 1;
+  overflow: hidden;
+}
+.lilt-stage__tune {
+  display: grid;
+  gap: 10px;
+  padding: 12px 18px 16px;
+}
+.lilt-stage__tune-field {
+  display: grid;
+  grid-template-columns: 64px minmax(0, 1fr);
+  align-items: center;
+  gap: 12px;
+  min-height: 36px;
+}
+.lilt-stage__tune-popup .lilt-tune__prop {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+  padding: 0;
+  background: none;
+  color: var(--lilt-ui-muted);
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 11.5px;
+}
+/* The options size to their words, as in the chart style, so the track hugs them. */
+.lilt-stage__tune-field .lilt-seg {
+  display: flex;
+  width: fit-content;
+  max-width: 100%;
+  flex-wrap: wrap;
+}
+.lilt-stage__tune-field .lilt-seg__option {
+  flex: 0 0 auto;
+  padding: 0 11px;
+}
+.lilt-stage__tune-field .lilt-switch {
+  justify-self: start;
+}
+.lilt-stage__tune-popup .lilt-tune__dot {
+  width: 5px;
+  height: 5px;
+  box-shadow: none;
+}
+.lilt-stage__props-foot {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 12px;
+  margin: 0 12px;
+  padding: 12px 6px 14px;
+  border-top: 1px solid color-mix(in srgb, var(--lilt-ui-foreground) 8%, transparent);
+}
+.lilt-stage__props-foot p {
+  margin: 0;
+  color: var(--lilt-ui-muted);
+  font-size: 11.5px;
+  line-height: 1.45;
+  text-wrap: pretty;
+}
+.lilt-stage__props-foot .lilt-notch__reset {
+  flex-shrink: 0;
+}
+@media (max-width: 640px) {
+  .lilt-stage__tune-popup :is(.lilt-notch__reset, .lilt-notch__close) {
+    height: 44px;
+  }
+  .lilt-stage__tune-popup .lilt-notch__close {
+    width: 44px;
+  }
+}
+@media (max-width: 640px) {
+  .lilt-docs[data-carousel] .lilt-stage .lilt-docs-example__head {
+    gap: 8px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .lilt-stage__tune-trigger {
+    transition: none;
+  }
+}
+
+.lilt-stage__tune-scroll .lilt-scroll-area__viewport {
+  max-height: min(400px, calc(80svh - 120px), calc(var(--available-height) - 120px));
+}
+
+/* Keep browsing and editing together on the chart's toolbar. */
+.lilt-docs[data-carousel] .lilt-stage .lilt-docs-example__head {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+.lilt-docs[data-carousel] .lilt-docs-example__head > .lilt-docs-segmented {
+  justify-self: start;
+}
+.lilt-docs[data-carousel] .lilt-stage__tools {
+  justify-self: end;
+  margin-left: 0;
+  gap: 8px;
+}
+.lilt-docs[data-carousel]
+  .lilt-card-carousel__card:not([data-active])
+  .lilt-card-carousel__preview {
+  opacity: 0.7;
+  /* A neighbour reads as colour and shape, not as a chart: a wide radius melts spiky series,
+     grids and bar edges into one haze. */
+  filter: blur(16px) saturate(0.8);
+}
+/* Dither after the neighbours' blur and opacity; the card in focus sits above this layer. */
+.lilt-docs[data-carousel] .lilt-card-carousel:not([data-single]) .lilt-card-carousel__stage {
+  position: relative;
+}
+.lilt-docs[data-carousel] .lilt-card-carousel:not([data-single]) .lilt-card-carousel__stage::after {
+  content: '';
+  position: absolute;
+  z-index: 2;
+  inset: 0;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  opacity: 0.05;
+  mix-blend-mode: overlay;
+  -webkit-mask-image: linear-gradient(transparent, #000 20%, #000 80%, transparent);
+  mask-image: linear-gradient(transparent, #000 20%, #000 80%, transparent);
+}
+/* On dark surfaces the old low-contrast, translucent turbulence rounded back into the same
+   few grey levels as the haze. Map noise into alpha instead: black specks vary the final
+   composite by a few levels without lifting the background or adding coloured grain.
+   Normal compositing also avoids relying on blending through the stage's isolated mask. */
+.dark
+  .lilt-docs[data-carousel]
+  .lilt-card-carousel:not([data-single])
+  .lilt-card-carousel__stage::after {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 4 0 0 0 -1.5'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  opacity: 0.25;
+  mix-blend-mode: normal;
+}
+.lilt-docs[data-carousel]
+  .lilt-card-carousel__card:not([data-active])
+  .lilt-card-carousel__preview[data-pending] {
+  opacity: 0;
+}
+@media (max-width: 960px) {
+  .lilt-docs[data-carousel] .lilt-stage .lilt-docs-example__head {
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 12px 8px;
+  }
+  .lilt-docs[data-carousel] .lilt-stage__tools {
+    grid-column: 2;
+    grid-row: 1;
+  }
+}
+@media (max-width: 480px) {
+  .lilt-docs[data-carousel] .lilt-stage__tools {
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 4px;
+  }
+  .lilt-docs[data-carousel] .lilt-stage__tune-trigger {
+    padding-inline: 12px;
+  }
+}
+
+/* TabsList has a highlight wrapper; size that grid item as well as the pill. */
+.lilt-docs[data-carousel] .lilt-stage .lilt-docs-example__head > .lilt-ui-highlight-scope {
+  justify-self: start;
+  width: max-content;
+  max-width: 100%;
+  min-width: 0;
+}
+.lilt-docs[data-carousel] .lilt-stage .lilt-docs-segmented {
+  width: max-content;
+  flex: none;
+}
+.lilt-docs[data-carousel] .lilt-card-carousel__stage {
+  padding-block: 12px 28px;
+}
+.lilt-docs[data-carousel] .lilt-card-carousel__stage[data-fitted] {
+  grid-template-rows: minmax(0, 1fr);
+}
+@media (max-width: 960px), (max-height: 600px) {
+  .lilt-docs[data-carousel] .lilt-card-carousel[data-fit-viewport] {
+    display: flex;
+    flex-direction: column;
+  }
+  .lilt-docs[data-carousel] .lilt-card-carousel[data-fit-viewport] .lilt-card-carousel__footer {
+    order: -1;
+    padding-top: 8px;
+    padding-bottom: 0;
+  }
+}
+
+/* The stage's tab: a quiet, slightly recessed shelf of the page's own tone, tucked behind the
+   card's top edge. One segmented style throughout (a raised disc for the choice), ghost tools,
+   and Copy as the one filled action. */
+.lilt-docs[data-carousel]
+  .lilt-stage
+  .lilt-docs-example[data-badge-head]
+  > .lilt-docs-example__head {
+  --lilt-tab-ink: var(--foreground);
+  --lilt-tab-muted: var(--muted-foreground);
+  --lilt-tab-wash: color-mix(in srgb, var(--foreground) 5%, transparent);
+  display: block;
+  width: max(0px, calc(var(--lilt-stage-card-width, min(68vw, 1040px)) - 40px));
+  /* Always the card's own width less its inset; the controls go compact rather than overhang. */
+  min-width: min(calc(100% - 40px), 300px);
+  max-width: calc(100% - 40px);
+  min-height: 0;
+  margin: 0 auto -16px;
+  padding: 8px 8px 24px;
+  border: 0;
+  border-radius: 22px 22px 0 0;
+  background: color-mix(in srgb, var(--foreground) 4%, var(--background));
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--foreground) 7%, transparent);
+  color: var(--lilt-tab-ink);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+  container-type: inline-size;
+}
+/* Over an outline or ghost card there is no body to tuck behind, so the tab stands apart as a
+   toolbar: the card's width, rounded all round, with a clear gap above the card. */
+.lilt-docs[data-carousel]
+  .lilt-stage[data-head='toolbar']
+  .lilt-docs-example[data-badge-head]
+  > .lilt-docs-example__head {
+  width: var(--lilt-stage-card-width, min(68vw, 1040px));
+  max-width: 100%;
+  margin-bottom: 14px;
+  padding: 6px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--foreground) 3%, var(--background));
+  box-shadow:
+    inset 0 0 0 1px color-mix(in srgb, var(--foreground) 9%, transparent),
+    0 1px 2px rgb(0 0 0 / 0.04);
+}
+/* Once its controls wrap onto more than one line, a pill would pinch them; round it like a card. */
+@media (max-width: 640px) {
+  .lilt-docs[data-carousel]
+    .lilt-stage[data-head='toolbar']
+    .lilt-docs-example[data-badge-head]
+    > .lilt-docs-example__head {
+    border-radius: 24px;
+  }
+}
+.lilt-docs[data-carousel]
+  .lilt-stage[data-head='toolbar']
+  .lilt-docs-example[data-badge-head]
+  .lilt-card-carousel__stage {
+  padding-top: 2px;
+}
+.lilt-stage__badge-controls {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: 6px;
+  font-size: 12.5px;
+}
+.lilt-stage__badge-controls > .lilt-ui-highlight-scope {
+  width: max-content;
+  justify-self: start;
+}
+/* Preview and Code share the rail's look: a faint track, a raised disc for the choice. */
+.lilt-docs[data-carousel] .lilt-stage__badge-controls .lilt-docs-segmented {
+  display: flex;
+  /* Hug its two tabs, whatever width the tab's grid gives this column. */
+  justify-self: start;
+  width: auto;
+  min-width: 0;
+  gap: 2px;
+  padding: 3px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--lilt-tab-wash);
+  box-shadow: none;
+  backdrop-filter: none;
+}
+.lilt-docs[data-carousel] .lilt-stage__badge-controls .lilt-docs-segmented__tab {
+  height: 30px;
+  min-height: 30px;
+  gap: 6px;
+  padding-inline: 14px;
+  border-radius: 999px;
+  color: var(--lilt-tab-muted);
+  font-size: 12.5px;
+  font-weight: 550;
+  transition: color 180ms ease;
+}
+.lilt-docs[data-carousel] .lilt-stage__badge-controls .lilt-docs-segmented__tab:hover {
+  color: var(--lilt-tab-ink);
+}
+.lilt-docs[data-carousel] .lilt-stage__badge-controls .lilt-docs-segmented__tab[data-selected],
+.lilt-docs[data-carousel]
+  .lilt-stage__badge-controls
+  .lilt-docs-segmented__tab[aria-selected='true'] {
+  color: var(--lilt-tab-ink);
+}
+.lilt-stage__badge-controls .lilt-docs-segmented__thumb {
+  inset: 0;
+  height: auto;
+  border-radius: 999px;
+  background: var(--surface);
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--foreground) 6%, transparent),
+    0 1px 2px color-mix(in srgb, var(--foreground) 10%, transparent);
+}
+.dark .lilt-stage__badge-controls .lilt-docs-segmented__thumb {
+  background: color-mix(in srgb, var(--foreground) 12%, var(--background));
+  box-shadow:
+    0 0 0 1px rgb(255 255 255 / 0.06),
+    inset 0 1px 0 rgb(255 255 255 / 0.05);
+}
+
+.lilt-docs[data-carousel] .lilt-stage__badge-controls .lilt-stage__tools {
+  grid-area: auto;
+  justify-self: end;
+  gap: 2px;
+}
+.lilt-stage__badge-controls .lilt-stage__tune-trigger {
+  display: inline-flex;
+  min-height: 34px;
+  align-items: center;
+  gap: 6px;
+  padding-inline: 10px 12px;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--lilt-tab-muted);
+  font-size: 12.5px;
+  font-weight: 550;
+  transition:
+    background 160ms ease,
+    color 160ms ease;
+}
+.lilt-stage__badge-controls .lilt-stage__tune-trigger:hover,
+.lilt-stage__badge-controls .lilt-stage__tune-trigger[data-popup-open] {
+  background: var(--lilt-tab-wash);
+  color: var(--lilt-tab-ink);
+}
+.lilt-stage__badge-controls .lilt-stage__tune-dot {
+  width: 6px;
+  height: 6px;
+  margin-left: -1px;
+  align-self: flex-start;
+  margin-top: 9px;
+  border-radius: 999px;
+  background: var(--brand-primary);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--brand-primary) 16%, transparent);
+}
+.lilt-stage__preview-tools {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+.lilt-stage__badge-controls .lilt-notch__tool {
+  width: 34px;
+  height: 34px;
+  border-radius: 999px;
+  color: var(--lilt-tab-muted);
+}
+/* Hover and the pressed state share one small dot behind the icon, whatever the target's size. */
+.lilt-stage__badge-controls .lilt-notch__tool:not(:disabled):hover {
+  background: radial-gradient(circle, var(--lilt-tab-wash) 13.5px, transparent 14px);
+  color: var(--lilt-tab-ink);
+}
+.lilt-stage__badge-controls .lilt-notch__tool[aria-pressed='true'],
+.lilt-stage__badge-controls .lilt-notch__tool[aria-pressed='true']:not(:disabled):hover {
+  /* A small tinted dot behind the icon, whatever size the touch target is. */
+  background: radial-gradient(
+    circle,
+    color-mix(in srgb, var(--brand-primary) 18%, transparent) 13.5px,
+    transparent 14px
+  );
+  color: var(--brand-primary);
+}
+/* Copy: the tab's one filled action, a light pill with its menu split off. */
+.lilt-stage__badge-controls .lilt-split {
+  height: 30px;
+  margin-left: 6px;
+  overflow: hidden;
+  border: 0;
+  border-radius: 999px;
+  background: var(--foreground);
+  box-shadow: 0 1px 2px color-mix(in srgb, var(--foreground) 18%, transparent);
+}
+.lilt-stage__badge-controls .lilt-split__main,
+.lilt-stage__badge-controls .lilt-split__more {
+  height: 30px;
+  background: transparent;
+  color: var(--background);
+  font-size: 12.5px;
+  font-weight: 600;
+  transition: background 160ms ease;
+}
+.lilt-stage__badge-controls .lilt-split__main {
+  gap: 6px;
+  padding-inline: 14px 12px;
+}
+.lilt-stage__badge-controls .lilt-split__more {
+  width: 30px;
+  border-left: 1px solid color-mix(in srgb, var(--background) 18%, transparent);
+}
+.lilt-stage__badge-controls .lilt-split__main:hover,
+.lilt-stage__badge-controls .lilt-split__more:hover,
+.lilt-stage__badge-controls .lilt-split__more[data-popup-open] {
+  background: color-mix(in srgb, var(--background) 12%, transparent);
+}
+.lilt-stage__badge-controls :is(button, [role='tab']):focus-visible {
+  outline: 2px solid var(--brand-primary);
+  outline-offset: 2px;
+}
+.lilt-docs-example[data-badge-head] .lilt-docs-example__body {
+  position: relative;
+  z-index: 1;
+}
+.lilt-docs[data-carousel] .lilt-docs-example[data-badge-head] .lilt-card-carousel__stage {
+  padding-top: 0;
+  padding-bottom: 40px;
+}
+.lilt-docs-example[data-badge-head] .lilt-card-carousel__card {
+  align-self: start;
+  transform-origin: top center;
+}
+.lilt-docs[data-carousel] .lilt-docs-example[data-badge-head] .lilt-docs-example__code {
+  width: min(var(--lilt-stage-card-width, 1040px), 100%);
+  margin: 0 auto 40px;
+}
+@container (max-width: 740px) {
+  .lilt-stage__badge-controls {
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 6px;
+  }
+  .lilt-docs[data-carousel] .lilt-stage__badge-controls .lilt-stage__tools {
+    grid-column: 2;
+    grid-row: 1;
+  }
+  /* Touch gets full-size targets; a mouse keeps the wide tab's sizes. */
+  @media (pointer: coarse) {
+    .lilt-stage__badge-controls .lilt-docs-segmented__tab {
+      min-height: 44px;
+    }
+    .lilt-stage__badge-controls .lilt-notch__tool {
+      width: 44px;
+      height: 44px;
+    }
+    .lilt-stage__badge-controls .lilt-split {
+      height: 34px;
+    }
+    .lilt-stage__badge-controls .lilt-split__main,
+    .lilt-stage__badge-controls .lilt-split__more {
+      min-height: 34px;
+      height: 34px;
+    }
+    .lilt-stage__badge-controls .lilt-split__more {
+      width: 36px;
+    }
+    .lilt-stage__badge-controls .lilt-stage__tune-trigger {
+      min-height: 44px;
+    }
+  }
+}
+/* Once the labels no longer fit (a narrow card or a phone), the tab stays one row: Preview and
+   Code, then Props and Copy as icons, each keeping its accessible name. */
+@container (max-width: 480px) {
+  .lilt-stage__badge-controls {
+    gap: 4px;
+  }
+  .lilt-docs[data-carousel] .lilt-stage__badge-controls .lilt-docs-segmented__tab {
+    padding-inline: 12px;
+  }
+  .lilt-stage__badge-controls .lilt-stage__tune-label,
+  .lilt-stage__badge-controls .lilt-split__main > span:not(:first-child) {
+    display: none;
+  }
+  .lilt-stage__badge-controls .lilt-stage__tune-trigger {
+    position: relative;
+    width: 34px;
+    padding: 0;
+    justify-content: center;
+  }
+  .lilt-stage__badge-controls .lilt-stage__tune-trigger:hover,
+  .lilt-stage__badge-controls .lilt-stage__tune-trigger[data-popup-open] {
+    background: radial-gradient(circle, var(--lilt-tab-wash) 13.5px, transparent 14px);
+  }
+  @media (pointer: coarse) {
+    .lilt-stage__badge-controls .lilt-stage__tune-trigger {
+      width: 44px;
+    }
+  }
+  .lilt-stage__badge-controls .lilt-stage__tune-dot {
+    position: absolute;
+    margin: 0;
+    transform: translate(9px, -9px);
+  }
+  .lilt-stage__badge-controls .lilt-split {
+    margin-left: 2px;
+  }
+  .lilt-stage__badge-controls .lilt-split__main {
+    width: 36px;
+    padding: 0;
+    justify-content: center;
+  }
+  .lilt-stage__badge-controls .lilt-split__more {
+    width: 32px;
+  }
+}
+@media (max-width: 960px), (max-height: 600px) {
+  .lilt-docs[data-carousel]
+    .lilt-docs-example[data-badge-head]
+    .lilt-card-carousel[data-fit-viewport]
+    .lilt-card-carousel__footer {
+    order: 0;
+  }
+}
+
+/* A chart with one situation shows its card alone, with no way to page. */
+.lilt-card-carousel[data-single] :is(.lilt-card-carousel__arrow, .lilt-card-carousel__dots) {
+  visibility: hidden;
+}

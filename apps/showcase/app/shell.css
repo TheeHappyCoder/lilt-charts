@@ -1,0 +1,137 @@
+/* One sheet on the canvas. The notch (tuner.css) hangs from its top edge and continues its stroke;
+   page content and chart previews keep their own presentation. */
+/* Keep the canvas continuous outside the bounded workspace on large monitors. */
+body:has(.lilt-shell) {
+  --lilt-shell-outside: color-mix(in srgb, var(--surface) 96%, var(--foreground));
+  background: var(--lilt-shell-outside);
+}
+.dark body:has(.lilt-shell) {
+  --lilt-shell-outside: color-mix(in srgb, var(--surface) 85%, var(--background));
+}
+.lilt-shell {
+  --lilt-shell-left: 224px;
+  --lilt-shell-right: 16px;
+  /* The canvas carries the lifted tone; the sheet keeps the page background content was drawn on. */
+  --lilt-shell-surface: var(--background);
+  --lilt-shell-stroke: color-mix(in srgb, var(--foreground) 13%, var(--background));
+  --lilt-shell-lift: rgb(28 25 20 / 0.16);
+  --lilt-shell-sheen: rgb(255 255 255 / 0.7);
+  --lilt-shell-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  position: relative;
+  /* One readable chart column and its two rails, centred together instead of drifting apart. */
+  width: min(1680px, 100%);
+  margin-inline: auto;
+  padding: 0;
+  background: var(--lilt-shell-outside);
+  isolation: isolate;
+}
+.dark .lilt-shell {
+  --lilt-shell-lift: rgb(0 0 0 / 0.55);
+  --lilt-shell-sheen: rgb(255 255 255 / 0.035);
+}
+/* The notch stroke sits on y = 8.5, the centre of this 1px border. */
+.lilt-shell__sheet {
+  position: absolute;
+  z-index: -1;
+  inset: 8px var(--lilt-shell-right) 12px var(--lilt-shell-left);
+  border: 1px solid var(--lilt-shell-stroke);
+  border-radius: 20px;
+  background:
+    linear-gradient(to bottom, var(--lilt-shell-sheen), transparent 280px),
+    var(--lilt-shell-surface);
+  pointer-events: none;
+  transition: right 420ms var(--lilt-shell-ease);
+}
+.lilt-shell__header {
+  position: relative;
+  z-index: 45;
+  height: 64px;
+  pointer-events: none;
+}
+.lilt-shell__brand {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  width: var(--lilt-shell-left);
+  height: 52px;
+  align-items: center;
+  padding-left: 26px;
+  pointer-events: auto;
+}
+.lilt-shell__header .lilt-shell__brand-logo {
+  width: 92px;
+}
+
+/* The scroll area reaches the sheet's top edge (y = 9) and is tucked back by the same amount, so
+   pages start where they did. Scrolled content fades at the sheet's edge and passes behind the
+   opaque notch, with no empty band above it. */
+.lilt-shell__main-frame {
+  --lilt-shell-tuck: 55px;
+  z-index: 1;
+  height: calc(100svh - 76px + var(--lilt-shell-tuck));
+  margin-top: calc(var(--lilt-shell-tuck) * -1);
+  margin-left: var(--lilt-shell-left);
+}
+/* The scroll area runs to the window's edge, behind the rail, but its scrollbar belongs to the
+   frame: just inside the frame's right edge, clear of its rounded corners. */
+.lilt-shell__scroll > .lilt-scroll-area__scrollbar[data-orientation='vertical'] {
+  margin-block: 16px;
+  margin-inline-end: calc(var(--lilt-shell-right) + 2px);
+}
+.lilt-shell__content {
+  padding: calc(8px + var(--lilt-shell-tuck)) 40px 40px 24px;
+  background: transparent;
+}
+.lilt-shell__main-frame .lilt-shell__content {
+  padding-bottom: 40px;
+}
+/* These selectors position existing page regions; they do not restyle page content. */
+/* Docs pages begin at the frame's top edge, with the header below the notch. Sticky parts keep
+   their place below the tuck. */
+.lilt-shell .lilt-main.lilt-docs {
+  --lilt-docs-sticky: calc(76px + var(--lilt-shell-tuck));
+  margin-top: calc((var(--lilt-shell-tuck) + 8px) * -1);
+  padding-top: 0;
+}
+.lilt-shell .lilt-docs__header {
+  min-height: 0;
+  align-items: start;
+  padding-top: var(--lilt-shell-tuck);
+}
+/* Sticky toolbars stop below the notch, not behind it. */
+.lilt-shell .lilt-studio__bar {
+  top: calc(10px + var(--lilt-shell-tuck));
+}
+@media (min-width: 768px) and (max-width: 1180px) {
+  .lilt-shell {
+    --lilt-shell-left: 208px;
+  }
+}
+@media (max-width: 767px) {
+  .lilt-shell {
+    --lilt-shell-left: 8px;
+    --lilt-shell-right: 8px;
+  }
+  .lilt-shell__brand {
+    display: none;
+  }
+  .lilt-shell__main-frame {
+    margin-inline: 8px;
+  }
+  .lilt-shell__content {
+    padding: calc(4px + var(--lilt-shell-tuck)) 16px 32px;
+  }
+  .lilt-shell .lilt-main > h1:first-child,
+  .lilt-shell .lilt-main > .lilt-eyebrow:first-child,
+  .lilt-shell .lilt-docs h1,
+  .lilt-shell .lilt-docs__header h1,
+  .lilt-shell .lilt-docs__header .lilt-docs__lede {
+    padding-left: 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .lilt-shell__sheet {
+    transition: none;
+  }
+}

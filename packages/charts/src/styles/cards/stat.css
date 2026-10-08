@@ -1,0 +1,179 @@
+@layer lilt {
+  .lilt-sparkline__readout {
+    position: absolute;
+    top: 0;
+    right: 5px;
+    left: 5px;
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+    color: var(--lilt-muted);
+    font: inherit;
+    font-size: 10px;
+    line-height: 16px;
+    white-space: nowrap;
+    pointer-events: none;
+  }
+
+  .lilt-sparkline__readout strong {
+    color: var(--lilt-text);
+    font-weight: 500;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Stat card: a compact metric tile. The value above carries hover readings, so the plot drops
+   its own readout. */
+  .lilt-stat {
+    gap: 14px;
+  }
+  .lilt-stat .lilt-card__value {
+    font-size: 26px;
+    line-height: 32px;
+  }
+  .lilt-stat .lilt-card__value-row {
+    min-height: 32px;
+  }
+  .lilt-stat .lilt-card__heading {
+    gap: 2px;
+  }
+  .lilt-stat__caption {
+    min-height: 18px;
+    margin: 0;
+    color: var(--lilt-muted);
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 18px;
+    font-variant-numeric: tabular-nums;
+  }
+  .lilt-stat .lilt-sparkline__readout {
+    display: none;
+  }
+  .lilt-stat__chart {
+    margin-top: auto;
+  }
+  .lilt-stat__meter {
+    display: grid;
+    gap: 8px;
+    margin-top: auto;
+  }
+  .lilt-stat__cells {
+    display: flex;
+    gap: 3px;
+  }
+  .lilt-stat__cell {
+    position: relative;
+    flex: 1 1 0;
+    min-width: 2px;
+    overflow: hidden;
+    border-radius: 2px;
+    background: color-mix(in srgb, var(--lilt-muted) 16%, transparent);
+  }
+  .lilt-stat__cell-fill {
+    position: absolute;
+    inset: 0 auto 0 0;
+    background: var(--lilt-series-1);
+  }
+  .lilt-stat__meter-labels {
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+    color: var(--lilt-muted);
+    font-size: 12px;
+    font-weight: 500;
+    font-variant-numeric: tabular-nums;
+  }
+  .lilt-stat__ring {
+    position: relative;
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+  }
+  .lilt-stat__ring svg {
+    position: absolute;
+    inset: 0;
+    overflow: visible;
+  }
+  .lilt-stat__ring-track {
+    fill: none;
+    stroke: color-mix(in srgb, var(--lilt-muted) 16%, transparent);
+  }
+  .lilt-stat__ring-fill {
+    fill: none;
+    stroke: var(--lilt-series-1);
+    stroke-linecap: round;
+  }
+  .lilt-stat__ring-label {
+    position: relative;
+    font-size: 12px;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Depth meter: one solid bar. Faces recede up and to the right on the shared slope (8 of rise
+     per 14 of depth): the roof skews 60.26° and the end 29.74°. */
+  .lilt-stat__block {
+    --lilt-block-depth: 8px;
+    --lilt-block-rise: calc(var(--lilt-block-depth) * 0.5714);
+    --lilt-block-track: color-mix(in oklab, var(--lilt-muted) 16%, var(--lilt-surface));
+    position: relative;
+    isolation: isolate;
+    margin-top: var(--lilt-block-rise);
+    margin-right: var(--lilt-block-depth);
+    background: linear-gradient(
+      color-mix(in oklab, var(--lilt-block-track), white 6%),
+      color-mix(in oklab, var(--lilt-block-track), black 10%)
+    );
+  }
+  .lilt-stat__block::before,
+  .lilt-stat__block-fill::before {
+    content: '';
+    position: absolute;
+    right: 0;
+    bottom: 100%;
+    left: 0;
+    height: var(--lilt-block-rise);
+    transform: skewX(-60.26deg);
+    transform-origin: bottom left;
+  }
+  .lilt-stat__block::before {
+    background: color-mix(in oklab, var(--lilt-block-track), white 22%);
+  }
+  .lilt-stat__block::after,
+  .lilt-stat__block-fill[data-full]::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 100%;
+    width: var(--lilt-block-depth);
+    transform: skewY(-29.74deg);
+    transform-origin: top left;
+  }
+  .lilt-stat__block::after {
+    background: color-mix(in oklab, var(--lilt-block-track), black 32%);
+  }
+  .lilt-stat__block-fill {
+    position: absolute;
+    inset: 0 auto 0 0;
+    background: linear-gradient(
+      color-mix(in oklab, var(--lilt-series-1), white 12%),
+      var(--lilt-series-1) 45%,
+      color-mix(in oklab, var(--lilt-series-1), black 14%)
+    );
+  }
+  .lilt-stat__block-fill::before {
+    background: linear-gradient(
+      to right,
+      color-mix(in oklab, var(--lilt-series-1), white 40%),
+      color-mix(in oklab, var(--lilt-series-1), white 26%)
+    );
+  }
+  /* A full meter's own end sits over the track's. */
+  .lilt-stat__block-fill[data-full]::after {
+    z-index: 1;
+    background: linear-gradient(
+      color-mix(in oklab, var(--lilt-series-1), black 34%),
+      color-mix(in oklab, var(--lilt-series-1), black 50%)
+    );
+  }
+}

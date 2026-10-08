@@ -1,0 +1,254 @@
+/* Performance: a playground and a benchmark, both measured live, then why it is fast. */
+.lilt-perf__bar {
+  gap: 8px 12px;
+  padding-left: 16px;
+}
+.lilt-docs .lilt-perf__title,
+.lilt-perf__title {
+  margin: 0 4px 0 0;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+.lilt-perf__control {
+  width: 290px;
+  min-width: 0;
+}
+.lilt-perf__control[data-narrow] {
+  width: 150px;
+}
+.lilt-perf__code {
+  margin-left: auto;
+}
+.lilt-perf__note {
+  flex: 1;
+  min-width: 180px;
+}
+.lilt-studio__switch[data-disabled] {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.lilt-perf__stage {
+  display: grid;
+  gap: 18px;
+}
+.lilt-perf__subject {
+  width: min(760px, 100%);
+  margin-inline: auto;
+}
+
+/* Live readings under the playground card. */
+.lilt-perf__stats {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  width: min(760px, 100%);
+  margin: 0 auto;
+  border: 1px solid color-mix(in srgb, var(--foreground) 8%, transparent);
+  border-radius: 16px;
+  background: color-mix(in srgb, var(--surface) 82%, transparent);
+  backdrop-filter: blur(10px);
+}
+.lilt-perf__stat {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+  padding: 12px 16px;
+}
+.lilt-perf__stat + .lilt-perf__stat {
+  border-left: 1px solid color-mix(in srgb, var(--foreground) 8%, transparent);
+}
+.lilt-perf__stat dt {
+  color: var(--muted-foreground);
+  font-size: 12px;
+}
+.lilt-perf__stat dd {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  min-width: 0;
+  margin: 0;
+  overflow: hidden;
+  color: var(--foreground);
+  font-size: 18px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.lilt-perf__stat dd span {
+  color: var(--muted-foreground);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0;
+}
+
+/* Benchmark: the card under test, the two result cards, and every case. */
+.lilt-perf__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+.lilt-perf__cell {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  gap: 10px;
+  min-width: 0;
+  margin: 0;
+}
+.lilt-perf__bench {
+  display: grid;
+  align-content: center;
+  min-height: 330px;
+}
+.lilt-perf__placeholder {
+  margin: 0;
+  color: var(--muted-foreground);
+  font-size: 13px;
+  text-align: center;
+}
+.lilt-perf__waiting {
+  display: grid;
+  place-items: center;
+  min-height: 200px;
+  padding: 24px;
+  border: 1px dashed color-mix(in srgb, var(--foreground) 14%, transparent);
+  border-radius: 20px;
+}
+.lilt-perf__waiting p {
+  max-width: 30ch;
+  margin: 0;
+  color: var(--muted-foreground);
+  font-size: 13px;
+  line-height: 20px;
+  text-align: center;
+}
+.lilt-perf__table {
+  display: grid;
+  align-content: start;
+  gap: 10px;
+  min-width: 0;
+  padding: 16px 18px;
+  border: 1px solid color-mix(in srgb, var(--foreground) 8%, transparent);
+  border-radius: 20px;
+  background: color-mix(in srgb, var(--surface) 82%, transparent);
+}
+.lilt-perf__table-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  min-height: 28px;
+}
+.lilt-perf__table h3 {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+}
+.lilt-perf__table table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12.5px;
+  font-variant-numeric: tabular-nums;
+}
+.lilt-perf__table :is(th, td) {
+  padding: 6px 4px;
+  border-top: 1px solid color-mix(in srgb, var(--foreground) 7%, transparent);
+  text-align: right;
+  white-space: nowrap;
+}
+.lilt-perf__table thead th {
+  border-top: 0;
+  color: var(--muted-foreground);
+  font-weight: 500;
+}
+.lilt-perf__table :is(thead th, tbody th):first-child {
+  text-align: left;
+}
+.lilt-perf__table tbody th {
+  font-weight: 500;
+}
+.lilt-perf__table .lilt-perf__placeholder {
+  padding: 48px 0;
+}
+
+/* Why it is fast. */
+.lilt-perf-why {
+  display: grid;
+  gap: 18px;
+  margin-top: 72px;
+}
+.lilt-perf-why h2 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+.lilt-perf-why__grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+.lilt-perf-why__card {
+  display: grid;
+  align-content: start;
+  gap: 8px;
+  padding: 18px 20px;
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  background: var(--surface);
+}
+.lilt-perf-why__card h3 {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+.lilt-perf-why__card p,
+.lilt-perf-why__method {
+  margin: 0;
+  color: var(--muted-foreground);
+  font-size: 13.5px;
+  line-height: 21px;
+}
+.lilt-perf-why__card code {
+  justify-self: start;
+  padding: 1px 6px;
+  border-radius: 5px;
+  background: var(--hover);
+  color: var(--foreground);
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 12px;
+}
+.lilt-perf-why__method {
+  max-width: 760px;
+  font-size: 13px;
+}
+
+@container (max-width: 760px) {
+  .lilt-perf__grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .lilt-perf__stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .lilt-perf__stat:nth-child(3) {
+    border-left: 0;
+  }
+  .lilt-perf__stat:nth-child(n + 3) {
+    border-top: 1px solid color-mix(in srgb, var(--foreground) 8%, transparent);
+  }
+}
+@media (max-width: 900px) {
+  .lilt-perf-why__grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .lilt-perf__control,
+  .lilt-perf__control[data-narrow] {
+    width: 100%;
+  }
+  .lilt-perf__code {
+    margin-left: 0;
+  }
+}

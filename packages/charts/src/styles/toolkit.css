@@ -1,0 +1,285 @@
+@layer lilt {
+  .lilt-chart__toolbar {
+    display: flex;
+    min-height: 36px;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 4px;
+  }
+
+  .lilt-chart__toolbar-tools,
+  .lilt-chart__toolbar-actions {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .lilt-chart__toolbar button:hover {
+    background: color-mix(in srgb, var(--lilt-border) 50%, transparent);
+    color: var(--lilt-text);
+  }
+
+  .lilt-chart__toolbar button:focus-visible,
+  .lilt-chart__keyboard-input input:focus-visible,
+  .lilt-chart__legend button:focus-visible {
+    outline: 2px solid var(--lilt-focus);
+    outline-offset: 2px;
+  }
+
+  .lilt-chart__readout {
+    color: var(--lilt-text);
+  }
+
+  .lilt-chart__observation {
+    margin: 0;
+    color: var(--lilt-muted);
+    font-size: 12px;
+    line-height: 18px;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .lilt-chart__plot-host > .lilt-chart__keyboard-input {
+    position: absolute;
+    z-index: 8;
+    top: 8px;
+    right: 8px;
+    width: min(240px, calc(100% - 16px));
+    min-height: 56px;
+    padding: 10px 12px;
+    border: 1px solid var(--lilt-border);
+    border-radius: 8px;
+    background: var(--lilt-surface);
+    opacity: 0;
+    clip-path: inset(50%);
+    pointer-events: none;
+  }
+
+  .lilt-chart__plot-host > .lilt-chart__keyboard-input:focus-within {
+    opacity: 1;
+    clip-path: none;
+    pointer-events: auto;
+  }
+
+  /* A shown tooltip carries the key hints, so the slider stays out of sight and the plot
+     takes the focus ring: one panel over a small plot, not two. */
+  .lilt-chart__plot-host:has(.lilt-chart__tooltip[data-keyboard-hint])
+    > .lilt-chart__keyboard-input:focus-within {
+    opacity: 0;
+    clip-path: inset(50%);
+    pointer-events: none;
+  }
+
+  .lilt-chart__plot-host:has(> .lilt-chart__keyboard-input input:focus-visible) > .lilt-chart__svg {
+    border-radius: 6px;
+    outline: 2px solid var(--lilt-focus);
+    outline-offset: 2px;
+  }
+
+  /* The strip sits above the plot, so the slider panel moves to the plot's foot. */
+  .lilt-chart__plot-host:has(.lilt-chart__strip) > .lilt-chart__keyboard-input {
+    top: auto;
+    bottom: 8px;
+  }
+
+  .lilt-chart__keyboard-input {
+    display: grid;
+    grid-template-columns: minmax(100px, 1fr);
+    align-items: center;
+    gap: 4px 10px;
+    margin-top: 6px;
+    color: var(--lilt-muted);
+    font-size: 11px;
+  }
+
+  .lilt-chart__keyboard-input small {
+    grid-column: 1;
+    display: none;
+  }
+
+  .lilt-chart__keyboard-input:has(input:focus-visible) small {
+    display: block;
+  }
+
+  .lilt-chart__keyboard-input input {
+    accent-color: var(--lilt-focus);
+    cursor: pointer;
+  }
+
+  .lilt-chart__overview-host,
+  .lilt-chart__overview,
+  .lilt-chart__legend {
+    position: static;
+    width: 100%;
+  }
+
+  .lilt-chart__toolbar button {
+    display: inline-flex;
+    min-height: 30px;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 9px;
+    border: 1px solid transparent;
+    border-radius: 7px;
+    background: transparent;
+    color: var(--lilt-muted);
+    font: inherit;
+    font-size: 12px;
+    cursor: pointer;
+    transition:
+      color 150ms,
+      background 150ms,
+      transform 150ms;
+  }
+  .lilt-chart__toolbar button:active {
+    transform: scale(0.96);
+  }
+  @media (max-width: 560px) {
+    .lilt-chart__toolbar button {
+      min-height: 38px;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .lilt-chart__toolbar button {
+      transition: none;
+    }
+  }
+
+  .lilt-chart__live-control,
+  .lilt-chart__comparison button,
+  .lilt-chart__overview button {
+    border: 1px solid var(--lilt-border);
+    border-radius: 7px;
+    background: color-mix(in srgb, var(--lilt-surface) 94%, transparent);
+    color: var(--lilt-text);
+    font: inherit;
+    cursor: pointer;
+  }
+
+  .lilt-chart__live-control,
+  .lilt-chart__live-badge {
+    position: absolute;
+    z-index: 6;
+    right: 8px;
+    bottom: 7px;
+    min-height: 26px;
+    padding: 3px 8px;
+    font-size: 11px;
+    line-height: 18px;
+  }
+
+  .lilt-chart__live-badge {
+    color: var(--lilt-series-1);
+  }
+
+  .lilt-chart__live-badge::before {
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    margin-right: 6px;
+    border-radius: 50%;
+    background: currentColor;
+    content: '';
+  }
+
+  .lilt-chart[data-lilt-legend='true'] .lilt-chart__live-control,
+  .lilt-chart[data-lilt-legend='true'] .lilt-chart__live-badge {
+    top: 44px;
+    bottom: auto;
+  }
+
+  .lilt-chart__overview {
+    margin: 2px 0 8px;
+    position: absolute;
+    top: calc(var(--lilt-chart-height) + 5px);
+    left: 0;
+    display: grid;
+    width: 100%;
+    grid-template-columns: auto minmax(80px, 1fr) auto;
+    align-items: center;
+    gap: 8px;
+    color: var(--lilt-muted);
+    font-size: 10px;
+  }
+
+  .lilt-chart__overview svg {
+    display: block;
+    width: 100%;
+    height: 32px;
+    min-width: 0;
+    overflow: hidden;
+    border: 1px solid var(--lilt-border);
+    border-radius: 6px;
+  }
+
+  .lilt-chart__overview-line {
+    stroke: var(--lilt-muted);
+    stroke-width: 8;
+    opacity: 0.45;
+    vector-effect: non-scaling-stroke;
+  }
+
+  .lilt-chart__overview-window {
+    fill: var(--lilt-series-1);
+    fill-opacity: 0.08;
+    stroke: var(--lilt-series-1);
+    stroke-opacity: 0.55;
+  }
+
+  .lilt-chart__overview button {
+    min-height: 28px;
+    padding: 3px 8px;
+    white-space: nowrap;
+  }
+
+  .lilt-chart[data-lilt-focused='true'] {
+    height: calc(var(--lilt-chart-height) + 42px);
+  }
+
+  /* Composed toolkit regions intentionally override the former overlaid feature chrome. */
+  [data-lilt-chart] .lilt-chart__overview,
+  [data-lilt-chart] .lilt-chart__legend {
+    position: static;
+    width: 100%;
+  }
+
+  [data-lilt-chart] .lilt-chart__overview {
+    display: block;
+    margin: 2px 0 8px;
+  }
+
+  [data-lilt-chart] .lilt-chart__legend {
+    display: flex;
+  }
+
+  .lilt-range-summary {
+    padding: 16px 0;
+    border-top: 1px solid var(--lilt-border);
+  }
+  .lilt-range-summary dl {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 12px;
+    margin: 0;
+  }
+  .lilt-range-summary dt,
+  .lilt-range-summary__count {
+    color: var(--lilt-muted);
+    font-size: 11px;
+  }
+  .lilt-range-summary dd {
+    margin: 5px 0 0;
+    font-size: 17px;
+    font-weight: 500;
+    font-variant-numeric: tabular-nums;
+  }
+  .lilt-range-summary__count {
+    display: block;
+    margin-top: 12px;
+  }
+  @media (max-width: 480px) {
+    .lilt-range-summary dl {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+}

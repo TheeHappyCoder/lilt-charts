@@ -1,0 +1,19 @@
+.film-wall {
+  position: absolute;
+  left: 40px;
+  top: 40px;
+  display: grid;
+  grid-template-columns: repeat(3, 460px);
+  gap: 22px;
+  align-items: center;
+}
+
+.film-column {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.film-slot {
+  position: relative;
+}

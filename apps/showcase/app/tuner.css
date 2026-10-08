@@ -1,0 +1,660 @@
+/* The notch: one outline that hangs from the sheet, holds search, the site's chart style and the
+   theme, and grows down into every style setting. Its size is sprung in chart-island.tsx. */
+.lilt-notch-anchor {
+  position: absolute;
+  z-index: 2;
+  top: 0;
+  right: var(--lilt-shell-right);
+  left: var(--lilt-shell-left);
+  display: flex;
+  justify-content: center;
+  pointer-events: none;
+  transition: right 420ms var(--lilt-shell-ease);
+}
+.lilt-notch {
+  position: relative;
+  flex: 0 0 auto;
+  color: var(--foreground);
+  pointer-events: none;
+}
+.lilt-notch:not([data-ready]) {
+  visibility: hidden;
+}
+.lilt-notch__shape,
+.lilt-notch__lift {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+}
+.lilt-notch__lift {
+  filter: drop-shadow(0 22px 36px var(--lilt-shell-lift));
+}
+.lilt-notch__lift path,
+.lilt-notch__fill {
+  fill: var(--lilt-shell-outside);
+}
+.lilt-notch__stroke {
+  fill: none;
+  stroke: var(--lilt-shell-stroke);
+  stroke-width: 1px;
+}
+/* The palette's light along the notch's foot: a single hairline, no bloom. */
+.lilt-notch__light {
+  fill: none;
+  stroke-width: 1px;
+  stroke-linecap: round;
+  opacity: 0.55;
+  transition: opacity 400ms var(--lilt-shell-ease);
+}
+.lilt-notch:hover .lilt-notch__light,
+.lilt-notch[data-open] .lilt-notch__light {
+  opacity: 1;
+}
+.lilt-notch__light-1,
+.lilt-notch__light-2,
+.lilt-notch__light-3 {
+  stop-color: var(--lilt-series-1);
+  transition: stop-color 600ms var(--lilt-shell-ease);
+}
+.lilt-notch__light-2 {
+  stop-color: var(--lilt-series-2);
+}
+.lilt-notch__light-3 {
+  stop-color: var(--lilt-series-3);
+}
+.lilt-notch__clip {
+  position: absolute;
+  top: 0;
+  left: 14px;
+  overflow: hidden;
+  border-radius: 0 0 20px 20px;
+  pointer-events: auto;
+}
+.lilt-notch__inner {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  translate: -50% 0;
+}
+
+/* Resting row */
+.lilt-notch__rest {
+  display: flex;
+  width: max-content;
+  height: 50px;
+  align-items: center;
+  gap: 4px;
+  margin: 0 auto;
+  padding: 2px 9px 0;
+}
+.lilt-notch__divider {
+  width: 1px;
+  height: 16px;
+  margin: 0 6px;
+  background: var(--lilt-shell-stroke);
+}
+.lilt-shell__search,
+.lilt-shell__theme,
+.lilt-notch__trigger {
+  display: inline-flex;
+  height: 32px;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 0;
+  border-radius: 10px;
+  background: transparent;
+  color: var(--muted-foreground);
+  font: inherit;
+  cursor: pointer;
+  transition:
+    background-color 160ms ease,
+    color 160ms ease;
+}
+.lilt-shell__search {
+  width: 32px;
+}
+.lilt-shell__theme {
+  width: 32px;
+}
+.lilt-notch__trigger {
+  position: relative;
+  gap: 8px;
+  padding: 0 8px 0 11px;
+}
+@media (hover: hover) {
+  .lilt-shell__search:hover,
+  .lilt-shell__theme:hover,
+  .lilt-notch__trigger:hover {
+    background: color-mix(in srgb, var(--foreground) 7%, transparent);
+    color: var(--foreground);
+  }
+}
+.lilt-notch[data-open] .lilt-notch__trigger {
+  background: color-mix(in srgb, var(--foreground) 7%, transparent);
+  color: var(--foreground);
+}
+.lilt-shell__search:focus-visible,
+.lilt-shell__theme:focus-visible,
+.lilt-notch__trigger:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: -2px;
+}
+/* A fixed box (three dots and their gaps), so the bars below never change the notch's width. */
+.lilt-notch__dots {
+  display: inline-flex;
+  width: 40px;
+  height: 16px;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  transition: gap 300ms var(--lilt-shell-ease);
+}
+/* Three dots in the site's palette; pointed at or opened, they stand up into a tiny bar chart.
+   A palette change ripples across them. */
+.lilt-notch__dots i {
+  width: 10px;
+  height: 10px;
+  border-radius: 5px;
+  background: var(--lilt-series-1);
+  transition:
+    width 320ms var(--lilt-shell-ease),
+    height 420ms cubic-bezier(0.34, 1.56, 0.64, 1),
+    border-radius 320ms var(--lilt-shell-ease),
+    background-color 420ms var(--lilt-shell-ease);
+}
+.lilt-notch__dots i:nth-child(2) {
+  background: var(--lilt-series-2);
+  transition-delay: 0ms, 50ms, 0ms, 70ms;
+}
+.lilt-notch__dots i:nth-child(3) {
+  background: var(--lilt-series-3);
+  transition-delay: 0ms, 100ms, 0ms, 140ms;
+}
+.lilt-notch__trigger:hover .lilt-notch__dots,
+.lilt-notch[data-open] .lilt-notch__dots {
+  gap: 4px;
+}
+.lilt-notch__trigger:hover .lilt-notch__dots i,
+.lilt-notch[data-open] .lilt-notch__dots i {
+  width: 6px;
+  height: 9px;
+  border-radius: 2px;
+}
+.lilt-notch__trigger:hover .lilt-notch__dots i:nth-child(2),
+.lilt-notch[data-open] .lilt-notch__dots i:nth-child(2) {
+  height: 16px;
+}
+.lilt-notch__trigger:hover .lilt-notch__dots i:nth-child(3),
+.lilt-notch[data-open] .lilt-notch__dots i:nth-child(3) {
+  height: 12px;
+}
+.lilt-notch__chevron {
+  transition: transform 300ms var(--lilt-shell-ease);
+}
+/* Settings changed from Auto: a small count on the trigger's corner. */
+.lilt-notch__count {
+  position: absolute;
+  top: -3px;
+  right: -3px;
+  display: grid;
+  min-width: 15px;
+  height: 15px;
+  place-items: center;
+  padding: 0 4px;
+  border-radius: 8px;
+  background: var(--brand-primary);
+  box-shadow: 0 0 0 2px var(--background);
+  color: #fff;
+  font-size: 9.5px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+  animation: lilt-notch-count-in 260ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+@keyframes lilt-notch-count-in {
+  from {
+    scale: 0.4;
+    opacity: 0;
+  }
+}
+.lilt-notch[data-open] .lilt-notch__chevron {
+  transform: rotate(180deg);
+}
+
+/* A chart page's own controls in the notch: icon tools, then Copy as a split button. */
+.lilt-notch__slot {
+  display: contents;
+}
+.lilt-notch__tool {
+  display: inline-grid;
+  width: 32px;
+  height: 32px;
+  place-items: center;
+  padding: 0;
+  border: 0;
+  border-radius: 10px;
+  background: transparent;
+  color: var(--muted-foreground);
+  cursor: pointer;
+  transition:
+    background-color 160ms ease,
+    color 160ms ease;
+}
+/* A held toggle (Empty, a held load) reads as on at a glance: a brand-tinted pill, not just ink. */
+.lilt-notch__tool[aria-pressed='true'],
+.lilt-notch__tool[aria-pressed='true']:not(:disabled):hover {
+  /* A small tinted dot behind the icon, whatever size the touch target is. */
+  background: radial-gradient(
+    circle,
+    color-mix(in srgb, var(--brand-primary) 18%, transparent) 13.5px,
+    transparent 14px
+  );
+  color: var(--brand-primary);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .lilt-notch__tool[aria-pressed='true'] .lilt-notch__loading-icon {
+    animation: lilt-notch-loading-spin 1s linear infinite;
+  }
+}
+@keyframes lilt-notch-loading-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+.lilt-notch__tool:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+.lilt-split {
+  display: inline-flex;
+  height: 32px;
+  align-items: stretch;
+  margin-left: 2px;
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--foreground) 5%, transparent);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--foreground) 6%, transparent);
+}
+.lilt-split__main,
+.lilt-split__more {
+  display: inline-flex;
+  align-items: center;
+  border: 0;
+  background: transparent;
+  color: color-mix(in srgb, var(--foreground) 85%, transparent);
+  font: inherit;
+  cursor: pointer;
+  transition:
+    background-color 160ms ease,
+    color 160ms ease;
+}
+.lilt-split__main {
+  gap: 6px;
+  padding: 0 10px 0 9px;
+  border-radius: 10px 0 0 10px;
+  font-size: 12.5px;
+  font-weight: 500;
+}
+.lilt-split__more {
+  width: 26px;
+  justify-content: center;
+  padding: 0;
+  border-left: 1px solid color-mix(in srgb, var(--foreground) 8%, transparent);
+  border-radius: 0 10px 10px 0;
+  color: var(--muted-foreground);
+}
+@media (hover: hover) {
+  .lilt-notch__tool:not(:disabled):hover,
+  .lilt-split__main:hover,
+  .lilt-split__more:hover {
+    background: color-mix(in srgb, var(--foreground) 7%, transparent);
+    color: var(--foreground);
+  }
+}
+.lilt-split__more[data-popup-open] {
+  background: color-mix(in srgb, var(--foreground) 7%, transparent);
+  color: var(--foreground);
+}
+.lilt-notch__tool:focus-visible,
+.lilt-split__main:focus-visible,
+.lilt-split__more:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: -2px;
+}
+
+/* Opened: the sidebar's language. Small spaced labels, palette tiles, segmented tracks. */
+.lilt-notch__body {
+  display: grid;
+  max-height: calc(100svh - 110px);
+  gap: 18px;
+  padding: 14px 24px 16px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-color: color-mix(in srgb, var(--foreground) 22%, transparent) transparent;
+  scrollbar-width: thin;
+}
+.lilt-notch__section,
+.lilt-notch__field {
+  display: grid;
+  min-width: 0;
+  align-content: start;
+  gap: 8px;
+}
+.lilt-notch__label {
+  width: fit-content;
+  color: color-mix(in srgb, var(--muted-foreground) 85%, transparent);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  line-height: 1.2;
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: color 160ms ease;
+}
+a.lilt-notch__label:hover {
+  color: var(--foreground);
+}
+.lilt-notch__pair {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+.lilt-notch__theme {
+  display: none;
+}
+
+/* Palettes: a tile each, a tiny chart in its own colours; the chosen one wears the ring. */
+.lilt-palettes {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 6px;
+}
+.lilt-palette {
+  position: relative;
+  display: grid;
+  gap: 7px;
+  padding: 5px 5px 8px;
+  border: 0;
+  border-radius: 13px;
+  background: transparent;
+  color: color-mix(in srgb, var(--foreground) 66%, var(--background));
+  font: inherit;
+  font-size: 12px;
+  font-weight: 500;
+  text-align: left;
+  cursor: pointer;
+  isolation: isolate;
+  transition:
+    background 180ms ease,
+    color 180ms ease;
+}
+.lilt-palette__swatch {
+  display: flex;
+  height: 36px;
+  align-items: flex-end;
+  gap: 4px;
+  padding: 7px 10px;
+  border-radius: 9px;
+  background: linear-gradient(
+    to bottom,
+    color-mix(in srgb, var(--foreground) 5%, transparent),
+    color-mix(in srgb, var(--foreground) 2.5%, transparent)
+  );
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--foreground) 5%, transparent);
+  transition: translate 180ms ease;
+}
+.lilt-palette__swatch i {
+  height: 55%;
+  flex: 1;
+  border-radius: 3px;
+  background: var(--lilt-series-1);
+  transition: background-color 420ms var(--lilt-shell-ease);
+}
+.lilt-palette__swatch i:nth-child(2) {
+  height: 100%;
+  background: var(--lilt-series-2);
+}
+.lilt-palette__swatch i:nth-child(3) {
+  height: 75%;
+  background: var(--lilt-series-3);
+}
+/* Auto has no palette of its own: each chart keeps the one it ships with. */
+.lilt-palette__swatch[data-auto] i {
+  background: color-mix(in srgb, var(--foreground) 20%, transparent);
+}
+.lilt-palette__swatch[data-auto] i:nth-child(2) {
+  background: color-mix(in srgb, var(--foreground) 34%, transparent);
+}
+.lilt-palette__swatch[data-auto] i:nth-child(3) {
+  background: color-mix(in srgb, var(--foreground) 26%, transparent);
+}
+.lilt-palette__name {
+  padding: 0 3px;
+}
+.lilt-palette__ring {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  border-radius: 13px;
+  background: color-mix(in srgb, var(--brand-primary) 9%, transparent);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--brand-primary) 70%, transparent);
+  pointer-events: none;
+}
+.lilt-palette[aria-pressed='true'] {
+  color: var(--foreground);
+}
+@media (hover: hover) {
+  .lilt-palette:not([aria-pressed='true']):hover {
+    background: color-mix(in srgb, var(--foreground) 3.5%, transparent);
+    color: var(--foreground);
+  }
+  .lilt-palette:hover .lilt-palette__swatch {
+    translate: 0 -1px;
+  }
+}
+.lilt-palette:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 1px;
+}
+
+/* More settings: a quiet row that opens the rest, label beside each track. */
+.lilt-notch__more-toggle {
+  display: flex;
+  width: 100%;
+  height: 34px;
+  align-items: center;
+  gap: 8px;
+  padding: 0 10px;
+  border: 0;
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--foreground) 3%, transparent);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--foreground) 5%, transparent);
+  color: var(--muted-foreground);
+  font: inherit;
+  font-size: 12.5px;
+  font-weight: 500;
+  cursor: pointer;
+  transition:
+    background 160ms ease,
+    color 160ms ease;
+}
+@media (hover: hover) {
+  .lilt-notch__more-toggle:hover {
+    background: color-mix(in srgb, var(--foreground) 5%, transparent);
+    color: var(--foreground);
+  }
+}
+.lilt-notch__more-toggle:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 1px;
+}
+.lilt-notch__more-count {
+  margin-left: auto;
+  color: color-mix(in srgb, var(--muted-foreground) 70%, transparent);
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+}
+.lilt-notch__more-chevron {
+  transition: transform 260ms var(--lilt-shell-ease);
+}
+.lilt-notch__more-toggle[aria-expanded='true'] .lilt-notch__more-chevron {
+  transform: rotate(180deg);
+}
+.lilt-notch__rows {
+  display: grid;
+  gap: 8px;
+  padding: 12px 2px 0;
+}
+.lilt-notch__rows .lilt-notch__field {
+  grid-template-columns: 84px minmax(0, 1fr);
+  align-items: center;
+  gap: 12px;
+}
+/* Here the options size to their words and the track hugs them, so long lists stay on one line
+   and nothing is cut short. */
+.lilt-notch__rows .lilt-seg {
+  display: flex;
+  width: fit-content;
+  max-width: 100%;
+  flex-wrap: wrap;
+}
+.lilt-notch__rows .lilt-seg__option {
+  flex: 0 0 auto;
+  padding: 0 11px;
+}
+
+.lilt-notch__foot {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding-top: 12px;
+  border-top: 1px solid var(--lilt-shell-stroke);
+  color: var(--muted-foreground);
+  font-size: 11.5px;
+}
+.lilt-notch__foot > span {
+  margin-right: auto;
+}
+.lilt-notch__reset,
+.lilt-notch__close {
+  display: inline-grid;
+  height: 28px;
+  place-items: center;
+  padding: 0 10px;
+  border: 0;
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--foreground) 5%, transparent);
+  color: var(--foreground);
+  font: inherit;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition:
+    background 160ms ease,
+    color 160ms ease;
+}
+.lilt-notch__close {
+  width: 28px;
+  padding: 0;
+  background: transparent;
+  color: var(--muted-foreground);
+}
+.lilt-notch__reset:disabled {
+  background: transparent;
+  color: color-mix(in srgb, var(--muted-foreground) 55%, transparent);
+  cursor: default;
+}
+@media (hover: hover) {
+  .lilt-notch__reset:not(:disabled):hover,
+  .lilt-notch__close:hover {
+    background: color-mix(in srgb, var(--foreground) 8%, transparent);
+    color: var(--foreground);
+  }
+}
+.lilt-notch__reset:focus-visible,
+.lilt-notch__close:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 1px;
+}
+.lilt-island__swatch-option {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.lilt-island__swatch {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+@media (max-width: 767px) {
+  .lilt-notch__rest {
+    padding-inline: 6px;
+  }
+  .lilt-notch .lilt-shell__mobile-trigger {
+    position: static;
+    display: grid;
+    width: 32px;
+    height: 32px;
+    border-radius: 10px;
+  }
+  .lilt-notch .lilt-shell__theme {
+    display: none;
+  }
+  .lilt-notch__theme {
+    display: grid;
+  }
+  .lilt-notch__body {
+    padding-inline: 16px;
+  }
+  .lilt-notch__pair {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 14px;
+  }
+  .lilt-notch__rows .lilt-notch__field {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+/* Small phones: the resting notch drops its divider and chevron and tightens up, so it and its
+   joins stay on the frame's straight edge, clear of the rounded corners. */
+@media (max-width: 420px) {
+  .lilt-notch__rest {
+    gap: 2px;
+    padding-inline: 4px;
+  }
+  .lilt-notch__divider,
+  .lilt-notch__chevron {
+    display: none;
+  }
+  .lilt-notch__trigger {
+    padding: 0 9px;
+  }
+  /* Room for a chart page's Replay and Loading: every notch button a touch narrower. */
+  .lilt-notch .lilt-shell__mobile-trigger,
+  .lilt-shell__search,
+  .lilt-notch__tool {
+    width: 30px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .lilt-notch-anchor,
+  .lilt-notch__dots,
+  .lilt-notch__dots i,
+  .lilt-notch__light,
+  .lilt-notch__light-1,
+  .lilt-notch__light-2,
+  .lilt-notch__light-3,
+  .lilt-notch__chevron,
+  .lilt-notch__more-chevron,
+  .lilt-palette,
+  .lilt-palette__swatch,
+  .lilt-palette__swatch i {
+    transition: none;
+  }
+  .lilt-notch__count {
+    animation: none;
+  }
+}

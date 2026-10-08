@@ -1,0 +1,97 @@
+@layer lilt {
+  /* Sankey card: steps as nodes, flows as ribbons as thick as the amount that moved. */
+  .lilt-sankey-card__plot {
+    position: relative;
+    width: 100%;
+    border-radius: 10px;
+    outline: none;
+  }
+  .lilt-sankey-card__plot:focus-visible {
+    outline: 2px solid var(--lilt-focus);
+    outline-offset: 4px;
+  }
+  .lilt-sankey-card__svg {
+    position: absolute;
+    inset: 0;
+    display: block;
+    overflow: visible;
+  }
+  .lilt-sankey-card__flow {
+    fill: none;
+    stroke-opacity: 0.3;
+    cursor: pointer;
+    transition:
+      stroke-opacity var(--lilt-duration-quick) ease,
+      opacity var(--lilt-duration-quick) ease;
+  }
+  .lilt-sankey-card__flow[data-active],
+  .lilt-sankey-card__plot:not([data-active]) .lilt-sankey-card__flow:hover {
+    stroke-opacity: 0.6;
+  }
+  .lilt-sankey-card__plot[data-active] .lilt-sankey-card__flow:not([data-muted]) {
+    stroke-opacity: 0.55;
+  }
+  .lilt-sankey-card__flow[data-muted] {
+    opacity: 0.35;
+  }
+  /* Depth: flows are lit pipes, see-through as a whole rather than layer by layer. */
+  g.lilt-sankey-card__flow {
+    opacity: 0.55;
+  }
+  g.lilt-sankey-card__flow[data-active],
+  .lilt-sankey-card__plot:not([data-active]) g.lilt-sankey-card__flow:hover,
+  .lilt-sankey-card__plot[data-active] g.lilt-sankey-card__flow:not([data-muted]) {
+    opacity: 0.9;
+  }
+  g.lilt-sankey-card__flow[data-muted] {
+    opacity: 0.18;
+  }
+  .lilt-sankey-card__node {
+    cursor: pointer;
+    transition: opacity var(--lilt-duration-quick) ease;
+  }
+  .lilt-sankey-card__node[data-muted] {
+    opacity: 0.4;
+  }
+  /* A halo in the card's own color keeps labels legible where they cross a ribbon. */
+  .lilt-sankey-card__label {
+    fill: var(--lilt-text);
+    font-size: 12px;
+    font-weight: 500;
+    paint-order: stroke;
+    stroke: var(--lilt-card-background, var(--lilt-surface));
+    stroke-width: 4px;
+    stroke-linejoin: round;
+    pointer-events: none;
+    transition: opacity var(--lilt-duration-quick) ease;
+  }
+  .lilt-card[data-surface='elevated'] .lilt-sankey-card__label {
+    stroke: var(--lilt-card-raised);
+  }
+  .lilt-sankey-card__label-value {
+    fill: var(--lilt-muted);
+    font-size: 11.5px;
+    font-variant-numeric: tabular-nums;
+  }
+  .lilt-sankey-card__label[data-muted] {
+    opacity: 0.45;
+  }
+  .lilt-sankey-card__skeleton {
+    fill: none;
+    stroke: var(--lilt-skeleton-paint, color-mix(in srgb, var(--lilt-skeleton) 24%, transparent));
+  }
+  /* Node columns read a step stronger than the flows between them, like the real chart. */
+  .lilt-sankey-card__skeleton-node {
+    fill: var(--lilt-skeleton-paint, color-mix(in srgb, var(--lilt-skeleton) 46%, transparent));
+  }
+  .lilt-sankey-card__footer {
+    margin: 0;
+    color: var(--lilt-muted);
+    font-size: 11.5px;
+    font-weight: 500;
+    line-height: 16px;
+  }
+  .lilt-sankey-card__plot[data-motion='none'] * {
+    transition: none;
+  }
+}

@@ -1,0 +1,273 @@
+@layer lilt {
+  /* Slope card. Rises and falls take the positive and negative colors unless one color is set;
+     unchanged or incomplete categories stay muted. */
+  .lilt-slope {
+    --lilt-slope-rise: var(--lilt-slope-color, var(--lilt-positive));
+    --lilt-slope-fall: var(--lilt-slope-color, var(--lilt-negative));
+    --lilt-slope-flat: var(--lilt-slope-color, var(--lilt-muted));
+  }
+  .lilt-slope [data-tone='positive'],
+  .lilt-slope [data-tone='negative'],
+  .lilt-slope [data-tone='neutral'],
+  .lilt-slope :is(.lilt-slope__line, .lilt-slope__row):not([data-tone]) {
+    --lilt-slope-ink: var(--lilt-slope-flat);
+  }
+  .lilt-slope [data-tone='positive'] {
+    --lilt-slope-ink: var(--lilt-slope-rise);
+  }
+  .lilt-slope [data-tone='negative'] {
+    --lilt-slope-ink: var(--lilt-slope-fall);
+  }
+  .lilt-slope__plot {
+    position: relative;
+    width: 100%;
+    min-width: 0;
+  }
+  .lilt-slope__plot svg {
+    display: block;
+    overflow: visible;
+  }
+  .lilt-slope__axis {
+    stroke: var(--lilt-grid);
+    stroke-width: 1;
+  }
+  .lilt-slope__column {
+    fill: var(--lilt-muted);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+  }
+  .lilt-slope__line {
+    cursor: pointer;
+    outline: none;
+    transition: opacity var(--lilt-duration-quick) ease;
+  }
+  .lilt-slope__line[data-muted] {
+    opacity: 0.28;
+  }
+  .lilt-slope__hit {
+    stroke: transparent;
+    stroke-width: 16;
+    stroke-linecap: round;
+  }
+  .lilt-slope__stroke {
+    stroke: var(--lilt-slope-ink);
+    stroke-width: 2;
+    stroke-linecap: round;
+    transition: stroke-width var(--lilt-duration-quick) ease;
+  }
+  .lilt-slope__line[data-active] .lilt-slope__stroke {
+    stroke-width: 3;
+  }
+  .lilt-slope__dot-mark {
+    fill: var(--lilt-slope-ink);
+    stroke: var(--lilt-surface);
+    stroke-width: 2;
+  }
+  .lilt-slope__dot-mark[data-end='from'] {
+    fill: var(--lilt-surface);
+    stroke: var(--lilt-slope-ink);
+    stroke-width: 1.75;
+  }
+  /* Depth: both ends are lit spheres; the earlier one is smaller and sits back a little. */
+  svg[data-depth] .lilt-slope__dot-mark {
+    stroke: none;
+  }
+  svg[data-depth] .lilt-slope__dot-mark[data-end='from'] {
+    opacity: 0.72;
+  }
+  .lilt-slope__line:focus-visible .lilt-slope__stroke {
+    stroke-width: 3;
+  }
+  .lilt-slope__line:focus-visible .lilt-slope__name {
+    text-decoration: underline;
+    text-decoration-color: var(--lilt-focus);
+    text-decoration-thickness: 2px;
+    text-underline-offset: 3px;
+  }
+  .lilt-slope__label {
+    font-size: 12px;
+    font-variant-numeric: tabular-nums;
+  }
+  .lilt-slope__name {
+    fill: var(--lilt-text);
+    font-weight: 500;
+  }
+  .lilt-slope__number {
+    fill: var(--lilt-muted);
+  }
+  .lilt-slope__end {
+    fill: var(--lilt-text);
+    font-weight: 600;
+  }
+  .lilt-slope__ratio {
+    fill: var(--lilt-slope-ink);
+    font-weight: 600;
+  }
+
+  /* Dumbbell variant: one row per category on a shared scale. */
+  .lilt-slope__key {
+    display: flex;
+    gap: 14px;
+    margin: -4px 0 10px;
+    color: var(--lilt-muted);
+    font-size: 12px;
+    font-weight: 500;
+  }
+  .lilt-slope__key span {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .lilt-slope__key span::before {
+    content: '';
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    box-sizing: border-box;
+    background: var(--lilt-muted);
+  }
+  .lilt-slope__key span[data-end='from']::before {
+    border: 1.75px solid var(--lilt-muted);
+    background: transparent;
+  }
+  .lilt-slope__rows {
+    display: grid;
+    grid-template-columns: minmax(4.5em, max-content) minmax(0, 1fr) auto 4.2em;
+    column-gap: 14px;
+    row-gap: 2px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .lilt-slope__rows > li {
+    display: grid;
+    grid-column: 1 / -1;
+    grid-template-columns: subgrid;
+  }
+  .lilt-slope__row {
+    display: grid;
+    grid-column: 1 / -1;
+    grid-template-columns: subgrid;
+    align-items: center;
+    width: 100%;
+    height: 34px;
+    padding: 0 6px;
+    margin: 0 -6px;
+    border: 0;
+    border-radius: 8px;
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+    transition:
+      background-color var(--lilt-duration-quick) ease,
+      opacity var(--lilt-duration-quick) ease;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .lilt-slope__row[data-active] {
+    background: color-mix(in srgb, var(--lilt-slope-ink) 8%, transparent);
+  }
+  .lilt-slope__row[data-muted] {
+    opacity: 0.45;
+  }
+  .lilt-slope__row:focus-visible {
+    outline: 2px solid var(--lilt-focus);
+    outline-offset: 1px;
+  }
+  .lilt-slope__row .lilt-slope__label {
+    min-width: 0;
+    overflow: hidden;
+    font-size: 13px;
+    font-weight: 500;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .lilt-slope__track {
+    position: relative;
+    height: 12px;
+    margin: 0 6px;
+  }
+  .lilt-slope__track::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    right: -6px;
+    left: -6px;
+    height: 1px;
+    background: var(--lilt-grid);
+  }
+  .lilt-slope__gap {
+    position: absolute;
+    top: 50%;
+    height: 4px;
+    margin-top: -2px;
+    border-radius: 2px;
+    background: color-mix(in srgb, var(--lilt-slope-ink) 55%, transparent);
+  }
+  .lilt-slope__dot {
+    position: absolute;
+    top: 50%;
+    width: 10px;
+    height: 10px;
+    margin: -5px 0 0 -5px;
+    border-radius: 50%;
+    box-sizing: border-box;
+    background: var(--lilt-slope-ink);
+    box-shadow: 0 0 0 2px var(--lilt-surface);
+  }
+  .lilt-slope__dot[data-end='from'] {
+    border: 2px solid var(--lilt-slope-ink);
+    background: var(--lilt-surface);
+    box-shadow: none;
+  }
+  /* Depth dumbbells: a lit tube between two lit spheres, each with a soft shadow. */
+  .lilt-slope__rows[data-depth] .lilt-slope__gap {
+    height: 6px;
+    margin-top: -3px;
+    border-radius: 3px;
+    background: linear-gradient(
+      color-mix(in oklab, var(--lilt-slope-ink), black 6%),
+      color-mix(in oklab, var(--lilt-slope-ink), white 34%) 30%,
+      var(--lilt-slope-ink) 60%,
+      color-mix(in oklab, var(--lilt-slope-ink), black 38%)
+    );
+    box-shadow: 0 2px 3px rgb(0 0 0 / 0.28);
+  }
+  .lilt-slope__rows[data-depth] .lilt-slope__dot {
+    width: 13px;
+    height: 13px;
+    margin: -6.5px 0 0 -6.5px;
+    border: 0;
+    background: radial-gradient(
+      circle at 34% 28%,
+      color-mix(in oklab, var(--lilt-slope-ink), white 58%),
+      color-mix(in oklab, var(--lilt-slope-ink), white 18%) 26%,
+      var(--lilt-slope-ink) 58%,
+      color-mix(in oklab, var(--lilt-slope-ink), black 36%)
+    );
+    box-shadow: 0 2px 3px rgb(0 0 0 / 0.32);
+  }
+  .lilt-slope__rows[data-depth] .lilt-slope__dot[data-end='from'] {
+    width: 11px;
+    height: 11px;
+    margin: -5.5px 0 0 -5.5px;
+    opacity: 0.72;
+  }
+  .lilt-slope__value {
+    font-size: 13px;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    text-align: right;
+    white-space: nowrap;
+  }
+  .lilt-slope__change {
+    color: var(--lilt-slope-ink);
+    font-size: 12px;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    text-align: right;
+    white-space: nowrap;
+  }
+}

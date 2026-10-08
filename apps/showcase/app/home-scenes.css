@@ -1,0 +1,108 @@
+/* Home interactions and collection use the charts themselves as the visual content. */
+.lilt-story-overline {
+  margin: 0;
+  color: var(--muted-foreground);
+  font-size: 13px;
+  font-weight: 550;
+}
+.lilt-story > .lilt-story-theatre {
+  overflow-anchor: none;
+  padding-block: 64px 24px;
+}
+.lilt-theatre-stage {
+  display: grid;
+  min-height: 380px;
+  align-content: center;
+  gap: 24px;
+}
+.lilt-theatre-stage[data-paired] {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.lilt-theatre-stage > * {
+  min-width: 0;
+}
+.lilt-theatre-caption {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 24px;
+  margin-top: 20px;
+  color: var(--muted-foreground);
+  font-size: 13px;
+  line-height: 1.6;
+}
+.lilt-theatre-caption p {
+  margin: 0;
+}
+.lilt-theatre-caption .lilt-story-link {
+  flex: none;
+  font-size: 13px;
+}
+/* The number is the headline. The live plot sits against its lower edge. */
+.lilt-story > .lilt-story-band {
+  padding-block: 136px 120px;
+}
+.lilt-story-band__head {
+  text-align: center;
+}
+.lilt-story-band__number {
+  margin: 32px 0 12px;
+  color: var(--brand-primary);
+  font-size: clamp(68px, 14vw, 184px);
+  font-weight: 550;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.075em;
+  line-height: 1;
+}
+.lilt-story-band__number .lilt-number {
+  --lilt-number-fade: 0.06em;
+}
+.lilt-story-band__chart {
+  max-width: 900px;
+  margin: 40px auto 0;
+}
+.lilt-story-band__foot {
+  display: flex;
+  max-width: 900px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  margin: 28px auto 0;
+}
+.lilt-story-band__foot p {
+  margin: 0;
+  color: var(--muted-foreground);
+  font-size: 13px;
+  line-height: 1.7;
+}
+.lilt-story-band__foot .lilt-story-link {
+  flex: none;
+  font-size: 13px;
+}
+
+/* The next card remains visible at the edge. Browsing is manual, including on touch. */
+.lilt-story > .lilt-story-collection {
+  padding-block: 24px 96px;
+}
+@media (max-width: 720px) {
+  .lilt-story > .lilt-story-theatre {
+    padding-block: 40px 24px;
+  }
+  .lilt-theatre-stage[data-paired] {
+    min-height: 0;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 16px;
+  }
+  .lilt-theatre-caption,
+  .lilt-story-band__foot {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  .lilt-story > .lilt-story-band {
+    padding-block: 88px;
+  }
+  .lilt-story > .lilt-story-collection {
+    padding-bottom: 64px;
+  }
+}

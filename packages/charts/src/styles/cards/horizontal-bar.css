@@ -1,0 +1,399 @@
+@layer lilt {
+  .lilt-list__rows[data-style='lollipop'] .lilt-list__bar-area {
+    height: 44px;
+    align-items: flex-start;
+    margin-inline: 5px;
+  }
+  .lilt-list__rows[data-style='lollipop'] .lilt-list__bar {
+    top: 34px;
+    bottom: auto;
+    height: 2px;
+    background: var(--lilt-series-1);
+  }
+  .lilt-list__rows[data-style='lollipop'] .lilt-list__bar::after {
+    content: '';
+    position: absolute;
+    right: -5px;
+    top: -4px;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--lilt-series-1);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--lilt-series-1) 15%, transparent);
+  }
+  .lilt-list__rows[data-style='lollipop'] .lilt-list__bar[data-negative]::after {
+    right: auto;
+    left: -5px;
+  }
+  /* Horizontal bar card. Rows share one column grid (subgrid) so every bar is measured against
+   the same width, whatever the length of its value text. */
+  .lilt-list__rows {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    column-gap: 14px;
+    row-gap: 6px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    position: relative;
+  }
+  .lilt-list__rows[data-share] {
+    grid-template-columns: minmax(0, 1fr) auto 3.2em;
+  }
+  .lilt-list__rows[data-rank] {
+    grid-template-columns: 1.4em minmax(0, 1fr) auto;
+  }
+  .lilt-list__rows[data-rank][data-share] {
+    grid-template-columns: 1.4em minmax(0, 1fr) auto 3.2em;
+  }
+  .lilt-list__rows > li {
+    display: grid;
+    grid-column: 1 / -1;
+    grid-template-columns: subgrid;
+  }
+  /* A leaving row is lifted out of the grid while it fades (popLayout), so it keeps the list's
+     columns from a copy taken when the rows last changed. */
+  .lilt-list__rows > li[data-motion-pop-id] {
+    grid-template-columns: var(--lilt-list-columns, subgrid);
+    column-gap: inherit;
+    pointer-events: none;
+  }
+  .lilt-list__row {
+    display: grid;
+    grid-column: 1 / -1;
+    grid-template-columns: subgrid;
+    align-items: center;
+    width: 100%;
+    padding: 0;
+    border: 0;
+    border-radius: 8px;
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .lilt-list__row:focus-visible {
+    outline: 2px solid var(--lilt-focus);
+    outline-offset: 3px;
+  }
+  .lilt-list__rank {
+    color: var(--lilt-muted);
+    font-size: 12px;
+    font-weight: 500;
+    font-variant-numeric: tabular-nums;
+  }
+  .lilt-list__bar-area {
+    position: relative;
+    display: flex;
+    align-items: center;
+    min-width: 0;
+    height: 34px;
+    border-radius: 8px;
+  }
+  .lilt-list__bar {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    border-radius: 8px;
+    background: color-mix(in srgb, var(--lilt-series-1) 20%, transparent);
+    transition:
+      background-color var(--lilt-duration-quick) ease,
+      opacity var(--lilt-duration-quick) ease;
+  }
+  .lilt-list__zero {
+    position: absolute;
+    top: -3px;
+    bottom: -3px;
+    width: 1px;
+    background: var(--lilt-border);
+  }
+  .lilt-list__label {
+    position: relative;
+    min-width: 0;
+    padding: 0 11px;
+    overflow: hidden;
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 18px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    transition: opacity var(--lilt-duration-quick) ease;
+  }
+  .lilt-list__value {
+    font-size: 13px;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    text-align: right;
+    white-space: nowrap;
+    transition: opacity var(--lilt-duration-quick) ease;
+  }
+  .lilt-list__share {
+    color: var(--lilt-muted);
+    font-size: 12px;
+    font-weight: 500;
+    font-variant-numeric: tabular-nums;
+    text-align: right;
+  }
+  .lilt-list__missing {
+    color: var(--lilt-muted);
+    font-weight: 500;
+  }
+  .lilt-list__rows > li[data-active] .lilt-list__bar {
+    background: color-mix(in srgb, var(--lilt-series-1) 34%, transparent);
+  }
+  .lilt-list__rows
+    > li[data-muted]
+    :is(.lilt-list__bar, .lilt-list__label, .lilt-list__value, .lilt-list__share) {
+    opacity: 0.45;
+  }
+  .lilt-list__rows > li[data-other] .lilt-list__bar {
+    background: color-mix(in srgb, var(--lilt-muted) 16%, transparent);
+  }
+  .lilt-list__rows > li[data-other] .lilt-list__label {
+    color: var(--lilt-muted);
+  }
+
+  /* Track style: the label reads first, a slim bar underneath. */
+  .lilt-list__rows[data-style='track'] {
+    row-gap: 12px;
+  }
+  .lilt-list__rows[data-style='track'] .lilt-list__bar-area {
+    align-items: flex-start;
+    height: 32px;
+  }
+  .lilt-list__rows[data-style='track'] .lilt-list__bar-area::before {
+    content: '';
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    height: 6px;
+    border-radius: 3px;
+    background: color-mix(in srgb, var(--lilt-muted) 12%, transparent);
+  }
+  .lilt-list__rows[data-style='track'] .lilt-list__bar {
+    top: auto;
+    bottom: 0;
+    height: 6px;
+    border-radius: 3px;
+    background: var(--lilt-series-1);
+  }
+  .lilt-list__rows[data-style='track'] li[data-active] .lilt-list__bar {
+    background: var(--lilt-series-1);
+  }
+  .lilt-list__rows[data-style='track'] li[data-other] .lilt-list__bar {
+    background: var(--lilt-muted);
+  }
+  .lilt-list__rows[data-style='track'] .lilt-list__label {
+    padding: 0;
+  }
+  .lilt-list__rows[data-style='track'] :is(.lilt-list__value, .lilt-list__share) {
+    align-self: start;
+    line-height: 18px;
+  }
+
+  /* Isometric style: the label reads first, a solid block underneath. The front ends at the
+     value; the roof and end recede up and to the right on the shared slope (8 of rise per 14 of
+     depth), so the roof skews 60.26° and the end 29.74°. */
+  .lilt-list__rows[data-style='isometric'] {
+    --lilt-list-depth: 9px;
+    --lilt-list-rise: calc(var(--lilt-list-depth) * 0.5714);
+    row-gap: 10px;
+  }
+  .lilt-list__rows[data-style='isometric'] .lilt-list__bar-area {
+    align-items: flex-start;
+    height: 42px;
+  }
+  .lilt-list__rows[data-style='isometric'] .lilt-list__bar {
+    --lilt-list-color: var(--lilt-series-1);
+    top: auto;
+    bottom: 0;
+    height: 14px;
+    border-radius: 0;
+    background: linear-gradient(
+      color-mix(in oklab, var(--lilt-list-color), white 12%),
+      var(--lilt-list-color) 45%,
+      color-mix(in oklab, var(--lilt-list-color), black 16%)
+    );
+  }
+  .lilt-list__rows[data-style='isometric'] .lilt-list__bar::before,
+  .lilt-list__rows[data-style='isometric'] .lilt-list__bar::after {
+    content: '';
+    position: absolute;
+  }
+  .lilt-list__rows[data-style='isometric'] .lilt-list__bar::before {
+    right: 0;
+    bottom: 100%;
+    left: 0;
+    height: var(--lilt-list-rise);
+    background: linear-gradient(
+      to right,
+      color-mix(in oklab, var(--lilt-list-color), white 40%),
+      color-mix(in oklab, var(--lilt-list-color), white 26%)
+    );
+    transform: skewX(-60.26deg);
+    transform-origin: bottom left;
+  }
+  .lilt-list__rows[data-style='isometric'] .lilt-list__bar::after {
+    top: 0;
+    bottom: 0;
+    left: 100%;
+    width: var(--lilt-list-depth);
+    background: linear-gradient(
+      color-mix(in oklab, var(--lilt-list-color), black 34%),
+      color-mix(in oklab, var(--lilt-list-color), black 50%)
+    );
+    transform: skewY(-29.74deg);
+    transform-origin: top left;
+  }
+  .lilt-list__rows[data-style='isometric'] li[data-active] .lilt-list__bar {
+    --lilt-list-color: color-mix(in oklab, var(--lilt-series-1), white 10%);
+  }
+  .lilt-list__rows[data-style='isometric'] li[data-other] .lilt-list__bar {
+    --lilt-list-color: color-mix(in oklab, var(--lilt-muted) 60%, var(--lilt-surface));
+  }
+  .lilt-list__rows[data-style='isometric'] .lilt-list__label {
+    padding: 0;
+  }
+  .lilt-list__rows[data-style='isometric'] :is(.lilt-list__value, .lilt-list__share) {
+    align-self: start;
+    line-height: 18px;
+  }
+
+  .lilt-list__skeleton {
+    grid-column: 1 / -1;
+    height: 34px;
+  }
+  .lilt-list__skeleton span {
+    display: block;
+    height: 100%;
+    border-radius: 8px;
+    background: color-mix(in srgb, var(--lilt-skeleton) 26%, transparent);
+  }
+
+  /* A row that changes rank blurs while it travels and lands sharp. Two identical keyframes
+     alternate so each re-rank restarts it. */
+  .lilt-list__rows > li[data-travel='0'] {
+    animation: lilt-list-travel-a 600ms cubic-bezier(0.23, 1, 0.32, 1);
+  }
+  .lilt-list__rows > li[data-travel='1'] {
+    animation: lilt-list-travel-b 600ms cubic-bezier(0.23, 1, 0.32, 1);
+  }
+  @keyframes lilt-list-travel-a {
+    0% {
+      filter: blur(0);
+    }
+    30% {
+      filter: blur(3px);
+    }
+    100% {
+      filter: blur(0);
+    }
+  }
+  @keyframes lilt-list-travel-b {
+    0% {
+      filter: blur(0);
+    }
+    30% {
+      filter: blur(3px);
+    }
+    100% {
+      filter: blur(0);
+    }
+  }
+  /* Rows that pass each other cross at different depths instead of clipping through: the
+     climbing row lifts over on an opaque backing with a soft shadow, the falling row sinks under
+     and dims. Both settle back as they land. */
+  .lilt-list__rows > li[data-pass] {
+    position: relative;
+    border-radius: 8px;
+  }
+  .lilt-list__rows > li[data-pass='over'] {
+    z-index: 2;
+  }
+  .lilt-list__rows > li[data-pass='under'] {
+    z-index: 0;
+  }
+  .lilt-list__rows > li[data-pass='over'][data-travel='0'] {
+    animation-name: lilt-list-over-a;
+  }
+  .lilt-list__rows > li[data-pass='over'][data-travel='1'] {
+    animation-name: lilt-list-over-b;
+  }
+  .lilt-list__rows > li[data-pass='under'][data-travel='0'] {
+    animation-name: lilt-list-under-a;
+  }
+  .lilt-list__rows > li[data-pass='under'][data-travel='1'] {
+    animation-name: lilt-list-under-b;
+  }
+  @keyframes lilt-list-over-a {
+    0%,
+    100% {
+      filter: blur(0);
+      scale: 1;
+      background-color: color-mix(in srgb, var(--lilt-surface) 0%, transparent);
+      box-shadow: 0 0 0 0 transparent;
+    }
+    12%,
+    70% {
+      background-color: var(--lilt-surface);
+    }
+    30% {
+      filter: blur(1.5px);
+      scale: 1.02;
+      box-shadow: 0 6px 18px -6px rgb(0 0 0 / 0.28);
+    }
+  }
+  @keyframes lilt-list-over-b {
+    0%,
+    100% {
+      filter: blur(0);
+      scale: 1;
+      background-color: color-mix(in srgb, var(--lilt-surface) 0%, transparent);
+      box-shadow: 0 0 0 0 transparent;
+    }
+    12%,
+    70% {
+      background-color: var(--lilt-surface);
+    }
+    30% {
+      filter: blur(1.5px);
+      scale: 1.02;
+      box-shadow: 0 6px 18px -6px rgb(0 0 0 / 0.28);
+    }
+  }
+  @keyframes lilt-list-under-a {
+    0%,
+    100% {
+      filter: blur(0);
+      scale: 1;
+      opacity: 1;
+    }
+    30% {
+      filter: blur(3px);
+      scale: 0.97;
+      opacity: 0.45;
+    }
+  }
+  @keyframes lilt-list-under-b {
+    0%,
+    100% {
+      filter: blur(0);
+      scale: 1;
+      opacity: 1;
+    }
+    30% {
+      filter: blur(3px);
+      scale: 0.97;
+      opacity: 0.45;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .lilt-list__rows > li[data-travel] {
+      animation: none;
+    }
+  }
+}

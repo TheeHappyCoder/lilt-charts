@@ -1,0 +1,11 @@
+@layer lilt {
+  /* A plot a finger can glide across: sideways swipes stay with the chart, vertical ones scroll
+     the page, and a long press reads a mark instead of selecting text or opening a menu. */
+  [data-lilt-glide] {
+    touch-action: pan-y pinch-zoom;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+}

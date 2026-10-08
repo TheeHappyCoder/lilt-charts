@@ -1,0 +1,81 @@
+:root {
+  --stagger-dur: 500ms;
+  --stagger-distance: 12px;
+  --stagger-blur: 3px;
+  --stagger-ease: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Transitions.dev text-reveal recipe; the helper supplies finite viewport orchestration. */
+.t-stagger-line {
+  display: block;
+  opacity: 0;
+  transform: translateY(var(--stagger-distance));
+  filter: blur(var(--stagger-blur));
+  transition:
+    opacity var(--stagger-dur) var(--stagger-ease),
+    transform var(--stagger-dur) var(--stagger-ease),
+    filter var(--stagger-dur) var(--stagger-ease);
+  will-change: transform, opacity, filter;
+}
+.t-stagger.is-shown .t-stagger-line {
+  opacity: 1;
+  transform: translateY(0);
+  filter: blur(0);
+}
+@media (prefers-reduced-motion: reduce) {
+  .t-stagger-line {
+    transition: none !important;
+  }
+}
+
+.lilt-blur-fade {
+  min-width: 0;
+}
+span.lilt-blur-fade {
+  display: inline-block;
+  vertical-align: top;
+}
+.lilt-blur-fade > .t-stagger-line {
+  transition: none;
+  will-change: auto;
+}
+.lilt-blur-fade[data-reveal='entering'] > .t-stagger-line {
+  will-change: transform, opacity, filter;
+  animation: lilt-blur-fade-in var(--stagger-dur) var(--stagger-ease) var(--lilt-reveal-delay, 0ms)
+    backwards;
+}
+.lilt-blur-fade[data-reveal='settled'] > .t-stagger-line {
+  will-change: auto;
+  filter: none;
+  transform: none;
+}
+@keyframes lilt-blur-fade-in {
+  from {
+    opacity: 0;
+    filter: blur(var(--stagger-blur));
+    transform: translateY(var(--stagger-distance));
+  }
+  to {
+    opacity: 1;
+    filter: blur(0);
+    transform: translateY(0);
+  }
+}
+/* Content is visible without JS; reduced motion also reveals any pending scroll blocks. */
+@media (prefers-reduced-motion: reduce) {
+  .lilt-blur-fade > .t-stagger-line {
+    animation: none !important;
+    opacity: 1 !important;
+    filter: none !important;
+    transform: none !important;
+    will-change: auto;
+  }
+}
+@media print {
+  .lilt-blur-fade > .t-stagger-line {
+    animation: none !important;
+    opacity: 1 !important;
+    filter: none !important;
+    transform: none !important;
+  }
+}

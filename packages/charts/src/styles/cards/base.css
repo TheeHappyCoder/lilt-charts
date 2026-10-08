@@ -1,0 +1,281 @@
+@layer lilt {
+  /* Card surface shared by every Lilt card. */
+  .lilt-card {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: var(--lilt-card-padding, 20px);
+    border: 1px solid var(--lilt-card-border, var(--lilt-border));
+    border-radius: var(--lilt-card-radius, 24px);
+    background: var(--lilt-card-background, var(--lilt-surface));
+    color: var(--lilt-text);
+    min-width: 0;
+  }
+  .lilt-card__header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    min-width: 0;
+  }
+  .lilt-card__heading {
+    display: grid;
+    gap: 4px;
+    min-width: 0;
+  }
+  .lilt-card__aside {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    gap: 8px;
+  }
+  .lilt-card__title {
+    margin: 0;
+    color: var(--lilt-muted);
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 18px;
+  }
+  /* One line, always: hover captions replace the change chip in place and truncate rather than
+     wrap, so the header never changes height and the chart never moves under the pointer. */
+  .lilt-card__value-row {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    gap: 10px;
+    min-width: 0;
+    min-height: 34px;
+  }
+  .lilt-card__value-row > * {
+    flex-shrink: 0;
+  }
+  .lilt-card__value {
+    font-size: 28px;
+    font-weight: 600;
+    line-height: 34px;
+    letter-spacing: -0.025em;
+    font-variant-numeric: tabular-nums;
+  }
+  .lilt-card__skeleton {
+    display: block;
+    width: 120px;
+    height: 26px;
+    border-radius: 8px;
+    background: color-mix(in srgb, var(--lilt-skeleton) 40%, transparent);
+  }
+  .lilt-card__delta {
+    display: inline-flex;
+    align-items: center;
+    height: 22px;
+    padding: 0 8px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    color: var(--lilt-muted);
+    background: color-mix(in srgb, var(--lilt-muted) 14%, transparent);
+  }
+  .lilt-card__delta[data-tone='positive'] {
+    color: var(--lilt-positive);
+    background: color-mix(in srgb, var(--lilt-positive) 15%, transparent);
+  }
+  .lilt-card__delta[data-tone='negative'] {
+    color: var(--lilt-negative);
+    background: color-mix(in srgb, var(--lilt-negative) 15%, transparent);
+  }
+  .lilt-card__value-row > .lilt-card__caption {
+    flex-shrink: 1;
+  }
+  .lilt-card__caption {
+    min-width: 0;
+    overflow: hidden;
+    color: var(--lilt-muted);
+    font-size: 13px;
+    font-weight: 500;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .lilt-card__range {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    height: 30px;
+    padding: 0 12px;
+    border: 0;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--lilt-text) 6%, transparent);
+    color: var(--lilt-text);
+    font-size: 12px;
+    font-weight: 500;
+    white-space: nowrap;
+  }
+  .lilt-card__chart {
+    margin: 0 -4px;
+    width: auto;
+  }
+  .lilt-card__tiles.lilt-chart__legend[data-variant='cards'] {
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 88px), 1fr));
+  }
+  .lilt-card__tiles .lilt-chart__legend-toggle {
+    cursor: default;
+  }
+  .lilt-card__skeleton--tile {
+    display: inline-block;
+    width: 64px;
+    height: 16px;
+    border-radius: 5px;
+    vertical-align: middle;
+  }
+  .lilt-card__action {
+    height: 30px;
+    padding: 0 12px;
+    border: 0;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--lilt-text) 6%, transparent);
+    color: var(--lilt-text);
+    font: inherit;
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+  }
+  .lilt-card__action:hover {
+    background: color-mix(in srgb, var(--lilt-text) 10%, transparent);
+  }
+  .lilt-card__action:focus-visible {
+    outline: 2px solid var(--lilt-focus);
+    outline-offset: 2px;
+  }
+
+  /* Card surfaces */
+  .lilt-card[data-surface='outline'] {
+    background: transparent;
+  }
+  .lilt-card[data-surface='ghost'] {
+    --lilt-card-padding: 0px;
+    border-color: transparent;
+    background: transparent;
+    box-shadow: none;
+  }
+  /* Lines and areas run to the card edges; axis labels keep their own inset. */
+  .lilt-card__chart.lilt-card__chart--bleed {
+    margin-inline: calc(var(--lilt-card-padding, 20px) * -1);
+  }
+
+  /* Card badge: a glass tab whose lower edge tucks behind the card. The frame stretches the card
+     to fill a grid cell, so badged cards in a row stay level. */
+  .lilt-card-frame {
+    position: relative;
+    display: grid;
+    grid-template-rows: auto 1fr;
+    isolation: isolate;
+  }
+  .lilt-card-frame:not([data-tabbed]) {
+    grid-template-rows: 1fr;
+  }
+  .lilt-card-frame > .lilt-card {
+    position: relative;
+    z-index: 1;
+  }
+  .lilt-card-frame[data-tabbed] > .lilt-card {
+    margin-top: -12px;
+  }
+  .lilt-card-badge {
+    display: flex;
+    width: auto;
+    min-width: 0;
+    min-height: 56px;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-inline: 14px;
+    padding: 6px 8px 18px 14px;
+    border: 1px solid color-mix(in srgb, var(--lilt-text) 10%, transparent);
+    border-radius: 20px 20px 0 0;
+    background: linear-gradient(
+      145deg,
+      color-mix(in srgb, var(--lilt-text) 8%, transparent),
+      color-mix(in srgb, var(--lilt-text) 4%, transparent)
+    );
+    box-shadow: inset 0 1px 0 color-mix(in srgb, var(--lilt-text) 4%, transparent);
+    color: var(--lilt-text);
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 20px;
+    -webkit-backdrop-filter: blur(12px) saturate(1.15);
+    backdrop-filter: blur(12px) saturate(1.15);
+  }
+  /* A ghost card has no body for a tab to tuck behind, so the badge stands on its own: a glass
+     bar, rounded all round, with the card's content a step below it. */
+  .lilt-card-frame[data-tabbed][data-surface='ghost'] {
+    row-gap: 14px;
+  }
+  .lilt-card-frame[data-tabbed][data-surface='ghost'] > .lilt-card {
+    margin-top: 0;
+  }
+  .lilt-card-frame[data-surface='ghost'] > .lilt-card-badge {
+    min-height: 40px;
+    margin-inline: 0;
+    padding: 4px 4px 4px 14px;
+    border-radius: 999px;
+  }
+  .lilt-card-badge__hint {
+    color: var(--lilt-muted);
+  }
+  /* A range comparison read out in the tab: range, change, and a clear control. */
+  .lilt-card-badge__comparison {
+    display: flex;
+    min-width: 0;
+    align-items: center;
+    gap: 8px;
+  }
+  .lilt-card-badge__range {
+    min-width: 0;
+    overflow: hidden;
+    color: var(--lilt-muted);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .lilt-card-badge__change {
+    flex: none;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+  .lilt-card-badge__comparison .lilt-card__delta {
+    flex: none;
+  }
+  .lilt-card-badge__clear {
+    display: grid;
+    flex: none;
+    width: 28px;
+    height: 28px;
+    place-items: center;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: transparent;
+    color: var(--lilt-muted);
+    cursor: pointer;
+  }
+  .lilt-card-badge__clear:hover {
+    background: color-mix(in srgb, var(--lilt-text) 6%, transparent);
+    color: var(--lilt-text);
+  }
+  .lilt-card-badge__clear:focus-visible {
+    outline: 2px solid var(--lilt-focus);
+    outline-offset: 2px;
+  }
+  .lilt-card-badge__clear svg {
+    width: 14px;
+    height: 14px;
+  }
+  /* Point rings match the surface they sit on. */
+  .lilt-card[data-surface='elevated'] {
+    border-color: var(--lilt-card-edge);
+    background: var(--lilt-card-raised);
+    box-shadow:
+      inset 0 1px 0 var(--lilt-card-highlight),
+      var(--lilt-card-shadow);
+    --lilt-point-ring: var(--lilt-card-raised);
+  }
+}

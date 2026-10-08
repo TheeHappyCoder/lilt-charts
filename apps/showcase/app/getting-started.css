@@ -1,0 +1,159 @@
+/* Getting started: numbered steps on one line down the page, then where to go next. */
+.lilt-steps {
+  display: grid;
+  gap: 0;
+  max-width: 820px;
+  margin: 24px 0 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: lilt-step;
+}
+.lilt-step {
+  position: relative;
+  display: grid;
+  grid-template-columns: 32px minmax(0, 1fr);
+  gap: 20px;
+  padding-bottom: 56px;
+  counter-increment: lilt-step;
+}
+/* The line joining each marker to the next; the last step ends it. */
+.lilt-step::before {
+  position: absolute;
+  top: 40px;
+  bottom: 8px;
+  left: 15.5px;
+  width: 1px;
+  background: linear-gradient(
+    to bottom,
+    color-mix(in srgb, var(--foreground) 14%, transparent),
+    color-mix(in srgb, var(--foreground) 6%, transparent)
+  );
+  content: '';
+}
+.lilt-step:last-child {
+  padding-bottom: 0;
+}
+.lilt-step:last-child::before {
+  display: none;
+}
+.lilt-step__marker {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border: 1px solid color-mix(in srgb, var(--brand-primary) 35%, var(--border));
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--brand-primary) 9%, var(--surface));
+  color: var(--brand-primary);
+  font-size: 13px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+.lilt-step__marker::before {
+  content: counter(lilt-step);
+}
+.lilt-step__body {
+  display: grid;
+  align-content: start;
+  gap: 14px;
+  min-width: 0;
+}
+.lilt-docs .lilt-step__body h2 {
+  font-size: 19px;
+  line-height: 32px;
+  letter-spacing: -0.02em;
+}
+.lilt-start .lilt-step__body :not(pre) > code {
+  white-space: nowrap;
+}
+
+/* The framework tabs share the install command's frame; the file name sits beside them. */
+.lilt-frameworks__file {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  color: var(--muted-foreground);
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 12px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.lilt-frameworks .lilt-tab-panel {
+  min-height: 0;
+  padding-top: 0;
+}
+.lilt-frameworks .lilt-code-block {
+  margin: 0;
+  padding: 16px 18px;
+  overflow-x: auto;
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 12.5px;
+  line-height: 1.7;
+}
+
+.lilt-steps-next {
+  display: grid;
+  gap: 14px;
+  max-width: 820px;
+  margin-top: 80px;
+  padding-top: 32px;
+  border-top: 1px solid color-mix(in srgb, var(--foreground) 8%, transparent);
+}
+.lilt-docs .lilt-steps-next h2 {
+  font-size: 14px;
+  color: var(--muted-foreground);
+  font-weight: 500;
+  letter-spacing: 0;
+}
+.lilt-steps-next ul {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.lilt-docs a.lilt-steps-next__link {
+  display: grid;
+  gap: 4px;
+  height: 100%;
+  padding: 14px 16px;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: var(--surface);
+  color: var(--foreground);
+  text-decoration: none;
+  transition: border-color 160ms ease;
+}
+.lilt-docs a.lilt-steps-next__link:hover {
+  border-color: color-mix(in srgb, var(--brand-primary) 40%, var(--border));
+}
+.lilt-docs a.lilt-steps-next__link:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+.lilt-steps-next__title {
+  font-size: 14.5px;
+  font-weight: 600;
+}
+.lilt-steps-next__description {
+  color: var(--muted-foreground);
+  font-size: 13px;
+  line-height: 19px;
+}
+
+@container (max-width: 560px) {
+  .lilt-step {
+    grid-template-columns: 26px minmax(0, 1fr);
+    gap: 14px;
+  }
+  .lilt-step__marker {
+    width: 26px;
+    height: 26px;
+    font-size: 12px;
+  }
+  .lilt-step::before {
+    top: 34px;
+    left: 12.5px;
+  }
+}

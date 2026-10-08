@@ -1,0 +1,232 @@
+@layer lilt {
+  /* Heatmap card: cells colored by value; hovering one lights its row and column. */
+  .lilt-heatmap-card {
+    container-type: inline-size;
+  }
+  /* A native table for its semantics, laid out as a grid so labels size to their text. */
+  .lilt-heatmap-card__grid {
+    display: grid;
+    grid-template-columns: fit-content(40%) repeat(var(--lilt-heatmap-card-columns), minmax(0, 1fr));
+    gap: var(--lilt-heatmap-card-gap);
+    width: 100%;
+  }
+  .lilt-heatmap-card__grid :is(tbody, tfoot, tr) {
+    display: contents;
+  }
+  .lilt-heatmap-card__grid :where(th, td) {
+    min-width: 0;
+    padding: 0;
+  }
+  .lilt-heatmap-card__row-label,
+  .lilt-heatmap-card__column-label {
+    color: var(--lilt-muted);
+    font-size: 11px;
+    font-weight: 500;
+    line-height: 16px;
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+    transition: color var(--lilt-duration-quick) ease;
+  }
+  .lilt-heatmap-card__row-label {
+    align-self: center;
+    padding-right: 6px;
+    overflow: hidden;
+    text-align: left;
+    text-overflow: ellipsis;
+  }
+  .lilt-heatmap-card__column-label {
+    position: relative;
+    height: 16px;
+    padding: 0;
+  }
+  /* Labels center on their column and may run past it when columns are narrow. */
+  .lilt-heatmap-card__column-label > span {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  .lilt-heatmap-card__column-label[data-tier='hidden'] > span {
+    visibility: hidden;
+  }
+  .lilt-heatmap-card__row-label[data-active],
+  .lilt-heatmap-card__column-label[data-active] {
+    color: var(--lilt-text);
+  }
+  .lilt-heatmap-card__column-label[data-active] > span {
+    visibility: visible;
+  }
+  /* A thinned-out label shows while its column is active, and its neighbours make room. */
+  .lilt-heatmap-card__column-label[data-tier='hidden'][data-active]
+    + .lilt-heatmap-card__column-label
+    > span,
+  .lilt-heatmap-card__column-label:has(
+      + .lilt-heatmap-card__column-label[data-tier='hidden'][data-active]
+    )
+    > span {
+    visibility: hidden;
+  }
+  .lilt-heatmap-card__cell {
+    display: block;
+    width: 100%;
+    height: var(--lilt-heatmap-card-row);
+    padding: 0;
+    border: 0;
+    border-radius: var(--lilt-heatmap-card-radius);
+    background: color-mix(
+      in oklab,
+      var(--lilt-heatmap-card-color, var(--lilt-series-1)) var(--lilt-heatmap-card-strength, 0%),
+      transparent
+    );
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    transition:
+      background-color 420ms var(--lilt-ease-reveal) var(--lilt-heatmap-card-ripple, 0ms),
+      opacity var(--lilt-duration-quick) ease;
+    animation: lilt-heatmap-card-in 420ms var(--lilt-ease-reveal) backwards;
+    animation-delay: var(--lilt-heatmap-card-delay);
+  }
+  /* Missing cells are hatched, never a pale fill that could pass for a low value. */
+  .lilt-heatmap-card__cell[data-missing],
+  .lilt-heatmap-card__swatch {
+    background: repeating-linear-gradient(
+      135deg,
+      transparent 0 3px,
+      color-mix(in srgb, var(--lilt-muted) 34%, transparent) 3px 4px
+    );
+    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--lilt-muted) 24%, transparent);
+  }
+  .lilt-heatmap-card__cell[data-muted] {
+    opacity: 0.32;
+  }
+  /* Depth: every cell is a low tile of one height, lit like the 3D bars. Its face is a solid
+     tint of the cell's own color on the card, so pale tiles stay pale rather than grey; a thin
+     edge in a darker shade of the same tint stands it on the card. Color alone carries the
+     value: every tile has the same light, edge and height. */
+  .lilt-heatmap-card__grid[data-depth] {
+    --lilt-heatmap-card-base: var(--lilt-card-background, var(--lilt-surface));
+    /* Rows keep their gap clear of the edge each tile stands on. */
+    row-gap: calc(var(--lilt-heatmap-card-gap) + 2px);
+  }
+  .lilt-card[data-surface='elevated'] .lilt-heatmap-card__grid[data-depth] {
+    --lilt-heatmap-card-base: var(--lilt-card-raised);
+  }
+  .lilt-heatmap-card__grid[data-depth] .lilt-heatmap-card__cell:not([data-missing]) {
+    --lilt-heatmap-card-face: color-mix(
+      in oklab,
+      var(--lilt-heatmap-card-color, var(--lilt-series-1)) var(--lilt-heatmap-card-strength, 0%),
+      var(--lilt-heatmap-card-base)
+    );
+    --lilt-heatmap-card-edge: color-mix(in oklab, var(--lilt-heatmap-card-face), black 17%);
+    background: linear-gradient(
+      color-mix(in oklab, var(--lilt-heatmap-card-face), white 14%),
+      var(--lilt-heatmap-card-face) 58%,
+      color-mix(in oklab, var(--lilt-heatmap-card-face), black 3%)
+    );
+    box-shadow:
+      inset 0 1px 0 rgb(255 255 255 / 0.22),
+      0 2px 0 var(--lilt-heatmap-card-edge),
+      0 3px 5px -2px rgb(0 0 0 / 0.22);
+    transition:
+      background-color 420ms var(--lilt-ease-reveal),
+      opacity var(--lilt-duration-quick) ease,
+      transform var(--lilt-duration-quick) var(--lilt-ease-reveal),
+      box-shadow var(--lilt-duration-quick) var(--lilt-ease-reveal);
+  }
+  .lilt-heatmap-card__grid[data-depth][data-motion='none'] .lilt-heatmap-card__cell {
+    transition: none;
+  }
+  /* The read tile rises a pixel on a taller edge. */
+  .lilt-heatmap-card__grid[data-depth] .lilt-heatmap-card__cell[data-active]:not([data-missing]) {
+    transform: translateY(-1px);
+    box-shadow:
+      inset 0 1px 0 rgb(255 255 255 / 0.3),
+      0 3px 0 var(--lilt-heatmap-card-edge),
+      0 5px 8px -3px rgb(0 0 0 / 0.3);
+  }
+  .lilt-heatmap-card__cell[data-active] {
+    outline: 1.5px solid color-mix(in srgb, var(--lilt-text) 72%, transparent);
+    outline-offset: 1.5px;
+  }
+  .lilt-heatmap-card__cell:focus-visible {
+    outline: 2px solid var(--lilt-focus);
+    outline-offset: 2px;
+  }
+  .lilt-heatmap-card__grid[data-motion='none'] .lilt-heatmap-card__cell,
+  .lilt-heatmap-card__grid[data-motion='none'] th {
+    animation: none;
+    transition: none;
+  }
+  /* The placeholder shares the grid's layout; the card's own gap separates grid and footer. */
+  .lilt-heatmap-card__placeholder {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .lilt-heatmap-card__skeleton {
+    display: block;
+    height: var(--lilt-heatmap-card-row);
+    border-radius: var(--lilt-heatmap-card-radius);
+    background: color-mix(in srgb, var(--lilt-skeleton) 26%, transparent);
+  }
+  .lilt-heatmap-card__placeholder .lilt-heatmap-card__ramp {
+    background: color-mix(in srgb, var(--lilt-skeleton) 26%, transparent);
+  }
+  .lilt-heatmap-card__footer {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 8px 16px;
+    color: var(--lilt-muted);
+    font-size: 11px;
+    font-weight: 500;
+    line-height: 16px;
+    min-height: 16px;
+    font-variant-numeric: tabular-nums;
+  }
+  .lilt-heatmap-card__key,
+  .lilt-heatmap-card__scale {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .lilt-heatmap-card__key {
+    margin-right: auto;
+  }
+  .lilt-heatmap-card__swatch {
+    width: 12px;
+    height: 12px;
+    border-radius: 3px;
+  }
+  .lilt-heatmap-card__ramp {
+    width: 72px;
+    height: 8px;
+    border-radius: 4px;
+    background: linear-gradient(
+      to right,
+      color-mix(in oklab, var(--lilt-heatmap-card-color, var(--lilt-series-1)) 12%, transparent),
+      color-mix(in oklab, var(--lilt-heatmap-card-color, var(--lilt-series-1)) 95%, transparent)
+    );
+  }
+  @keyframes lilt-heatmap-card-in {
+    from {
+      opacity: 0;
+      transform: scale(0.8);
+      filter: blur(6px);
+    }
+  }
+  /* Narrow cards keep every other thinned label, so the axis never crowds. */
+  @container (max-width: 480px) {
+    .lilt-heatmap-card__column-label[data-tier='minor']:not([data-active]) > span,
+    .lilt-heatmap-card__column-label[data-tier='minor'][data-active]
+      + .lilt-heatmap-card__column-label
+      > span,
+    .lilt-heatmap-card__column-label:has(
+        + .lilt-heatmap-card__column-label[data-tier='minor'][data-active]
+      )
+      > span {
+      visibility: hidden;
+    }
+  }
+}

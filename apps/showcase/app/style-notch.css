@@ -1,0 +1,443 @@
+/* A quiet edge notch. The settings panel borrows the page surface and never moves the controls. */
+.lilt-style-notch {
+  --lilt-style-ink: #f4f4f2;
+  --lilt-style-muted: rgb(244 244 242 / 0.62);
+  --lilt-style-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  position: absolute;
+  z-index: 30;
+  top: clamp(72px, calc(50% - 300px), 176px);
+  right: 0;
+  width: 48px;
+  height: 0;
+  pointer-events: none;
+}
+.lilt-style-notch__shape {
+  position: absolute;
+  top: 0;
+  right: 0;
+  overflow: visible;
+  pointer-events: none;
+}
+.lilt-style-notch__fill {
+  fill: var(--lilt-shell-outside);
+}
+.lilt-style-notch__stroke {
+  fill: none;
+  /* The translucent border reads lighter over the sheet than over the frame, so the outline uses
+     the colour the border lands as. */
+  stroke: var(--lilt-shell-stroke-solid, var(--lilt-shell-stroke));
+  stroke-width: 1px;
+}
+.lilt-style-notch__quick-controls {
+  position: absolute;
+  right: 0;
+  display: grid;
+  width: 48px;
+  justify-items: center;
+  gap: 0;
+  pointer-events: auto;
+}
+.lilt-style-notch__quick,
+.lilt-style-notch__gear {
+  display: grid;
+  width: 32px;
+  height: 32px;
+  place-items: center;
+  padding: 0;
+  border: 0;
+  color: var(--lilt-style-muted);
+  cursor: pointer;
+  transition:
+    background 160ms ease,
+    color 160ms ease,
+    scale 200ms var(--lilt-style-ease);
+  -webkit-tap-highlight-color: transparent;
+}
+.lilt-style-notch__quick {
+  border-radius: 10px;
+  background: transparent;
+}
+.lilt-style-notch__quick[data-active] {
+  background: rgb(255 255 255 / 0.09);
+  color: var(--lilt-style-ink);
+}
+.lilt-style-notch__colors {
+  display: flex;
+  height: 20px;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+}
+.lilt-style-notch__colors i {
+  width: 4px;
+  height: 12px;
+  border-radius: 3px;
+  background: var(--lilt-series-1);
+}
+.lilt-style-notch__colors i:nth-child(2) {
+  height: 19px;
+  background: var(--lilt-series-2);
+}
+.lilt-style-notch__colors i:nth-child(3) {
+  height: 15px;
+  background: var(--lilt-series-3);
+}
+/* The gear lives inside the notch, under a hairline that separates the settings from the quick
+   controls above it. */
+.lilt-style-notch__gear-slot {
+  position: absolute;
+  right: 8px;
+  width: 32px;
+  height: 32px;
+  pointer-events: auto;
+}
+.lilt-style-notch__gear-slot::before {
+  position: absolute;
+  top: -5px;
+  left: 8px;
+  width: 16px;
+  height: 1px;
+  background: rgb(255 255 255 / 0.1);
+  content: '';
+}
+.lilt-style-notch__gear {
+  position: relative;
+  border-radius: 10px;
+  background: transparent;
+}
+.lilt-style-notch__gear[aria-expanded='true'] {
+  color: var(--lilt-style-ink);
+  background: rgb(255 255 255 / 0.09);
+}
+.lilt-style-notch__changed {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--lilt-style-ink);
+  box-shadow: 0 0 0 2px var(--lilt-shell-outside);
+}
+@media (hover: hover) {
+  .lilt-style-notch__quick:hover {
+    background: rgb(255 255 255 / 0.09);
+    color: var(--lilt-style-ink);
+  }
+  .lilt-style-notch__gear:hover {
+    background: rgb(255 255 255 / 0.09);
+    color: var(--lilt-style-ink);
+  }
+}
+.lilt-style-notch__quick:active,
+.lilt-style-notch__gear:active {
+  scale: 0.94;
+}
+.lilt-style-notch__quick:focus-visible,
+.lilt-style-notch__gear:focus-visible {
+  outline: 2px solid var(--lilt-style-ink);
+  outline-offset: 2px;
+}
+
+/* The panel is independently scrollable; its heading and reset stay within reach. */
+.lilt-style-notch__panel {
+  position: absolute;
+  right: 64px;
+  display: flex;
+  width: 320px;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  background: var(--surface);
+  box-shadow:
+    0 4px 12px -4px rgb(0 0 0 / 0.1),
+    0 20px 60px -20px rgb(0 0 0 / 0.2);
+  color: var(--foreground);
+  transform-origin: right top;
+  pointer-events: none;
+}
+.lilt-style-notch[data-open] .lilt-style-notch__panel {
+  pointer-events: auto;
+}
+.lilt-style-notch__head {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: start;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 20px 18px 16px;
+}
+.lilt-style-notch__head h2 {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 650;
+  letter-spacing: -0.025em;
+  line-height: 1.3;
+}
+.lilt-style-notch__head p {
+  margin: 4px 0 0;
+  color: var(--muted-foreground);
+  font-size: 12px;
+  line-height: 1.4;
+}
+.lilt-style-notch__close {
+  display: grid;
+  width: 28px;
+  height: 28px;
+  place-items: center;
+  padding: 0;
+  margin: -3px -4px 0 0;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--muted-foreground);
+  cursor: pointer;
+  transition:
+    background 160ms ease,
+    color 160ms ease;
+}
+.lilt-style-notch__close:hover {
+  background: var(--hover);
+  color: var(--foreground);
+}
+.lilt-style-notch__scroll {
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 0 18px 12px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+}
+.lilt-style-notch__section + .lilt-style-notch__section {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+}
+.lilt-style-notch__section h3 {
+  margin: 0 0 10px;
+  color: var(--muted-foreground);
+  font-size: 11px;
+  font-weight: 550;
+  line-height: 1.4;
+}
+.lilt-style-notch__palettes {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 6px;
+}
+.lilt-style-notch__palette {
+  display: grid;
+  justify-items: center;
+  gap: 8px;
+  padding: 10px 4px 8px;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--foreground) 3%, transparent);
+  color: var(--muted-foreground);
+  font: inherit;
+  font-size: 11px;
+  cursor: pointer;
+  transition:
+    border-color 160ms ease,
+    background 160ms ease,
+    color 160ms ease;
+}
+.lilt-style-notch__palette .lilt-style-notch__colors i {
+  width: 6px;
+}
+.lilt-style-notch__palette .lilt-style-notch__colors[data-auto] i {
+  background: var(--muted-foreground);
+  opacity: 0.45;
+}
+.lilt-style-notch__palette[aria-pressed='true'] {
+  border-color: color-mix(in srgb, var(--foreground) 30%, transparent);
+  background: color-mix(in srgb, var(--foreground) 5%, transparent);
+  color: var(--foreground);
+}
+.lilt-style-notch__palette:hover {
+  color: var(--foreground);
+}
+.lilt-style-notch__themes {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 3px;
+  padding: 3px;
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--foreground) 4%, transparent);
+}
+.lilt-style-notch__themes button {
+  display: flex;
+  height: 30px;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 0 4px;
+  border: 0;
+  border-radius: 7px;
+  background: transparent;
+  color: var(--muted-foreground);
+  font: inherit;
+  font-size: 11.5px;
+  cursor: pointer;
+  transition:
+    background 160ms ease,
+    color 160ms ease,
+    box-shadow 160ms ease;
+}
+.lilt-style-notch__themes button[aria-pressed='true'] {
+  background: var(--surface);
+  box-shadow: 0 1px 4px rgb(0 0 0 / 0.08);
+  color: var(--foreground);
+}
+.lilt-style-notch__row {
+  display: flex;
+  min-height: 36px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.lilt-style-notch__row-label {
+  color: var(--foreground);
+  font-size: 12.5px;
+  text-decoration: none;
+}
+.lilt-style-notch__row-label:hover {
+  color: var(--muted-foreground);
+}
+.lilt-style-notch .lilt-style-notch__select {
+  width: auto;
+  min-width: 92px;
+  min-height: 28px;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 0 8px 0 10px;
+  border: 1px solid transparent;
+  border-radius: 7px;
+  background: color-mix(in srgb, var(--foreground) 3%, transparent);
+  color: var(--muted-foreground);
+  font-size: 12px;
+  font-weight: 450;
+}
+.lilt-style-notch .lilt-style-notch__select[data-changed] {
+  color: var(--foreground);
+}
+.lilt-style-notch .lilt-style-notch__select:hover {
+  border-color: var(--border);
+  background: var(--hover);
+}
+.lilt-style-notch__foot {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 18px;
+  border-top: 1px solid var(--border);
+  color: var(--muted-foreground);
+  font-size: 11px;
+}
+.lilt-style-notch__reset {
+  padding: 4px 0;
+  border: 0;
+  background: transparent;
+  color: var(--foreground);
+  font: inherit;
+  font-size: 11px;
+  font-weight: 550;
+  cursor: pointer;
+}
+.lilt-style-notch__reset:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+.lilt-style-notch__reset:hover:not(:disabled) {
+  text-decoration: underline;
+}
+.lilt-style-notch__panel :is(button, a):focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+@media (max-width: 767px) {
+  .lilt-style-notch {
+    display: none;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .lilt-style-notch *,
+  .lilt-style-notch *::before {
+    transition: none !important;
+  }
+}
+
+/* Downloads: a smaller swell poured up from the frame's bottom edge, near the right corner. */
+.lilt-downloads-notch {
+  position: absolute;
+  z-index: 30;
+  right: 36px;
+  bottom: 0;
+  pointer-events: none;
+}
+.lilt-downloads-notch__shape {
+  position: absolute;
+  inset: 0;
+  overflow: visible;
+}
+.lilt-downloads-notch__content {
+  position: absolute;
+  top: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  color: rgb(244 244 242 / 0.62);
+  font-size: 12px;
+  line-height: 16px;
+  pointer-events: auto;
+}
+.lilt-downloads-notch__link {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 40px;
+  border-radius: 10px;
+  color: inherit;
+  text-decoration: none;
+  transition: color 160ms ease;
+}
+.lilt-downloads-notch__divider {
+  flex: none;
+  width: 1px;
+  height: 14px;
+  background: rgb(244 244 242 / 0.2);
+}
+.lilt-downloads-notch .lilt-github-stars__total {
+  color: #f4f4f2;
+  font-size: 13px;
+}
+.lilt-downloads-notch__spark {
+  flex: none;
+}
+.lilt-downloads-notch__total {
+  color: #f4f4f2;
+  font-size: 13px;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}
+.lilt-downloads-notch__label {
+  letter-spacing: 0.02em;
+}
+@media (hover: hover) {
+  .lilt-downloads-notch__link:hover {
+    color: #f4f4f2;
+  }
+}
+.lilt-downloads-notch__link:focus-visible {
+  outline: 2px solid #f4f4f2;
+  outline-offset: 2px;
+}
+@media (prefers-reduced-motion: reduce) {
+  .lilt-downloads-notch__link {
+    transition: none;
+  }
+}

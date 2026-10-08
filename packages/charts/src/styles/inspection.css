@@ -1,0 +1,202 @@
+@layer lilt {
+  .lilt-chart__inspection {
+    position: absolute;
+    z-index: 3;
+    inset: 0 auto auto 0;
+    width: 100%;
+    height: var(--lilt-chart-height);
+    pointer-events: none;
+  }
+
+  .lilt-chart__inspection-svg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: var(--lilt-chart-height);
+    pointer-events: none;
+  }
+
+  .lilt-chart__inspection-marks {
+    pointer-events: none;
+  }
+
+  .lilt-chart__highlight {
+    opacity: 1;
+    pointer-events: none;
+  }
+
+  .lilt-chart__inspection-dot,
+  .lilt-chart__inspection-halo {
+    vector-effect: non-scaling-stroke;
+  }
+
+  .lilt-chart__inspection-halo {
+    fill: var(--lilt-series-1);
+    fill-opacity: 0.1;
+  }
+
+  .lilt-chart__crosshair {
+    opacity: 1;
+  }
+
+  /* The inspected column on a bar chart, tinted by the mark it holds and fading toward the top. */
+  .lilt-chart__hover-band {
+    pointer-events: none;
+  }
+  .lilt-chart__hover-band-stop {
+    stop-color: var(--lilt-hover-band-color);
+  }
+
+  /* Pills size to their text and share the axis label line. */
+  .lilt-chart__x-badge,
+  .lilt-chart__y-badge {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--lilt-axis-active);
+    box-shadow: 0 2px 8px rgb(23 47 32 / 0.1);
+    color: var(--lilt-axis-active-text);
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 18px;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+    width: auto;
+    min-width: 36px;
+    height: 24px;
+    padding: 0 9px;
+    border-radius: 999px;
+    transition:
+      background 160ms ease,
+      color 160ms ease;
+  }
+
+  [data-lilt-pill='soft'] .lilt-chart__x-badge,
+  [data-lilt-pill='soft'] .lilt-chart__y-badge {
+    background: color-mix(in srgb, var(--lilt-surface) 88%, var(--lilt-text));
+    box-shadow:
+      inset 0 0 0 1px color-mix(in srgb, var(--lilt-border) 80%, transparent),
+      0 4px 14px rgb(0 0 0 / 0.08);
+    color: var(--lilt-text);
+    backdrop-filter: blur(6px);
+  }
+
+  /* Accent: the soft glass, tinted by the series, with a colored hairline and no glow. */
+  [data-lilt-pill='accent'] .lilt-chart__x-badge,
+  [data-lilt-pill='accent'] .lilt-chart__y-badge {
+    --lilt-pill-tint: var(--lilt-pill-accent, var(--lilt-series-1));
+    background: color-mix(
+      in srgb,
+      var(--lilt-pill-tint) 14%,
+      color-mix(in srgb, var(--lilt-surface) 90%, var(--lilt-text))
+    );
+    box-shadow:
+      inset 0 0 0 1px color-mix(in srgb, var(--lilt-pill-tint) 38%, transparent),
+      0 4px 14px rgb(0 0 0 / 0.08);
+    color: color-mix(in srgb, var(--lilt-pill-tint) 62%, var(--lilt-text));
+    backdrop-filter: blur(6px);
+  }
+
+  /* The pin marker above a pinned crosshair: the same glass as the pills, and a way to release. */
+  .lilt-chart__pin {
+    position: absolute;
+    z-index: 5;
+    display: grid;
+    width: 24px;
+    height: 24px;
+    padding: 0;
+    place-items: center;
+    border: 0;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--lilt-surface) 88%, var(--lilt-text));
+    box-shadow:
+      inset 0 0 0 1px color-mix(in srgb, var(--lilt-border) 80%, transparent),
+      0 4px 14px rgb(0 0 0 / 0.1);
+    color: var(--lilt-text);
+    cursor: pointer;
+    pointer-events: auto;
+    backdrop-filter: blur(6px);
+    transition:
+      background 160ms ease,
+      color 160ms ease;
+  }
+  .lilt-chart__pin:hover {
+    background: color-mix(in srgb, var(--lilt-surface) 80%, var(--lilt-text));
+  }
+  .lilt-chart__pin:focus-visible {
+    outline: 2px solid var(--lilt-focus);
+    outline-offset: 2px;
+  }
+  [data-lilt-pill='solid'] .lilt-chart__pin {
+    background: var(--lilt-axis-active);
+    box-shadow: 0 2px 8px rgb(0 0 0 / 0.16);
+    color: var(--lilt-axis-active-text);
+  }
+  [data-lilt-pill='accent'] .lilt-chart__pin {
+    background: color-mix(
+      in srgb,
+      var(--lilt-series-1) 14%,
+      color-mix(in srgb, var(--lilt-surface) 90%, var(--lilt-text))
+    );
+    box-shadow:
+      inset 0 0 0 1px color-mix(in srgb, var(--lilt-series-1) 38%, transparent),
+      0 4px 14px rgb(0 0 0 / 0.08);
+    color: color-mix(in srgb, var(--lilt-series-1) 62%, var(--lilt-text));
+  }
+  /* A pin that arrived from a linked chart: the same pin as an outline, so the one that was
+     clicked stands out. */
+  .lilt-chart__pin[data-ghost] {
+    background: color-mix(in srgb, var(--lilt-surface) 55%, transparent);
+    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--lilt-text) 22%, transparent);
+    color: var(--lilt-muted);
+  }
+  .lilt-chart__pin[data-ghost]:hover {
+    background: color-mix(in srgb, var(--lilt-surface) 88%, var(--lilt-text));
+    color: var(--lilt-text);
+  }
+  .lilt-chart__pin-glyph {
+    grid-area: 1 / 1;
+    /* Even, so it sits on whole pixels in the 24px marker. */
+    width: 14px;
+    height: 14px;
+    transition:
+      opacity 160ms ease,
+      transform 200ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .lilt-chart__pin-glyph--release {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  .lilt-chart__pin:is(:hover, :focus-visible)
+    .lilt-chart__pin-glyph:not(.lilt-chart__pin-glyph--release) {
+    opacity: 0;
+    transform: scale(0.8) rotate(-12deg);
+  }
+  .lilt-chart__pin:is(:hover, :focus-visible) .lilt-chart__pin-glyph--release {
+    opacity: 1;
+    transform: none;
+  }
+
+  /* Names the series a y pill belongs to when a chart has several. */
+  .lilt-chart__pill-dot {
+    width: 7px;
+    height: 7px;
+    flex: 0 0 7px;
+    margin-right: 6px;
+    border-radius: 2.5px;
+    transition: background 160ms ease;
+  }
+  [data-lilt-pill='accent'] .lilt-chart__pill-dot {
+    display: none;
+  }
+
+  .lilt-chart__ruler-tick {
+    stroke: var(--lilt-text);
+    stroke-width: 1;
+    stroke-linecap: butt;
+  }
+  .lilt-chart__ruler-dot {
+    fill: var(--lilt-text);
+  }
+}

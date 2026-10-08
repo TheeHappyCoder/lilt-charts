@@ -1,0 +1,308 @@
+:root {
+  color-scheme: dark;
+  --film-bg: #0b0b0d;
+  --film-ink: #f4f4f6;
+  --film-muted: #8b8b94;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  width: var(--stage-w, 720px);
+  height: var(--stage-h, 720px);
+  overflow: hidden;
+  background: var(--film-bg);
+  color: var(--film-ink);
+  font-family: Manrope, system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+.film {
+  position: relative;
+  width: var(--stage-w, 720px);
+  height: var(--stage-h, 720px);
+  overflow: hidden;
+  background: var(--film-bg);
+}
+
+.film-camera {
+  position: absolute;
+  left: 0;
+  top: 0;
+  transform-origin: 0 0;
+}
+
+.film-cursor {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 50;
+  margin: -2px 0 0 -3px;
+  transform-origin: 3px 2px;
+  pointer-events: none;
+  filter: drop-shadow(0 2px 3px rgb(0 0 0 / 0.45));
+  will-change: transform;
+}
+
+/* A soft pool of light under the stage, so the wall sits on something. */
+.film-light {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(60% 46% at 50% 58%, rgb(124 92 255 / 0.13), transparent 70%),
+    radial-gradient(90% 70% at 50% 40%, rgb(255 255 255 / 0.035), transparent 70%);
+  pointer-events: none;
+}
+
+/* Captions ---------------------------------------------------------------------------------- */
+
+.film-caption {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 54px;
+  z-index: 30;
+  display: grid;
+  justify-items: center;
+  pointer-events: none;
+}
+
+.film-caption__scrim {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 230px;
+  background: linear-gradient(
+    to top,
+    rgb(11 11 13 / 0.94) 0%,
+    rgb(11 11 13 / 0.78) 45%,
+    transparent
+  );
+  opacity: 0;
+}
+
+.film-caption__mask {
+  grid-area: 1 / 1;
+  overflow: hidden;
+  padding: 4px 8px 8px;
+}
+
+.film-caption__line {
+  display: block;
+  font-size: 34px;
+  font-weight: 800;
+  letter-spacing: -0.035em;
+  line-height: 1.1;
+  color: var(--film-ink);
+  text-shadow: 0 2px 24px rgb(0 0 0 / 0.65);
+  visibility: hidden;
+}
+
+/* Code chip ----------------------------------------------------------------------------------- */
+
+.film-code {
+  position: absolute;
+  left: 50%;
+  bottom: 70px;
+  z-index: 30;
+  padding: 14px 20px;
+  border-radius: 16px;
+  background: rgb(22 22 26 / 0.92);
+  box-shadow:
+    inset 0 0 0 1px rgb(255 255 255 / 0.09),
+    0 18px 50px rgb(0 0 0 / 0.55);
+  font-family: 'Geist Mono', ui-monospace, monospace;
+  font-size: 19px;
+  white-space: nowrap;
+  color: #d6d6dc;
+  visibility: hidden;
+  backdrop-filter: blur(14px);
+}
+
+.film-code__tag {
+  color: #f4f4f6;
+}
+
+.film-code__attr {
+  color: #9b9ba6;
+}
+
+.film-code__value {
+  color: #c8b8ff;
+}
+
+.film-code__punct {
+  color: #6c6c76;
+}
+
+.film-code__token {
+  position: relative;
+  display: inline-block;
+  padding: 1px 7px;
+  margin: 0 -2px;
+  border-radius: 7px;
+  color: #fff;
+  background: rgb(124 92 255 / 0.32);
+  box-shadow: inset 0 0 0 1px rgb(160 136 255 / 0.55);
+  transition:
+    background-color 160ms ease,
+    color 160ms ease,
+    box-shadow 160ms ease;
+}
+
+.film-code[data-off] .film-code__token {
+  color: #6c6c76;
+  background: rgb(255 255 255 / 0.04);
+  box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.1);
+  text-decoration: line-through;
+  text-decoration-color: rgb(255 255 255 / 0.4);
+}
+
+/* End card ------------------------------------------------------------------------------------ */
+
+.film-end {
+  position: absolute;
+  inset: 0;
+  z-index: 40;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+}
+
+.film-end__veil {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(56% 46% at 50% 50%, rgb(11 11 13 / 0.86), rgb(11 11 13 / 0.55));
+  visibility: hidden;
+}
+
+.film-end__stack {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  text-align: center;
+}
+
+.film-end__stack > * {
+  visibility: hidden;
+}
+
+.film-end__mark {
+  margin-bottom: 22px;
+}
+
+.film-end__name {
+  font-size: 64px;
+  font-weight: 800;
+  letter-spacing: -0.045em;
+  line-height: 1;
+}
+
+.film-end__line {
+  margin-top: 14px;
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  color: #b4b4bd;
+}
+
+.film-end__install {
+  margin-top: 34px;
+  padding: 11px 18px;
+  border-radius: 999px;
+  background: rgb(255 255 255 / 0.06);
+  box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.1);
+  font-family: 'Geist Mono', ui-monospace, monospace;
+  font-size: 17px;
+  color: #e6e6ea;
+}
+
+.film-end__prompt {
+  color: #8f7bff;
+}
+
+.film-end__url {
+  margin-top: 16px;
+  font-size: 15px;
+  font-weight: 600;
+  color: #7d7d87;
+}
+
+.film-tilt {
+  position: absolute;
+  inset: 0;
+  perspective: 1100px;
+  perspective-origin: 50% 46%;
+}
+
+.film-tilt__plane {
+  position: absolute;
+  inset: 0;
+  transform-origin: 50% 50%;
+  transform-style: flat;
+}
+
+.film-kick {
+  position: absolute;
+  inset: 0;
+  transform-origin: 50% 46%;
+}
+
+/* Ticker ------------------------------------------------------------------------------------- */
+
+.film-ticker {
+  position: absolute;
+  left: 50%;
+  bottom: 30px;
+  z-index: 30;
+  padding: 12px 22px;
+  border-radius: 999px;
+  background: rgb(22 22 26 / 0.9);
+  box-shadow:
+    inset 0 0 0 1px rgb(255 255 255 / 0.1),
+    0 18px 50px rgb(0 0 0 / 0.45);
+  font-family: 'Geist Mono', ui-monospace, monospace;
+  font-size: 21px;
+  white-space: nowrap;
+  color: #e6e6ea;
+  visibility: hidden;
+  backdrop-filter: blur(14px);
+}
+
+.film-ticker__slot {
+  position: relative;
+  display: block;
+  height: 1.4em;
+  overflow: hidden;
+}
+
+.film-ticker__line {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  line-height: 1.4em;
+  white-space: pre;
+  visibility: hidden;
+}
+
+.film-ticker__tag {
+  color: inherit;
+  font-weight: 500;
+}
+
+.film-ticker__name {
+  color: #b9b9c2;
+}
+
+.film-ticker__punct {
+  color: #6c6c76;
+}
+
+.film-ticker__value {
+  color: #a994ff;
+}

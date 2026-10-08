@@ -1,0 +1,210 @@
+{
+  "numTotalTestSuites": 5,
+  "numPassedTestSuites": 5,
+  "numFailedTestSuites": 0,
+  "numPendingTestSuites": 0,
+  "numTotalTests": 17,
+  "numPassedTests": 17,
+  "numFailedTests": 0,
+  "numPendingTests": 0,
+  "numTodoTests": 0,
+  "snapshot": {
+    "added": 0,
+    "failure": false,
+    "filesAdded": 0,
+    "filesRemoved": 0,
+    "filesRemovedList": [],
+    "filesUnmatched": 0,
+    "filesUpdated": 0,
+    "matched": 0,
+    "total": 0,
+    "unchecked": 0,
+    "uncheckedKeysByFile": [],
+    "unmatched": 0,
+    "updated": 0,
+    "didUpdate": false
+  },
+  "startTime": 1790227363326,
+  "success": true,
+  "testResults": [
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": ["ScatterChart"],
+          "fullName": "ScatterChart baseline: keyboard can select and pin the first observation",
+          "status": "passed",
+          "title": "baseline: keyboard can select and pin the first observation",
+          "duration": 62.5616,
+          "failureMessages": [],
+          "meta": {},
+          "tags": []
+        },
+        {
+          "ancestorTitles": ["ScatterChart"],
+          "fullName": "ScatterChart publishes transient keyboard inspection",
+          "status": "passed",
+          "title": "publishes transient keyboard inspection",
+          "duration": 21.920499999999947,
+          "failureMessages": [],
+          "meta": {},
+          "tags": []
+        },
+        {
+          "ancestorTitles": ["ScatterChart"],
+          "fullName": "ScatterChart publishes an externally controlled selection",
+          "status": "passed",
+          "title": "publishes an externally controlled selection",
+          "duration": 21.95309999999995,
+          "failureMessages": [],
+          "meta": {},
+          "tags": []
+        },
+        {
+          "ancestorTitles": ["ScatterChart"],
+          "fullName": "ScatterChart publishes refreshed accepted values for the same pinned ID",
+          "status": "passed",
+          "title": "publishes refreshed accepted values for the same pinned ID",
+          "duration": 26.877099999999928,
+          "failureMessages": [],
+          "meta": {},
+          "tags": []
+        },
+        {
+          "ancestorTitles": ["ScatterChart"],
+          "fullName": "ScatterChart does not publish a committed pin before the controlled owner accepts it",
+          "status": "passed",
+          "title": "does not publish a committed pin before the controlled owner accepts it",
+          "duration": 9.881900000000087,
+          "failureMessages": [],
+          "meta": {},
+          "tags": []
+        },
+        {
+          "ancestorTitles": ["SankeyChart"],
+          "fullName": "SankeyChart baseline: keyboard can select and pin the first observation",
+          "status": "passed",
+          "title": "baseline: keyboard can select and pin the first observation",
+          "duration": 11.422200000000203,
+          "failureMessages": [],
+          "meta": {},
+          "tags": []
+        },
+        {
+          "ancestorTitles": ["SankeyChart"],
+          "fullName": "SankeyChart publishes transient keyboard inspection",
+          "status": "passed",
+          "title": "publishes transient keyboard inspection",
+          "duration": 7.184099999999944,
+          "failureMessages": [],
+          "meta": {},
+          "tags": []
+        },
+        {
+          "ancestorTitles": ["SankeyChart"],
+          "fullName": "SankeyChart publishes an externally controlled selection",
+          "status": "passed",
+          "title": "publishes an externally controlled selection",
+          "duration": 6.940900000000056,
+          "failureMessages": [],
+          "meta": {},
+          "tags": []
+        },
+        {
+          "ancestorTitles": ["SankeyChart"],
+          "fullName": "SankeyChart publishes refreshed accepted values for the same pinned ID",
+          "status": "passed",
+          "title": "publishes refreshed accepted values for the same pinned ID",
+          "duration": 11.283699999999953,
+          "failureMessages": [],
+          "meta": {},
+          "tags": []
+        },
+        {
+          "ancestorTitles": ["SankeyChart"],
+          "fullName": "SankeyChart does not publish a committed pin before the controlled owner accepts it",
+          "status": "passed",
+          "title": "does not publish a committed pin before the controlled owner accepts it",
+          "duration": 11.160300000000007,
+          "failureMessages": [],
+          "meta": {},
+          "tags": []
+        },
+        {
+          "ancestorTitles": ["RadarChart"],
+          "fullName": "RadarChart baseline: keyboard can select and pin the first observation",
+          "status": "passed",
+          "title": "baseline: keyboard can select and pin the first observation",
+          "duration": 19.826299999999947,
+          "failureMessages": [],
+          "meta": {},
+          "tags": []
+        },
+        {
+          "ancestorTitles": ["RadarChart"],
+          "fullName": "RadarChart publishes transient keyboard inspection",
+          "status": "passed",
+          "title": "publishes transient keyboard inspection",
+          "duration": 13.718099999999822,
+          "failureMessages": [],
+          "meta": {},
+          "tags": []
+        },
+        {
+          "ancestorTitles": ["RadarChart"],
+          "fullName": "RadarChart publishes an externally controlled selection",
+          "status": "passed",
+          "title": "publishes an externally controlled selection",
+          "duration": 9.451299999999947,
+          "failureMessages": [],
+          "meta": {},
+          "tags": []
+        },
+        {
+          "ancestorTitles": ["RadarChart"],
+          "fullName": "RadarChart publishes refreshed accepted values for the same pinned ID",
+          "status": "passed",
+          "title": "publishes refreshed accepted values for the same pinned ID",
+          "duration": 27.6545000000001,
+          "failureMessages": [],
+          "meta": {},
+          "tags": []
+        },
+        {
+          "ancestorTitles": ["RadarChart"],
+          "fullName": "RadarChart does not publish a committed pin before the controlled owner accepts it",
+          "status": "passed",
+          "title": "does not publish a committed pin before the controlled owner accepts it",
+          "duration": 10.581100000000106,
+          "failureMessages": [],
+          "meta": {},
+          "tags": []
+        },
+        {
+          "ancestorTitles": ["RadialProgress accepted refresh"],
+          "fullName": "RadialProgress accepted refresh retains 72 while loading a null replacement in the same context",
+          "status": "passed",
+          "title": "retains 72 while loading a null replacement in the same context",
+          "duration": 4.525600000000168,
+          "failureMessages": [],
+          "meta": {},
+          "tags": []
+        },
+        {
+          "ancestorTitles": ["RadialProgress accepted refresh"],
+          "fullName": "RadialProgress accepted refresh does not accept an incoming 90 before it becomes ready",
+          "status": "passed",
+          "title": "does not accept an incoming 90 before it becomes ready",
+          "duration": 2.0907999999999447,
+          "failureMessages": [],
+          "meta": {},
+          "tags": []
+        }
+      ],
+      "startTime": 1790227364744,
+      "endTime": 1790227365024.0908,
+      "status": "passed",
+      "message": "",
+      "name": "packages/charts/consumer/family-consistency-review.probe.tsx"
+    }
+  ]
+}

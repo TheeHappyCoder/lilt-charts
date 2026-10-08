@@ -1,0 +1,264 @@
+@layer lilt {
+  .lilt-radial-progress {
+    position: relative;
+    width: min(100%, 220px);
+    aspect-ratio: 1;
+    margin-inline: auto;
+    color: var(--lilt-text);
+  }
+  .lilt-radial-progress:focus-visible {
+    outline: 2px solid var(--lilt-focus);
+    outline-offset: 4px;
+    border-radius: 50%;
+  }
+  .lilt-radial-progress > svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+  .lilt-radial__svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+  }
+  .lilt-radial__svg path {
+    cursor: pointer;
+    transition: opacity var(--lilt-duration-quick) ease-out;
+  }
+
+  /* Radial card. The card is a size container: donut and legend sit side by side when there is
+     room, and stack when the card is narrow. */
+  .lilt-radial-card {
+    container-type: inline-size;
+  }
+  .lilt-radial-card__body {
+    display: grid;
+    gap: 20px;
+    justify-items: center;
+  }
+  @container (min-width: 440px) {
+    .lilt-radial-card__body[data-legend='list'] {
+      grid-template-columns: minmax(150px, 200px) minmax(0, 1fr);
+      align-items: center;
+      justify-items: stretch;
+      gap: 28px;
+    }
+  }
+  .lilt-radial-card__graphic {
+    position: relative;
+    width: min(100%, 220px);
+    aspect-ratio: 1;
+  }
+  .lilt-radial-card__svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+  }
+  .lilt-radial-card__graphic:focus-visible {
+    outline: 2px solid var(--lilt-focus);
+    outline-offset: 4px;
+    border-radius: 50%;
+  }
+  .lilt-radial-card__body[data-variant='semi'] .lilt-radial-card__graphic {
+    width: min(100%, 300px);
+    aspect-ratio: 200 / 104;
+  }
+  .lilt-radial-card__body[data-variant='semi'] .lilt-radial-card__center {
+    place-content: end center;
+    padding: 0 30% 1%;
+  }
+  .lilt-radial-card__body[data-variant='semi'] .lilt-radial-card__center strong {
+    font-size: 28px;
+    line-height: 32px;
+  }
+  .lilt-radial-card__body[data-variant='rings'] .lilt-radial-card__graphic {
+    width: min(100%, 240px);
+  }
+  .lilt-radial-card__key {
+    width: 100%;
+  }
+  .lilt-radial-card__key[data-variant='inline'] {
+    justify-content: center;
+  }
+  .lilt-radial-card__ring {
+    cursor: pointer;
+    transition: opacity var(--lilt-duration-quick) ease;
+  }
+  .lilt-radial-card__ring[data-muted] {
+    opacity: 0.35;
+  }
+  .lilt-radial-card__ring .lilt-radial-card__slice[data-muted] {
+    opacity: 1;
+  }
+  .lilt-radial-card__track {
+    fill: color-mix(in srgb, var(--lilt-muted) 13%, transparent);
+  }
+
+  /* Slices are drawn for the eye; a fixed hit shape (or a ring's track) takes the pointer. */
+  .lilt-radial-card__hit {
+    fill: transparent;
+    cursor: pointer;
+  }
+  .lilt-radial-card__slice {
+    pointer-events: none;
+    transition:
+      d var(--lilt-duration-fast) var(--lilt-ease-reveal),
+      opacity var(--lilt-duration-quick) ease;
+  }
+  /* While a ring draws in or eases between periods, its shape follows the animation exactly;
+     the short hover transition would otherwise lag every frame and make the draw stutter. */
+  .lilt-radial-card__svg[data-drawing] .lilt-radial-card__slice {
+    transition: opacity var(--lilt-duration-quick) ease;
+  }
+  .lilt-radial-card__slice[data-muted] {
+    opacity: 0.32;
+  }
+  /* Depth: every layer of a lit band eases with the slice it belongs to. */
+  .lilt-radial-card__tube-layer,
+  .lilt-radial-card__tube-outline,
+  .lilt-radial-card__dome {
+    transition:
+      d var(--lilt-duration-fast) var(--lilt-ease-reveal),
+      stroke-width var(--lilt-duration-fast) var(--lilt-ease-reveal);
+  }
+  .lilt-radial-card__svg[data-drawing]
+    :is(.lilt-radial-card__tube-layer, .lilt-radial-card__tube-outline, .lilt-radial-card__dome) {
+    transition: none;
+  }
+  .lilt-radial-card__skeleton {
+    fill: none;
+    stroke: var(--lilt-skeleton-paint, color-mix(in srgb, var(--lilt-skeleton) 26%, transparent));
+  }
+  .lilt-radial-card__center {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-content: center;
+    justify-items: center;
+    gap: 2px;
+    /* The hole spans the middle 62%; keep text inside it with a little air. */
+    padding: 0 22%;
+    text-align: center;
+    pointer-events: none;
+  }
+  .lilt-radial-card__center strong {
+    font-size: 24px;
+    font-weight: 600;
+    line-height: 28px;
+    letter-spacing: -0.02em;
+    font-variant-numeric: tabular-nums;
+  }
+  .lilt-radial-card__center > span {
+    max-width: 100%;
+    overflow: hidden;
+    color: var(--lilt-muted);
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 16px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .lilt-radial-card__legend {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto 3.2em;
+    column-gap: 12px;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .lilt-radial-card__legend > li {
+    display: grid;
+    grid-column: 1 / -1;
+    grid-template-columns: subgrid;
+    position: relative;
+  }
+  .lilt-radial-card__row {
+    display: grid;
+    grid-column: 1 / -1;
+    grid-template-columns: subgrid;
+    align-items: center;
+    width: 100%;
+    padding: 7px 8px;
+    border: 0;
+    border-radius: 8px;
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+    transition: background-color var(--lilt-duration-quick) ease;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .lilt-radial-card__legend > li[data-active] .lilt-radial-card__row {
+    background: color-mix(in srgb, var(--lilt-text) 5%, transparent);
+  }
+  .lilt-radial-card__row:focus-visible {
+    outline: 2px solid var(--lilt-focus);
+    outline-offset: 1px;
+  }
+  .lilt-radial-card__swatch {
+    width: 10px;
+    height: 10px;
+    border-radius: 3px;
+  }
+  .lilt-radial-card__swatch[data-missing] {
+    border: 1px dashed var(--lilt-muted);
+  }
+  .lilt-radial-card__label {
+    min-width: 0;
+    overflow: hidden;
+    font-size: 13px;
+    font-weight: 500;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .lilt-radial-card__value {
+    font-size: 13px;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    text-align: right;
+    white-space: nowrap;
+  }
+  .lilt-radial-card__share {
+    color: var(--lilt-muted);
+    font-size: 12px;
+    font-weight: 500;
+    font-variant-numeric: tabular-nums;
+    text-align: right;
+  }
+  .lilt-radial-card__legend
+    > li
+    :is(
+      .lilt-radial-card__swatch,
+      .lilt-radial-card__label,
+      .lilt-radial-card__value,
+      .lilt-radial-card__share
+    ) {
+    transition: opacity var(--lilt-duration-quick) ease;
+  }
+  /* Dim the row's parts only; its action chips keep their own hover visibility. */
+  .lilt-radial-card__legend
+    > li[data-muted]
+    :is(
+      .lilt-radial-card__swatch,
+      .lilt-radial-card__label,
+      .lilt-radial-card__value,
+      .lilt-radial-card__share
+    ) {
+    opacity: 0.45;
+  }
+  .lilt-radial-card__skeleton-row {
+    grid-column: 1 / -1;
+    height: 32px;
+    padding: 9px 8px;
+  }
+  .lilt-radial-card__skeleton-row span {
+    display: block;
+    height: 100%;
+    border-radius: 5px;
+    background: color-mix(in srgb, var(--lilt-skeleton) 26%, transparent);
+  }
+}

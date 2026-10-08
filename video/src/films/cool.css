@@ -1,0 +1,24 @@
+/* Four columns of cards with the skyline spanning the middle two columns and rows. */
+.cool-wall {
+  position: absolute;
+  left: 60px;
+  top: 60px;
+  display: grid;
+  grid-template-columns: repeat(4, 560px);
+  grid-auto-rows: minmax(470px, auto);
+  gap: 80px 70px;
+  align-items: center;
+}
+
+/* A warmer pool of light under the city than the other films. */
+.cool .film-light {
+  background:
+    radial-gradient(62% 48% at 50% 60%, rgb(124 92 255 / 0.16), transparent 70%),
+    radial-gradient(40% 30% at 70% 30%, rgb(56 189 248 / 0.05), transparent 70%),
+    radial-gradient(90% 70% at 50% 40%, rgb(255 255 255 / 0.035), transparent 70%);
+}
+
+/* Part 2: two rows of five. */
+.cool-wall--five {
+  grid-template-columns: repeat(5, 560px);
+}

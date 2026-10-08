@@ -1,0 +1,63 @@
+@layer lilt {
+  /* Progress card: one value against a goal, as a ring, a thick ring on a disc, or a gauge. */
+  .lilt-progress__graphic {
+    position: relative;
+    width: min(100%, 240px);
+    aspect-ratio: 1;
+    margin: 4px auto 0;
+    /* The center label scales with the ring, so a ring in a narrow card keeps it inside. */
+    container-type: inline-size;
+  }
+  .lilt-progress__graphic[data-variant='gauge'] {
+    width: min(100%, 300px);
+    aspect-ratio: 200 / 106;
+  }
+  .lilt-progress__graphic svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+  }
+  .lilt-progress__track {
+    fill: none;
+    stroke: color-mix(in srgb, var(--lilt-muted) 14%, transparent);
+  }
+  .lilt-progress__fill {
+    fill: none;
+    stroke: var(--lilt-series-1);
+    stroke-linecap: round;
+  }
+  .lilt-progress__disc {
+    fill: color-mix(in srgb, var(--lilt-muted) 8%, transparent);
+  }
+  .lilt-progress__center {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-content: center;
+    justify-items: center;
+    gap: 2px;
+    text-align: center;
+    pointer-events: none;
+  }
+  .lilt-progress__graphic[data-variant='gauge'] .lilt-progress__center {
+    place-content: end center;
+  }
+  .lilt-progress__center strong {
+    font-size: clamp(16px, 16.5cqi, 40px);
+    font-weight: 600;
+    line-height: 1.1;
+    letter-spacing: -0.03em;
+    font-variant-numeric: tabular-nums;
+  }
+  .lilt-progress__center > span {
+    color: var(--lilt-muted);
+    font-size: clamp(9px, 5.4cqi, 13px);
+    font-weight: 500;
+  }
+  .lilt-progress__footer {
+    color: var(--lilt-muted);
+    font-size: 12px;
+    text-align: center;
+  }
+}

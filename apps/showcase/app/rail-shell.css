@@ -1,0 +1,644 @@
+/* The formal shell (rail-shell.tsx): a frame that stays dark on every theme, the page as one sheet
+   inside it, a rail that swells out of the frame to hold the menu switcher, and a panel beside it
+   with the open tab's pages. The notch on top is the same dark frame reaching into the sheet. */
+.lilt-shell[data-layout='rail'] {
+  --lilt-rail-frame: #202125;
+  --lilt-rail-ink: #f4f4f2;
+  --lilt-rail-muted: rgb(244 244 242 / 0.56);
+  /* The strip of frame down the sheet's left, and how far the rail's swells reach. */
+  --lilt-rail-reach: 64px;
+  --lilt-rail-strip: var(--lilt-rail-reach);
+  --lilt-rail-panel: 260px;
+  --lilt-rail-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --lilt-shell-outside: var(--lilt-rail-frame);
+  --lilt-shell-left: var(--lilt-rail-reach);
+  --lilt-rail-open-duration: 400ms;
+  --lilt-rail-close-duration: 350ms;
+  --lilt-shell-right: 8px;
+  /* On a light sheet the frame's own contrast draws the edge. */
+  --lilt-shell-stroke: transparent;
+  --lilt-shell-sheen: rgb(255 255 255 / 0.55);
+  --lilt-rail-margin: 6px;
+  --lilt-rail-sheet-radius: 14px;
+  /* Concentric with the sheet: its radius plus the 8px of frame around it. */
+  --lilt-rail-frame-radius: calc(var(--lilt-rail-sheet-radius) + 8px);
+  width: calc(100% - 2 * var(--lilt-rail-margin));
+  height: calc(100svh - 2 * var(--lilt-rail-margin));
+  margin: var(--lilt-rail-margin) auto;
+  overflow: visible;
+  border-radius: var(--lilt-rail-frame-radius);
+  background: var(--lilt-rail-frame);
+}
+.dark .lilt-shell[data-layout='rail'] {
+  --lilt-rail-frame: #050505;
+  --lilt-shell-stroke: rgb(255 255 255 / 0.075);
+  /* The border as it lands on the sheet, solid, for outlines drawn over the frame instead. A
+     touch brighter than 7.5%: a curve's anti-aliasing spreads it thinner than a straight edge. */
+  --lilt-shell-stroke-solid: color-mix(in srgb, #fff 9%, var(--lilt-shell-surface));
+  --lilt-shell-sheen: rgb(255 255 255 / 0.025);
+}
+body:has(.lilt-shell[data-layout='rail']),
+.dark body:has(.lilt-shell[data-layout='rail']) {
+  --lilt-rail-canvas: #ecebe8;
+  overflow: hidden;
+  background: var(--lilt-rail-canvas);
+}
+.dark body:has(.lilt-shell[data-layout='rail']) {
+  --lilt-rail-canvas: #1a1a1b;
+}
+/* The sheet: the frame shows 8px around it and the rail down its left. */
+.lilt-shell[data-layout='rail'] .lilt-shell__sheet {
+  /* The snaps (set by useSnappedSheet) move the right and bottom edges by under a pixel onto
+     whole device pixels, so the notches' outlines can continue the border exactly. */
+  inset: 8px calc(8px + var(--lilt-sheet-snap-right, 0px))
+    calc(8px + var(--lilt-sheet-snap-bottom, 0px)) var(--lilt-rail-strip);
+  border-color: var(--lilt-shell-stroke);
+  border-radius: var(--lilt-rail-sheet-radius);
+  transition: none;
+}
+.lilt-shell[data-layout='rail'] .lilt-notch-anchor {
+  /* Centred on the sheet, not on whatever the panel leaves of it, so it never drifts. */
+  left: var(--lilt-rail-reach);
+  transition:
+    left 420ms var(--lilt-rail-ease),
+    right 420ms var(--lilt-rail-ease);
+  /* The notch is the frame, so it reads dark on every theme. */
+  --background: #111111;
+  --surface: #191919;
+  --foreground: #e4e4e2;
+  --muted-foreground: #9b9b98;
+  --border: #333331;
+  --hover: rgb(255 255 255 / 0.07);
+  --brand-primary: #8b6dff;
+  --jade: var(--brand-primary);
+  --jade-strong: #a38fff;
+  --ring: var(--brand-primary);
+  --lilt-shell-stroke: rgb(255 255 255 / 0.075);
+  --lilt-shell-lift: rgb(0 0 0 / 0.32);
+  color-scheme: dark;
+}
+
+/* Only the icon rail reserves space. The panel travels above the stationary page. */
+.lilt-shell__rail {
+  position: absolute;
+  z-index: 20;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: calc(var(--lilt-rail-reach) + var(--lilt-rail-panel));
+  overflow: hidden;
+  border-radius: var(--lilt-rail-frame-radius) 0 0 var(--lilt-rail-frame-radius);
+  pointer-events: none;
+}
+.lilt-rail {
+  position: absolute;
+  z-index: 2;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  width: var(--lilt-rail-reach);
+  flex-direction: column;
+  align-items: center;
+  padding: 20px 0 16px;
+  background: var(--lilt-rail-frame);
+  pointer-events: auto;
+}
+.lilt-rail__space {
+  height: 12px;
+  flex: 0 0 auto;
+}
+.lilt-rail__foot {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: auto;
+}
+.lilt-rail__home,
+.lilt-rail__tab {
+  position: relative;
+  display: grid;
+  width: 40px;
+  height: 40px;
+  flex: 0 0 auto;
+  place-items: center;
+  padding: 0;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--lilt-rail-muted);
+  cursor: pointer;
+  transition:
+    background 160ms ease,
+    color 160ms ease,
+    scale 160ms var(--lilt-rail-ease);
+  -webkit-tap-highlight-color: transparent;
+}
+@media (hover: hover) {
+  .lilt-rail__home:hover,
+  .lilt-rail__tab:hover {
+    background: rgb(255 255 255 / 0.08);
+    color: var(--lilt-rail-ink);
+  }
+}
+.lilt-rail__home:active,
+.lilt-rail__tab:active {
+  scale: 0.94;
+}
+.lilt-rail__home:focus-visible,
+.lilt-rail__tab:focus-visible {
+  outline: 2px solid var(--brand-primary);
+  outline-offset: 2px;
+}
+.lilt-rail__mark {
+  width: 17px;
+  height: auto;
+}
+.lilt-rail__mark-ink {
+  fill: var(--lilt-rail-ink);
+}
+.lilt-rail__mark-dot {
+  fill: #8b6dff;
+}
+.lilt-rail__divider {
+  width: 20px;
+  height: 1px;
+  margin: 10px 0;
+  background: rgb(255 255 255 / 0.12);
+}
+.lilt-rail__tabs {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.lilt-rail__tab > svg {
+  position: relative;
+  z-index: 1;
+}
+/* The open tab sits on a light disc; with the panel folded away the disc dims to a glass ring. */
+.lilt-rail__tab[aria-pressed='true'] {
+  color: var(--lilt-rail-frame, #202125);
+}
+.lilt-rail__disc {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  border-radius: 999px;
+  background: var(--lilt-rail-ink);
+  box-shadow:
+    0 1px 0 rgb(255 255 255 / 0.6) inset,
+    0 6px 16px -6px rgb(0 0 0 / 0.6);
+  transition:
+    background 220ms ease,
+    box-shadow 220ms ease;
+}
+.lilt-shell[data-panel='closed'] .lilt-rail__tab[aria-pressed='true'] {
+  color: var(--lilt-rail-ink);
+}
+.lilt-rail__disc[data-folded] {
+  background: rgb(255 255 255 / 0.1);
+  box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.14);
+}
+.lilt-rail__toggle > svg {
+  transition: rotate 320ms var(--lilt-rail-ease);
+}
+.lilt-shell[data-panel='closed'] .lilt-rail__toggle > svg {
+  rotate: 180deg;
+}
+
+/* The stationary clip shares the sheet's corners, including while the panel slides. */
+.lilt-shell__panel-clip {
+  position: absolute;
+  top: 8px;
+  bottom: 8px;
+  left: var(--lilt-rail-reach);
+  width: var(--lilt-rail-panel);
+  overflow: hidden;
+  border-radius: var(--lilt-rail-sheet-radius) 0 0 var(--lilt-rail-sheet-radius);
+  pointer-events: none;
+}
+/* Full-height overlay: its opaque surface and edge move together, under the icon rail. The edge is
+   painted 2px inside the panel's box, never on it: at fractional display scales a border on the
+   moving layer's own edge antialiases past what the compositor repaints, and leaves a trail of
+   lines down the page as the panel closes. The transparent margin sits under the clip. */
+.lilt-shell__panel {
+  --lilt-rail-panel-edge: color-mix(in srgb, var(--foreground) 14%, var(--background));
+  position: absolute;
+  inset: 0 -2px 0 0;
+  display: flex;
+  padding-right: 3px;
+  background: linear-gradient(
+    to left,
+    transparent 2px,
+    var(--lilt-rail-panel-edge) 2px 3px,
+    var(--background) 3px
+  );
+  transform: translateX(0);
+  visibility: visible;
+  pointer-events: auto;
+  transition:
+    transform var(--lilt-rail-open-duration) var(--lilt-rail-ease),
+    visibility 0s;
+  will-change: transform;
+}
+.lilt-shell[data-panel='closed'] .lilt-shell__panel {
+  transform: translateX(-100%);
+  visibility: hidden;
+  pointer-events: none;
+  transition:
+    transform var(--lilt-rail-close-duration) var(--lilt-rail-ease),
+    visibility 0s linear var(--lilt-rail-close-duration);
+}
+.lilt-shell__panel > .lilt-rail-panel {
+  opacity: 1;
+  transform: translateX(0);
+  filter: blur(0);
+  transition:
+    opacity var(--lilt-rail-open-duration) var(--lilt-rail-ease),
+    transform var(--lilt-rail-open-duration) var(--lilt-rail-ease),
+    filter var(--lilt-rail-open-duration) var(--lilt-rail-ease);
+  will-change: transform, opacity, filter;
+}
+.lilt-shell[data-panel='closed'] .lilt-shell__panel > .lilt-rail-panel {
+  opacity: 0;
+  transform: translateX(-8px);
+  filter: blur(2px);
+  transition-duration: var(--lilt-rail-close-duration);
+}
+
+.lilt-rail-panel {
+  display: flex;
+  width: 100%;
+  min-width: 0;
+  min-height: 0;
+  flex-direction: column;
+  color: var(--foreground);
+}
+.lilt-rail-panel__head {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 20px 16px 14px;
+}
+.lilt-rail-panel__title {
+  min-width: 0;
+  flex: 1;
+}
+.lilt-rail-panel__title h2 {
+  margin: 0;
+  font-size: 17px;
+  font-weight: 650;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+}
+.lilt-rail-panel__title p {
+  margin: 4px 0 0;
+  color: var(--muted-foreground);
+  font-size: 12.5px;
+  line-height: 1.4;
+  text-wrap: pretty;
+}
+.lilt-rail-panel__close {
+  display: grid;
+  width: 32px;
+  height: 32px;
+  flex: 0 0 auto;
+  margin: -6px -6px 0 0;
+  place-items: center;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--muted-foreground);
+  cursor: pointer;
+}
+.lilt-rail-panel__close:hover {
+  background: var(--hover);
+  color: var(--foreground);
+}
+
+.lilt-rail-panel__filter {
+  display: flex;
+  height: 36px;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 8px;
+  margin: 0 12px 8px;
+  padding: 0 12px;
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--foreground) 4%, transparent);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--foreground) 6%, transparent);
+  color: var(--muted-foreground);
+  cursor: text;
+  transition:
+    background 160ms ease,
+    box-shadow 160ms ease;
+}
+.lilt-rail-panel__filter:focus-within {
+  background: var(--surface);
+  box-shadow:
+    inset 0 0 0 1px color-mix(in srgb, var(--brand-primary) 55%, transparent),
+    0 0 0 3px color-mix(in srgb, var(--brand-primary) 14%, transparent);
+}
+.lilt-rail-panel__filter input {
+  width: 100%;
+  min-width: 0;
+  height: 100%;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: var(--foreground);
+  font: inherit;
+  font-size: 13px;
+}
+.lilt-rail-panel__filter input::placeholder {
+  color: var(--muted-foreground);
+}
+.lilt-rail-panel__filter input::-webkit-search-cancel-button {
+  appearance: none;
+}
+
+.lilt-rail-panel__scroll {
+  min-height: 0;
+  flex: 1;
+}
+.lilt-rail-panel__content {
+  padding: 6px 8px 24px;
+}
+.lilt-rail-panel__group + .lilt-rail-panel__group {
+  margin-top: 16px;
+}
+.lilt-rail-panel__heading {
+  display: flex;
+  height: 26px;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0;
+  padding: 0 12px;
+  color: var(--muted-foreground);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.lilt-rail-panel__heading > span:last-child {
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0;
+  opacity: 0.6;
+}
+.lilt-rail-panel__group ul {
+  display: grid;
+  gap: 1px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.lilt-rail-panel__item {
+  position: relative;
+  display: flex;
+  height: 36px;
+  align-items: center;
+  gap: 10px;
+  padding: 0 8px;
+  border-radius: 11px;
+  color: color-mix(in srgb, var(--foreground) 78%, var(--muted-foreground));
+  font-size: 13.5px;
+  font-weight: 500;
+  text-decoration: none;
+  transition:
+    background 160ms ease,
+    color 160ms ease;
+  -webkit-tap-highlight-color: transparent;
+}
+@media (hover: hover) {
+  .lilt-rail-panel__item:not([data-active]):hover {
+    background: color-mix(in srgb, var(--foreground) 4.5%, transparent);
+    color: var(--foreground);
+  }
+}
+.lilt-rail-panel__item:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: -1px;
+}
+.lilt-rail-panel__item[data-active] {
+  color: var(--foreground);
+  font-weight: 600;
+}
+.lilt-rail-panel__item[data-nested] {
+  margin-left: 18px;
+}
+.lilt-rail-panel__item[data-nested]::before {
+  position: absolute;
+  top: -1px;
+  bottom: 50%;
+  left: -9px;
+  width: 7px;
+  border-bottom: 1px solid color-mix(in srgb, var(--foreground) 14%, transparent);
+  border-left: 1px solid color-mix(in srgb, var(--foreground) 14%, transparent);
+  border-bottom-left-radius: 6px;
+  content: '';
+}
+/* The current page is a raised chip that glides from row to row. */
+.lilt-rail-panel__highlight {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  border-radius: inherit;
+  background: var(--surface);
+  box-shadow:
+    0 0 0 1px oklch(0 0 0 / 0.06),
+    0 1px 2px -1px oklch(0 0 0 / 0.08),
+    0 3px 8px -2px oklch(0 0 0 / 0.06);
+}
+.dark .lilt-rail-panel__highlight {
+  background: color-mix(in srgb, var(--foreground) 8%, transparent);
+  box-shadow:
+    0 0 0 1px oklch(1 0 0 / 0.07),
+    inset 0 1px 0 oklch(1 0 0 / 0.05);
+}
+.lilt-rail-panel__preview {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  width: 32px;
+  height: 22px;
+  flex: 0 0 auto;
+  place-items: center;
+  overflow: hidden;
+  border-radius: 7px;
+  background: color-mix(in srgb, var(--foreground) 4%, transparent);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--foreground) 6%, transparent);
+  color: var(--muted-foreground);
+}
+/* A chart's row shows the chart itself, small (chart-glyph.tsx). */
+.lilt-chart-glyph {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.lilt-rail-panel__preview .lilt-chart-glyph {
+  padding: 2px 1px;
+  opacity: 0.8;
+}
+.lilt-rail-panel__item[data-active] .lilt-rail-panel__preview {
+  color: var(--foreground);
+}
+.lilt-rail-panel__item[data-active] .lilt-chart-glyph {
+  opacity: 1;
+}
+.lilt-rail-panel__label {
+  position: relative;
+  z-index: 1;
+  min-width: 0;
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.lilt-rail-panel__badge {
+  position: relative;
+  z-index: 1;
+  flex: 0 0 auto;
+  padding: 2px 7px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--brand-primary) 11%, transparent);
+  color: var(--jade-strong);
+  font-size: 10.5px;
+  font-weight: 650;
+  letter-spacing: 0.01em;
+}
+.lilt-rail-panel__empty {
+  padding: 24px 12px;
+  color: var(--muted-foreground);
+  font-size: 13px;
+  line-height: 1.5;
+  text-align: center;
+}
+.lilt-rail-panel__empty p {
+  margin: 0 0 10px;
+  text-wrap: balance;
+}
+.lilt-rail-panel__empty button {
+  height: 30px;
+  padding: 0 12px;
+  border: 0;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--foreground) 6%, transparent);
+  color: var(--foreground);
+  font: inherit;
+  font-size: 12.5px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* The page beside them. */
+.lilt-shell[data-layout='rail'] .lilt-shell__main-frame {
+  height: calc(100svh - 72px - 2 * var(--lilt-rail-margin) + var(--lilt-shell-tuck));
+  transition: none;
+}
+.lilt-shell[data-layout='rail'] .lilt-shell__content {
+  /* The right side keeps clear of the style notch. */
+  padding: calc(8px + var(--lilt-shell-tuck)) 100px 40px 32px;
+}
+/* Wide screens have no notch on top, so pages start at the sheet's edge with one shared margin:
+   no header row, and none of the room the top notch needed. Phones keep the notch and its tuck. */
+@media (min-width: 768px) {
+  .lilt-shell[data-layout='rail'] .lilt-shell__header {
+    display: none;
+  }
+  .lilt-shell[data-layout='rail'] .lilt-shell__main-frame {
+    --lilt-shell-tuck: 0px;
+    height: calc(100svh - 2 * var(--lilt-rail-margin) - 16px);
+    margin-top: 8px;
+  }
+  .lilt-shell[data-layout='rail'] .lilt-shell__content {
+    padding-top: 36px;
+  }
+  .lilt-shell[data-layout='rail'] .lilt-main.lilt-docs {
+    --lilt-docs-sticky: 24px;
+    margin-top: 0;
+    /* The same 12px the Customize and Features pages carry, so every title sits level. */
+    padding-top: 12px;
+  }
+  /* The page scrolls without a visible bar: one would run behind the style notch. */
+  .lilt-shell[data-layout='rail']
+    .lilt-shell__scroll
+    > .lilt-scroll-area__scrollbar[data-orientation='vertical'] {
+    display: none;
+  }
+}
+.lilt-shell[data-layout='rail']
+  .lilt-shell__scroll
+  > .lilt-scroll-area__scrollbar[data-orientation='vertical'] {
+  margin-inline-end: 10px;
+}
+
+@media (min-width: 768px) and (max-width: 1180px) {
+  .lilt-shell[data-layout='rail'] {
+    --lilt-rail-panel: 236px;
+  }
+}
+
+/* Phones: no rail on the frame; the menu button opens a drawer with the rail and panel inside. */
+@media (max-width: 767px) {
+  .lilt-shell[data-layout='rail'] {
+    --lilt-rail-margin: 0px;
+    border-radius: 0;
+    --lilt-rail-strip: 8px;
+    --lilt-rail-reach: 8px;
+    --lilt-shell-left: 8px;
+  }
+  .lilt-shell[data-layout='rail'] .lilt-shell__sheet {
+    inset: 8px;
+  }
+  .lilt-shell__rail {
+    display: none;
+  }
+  .lilt-shell[data-layout='rail'] .lilt-shell__main-frame {
+    margin-left: 8px;
+  }
+  .lilt-shell[data-layout='rail'] .lilt-shell__content {
+    padding: calc(4px + var(--lilt-shell-tuck)) 16px 32px;
+  }
+}
+.lilt-shell__mobile-dialog.lilt-rail-drawer {
+  flex-direction: row;
+  width: min(340px, calc(100vw - 24px));
+  padding: 0;
+  border: 0;
+  border-radius: 18px;
+  background: var(--background);
+}
+.lilt-rail[data-mobile] {
+  position: relative;
+  display: flex;
+  width: 60px;
+  flex: 0 0 auto;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px 0;
+  pointer-events: auto;
+  --lilt-rail-ink: #f4f4f2;
+  --lilt-rail-muted: rgb(244 244 242 / 0.56);
+  --lilt-rail-frame: #202125;
+  background: var(--lilt-rail-frame);
+}
+.dark .lilt-rail[data-mobile] {
+  --lilt-rail-frame: #0b0b0c;
+}
+.lilt-rail[data-mobile] .lilt-rail__tab[aria-pressed='true'] {
+  color: var(--lilt-rail-frame);
+}
+.lilt-rail-panel[data-mobile] {
+  flex: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lilt-shell[data-layout='rail'] .lilt-shell__main-frame,
+  .lilt-shell[data-layout='rail'] .lilt-notch-anchor,
+  .lilt-shell__panel,
+  .lilt-shell__panel > .lilt-rail-panel,
+  .lilt-rail__toggle > svg {
+    transition: none;
+  }
+}

@@ -1,0 +1,111 @@
+@layer lilt {
+  .lilt-chart__adaptive-readout {
+    position: relative;
+    z-index: 2;
+    display: grid;
+    gap: 7px;
+    margin: 2px 8px 8px;
+    padding: 10px 12px;
+    border: 1px solid var(--lilt-border);
+    border-radius: 9px;
+    background: var(--lilt-surface);
+    color: var(--lilt-text);
+    font-size: 12px;
+    line-height: 1.5;
+    min-width: 0;
+  }
+
+  .lilt-chart__adaptive-heading,
+  .lilt-chart__adaptive-value {
+    display: flex;
+    align-items: baseline;
+    gap: 7px;
+    min-width: 0;
+  }
+
+  .lilt-chart__adaptive-heading {
+    flex-wrap: wrap;
+    justify-content: space-between;
+    color: var(--lilt-muted);
+    font-weight: 600;
+  }
+
+  .lilt-chart__adaptive-heading > span,
+  .lilt-chart__adaptive-value > span:not(.lilt-chart__adaptive-swatch) {
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+
+  .lilt-chart__adaptive-readout .lilt-bounded-text,
+  .lilt-chart__adaptive-value strong {
+    max-width: 100%;
+  }
+
+  .lilt-chart__adaptive-readout .lilt-bounded-text__visible,
+  .lilt-chart__adaptive-readout .lilt-bounded-text__outgoing {
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
+
+  .lilt-chart__adaptive-values {
+    display: grid;
+    gap: 4px;
+  }
+
+  .lilt-chart__adaptive-value {
+    flex-wrap: wrap;
+  }
+
+  .lilt-chart__adaptive-value strong {
+    margin-left: auto;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .lilt-chart__adaptive-swatch {
+    width: 9px;
+    height: 9px;
+    flex: 0 0 auto;
+    border-radius: 3px;
+  }
+
+  .lilt-chart__adaptive-total {
+    padding-top: 4px;
+    border-top: 1px solid var(--lilt-border);
+  }
+
+  .lilt-chart__adaptive-readout small,
+  .lilt-chart__adaptive-missing {
+    color: var(--lilt-muted);
+  }
+
+  .lilt-chart__adaptive-custom {
+    min-width: 0;
+    padding-top: 7px;
+    border-top: 1px solid var(--lilt-border);
+    overflow-wrap: anywhere;
+  }
+
+  .lilt-chart__adaptive-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin-top: 3px;
+  }
+
+  .lilt-chart__adaptive-readout button {
+    min-height: 28px;
+    padding: 3px 7px;
+    border: 1px solid var(--lilt-border);
+    border-radius: 6px;
+    background: transparent;
+    color: var(--lilt-text);
+    font: inherit;
+    cursor: pointer;
+  }
+
+  .lilt-chart__adaptive-readout button:focus-visible {
+    outline: 2px solid var(--lilt-focus);
+    outline-offset: 2px;
+  }
+}

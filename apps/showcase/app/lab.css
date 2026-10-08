@@ -1,0 +1,503 @@
+/* Lab: one setting per page, explored live on a stage of real cards. */
+/* Same frame as the chart pages, so the shared header sits in exactly the same place. */
+.lilt-main.lilt-studio-page {
+  width: min(1200px, 100%);
+  margin-inline: auto;
+  padding: 12px 0 120px;
+}
+.lilt-studio-page > .lilt-docs__header + .lilt-studio {
+  margin-top: 0;
+}
+@media (max-width: 767px) {
+  .lilt-main.lilt-studio-page {
+    padding: 0 0 64px;
+  }
+}
+
+.lilt-studio {
+  display: grid;
+  gap: 14px;
+  margin-top: 28px;
+}
+/* A second setting on the same page gets its own breathing room. */
+.lilt-studio + .lilt-studio {
+  margin-top: 64px;
+}
+
+/* Toolbar: frosted glass that stays in reach while the stage scrolls. */
+.lilt-studio__bar {
+  position: sticky;
+  top: 10px;
+  z-index: 5;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 14px;
+  padding: 7px;
+  border: 1px solid color-mix(in srgb, var(--foreground) 8%, transparent);
+  border-radius: 20px;
+  background: color-mix(in srgb, var(--surface) 78%, transparent);
+  box-shadow:
+    0 1px 2px rgb(0 0 0 / 0.04),
+    0 12px 32px -18px rgb(0 0 0 / 0.28);
+  backdrop-filter: blur(16px) saturate(1.4);
+}
+.lilt-studio__segmented {
+  position: relative;
+  display: inline-flex;
+  max-width: 100%;
+  overflow-x: auto;
+  padding: 3px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--foreground) 5%, transparent);
+  scrollbar-width: none;
+}
+.lilt-studio__segmented[data-disabled] {
+  opacity: 0.5;
+}
+.lilt-studio__option {
+  position: relative;
+  flex-shrink: 0;
+  padding: 7px 15px;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--muted-foreground);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: color 160ms ease;
+}
+.lilt-studio__option:hover:not(:disabled),
+.lilt-studio__option[aria-checked='true'] {
+  color: var(--foreground);
+}
+.lilt-studio__option:disabled {
+  cursor: default;
+}
+.lilt-studio__option:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 1px;
+}
+.lilt-studio__thumb {
+  position: absolute;
+  inset: 0;
+  border-radius: 999px;
+  background: var(--surface);
+  box-shadow:
+    0 1px 2px rgb(0 0 0 / 0.08),
+    0 6px 16px -8px rgb(0 0 0 / 0.3),
+    inset 0 0 0 1px color-mix(in srgb, var(--foreground) 6%, transparent);
+}
+.lilt-studio__option-text {
+  position: relative;
+}
+.lilt-studio__note {
+  flex: 1 1 160px;
+  min-width: 0;
+  margin: 0;
+  color: var(--muted-foreground);
+  font-size: 13px;
+  font-weight: 500;
+}
+/* Without a picker, the note leads the bar and needs the picker's inset. */
+.lilt-studio__note:first-child {
+  padding-left: 10px;
+}
+.lilt-studio__actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: auto;
+}
+.lilt-studio__code {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  padding: 2px 2px 2px 12px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--foreground) 5%, transparent);
+}
+.lilt-studio__code code {
+  font-family: var(--font-mono), monospace;
+  font-size: 12px;
+}
+.lilt-studio__compare,
+.lilt-studio__primary {
+  height: 32px;
+  padding: 0 15px;
+  border: 1px solid color-mix(in srgb, var(--foreground) 12%, transparent);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--foreground);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    background 160ms ease,
+    color 160ms ease,
+    opacity 160ms ease;
+}
+.lilt-studio__compare:hover {
+  background: color-mix(in srgb, var(--foreground) 6%, transparent);
+}
+.lilt-studio__compare[aria-pressed='true'] {
+  border-color: transparent;
+  background: var(--foreground);
+  color: var(--background);
+}
+.lilt-studio__primary {
+  border-color: transparent;
+  background: var(--brand-primary);
+  color: #fff;
+}
+.lilt-studio__primary:hover:not(:disabled) {
+  background: var(--jade-strong);
+}
+.lilt-studio__primary:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+.lilt-studio__compare:focus-visible,
+.lilt-studio__primary:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+
+/* Switch */
+.lilt-studio__switch {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--foreground);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.lilt-studio__switch input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+.lilt-studio__switch-track {
+  position: relative;
+  width: 32px;
+  height: 18px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--foreground) 16%, transparent);
+  transition: background 180ms ease;
+}
+.lilt-studio__switch-track::after {
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 1px 3px rgb(0 0 0 / 0.25);
+  transition: transform 220ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.lilt-studio__switch input:checked + .lilt-studio__switch-track {
+  background: var(--brand-primary);
+}
+.lilt-studio__switch input:checked + .lilt-studio__switch-track::after {
+  transform: translateX(14px);
+}
+.lilt-studio__switch input:focus-visible + .lilt-studio__switch-track {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+.lilt-studio__progress {
+  width: 120px;
+  height: 4px;
+  margin-right: 8px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--foreground) 8%, transparent);
+}
+.lilt-studio__progress span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--brand-primary);
+  transition: width 320ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Stage: a softly lit canvas. Only the cards on it have edges. */
+.lilt-studio__stage {
+  position: relative;
+  container-type: inline-size;
+  padding: clamp(14px, 3vw, 32px);
+  border: 1px solid color-mix(in srgb, var(--foreground) 6%, transparent);
+  border-radius: 28px;
+  background:
+    radial-gradient(
+      120% 80% at 50% 0%,
+      color-mix(in srgb, var(--brand-primary) 10%, transparent),
+      transparent 62%
+    ),
+    color-mix(in srgb, var(--foreground) 2.5%, var(--background));
+  overflow: hidden;
+}
+.lilt-studio__stage::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(
+    color-mix(in srgb, var(--foreground) 14%, transparent) 1px,
+    transparent 1.2px
+  );
+  background-size: 18px 18px;
+  mask-image: radial-gradient(90% 70% at 50% 0%, black, transparent 75%);
+  pointer-events: none;
+}
+.lilt-studio__stage > * {
+  position: relative;
+}
+/* Cards ease between surfaces instead of snapping. */
+.lilt-studio__stage .lilt-card {
+  transition:
+    background-color 320ms ease,
+    border-color 320ms ease,
+    box-shadow 320ms ease,
+    padding 320ms ease;
+}
+
+.lilt-studio__bento {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 18px;
+}
+.lilt-studio__tile {
+  display: grid;
+  min-width: 0;
+}
+.lilt-studio__tile[data-span='wide'] {
+  grid-column: span 4;
+}
+.lilt-studio__tile[data-span='third'] {
+  grid-column: span 2;
+}
+.lilt-studio__tile[data-span='half'] {
+  grid-column: span 3;
+}
+/* Two compact cards sharing one tile. */
+.lilt-studio__stack {
+  display: grid;
+  gap: 18px;
+  align-content: start;
+}
+@container (max-width: 860px) {
+  .lilt-studio__bento {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .lilt-studio__tile[data-span='wide'] {
+    grid-column: span 2;
+  }
+  .lilt-studio__tile:is([data-span='third'], [data-span='half']) {
+    grid-column: span 1;
+  }
+}
+@container (max-width: 560px) {
+  .lilt-studio__bento {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .lilt-studio__tile[data-span] {
+    grid-column: span 1;
+  }
+}
+
+/* A stand-in for the reader's own card around a frameless chart. */
+.lilt-studio__host {
+  display: grid;
+  align-content: start;
+  gap: 12px;
+  padding: 16px;
+  border: 1px dashed color-mix(in srgb, var(--brand-primary) 45%, var(--border));
+  border-radius: 18px;
+  background: var(--surface);
+}
+.lilt-studio__host-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: var(--muted-foreground);
+  font-size: 12px;
+  font-weight: 600;
+}
+.lilt-studio__host-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--brand-primary);
+}
+
+/* Comparison and loading grids */
+.lilt-studio__compare-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+  gap: 18px;
+}
+.lilt-studio__loading-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 340px), 1fr));
+  align-items: start;
+  gap: 18px;
+}
+.lilt-studio__cell {
+  display: grid;
+  align-content: start;
+  gap: 10px;
+  min-width: 0;
+  margin: 0;
+}
+.lilt-studio__chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 4px 11px;
+  border: 1px solid color-mix(in srgb, var(--foreground) 8%, transparent);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--surface) 75%, transparent);
+  color: var(--foreground);
+  font-size: 12px;
+  font-weight: 600;
+}
+.lilt-studio__status {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #22a06b;
+  transition: background 200ms ease;
+}
+.lilt-studio__status[data-loading] {
+  background: var(--brand-primary);
+  animation: lilt-studio-pulse 1.2s ease-in-out infinite;
+}
+@keyframes lilt-studio-pulse {
+  50% {
+    opacity: 0.35;
+    transform: scale(0.8);
+  }
+}
+
+/* Numbers lab: a live panel that moves on its own, styled like a Lilt card. */
+.lilt-ticker {
+  display: grid;
+  align-content: start;
+  gap: 18px;
+  height: 100%;
+  padding: 22px 24px 24px;
+  border: 1px solid color-mix(in srgb, var(--foreground) 7%, transparent);
+  border-radius: 20px;
+  background: var(--surface);
+  box-shadow:
+    0 1px 2px rgb(0 0 0 / 0.05),
+    0 18px 40px -24px rgb(0 0 0 / 0.35);
+  container-type: inline-size;
+}
+.lilt-ticker__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.lilt-ticker__label {
+  color: var(--muted-foreground);
+  font-size: 13px;
+  font-weight: 500;
+}
+.lilt-ticker__live {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--muted-foreground);
+  font-size: 12px;
+  font-weight: 600;
+}
+.lilt-ticker__live span {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #22a06b;
+  box-shadow: 0 0 0 3px color-mix(in srgb, #22a06b 22%, transparent);
+  animation: lilt-studio-pulse 1.6s ease-in-out infinite;
+}
+.lilt-ticker__headline {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 14px;
+}
+.lilt-ticker__value {
+  font-size: clamp(44px, 11cqi, 84px);
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: -0.045em;
+}
+.lilt-ticker__delta {
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: 600;
+}
+.lilt-ticker__delta[data-tone='up'] {
+  background: color-mix(in srgb, #22a06b 16%, transparent);
+  color: color-mix(in srgb, #22a06b 80%, var(--foreground));
+}
+.lilt-ticker__delta[data-tone='down'] {
+  background: color-mix(in srgb, #d4554a 16%, transparent);
+  color: color-mix(in srgb, #d4554a 80%, var(--foreground));
+}
+.lilt-ticker__stats {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: auto;
+}
+.lilt-ticker__stat {
+  display: grid;
+  gap: 4px;
+  padding: 12px 14px;
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--foreground) 4%, transparent);
+}
+.lilt-ticker__stat strong {
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+.lilt-ticker[data-compact] {
+  gap: 12px;
+  padding: 18px 20px;
+}
+.lilt-ticker[data-compact] .lilt-ticker__value {
+  font-size: 36px;
+}
+
+@media (max-width: 720px) {
+  .lilt-studio__bar {
+    position: static;
+    border-radius: 18px;
+  }
+  .lilt-studio__actions {
+    margin-left: 0;
+  }
+  .lilt-studio__progress {
+    display: none;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .lilt-studio__status[data-loading],
+  .lilt-ticker__live span {
+    animation: none;
+  }
+  .lilt-studio__stage .lilt-card,
+  .lilt-studio__progress span,
+  .lilt-studio__switch-track::after {
+    transition: none;
+  }
+}

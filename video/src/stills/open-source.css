@@ -1,0 +1,87 @@
+.lilt-announcement {
+  position: relative;
+  width: var(--stage-w);
+  height: var(--stage-h);
+  overflow: hidden;
+  background: #0b0b0d;
+  color: #f4f4f6;
+}
+
+.lilt-announcement__logo {
+  position: absolute;
+  top: 58px;
+  left: 68px;
+  width: 173px;
+  height: auto;
+}
+
+.lilt-announcement .lilt-logo__ink {
+  fill: #f4f4f6;
+}
+
+.lilt-announcement .lilt-logo__dot {
+  fill: #9d81ff;
+}
+
+.lilt-announcement .lilt-logo__charts {
+  fill: #aaa9b2;
+}
+
+.lilt-announcement__copy {
+  position: absolute;
+  z-index: 2;
+  top: 217px;
+  left: 68px;
+}
+
+.lilt-announcement h1 {
+  margin: 0;
+  font-size: 85px;
+  font-weight: 700;
+  line-height: 1.08;
+  letter-spacing: -0.065em;
+}
+
+.lilt-announcement h1 span {
+  color: #a68aff;
+}
+
+.lilt-announcement__copy p {
+  margin: 27px 0 0;
+  color: #9c9aa5;
+  font-size: 20px;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+}
+
+.lilt-announcement__skyline {
+  position: absolute;
+  top: 148px;
+  right: 50px;
+  width: 552px;
+  transform: rotate(-8deg);
+}
+
+.lilt-announcement__skyline .lilt-card {
+  padding: 0;
+}
+
+.lilt-announcement__skyline .lilt-observations-card__note,
+.lilt-announcement__skyline .lilt-observations-card__plot text {
+  display: none;
+}
+
+.lilt-announcement__footer {
+  position: absolute;
+  right: 68px;
+  bottom: 48px;
+  left: 68px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 24px;
+  border-top: 1px solid rgb(255 255 255 / 0.09);
+  color: #8c8a96;
+  font-size: 14px;
+  letter-spacing: -0.015em;
+}

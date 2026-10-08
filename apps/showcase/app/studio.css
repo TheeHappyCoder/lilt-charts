@@ -1,0 +1,318 @@
+/* Lilt presentation: quiet chrome, a clear chart, controls at the point of use. */
+.lilt-scroll-area {
+  display: grid;
+  grid-template-rows: minmax(0, 1fr);
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+}
+.lilt-scroll-area__viewport {
+  min-width: 0;
+  min-height: 0;
+  border-radius: inherit;
+  overscroll-behavior: contain;
+  scroll-padding-block: 12px;
+  scrollbar-width: none;
+}
+.lilt-scroll-area__viewport:focus-visible {
+  outline-offset: -2px;
+}
+/* The scroll viewport can receive focus from a plot click. Escape then makes it
+   match :focus-visible, which would outline the whole page. */
+main.lilt-scroll-area__viewport:focus-visible {
+  outline: none;
+}
+.lilt-scroll-area__viewport[data-scroll-fade='y'] {
+  --lilt-scroll-fade-size: 28px;
+  scroll-padding-block: var(--lilt-scroll-fade-size);
+  mask-image: linear-gradient(
+    to bottom,
+    transparent,
+    #000 min(var(--lilt-scroll-fade-size), var(--scroll-area-overflow-y-start, 0px)),
+    #000 calc(100% - min(var(--lilt-scroll-fade-size), var(--scroll-area-overflow-y-end, 0px))),
+    transparent
+  );
+  mask-repeat: no-repeat;
+}
+.lilt-scroll-area__viewport[data-scroll-fade='x'] {
+  --lilt-scroll-fade-size: 48px;
+  scroll-padding-inline: var(--lilt-scroll-fade-size);
+  mask-image: linear-gradient(
+    to right,
+    transparent,
+    #000 min(var(--lilt-scroll-fade-size), var(--scroll-area-overflow-x-start, 0px)),
+    #000 calc(100% - min(var(--lilt-scroll-fade-size), var(--scroll-area-overflow-x-end, 0px))),
+    transparent
+  );
+  mask-repeat: no-repeat;
+}
+.lilt-scroll-area__content {
+  display: flow-root;
+  min-width: 100%;
+}
+.lilt-scroll-area__scrollbar {
+  z-index: 1;
+  display: flex;
+  padding: 3px;
+  opacity: 0;
+  touch-action: none;
+  user-select: none;
+  transition: opacity 180ms ease;
+}
+.lilt-scroll-area__scrollbar[data-orientation='vertical'] {
+  width: 12px;
+  margin-block: 4px;
+}
+.lilt-scroll-area__scrollbar[data-orientation='horizontal'] {
+  height: 12px;
+  margin-inline: 4px;
+}
+.lilt-scroll-area__scrollbar[data-hovering],
+.lilt-scroll-area__scrollbar[data-scrolling],
+.lilt-scroll-area:focus-within > .lilt-scroll-area__scrollbar {
+  opacity: 1;
+}
+.lilt-scroll-area__thumb {
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--foreground) 24%, transparent);
+  transition: background 160ms ease;
+}
+.lilt-scroll-area__thumb[data-orientation='vertical'] {
+  width: 100%;
+}
+.lilt-scroll-area__thumb[data-orientation='horizontal'] {
+  height: 100%;
+}
+.lilt-scroll-area__thumb:hover,
+.lilt-scroll-area__thumb:active {
+  background: color-mix(in srgb, var(--foreground) 42%, transparent);
+}
+.lilt-shell__scroll {
+  flex: 1;
+}
+@media (hover: none) {
+  .lilt-scroll-area__scrollbar {
+    opacity: 1;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .lilt-scroll-area__scrollbar,
+  .lilt-scroll-area__thumb {
+    transition: none;
+  }
+}
+/* Learn pages share the chart pages' layout: the slatted header and sections with
+   prose on a sticky rail (docs.css). These rules add their code panels, each named by a badge. */
+.lilt-guide-code {
+  display: grid;
+  min-width: 0;
+  margin: 0;
+  isolation: isolate;
+}
+.lilt-guide-code__badge h3 {
+  color: var(--muted-foreground);
+}
+.lilt-guide-code__badge .lilt-docs-copy[data-compact] {
+  width: 28px;
+  height: 28px;
+  border: 0;
+  background: transparent;
+  backdrop-filter: none;
+}
+.lilt-guide-code__panel {
+  position: relative;
+  z-index: 1;
+  min-width: 0;
+  margin-top: -12px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: var(--surface);
+  box-shadow: 0 1px 2px rgb(0 0 0 / 0.04);
+}
+.lilt-guide-code__panel .lilt-code-block {
+  padding: 16px 18px 18px 6px;
+  overflow-x: auto;
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 12.5px;
+  line-height: 1.7;
+}
+/* The install tabs, outside the retired guide styles. */
+.lilt-learn .lilt-docs-install pre {
+  margin: 0;
+  padding: 16px 18px;
+  overflow-x: auto;
+  color: var(--foreground);
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 13.5px;
+  line-height: 22px;
+}
+/* Tokens such as --card-foreground read as one word; break between them, never inside. */
+.lilt-learn .lilt-docs__section-head :not(pre) > code {
+  white-space: nowrap;
+}
+/* Learn pages read as one flow, so their sections sit closer than a chart page's. */
+.lilt-learn .lilt-docs__section {
+  margin-top: 64px;
+}
+.lilt-learn .lilt-docs__section:first-of-type {
+  margin-top: 48px;
+}
+/* Prose-only sections: the heading on the rail, the text beside it at a readable measure. */
+.lilt-learn .lilt-docs__section[data-prose] .lilt-docs__section-body {
+  gap: 12px;
+  max-width: 680px;
+}
+.lilt-learn .lilt-docs__section[data-prose] .lilt-docs__section-body p {
+  font-size: 14.5px;
+  line-height: 24px;
+}
+:root {
+  --studio-ease: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.lilt-shell__main-frame {
+  margin-left: 224px;
+}
+.lilt-shell__brand-logo {
+  --lilt-logo-ink: #201f1f;
+  --lilt-logo-charts: #4d5056;
+  --lilt-logo-dot: var(--brand-primary);
+  display: block;
+  width: 90px;
+  height: auto;
+  flex: 0 0 auto;
+}
+.dark .lilt-shell__brand-logo {
+  --lilt-logo-ink: #f7f6f7;
+  --lilt-logo-charts: #9097a3;
+}
+.lilt-logo__ink {
+  fill: var(--lilt-logo-ink);
+}
+.lilt-logo__dot {
+  fill: var(--lilt-logo-dot);
+}
+.lilt-logo__charts {
+  fill: var(--lilt-logo-charts);
+}
+.lilt-shell__menu-button {
+  display: grid;
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  place-items: center;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--muted-foreground);
+  cursor: pointer;
+}
+.lilt-shell__menu-button:hover {
+  background: var(--hover);
+  color: var(--foreground);
+}
+.lilt-shell__mobile-trigger {
+  display: none;
+}
+.lilt-shell__content {
+  position: relative;
+  padding: 12px 12px 12px 32px;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+}
+.lilt-main {
+  width: min(1120px, 100%);
+}
+.lilt-button {
+  min-height: 36px;
+  border-radius: 8px;
+  font-size: 12px;
+  transition:
+    background 160ms,
+    color 160ms,
+    border-color 160ms,
+    transform 160ms var(--studio-ease);
+}
+.lilt-button:active:not(:disabled) {
+  transform: scale(0.97);
+}
+.lilt-code-block {
+  counter-reset: source-line;
+  margin: 0;
+  color: var(--foreground);
+}
+.lilt-code-line {
+  display: block;
+  min-height: 1.8em;
+  white-space: pre;
+}
+.lilt-code-line::before {
+  counter-increment: source-line;
+  content: counter(source-line);
+  display: inline-block;
+  width: 3ch;
+  margin-right: 20px;
+  color: var(--muted-foreground);
+  opacity: 0.5;
+  text-align: right;
+  user-select: none;
+}
+.lilt-code-string {
+  color: var(--jade);
+}
+.lilt-code-keyword {
+  color: #8855b5;
+}
+.lilt-code-number {
+  color: #a7652d;
+}
+.lilt-code-comment {
+  color: var(--muted-foreground);
+}
+.dark .lilt-code-keyword {
+  color: #c0a0ec;
+}
+.dark .lilt-code-number {
+  color: #e5b66d;
+}
+@media (max-width: 1100px) {
+  .lilt-shell__content {
+    padding: 12px 12px 12px 24px;
+  }
+}
+@media (max-width: 767px) {
+  .lilt-shell__main-frame {
+    margin-left: 0;
+  }
+  .lilt-shell__content {
+    padding: 24px 20px;
+  }
+  .lilt-shell__mobile-trigger {
+    display: grid;
+    position: absolute;
+    z-index: 10;
+    top: 24px;
+    left: 20px;
+  }
+  .lilt-main > h1:first-child,
+  .lilt-main > .lilt-eyebrow:first-child {
+    padding-left: 46px;
+    min-height: 40px;
+  }
+}
+@media (max-width: 560px) {
+  .lilt-shell__content {
+    padding: 24px 12px;
+  }
+  .lilt-shell__mobile-trigger {
+    left: 12px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .lilt-button {
+    transition: none;
+  }
+}

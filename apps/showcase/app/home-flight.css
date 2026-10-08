@@ -1,0 +1,71 @@
+/* The home page's one chart in flight (home-flight.tsx). GSAP positions the copy in the air;
+   these rules decide which card is seen and give every stop the card's own width, so it lands
+   without reflowing. */
+.lilt-flight {
+  position: fixed;
+  z-index: 15;
+  top: 0;
+  left: 0;
+  width: var(--flight-width, 560px);
+  opacity: 0;
+  pointer-events: none;
+  transform-origin: 50% 40%;
+  will-change: transform, opacity;
+}
+/* A shadow that deepens as the card rises, and the palette's light beneath it. Its opacity is
+   animated on its own, so the card's subtree is never restyled in flight. */
+.lilt-flight__shadow {
+  position: absolute;
+  z-index: -1;
+  inset: 12% 8% -6%;
+  border-radius: 32px;
+  background:
+    radial-gradient(
+      closest-side,
+      color-mix(in srgb, var(--story-violet) 40%, transparent),
+      transparent
+    ),
+    rgb(0 0 0 / 0.45);
+  filter: blur(42px);
+  opacity: 0;
+}
+:root:not(.dark) .lilt-flight__shadow {
+  background:
+    radial-gradient(
+      closest-side,
+      color-mix(in srgb, var(--story-violet) 30%, transparent),
+      transparent
+    ),
+    rgb(28 25 20 / 0.18);
+}
+
+/* ── The stops take the card's width ────────────────────────────────────────────────────── */
+.lilt-story-studio__stage {
+  width: min(100%, var(--flight-width, 100%));
+  justify-self: end;
+}
+.lilt-theatre-main {
+  position: relative;
+  z-index: 2;
+}
+.lilt-theatre-partner {
+  position: relative;
+  z-index: 1;
+  will-change: transform, opacity;
+}
+@media (min-width: 1081px) {
+  .lilt-theatre-stage[data-paired] {
+    grid-template-columns: min(var(--flight-width, 50%), 56%) minmax(0, 1fr);
+  }
+  .lilt-story-code__bench {
+    grid-template-columns: minmax(0, 1fr) calc(
+        min(var(--flight-width, 480px), 54%) + var(--sheet-pad)
+      );
+  }
+}
+
+/* ── The code marks the lines the reader's choices wrote ────────────────────────────────── */
+.lilt-story-code__body .lilt-code-line[data-chosen] {
+  background: color-mix(in srgb, var(--story-violet) 11%, transparent);
+  box-shadow: inset 2px 0 0 var(--story-violet);
+}
