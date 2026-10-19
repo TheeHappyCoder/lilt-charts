@@ -87,11 +87,14 @@ export function DocsSearchProvider({
 }
 
 export function HeaderSearch({
-  className = 'lilt-shell__search',
+  className = 'lilt-header__search',
   side = 'bottom',
+  wide = false,
 }: {
   className?: string;
   side?: 'bottom' | 'right';
+  /** Spells out the field and its shortcut, as the header's search does on wide screens. */
+  wide?: boolean;
 } = {}) {
   const scope = useContext(DocsSearchContext);
   if (!scope) throw new Error('HeaderSearch requires DocsSearchProvider.');
@@ -105,7 +108,13 @@ export function HeaderSearch({
         aria-label="Search documentation"
         aria-keyshortcuts="Control+K Meta+K"
       >
-        <Icon icon={Search01Icon} aria-hidden="true" size={17} strokeWidth={1.7} />
+        <Icon icon={Search01Icon} aria-hidden="true" size={wide ? 15 : 17} strokeWidth={1.7} />
+        {wide ? (
+          <>
+            <span className="lilt-header__search-text">Search docs</span>
+            <kbd className="lilt-header__kbd">{scope.shortcut}</kbd>
+          </>
+        ) : null}
       </CommandDialogTrigger>
     </TooltipHint>
   );

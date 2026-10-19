@@ -6,14 +6,12 @@ import Loading03Icon from '@hugeicons/core-free-icons/Loading03Icon';
 import ReplayIcon from '@hugeicons/core-free-icons/ReplayIcon';
 import SlidersHorizontalIcon from '@hugeicons/core-free-icons/SlidersHorizontalIcon';
 import { HugeiconsIcon as Icon } from '@hugeicons/react';
-import { animate, useReducedMotion } from 'motion/react';
 import { usePathname } from 'next/navigation';
 import { createContext, useContext, useEffect, useRef, useState, type ReactNode } from 'react';
 import { CardExamplePreview } from '@/components/docs/card-example-preview';
 import { controls, useChartSettings } from '@/components/docs/chart-settings';
 import { DocsExample } from '@/components/docs/docs-example';
 import { StageCopyMenu } from '@/components/docs/stage-copy-menu';
-import { NotchPortal, useNotchSlotAvailable } from '@/components/shell/notch-slot';
 import { CardCarousel } from '@/components/ui/card-carousel';
 import {
   PopoverClose,
@@ -200,12 +198,12 @@ export function ChartStage({
   tune?: readonly TuneControl[];
 }) {
   const stage = useStage();
+  const { settings } = useChartSettings();
   const [view, setView] = useState<'preview' | 'code'>('preview');
   const [replay, setReplay] = useState(0);
   const { items, item, resolved, loading } = stage;
   const { example, code, prompt } = resolved;
   const pathname = usePathname();
-  const inNotch = useNotchSlotAvailable();
   const sized = items.map((candidate) => ({
     id: candidate.id,
     title: candidate.title,
@@ -215,48 +213,6 @@ export function ChartStage({
     0,
     items.findIndex((candidate) => candidate.id === item.id),
   );
-  // An elevated card wears the tab; an outline or ghost card has no body to tuck it behind, and a
-  // card with its own badge already wears a tab there, so the stage's stands apart as a toolbar.
-  const {
-    surface = 'elevated',
-    compare,
-    badge,
-  } = firstCard(example).props as {
-    surface?: string;
-    compare?: unknown;
-    badge?: unknown;
-  };
-  const toolbar =
-    surface === 'outline' || surface === 'ghost' || compare === 'badge' || badge != null;
-  const root = useRef<HTMLDivElement>(null);
-  const reduced = Boolean(useReducedMotion());
-  const previous = useRef(active);
-  // The tab belongs to the card in focus, so it rides in with the next one rather than hanging
-  // over the stage while the cards trade places.
-  useEffect(() => {
-    const from = previous.current;
-    previous.current = active;
-    if (from === active || reduced || toolbar || view !== 'preview') return;
-    const head = root.current?.querySelector<HTMLElement>('.lilt-docs-example__head');
-    const card = root.current?.querySelector<HTMLElement>('.lilt-card-carousel__card[data-active]');
-    if (!head || !card) return;
-    let step = (active - from + items.length) % items.length;
-    if (step > items.length / 2) step -= items.length;
-    const width =
-      parseFloat(getComputedStyle(head).getPropertyValue('--lilt-stage-card-width')) ||
-      card.offsetWidth;
-    const motion = animate(
-      head,
-      { x: [Math.sign(step) * width * 0.63, 0], y: [12, 0], scale: [0.9, 1], opacity: [0, 1] },
-      {
-        type: 'spring',
-        duration: 0.55,
-        bounce: 0.08,
-        opacity: { duration: 0.22, ease: 'easeOut' },
-      },
-    );
-    return () => motion.stop();
-  }, [active, items.length, reduced, toolbar, view]);
   // A card leaving focus keeps its mount as a neighbour; only the card arriving plays its entrance.
   const keys = useRef(new Map<string, string>());
   const activeKey = `${item.id}-${stage.mount}-${replay}-${stage.visit}`;
@@ -316,11 +272,9 @@ export function ChartStage({
   const head = (
     <div className="lilt-stage__tools">
       <StageProps tune={tune} />
-      {inNotch ? null : (
-        <div className="lilt-stage__preview-tools" role="group" aria-label="Preview actions">
-          {tools('lilt-notch__tool')}
-        </div>
-      )}
+      <div className="lilt-stage__preview-tools" role="group" aria-label="Preview actions">
+        {tools('lilt-notch__tool')}
+      </div>
       <StageCopyMenu
         code={code}
         importLine={
@@ -336,12 +290,15 @@ export function ChartStage({
   );
 
   return (
-    <div ref={root} className="lilt-stage" data-head={toolbar ? 'toolbar' : 'tab'}>
+    <div className="lilt-stage">
+      {/* The stage is lit by the site's palette, so the room takes the colour of its charts. */}
+      <span
+        className="lilt-stage__light"
+        data-lilt-chart=""
+        data-lilt-palette={(settings.palette as string | undefined) ?? undefined}
+        aria-hidden="true"
+      />
       <span id="variants" className="lilt-stage__anchor" aria-hidden="true" />
-      <NotchPortal>
-        <span className="lilt-notch__divider" aria-hidden="true" />
-        {tools('lilt-notch__tool')}
-      </NotchPortal>
       <DocsExample
         label={label}
         code={code}
@@ -350,7 +307,6 @@ export function ChartStage({
         view={view}
         onViewChange={setView}
         head={head}
-        badgeHead
         codeNote={item.title}
       >
         {/* Replay re-runs only the card in focus; its neighbours keep still. */}

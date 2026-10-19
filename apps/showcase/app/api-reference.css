@@ -9,7 +9,7 @@
 .lilt-api__filter {
   position: sticky;
   z-index: 5;
-  top: calc(10px + var(--lilt-shell-tuck, 0px));
+  top: calc(var(--header-height) + 10px);
   display: flex;
   align-items: center;
   gap: 10px;

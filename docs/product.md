@@ -12,7 +12,7 @@ A chart page has one stage and every control has exactly one home. This supersed
 
 - **Variants** are what the chart handles: its situations and data (a target, a forecast, missing values, another kind of data, a companion form). Each is dressed in the look chosen for it, so the carousel shows the family's range. The default card comes first. A form one prop makes (stacked, percent, step, needles, pie, hollow candles) is not a variant, and neither is a copy of the default with another period.
 - **Props** (in the stage's tab) are this component's own props: `stack`, `barStyle`, `curve`, `radius`, `variant`, `display` and the like. Changing one updates the card in focus and its printed code.
-- **Chart style** (the style notch) is how every chart on the site looks: palette, depth, surface, background, axis, hover, legend, numbers, loading and theme. None of these appear on a chart page; Props says so and opens the notch. A variant that sets one of them for itself is named in Props.
+- **Chart style** (the Style panel in the header) is how every chart on the site looks: palette, depth, surface, background, axis, hover, legend, numbers, loading and theme. None of these appear on a chart page; Props says so and opens the notch. A variant that sets one of them for itself is named in Props.
 
 ## Features (29 September 2026)
 
@@ -42,7 +42,7 @@ All six share the observation-card hover, keyboard, touch-glide, pin/release, ac
 
 The product is one React/TypeScript chart package and one Next.js documentation browser. Retained families are Area, Line, vertical Bar, stacked Area and Bar, category Bar, Horizontal Bar, Stat cards (the `StatCard` with a sparkline, bars, meter, or ring), Radial, Progress, Activity Ring, Combo, Funnel, Heatmap, Scatter, Sankey, Radar, Slope (added 27 September, with slope and dumbbell variants), Range and Box plot (added 28 September). Finance families (Candlestick with volume, Indicators with RSI/MACD/volume panes, Price, Depth, Order book, Portfolio) were added 28 September for 0.2.0 and ship from `@lilt-ui/charts/finance`. The Labs pages remain as showcase tools for exploring colors, backgrounds, surfaces, axes, loading, hover, and numbers.
 
-The browser keeps the clean-shell sidebar and Manrope. Each family has one chart card with Preview, Code, Data, Setup, and anchored Customize. Preview data and copyable code must agree. The sidebar navigates chart families and essential guides. Variations live inside their family route.
+The browser uses the top header, glyph sidebar and On this page rail, set in Geist with Instrument Serif italic accents. Each family has one chart card with Preview, Code, Data, Setup, and anchored Customize. Preview data and copyable code must agree. The sidebar navigates chart families and essential guides. Variations live inside their family route.
 
 The package gives polished default color, rounded-square value legends, optional compact dot legends, readable hover values, linked legend/plot inspection, signature plot hover marks, accessible pin/release, and opt-in tooltips. Consumers can compose legends and comparison differences in their own JSX, including a header, footer, card, or separate panel. Comparison state and arithmetic are exposed without adding a hardcoded results section.
 

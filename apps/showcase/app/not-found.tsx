@@ -21,11 +21,11 @@ export default function NotFound() {
         </BlurFade>
         <BlurFade delay={80}>
           <div className="lilt-lost__actions">
-            <Link href="/charts" className="lilt-home__button">
+            <Link href="/charts" className="lilt-landing__button">
               Browse charts
               <Icon icon={ArrowRight02Icon} aria-hidden="true" size={16} strokeWidth={1.8} />
             </Link>
-            <Link href="/" className="lilt-home__button" data-variant="quiet">
+            <Link href="/" className="lilt-landing__button" data-variant="quiet">
               Home
             </Link>
           </div>

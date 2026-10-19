@@ -87,9 +87,6 @@ main.lilt-scroll-area__viewport:focus-visible {
 .lilt-scroll-area__thumb:active {
   background: color-mix(in srgb, var(--foreground) 42%, transparent);
 }
-.lilt-shell__scroll {
-  flex: 1;
-}
 @media (hover: none) {
   .lilt-scroll-area__scrollbar {
     opacity: 1;
@@ -167,25 +164,22 @@ main.lilt-scroll-area__viewport:focus-visible {
   font-size: 14.5px;
   line-height: 24px;
 }
+/* The studio's ease, and the wordmark's colours wherever it is drawn. */
 :root {
   --studio-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --lilt-logo-ink: #111111;
+  --lilt-logo-charts: #6b6e74;
+  --lilt-logo-dot: var(--brand-primary);
 }
-
-.lilt-shell__main-frame {
-  margin-left: 224px;
+.dark {
+  --lilt-logo-ink: #f5f5f5;
+  --lilt-logo-charts: #8d939d;
 }
 .lilt-shell__brand-logo {
-  --lilt-logo-ink: #201f1f;
-  --lilt-logo-charts: #4d5056;
-  --lilt-logo-dot: var(--brand-primary);
   display: block;
   width: 90px;
   height: auto;
   flex: 0 0 auto;
-}
-.dark .lilt-shell__brand-logo {
-  --lilt-logo-ink: #f7f6f7;
-  --lilt-logo-charts: #9097a3;
 }
 .lilt-logo__ink {
   fill: var(--lilt-logo-ink);
@@ -195,33 +189,6 @@ main.lilt-scroll-area__viewport:focus-visible {
 }
 .lilt-logo__charts {
   fill: var(--lilt-logo-charts);
-}
-.lilt-shell__menu-button {
-  display: grid;
-  flex-shrink: 0;
-  width: 40px;
-  height: 40px;
-  padding: 0;
-  place-items: center;
-  border: 0;
-  border-radius: 8px;
-  background: transparent;
-  color: var(--muted-foreground);
-  cursor: pointer;
-}
-.lilt-shell__menu-button:hover {
-  background: var(--hover);
-  color: var(--foreground);
-}
-.lilt-shell__mobile-trigger {
-  display: none;
-}
-.lilt-shell__content {
-  position: relative;
-  padding: 12px 12px 12px 32px;
-  border: 0;
-  border-radius: 0;
-  background: transparent;
 }
 .lilt-main {
   width: min(1120px, 100%);
@@ -277,39 +244,6 @@ main.lilt-scroll-area__viewport:focus-visible {
 }
 .dark .lilt-code-number {
   color: #e5b66d;
-}
-@media (max-width: 1100px) {
-  .lilt-shell__content {
-    padding: 12px 12px 12px 24px;
-  }
-}
-@media (max-width: 767px) {
-  .lilt-shell__main-frame {
-    margin-left: 0;
-  }
-  .lilt-shell__content {
-    padding: 24px 20px;
-  }
-  .lilt-shell__mobile-trigger {
-    display: grid;
-    position: absolute;
-    z-index: 10;
-    top: 24px;
-    left: 20px;
-  }
-  .lilt-main > h1:first-child,
-  .lilt-main > .lilt-eyebrow:first-child {
-    padding-left: 46px;
-    min-height: 40px;
-  }
-}
-@media (max-width: 560px) {
-  .lilt-shell__content {
-    padding: 24px 12px;
-  }
-  .lilt-shell__mobile-trigger {
-    left: 12px;
-  }
 }
 @media (prefers-reduced-motion: reduce) {
   .lilt-button {

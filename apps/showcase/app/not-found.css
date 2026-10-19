@@ -70,12 +70,12 @@
 
 /* Inside the docs shell (a missing chart or topic), the rail already carries the brand and the
    page sits in the sheet rather than filling the window. */
-.lilt-shell .lilt-lost {
+.lilt-site .lilt-lost {
   min-height: calc(100svh - 120px);
-  margin: -24px -40px -40px -24px;
+  margin: -28px -48px -120px;
   background: transparent;
 }
-.lilt-shell .lilt-lost__brand {
+.lilt-site .lilt-lost__brand {
   display: none;
 }
 

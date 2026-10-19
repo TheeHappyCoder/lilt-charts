@@ -1,0 +1,360 @@
+/* The bar across the top of every page. Clear over the page until content scrolls beneath it. */
+.lilt-header {
+  position: sticky;
+  z-index: 40;
+  top: 0;
+  height: var(--header-height);
+  border-bottom: 1px solid transparent;
+  background: color-mix(in srgb, var(--background) 0%, transparent);
+  transition:
+    background-color 240ms var(--ease-out),
+    border-color 240ms var(--ease-out),
+    backdrop-filter 240ms var(--ease-out);
+}
+.lilt-header[data-scrolled] {
+  border-bottom-color: var(--line);
+  background: color-mix(in srgb, var(--background) 78%, transparent);
+  backdrop-filter: blur(16px) saturate(1.4);
+}
+.lilt-header__inner {
+  display: flex;
+  height: 100%;
+  align-items: center;
+  gap: 8px;
+  padding: 0 20px 0 24px;
+}
+
+.lilt-header__brand {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  height: 36px;
+  margin-right: 20px;
+  border-radius: 8px;
+}
+.lilt-header__logo {
+  width: 88px;
+  height: auto;
+}
+.lilt-header__brand:focus-visible {
+  outline-offset: 4px;
+}
+
+.lilt-header__nav {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+.lilt-header__link {
+  position: relative;
+  display: inline-flex;
+  height: 32px;
+  align-items: center;
+  padding: 0 12px;
+  border-radius: 999px;
+  color: var(--muted-foreground);
+  font-size: 14px;
+  font-weight: 450;
+  text-decoration: none;
+  transition: color 160ms ease;
+}
+.lilt-header__link-text {
+  position: relative;
+}
+.lilt-header__link:hover,
+.lilt-header__link[aria-current='page'] {
+  color: var(--foreground);
+}
+.lilt-header__link-fill {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: var(--active);
+}
+
+.lilt-header__actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: auto;
+}
+
+/* Shared round icon button: search on phones, the drawer's menu and close. */
+.lilt-header__icon {
+  display: inline-grid;
+  flex: none;
+  width: 36px;
+  height: 36px;
+  place-items: center;
+  padding: 0;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--muted-foreground);
+  cursor: pointer;
+  transition:
+    background-color 160ms ease,
+    color 160ms ease;
+}
+.lilt-header__icon:hover {
+  background: var(--hover);
+  color: var(--foreground);
+}
+.lilt-header__menu {
+  display: none;
+  margin-left: -8px;
+}
+
+/* Search: a quiet field with its shortcut. */
+.lilt-header__search {
+  display: inline-flex;
+  height: 36px;
+  min-width: 220px;
+  align-items: center;
+  gap: 8px;
+  padding: 0 6px 0 12px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--hover);
+  color: var(--muted-foreground);
+  font-size: 13.5px;
+  cursor: pointer;
+  transition:
+    border-color 160ms ease,
+    color 160ms ease;
+}
+.lilt-header__search:hover {
+  border-color: var(--line-strong);
+  color: var(--foreground);
+}
+.lilt-header__search-text {
+  flex: 1;
+  text-align: left;
+}
+.lilt-header__kbd {
+  display: inline-flex;
+  height: 22px;
+  align-items: center;
+  padding: 0 7px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--background);
+  color: var(--muted-foreground);
+  font-family: var(--font-ui), sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+}
+
+/* Theme: three icons on one track. */
+.lilt-theme-seg {
+  display: inline-flex;
+  flex: none;
+  padding: 3px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--hover);
+}
+.lilt-theme-seg__button {
+  position: relative;
+  display: grid;
+  width: 28px;
+  height: 28px;
+  place-items: center;
+  padding: 0;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--muted-foreground);
+  cursor: pointer;
+  transition: color 160ms ease;
+}
+.lilt-theme-seg__button:hover,
+.lilt-theme-seg__button[aria-pressed='true'] {
+  color: var(--foreground);
+}
+.lilt-theme-seg__button svg {
+  position: relative;
+}
+.lilt-theme-seg__thumb {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: var(--surface);
+  box-shadow:
+    0 1px 2px rgb(0 0 0 / 0.08),
+    0 0 0 1px var(--line);
+}
+
+/* GitHub: an outlined pill with the star count. */
+.lilt-header__github .lilt-github-stars {
+  height: 36px;
+  min-height: 36px;
+  gap: 6px;
+  padding: 0 12px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  color: var(--muted-foreground);
+  font-size: 13px;
+  transition:
+    border-color 160ms ease,
+    color 160ms ease;
+}
+.lilt-header__github .lilt-github-stars:hover {
+  border-color: var(--line-strong);
+  color: var(--foreground);
+}
+.lilt-header__github .lilt-github-stars__total {
+  color: var(--foreground);
+}
+.lilt-header__github .lilt-github-stars__caption {
+  display: none;
+}
+
+/* The way in: the one filled button on the bar. */
+.lilt-header__cta {
+  display: inline-flex;
+  flex: none;
+  height: 36px;
+  align-items: center;
+  gap: 6px;
+  padding: 0 14px 0 16px;
+  border-radius: 999px;
+  background: var(--foreground);
+  color: var(--background);
+  font-size: 13.5px;
+  font-weight: 500;
+  text-decoration: none;
+  transition:
+    transform 160ms var(--ease-out),
+    opacity 160ms ease;
+}
+.lilt-header__cta:hover {
+  opacity: 0.88;
+}
+.lilt-header__cta:active {
+  transform: scale(0.97);
+}
+
+/* The chart style: depth as one toggle, then the palette and the label that opens the panel. */
+.lilt-style-trigger {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  height: 36px;
+  padding: 3px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--hover);
+}
+.lilt-style-trigger__depth,
+.lilt-style-trigger__open {
+  position: relative;
+  display: inline-flex;
+  height: 28px;
+  align-items: center;
+  gap: 8px;
+  padding: 0 10px;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--muted-foreground);
+  font-size: 13px;
+  white-space: nowrap;
+  flex: none;
+  cursor: pointer;
+  transition:
+    background-color 160ms ease,
+    color 160ms ease;
+}
+.lilt-style-trigger__depth {
+  width: 28px;
+  justify-content: center;
+  padding: 0;
+}
+.lilt-style-trigger__depth[aria-pressed='true'] {
+  background: var(--surface);
+  color: var(--foreground);
+  box-shadow:
+    0 1px 2px rgb(0 0 0 / 0.08),
+    0 0 0 1px var(--line);
+}
+.lilt-style-trigger__depth:hover,
+.lilt-style-trigger__open:hover,
+.lilt-style-trigger__open[aria-expanded='true'] {
+  color: var(--foreground);
+}
+.lilt-style-trigger__open[aria-expanded='true'] {
+  background: var(--surface);
+  box-shadow:
+    0 1px 2px rgb(0 0 0 / 0.08),
+    0 0 0 1px var(--line);
+}
+.lilt-style-trigger__dot {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--brand-primary);
+}
+
+@media (max-width: 1279px) {
+  .lilt-header__github {
+    display: none;
+  }
+}
+@media (max-width: 1099px) {
+  .lilt-header__search {
+    width: 36px;
+    min-width: 0;
+    justify-content: center;
+    padding: 0;
+  }
+  .lilt-header__search-text,
+  .lilt-header__kbd {
+    display: none;
+  }
+}
+@media (max-width: 1023px) {
+  .lilt-header__menu {
+    display: inline-grid;
+  }
+  .lilt-header__nav {
+    display: none;
+  }
+}
+@media (max-width: 639px) {
+  .lilt-header__inner {
+    gap: 6px;
+    padding: 0 12px 0 16px;
+  }
+  .lilt-header__brand {
+    margin-right: 0;
+  }
+  .lilt-header__logo {
+    width: 76px;
+  }
+  .lilt-header__cta,
+  .lilt-style-trigger__label {
+    display: none;
+  }
+  .lilt-header__search {
+    border: 0;
+    background: transparent;
+  }
+}
+@media (max-width: 399px) {
+  .lilt-style-trigger__depth {
+    display: none;
+  }
+  .lilt-theme-seg__button {
+    width: 26px;
+  }
+}
+/* Without a count the GitHub link is a round mark like the other icon buttons. */
+.lilt-header__github .lilt-github-stars:not(:has(.lilt-github-stars__total)) {
+  width: 36px;
+  justify-content: center;
+  padding: 0;
+}

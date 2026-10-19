@@ -1,0 +1,212 @@
+/* What makes the site Lilt's: the italic voice, the brand's violet-to-rose, charts drawn as
+   themselves, rooms lit by the palette, and the segmented level meter. */
+:root {
+  --lilt-brand-gradient: linear-gradient(100deg, #7c5cff 10%, #e5489c 90%);
+}
+.dark {
+  --lilt-brand-gradient: linear-gradient(100deg, #9b82ff 10%, #f06aae 90%);
+}
+::selection {
+  background: color-mix(in srgb, var(--brand-primary) 28%, transparent);
+}
+
+/* The italic voice: one word in a headline, in the brand's colours. */
+:is(.lilt-docs__title, .lilt-landing h1, .lilt-landing h2) em {
+  padding-right: 0.06em;
+  background: var(--lilt-brand-gradient);
+  background-clip: text;
+  color: transparent;
+  font-family: var(--font-serif), Georgia, serif;
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  -webkit-background-clip: text;
+}
+.lilt-landing h1 em {
+  font-size: 1.08em;
+}
+
+/* A chart page's family beside its title, drawn as itself. */
+.lilt-emblem {
+  display: grid;
+  width: 52px;
+  height: 38px;
+  flex: none;
+  place-items: center;
+  border-radius: 12px;
+  background: var(--surface);
+  box-shadow:
+    inset 0 0 0 1px var(--line-strong),
+    0 1px 2px rgb(0 0 0 / 0.05),
+    0 8px 20px -12px color-mix(in srgb, var(--brand-primary) 60%, transparent);
+  container-type: normal;
+}
+.lilt-emblem .lilt-chart-glyph {
+  padding: 4px 3px;
+}
+
+/* The stage takes the colour of its charts: a soft light from the palette's first two series. */
+.lilt-stage {
+  isolation: isolate;
+  border-radius: 24px;
+  background: var(--panel);
+  box-shadow: inset 0 0 0 1px var(--line);
+}
+.lilt-stage > .lilt-docs-example {
+  background: transparent;
+  box-shadow: none;
+}
+.lilt-stage__light {
+  position: absolute;
+  z-index: -1;
+  inset: 0 0 auto;
+  height: 70%;
+  padding: 0;
+  border-radius: 24px 24px 0 0;
+  background:
+    radial-gradient(
+      50% 80% at 35% 0%,
+      color-mix(in srgb, var(--lilt-series-1) 16%, transparent),
+      transparent 70%
+    ),
+    radial-gradient(
+      45% 70% at 70% 0%,
+      color-mix(in srgb, var(--lilt-series-2) 11%, transparent),
+      transparent 70%
+    );
+  container-type: normal;
+  pointer-events: none;
+  transition: opacity 400ms ease;
+}
+
+/* "You are here" in the brand's dot, as on the wordmark. */
+.lilt-toc__link[aria-current='location'] {
+  border-left-color: var(--brand-primary);
+}
+.lilt-header__link[aria-current='page'] .lilt-header__link-text::before {
+  display: inline-block;
+  width: 5px;
+  height: 5px;
+  margin: 0 7px 2px 0;
+  border-radius: 50%;
+  background: var(--brand-primary);
+  content: '';
+  vertical-align: middle;
+}
+
+/* The level meter: one column per day, lit in segmented cells from the bottom. */
+.lilt-meter {
+  width: min(760px, 100%);
+  margin: 44px 0 0;
+}
+.lilt-meter__columns {
+  display: grid;
+  height: 132px;
+  grid-auto-columns: minmax(0, 1fr);
+  grid-auto-flow: column;
+  align-items: end;
+  gap: 3px;
+}
+.lilt-meter__column {
+  display: flex;
+  height: 100%;
+  flex-direction: column-reverse;
+  gap: 3px;
+}
+.lilt-meter__column i {
+  flex: 1;
+  border-radius: 2px;
+  background: color-mix(in srgb, var(--foreground) 6%, transparent);
+}
+.lilt-meter__column i[data-lit] {
+  /* Violet at the floor to rose at the peak, cell by cell, as a level meter lights. */
+  background: color-mix(in oklab, #e5489c calc(var(--l) * 100%), #7c5cff);
+}
+.lilt-meter figcaption {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 12px;
+  color: var(--muted-foreground);
+  font-size: 12px;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .lilt-meter__column i[data-lit] {
+    animation: lilt-meter-light 520ms var(--ease-out) both;
+    animation-timeline: view();
+    animation-range: entry 0% cover 30%;
+  }
+}
+@keyframes lilt-meter-light {
+  from {
+    opacity: 0;
+    transform: scaleY(0.4);
+  }
+}
+@media (max-width: 639px) {
+  .lilt-meter__columns {
+    height: 96px;
+    gap: 2px;
+  }
+  .lilt-meter__column {
+    gap: 2px;
+  }
+}
+
+/* The hero's ground: a huge, quiet level meter rising behind the words, under a palette glow. */
+.lilt-backdrop {
+  position: absolute;
+  z-index: -1;
+  top: calc(var(--header-height) * -1);
+  bottom: 0;
+  left: 50%;
+  width: 100vw;
+  overflow: hidden;
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+.lilt-backdrop__glow {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(42% 46% at 50% 0%, color-mix(in srgb, #7c5cff 22%, transparent), transparent),
+    radial-gradient(30% 36% at 72% 8%, color-mix(in srgb, #e5489c 12%, transparent), transparent),
+    radial-gradient(30% 36% at 28% 10%, color-mix(in srgb, #2f6fed 9%, transparent), transparent);
+}
+.lilt-backdrop__meter {
+  position: absolute;
+  inset: auto 0 0;
+  width: 100%;
+  height: 78%;
+  fill: url(#lilt-backdrop-ink);
+  opacity: 0.16;
+  /* Gone behind the headline, strongest along the floor and towards the sides. */
+  mask-image:
+    linear-gradient(to top, #000 0%, rgb(0 0 0 / 0.55) 45%, transparent 92%),
+    radial-gradient(ellipse 46% 72% at 50% 32%, transparent 45%, #000 100%);
+  mask-composite: intersect;
+}
+.dark .lilt-backdrop__meter {
+  opacity: 0.24;
+}
+/* Soften the floor into the page. */
+.lilt-backdrop::after {
+  position: absolute;
+  inset: auto 0 0;
+  height: 120px;
+  background: linear-gradient(to bottom, transparent, var(--background));
+  content: '';
+}
+@media (prefers-reduced-motion: no-preference) {
+  .lilt-backdrop__column {
+    transform-box: view-box;
+    transform-origin: bottom;
+    animation: lilt-backdrop-rise 1100ms var(--ease-out) both;
+    animation-delay: calc(var(--i) * 18ms);
+  }
+}
+@keyframes lilt-backdrop-rise {
+  from {
+    opacity: 0;
+    transform: scaleY(0.2);
+  }
+}

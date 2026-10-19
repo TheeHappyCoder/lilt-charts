@@ -176,3 +176,11 @@ export const groupsByTab: Record<Tab, readonly TileGroup[]> = {
     { key: 'reference', heading: 'Reference', routes: topIn('Reference') },
   ],
 };
+
+/** Where each place opens: the chart gallery, or the first page of the others. */
+export const tabHref: Record<Tab, string> = {
+  charts: '/charts',
+  customize: groupsByTab.customize[0]!.routes[0]!.href,
+  features: groupsByTab.features[0]!.routes[0]!.href,
+  docs: groupsByTab.docs[0]!.routes[0]!.href,
+};

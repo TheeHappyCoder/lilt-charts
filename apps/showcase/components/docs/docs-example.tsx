@@ -206,10 +206,8 @@ export function DocsExample({
 export function DocsSnippet({ code }: { code: string }) {
   return (
     <div className="lilt-docs-snippet">
-      <pre>
-        <code>{code}</code>
-      </pre>
-      <CopyButton text={code} />
+      <CodeBlock code={code} />
+      <CopyButton text={code} label="Copy code" compact />
     </div>
   );
 }

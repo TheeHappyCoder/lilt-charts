@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { DocsSnippet } from '@/components/docs/docs-example';
+import { InstallCommand } from '@/components/docs/install-command';
 import { ChartStage, ChartStageProvider, type StageItem } from '@/components/docs/chart-stage';
 import { PageHeader } from '@/components/docs/page-header';
 import { Prose } from '@/components/docs/prose';
@@ -31,25 +32,38 @@ export function CardDocPage({ doc }: { doc: CardDocContent }) {
   const importLine = `import { ${component} } from '${cardModule(doc.kind)}';`;
   const content = (
     <>
-      {/* Chart pages keep the import with the rest of the stage's actions, in its tab. */}
-      <PageHeader title={doc.title} />
+      <PageHeader title={doc.title} lede={doc.lede} />
 
       <section className="lilt-docs__hero" id="overview" aria-label={`${doc.title} preview`}>
         <ChartStage tune={tune} label={doc.title} importLine={importLine} filename={doc.heroFile} />
       </section>
 
-      <section className="lilt-docs__section" aria-labelledby="usage-title" id="usage">
+      <section
+        className="lilt-docs__section"
+        aria-labelledby="installation-title"
+        id="installation"
+      >
         <div className="lilt-docs__section-head">
-          <h2 id="usage-title">Usage</h2>
+          <h2 id="installation-title">Installation</h2>
           <p>
-            Import the component and the stylesheet once. See{' '}
-            <Link href="/guides/installation">Getting started</Link> to install the package.
+            Add the package, then import the component and the stylesheet once. See{' '}
+            <Link href="/guides/installation">Getting started</Link> for theming.
           </p>
         </div>
         <div className="lilt-docs__section-body">
+          <InstallCommand />
           <DocsSnippet
             code={`import { ${component} } from '${cardModule(doc.kind)}';\nimport '@lilt-ui/charts/styles.css';`}
           />
+        </div>
+      </section>
+
+      <section className="lilt-docs__section" aria-labelledby="usage-title" id="usage">
+        <div className="lilt-docs__section-head">
+          <h2 id="usage-title">Usage</h2>
+          <p>The default card above, as you would write it.</p>
+        </div>
+        <div className="lilt-docs__section-body">
           <DocsSnippet code={doc.usage} />
           <p>
             Omit <code>title</code> to leave out the visible title. Set{' '}
@@ -92,12 +106,11 @@ export function CardDocPage({ doc }: { doc: CardDocContent }) {
         <section
           key={form.kind}
           className="lilt-docs__section"
-          data-layout="stack"
           id={`${form.kind}-api`}
-          aria-label={`${form.title} API`}
+          aria-labelledby={`${form.kind}-api-title`}
         >
           <div className="lilt-docs__section-head">
-            <h2>{form.title}</h2>
+            <h2 id={`${form.kind}-api-title`}>{form.title}</h2>
             <p>{form.description}</p>
           </div>
           <div className="lilt-docs__section-body">
@@ -132,12 +145,7 @@ export function CardDocPage({ doc }: { doc: CardDocContent }) {
         </section>
       ))}
 
-      <section
-        className="lilt-docs__section"
-        data-layout="stack"
-        aria-labelledby="props-title"
-        id="props"
-      >
+      <section className="lilt-docs__section" aria-labelledby="props-title" id="props">
         <div className="lilt-docs__section-head">
           <h2 id="props-title">Props</h2>
           <p>
@@ -174,10 +182,9 @@ export function CardDocPage({ doc }: { doc: CardDocContent }) {
       </section>
     </>
   );
-  // The carousel gives the chart the full content width.
   return (
     <ChartStageProvider items={items} name={heroName} supportedProps={supportedProps}>
-      <article className="lilt-main lilt-docs" data-carousel="">
+      <article className="lilt-docs" data-carousel="">
         <div className="lilt-docs__main">{content}</div>
       </article>
     </ChartStageProvider>

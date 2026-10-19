@@ -1,0 +1,348 @@
+/* The documentation frame: left rail, page, and "On this page", centred together. */
+.lilt-site {
+  --lilt-site-sidebar: 248px;
+  --lilt-site-toc: 208px;
+  display: grid;
+  width: min(1520px, 100%);
+  grid-template-columns: var(--lilt-site-sidebar) minmax(0, 1fr) var(--lilt-site-toc);
+  margin-inline: auto;
+}
+.lilt-site__sidebar,
+.lilt-site__toc {
+  position: sticky;
+  top: var(--header-height);
+  height: calc(100svh - var(--header-height));
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: none;
+}
+.lilt-site__sidebar::-webkit-scrollbar,
+.lilt-site__toc::-webkit-scrollbar {
+  display: none;
+}
+.lilt-site__sidebar {
+  padding: 20px 12px 48px 20px;
+  /* Long lists fade under the bar rather than meeting it. */
+  mask-image: linear-gradient(
+    to bottom,
+    transparent,
+    #000 20px,
+    #000 calc(100% - 40px),
+    transparent
+  );
+}
+.lilt-site__main {
+  min-width: 0;
+  padding: 28px 48px 120px;
+}
+.lilt-site__toc {
+  padding: 36px 20px 40px 8px;
+}
+.lilt-site__main [id] {
+  scroll-margin-top: calc(var(--header-height) + 24px);
+}
+
+/* Section list */
+.lilt-sidebar {
+  display: grid;
+  gap: 22px;
+}
+.lilt-sidebar ul {
+  display: grid;
+  gap: 1px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.lilt-sidebar__heading {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 6px;
+  padding: 0 10px;
+  color: var(--faint);
+  font-size: 11.5px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  line-height: 16px;
+  text-transform: uppercase;
+}
+.lilt-sidebar__count {
+  display: inline-flex;
+  height: 16px;
+  min-width: 18px;
+  align-items: center;
+  justify-content: center;
+  padding: 0 5px;
+  border-radius: 999px;
+  background: var(--hover);
+  color: var(--muted-foreground);
+  font-size: 10.5px;
+  letter-spacing: 0;
+  font-variant-numeric: tabular-nums;
+}
+.lilt-sidebar__item {
+  position: relative;
+  display: flex;
+  min-height: 30px;
+  align-items: center;
+  gap: 10px;
+  padding: 0 10px 0 6px;
+  border-radius: 8px;
+  color: var(--muted-foreground);
+  font-size: 14px;
+  line-height: 20px;
+  text-decoration: none;
+  transition: color 140ms ease;
+}
+.lilt-sidebar__item[data-nested] {
+  padding-left: 18px;
+}
+.lilt-sidebar__item:hover {
+  color: var(--foreground);
+}
+.lilt-sidebar__item[aria-current='page'] {
+  color: var(--foreground);
+  font-weight: 500;
+}
+.lilt-sidebar__item:focus-visible {
+  outline-offset: -2px;
+}
+.lilt-sidebar__fill {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: var(--active);
+}
+.lilt-sidebar__label {
+  position: relative;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.lilt-sidebar__badge {
+  position: relative;
+  margin-left: auto;
+  padding: 1px 7px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--brand-primary) 14%, transparent);
+  color: var(--brand-primary);
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  line-height: 16px;
+  text-transform: uppercase;
+}
+
+/* On this page */
+.lilt-toc__title {
+  margin: 0 0 10px;
+  color: var(--foreground);
+  font-size: 13px;
+  font-weight: 500;
+}
+.lilt-toc ul {
+  display: grid;
+  margin: 0;
+  padding: 0;
+  border-left: 1px solid var(--line);
+  list-style: none;
+}
+.lilt-toc__link {
+  position: relative;
+  display: block;
+  margin-left: -1px;
+  padding: 5px 0 5px 14px;
+  border-left: 1px solid transparent;
+  color: var(--muted-foreground);
+  font-size: 13px;
+  line-height: 18px;
+  text-decoration: none;
+  transition:
+    color 160ms ease,
+    border-color 160ms ease;
+}
+.lilt-toc__link:hover {
+  color: var(--foreground);
+}
+.lilt-toc__link[aria-current='location'] {
+  border-left-color: var(--foreground);
+  color: var(--foreground);
+}
+
+/* Skip link */
+.lilt-skip {
+  position: fixed;
+  z-index: 100;
+  top: 10px;
+  left: 10px;
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: var(--foreground);
+  color: var(--background);
+  font-size: 13px;
+  text-decoration: none;
+  transform: translateY(-200%);
+}
+.lilt-skip:focus {
+  transform: none;
+}
+
+/* Phone and tablet drawer */
+.lilt-drawer__backdrop {
+  position: fixed;
+  z-index: 60;
+  inset: 0;
+  background: rgb(0 0 0 / 0.32);
+  backdrop-filter: blur(2px);
+  transition: opacity 200ms ease;
+}
+.lilt-drawer__backdrop[data-starting-style],
+.lilt-drawer__backdrop[data-ending-style] {
+  opacity: 0;
+}
+.lilt-drawer {
+  position: fixed;
+  z-index: 61;
+  inset: 8px auto 8px 8px;
+  display: flex;
+  width: min(300px, calc(100vw - 48px));
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  background: var(--background);
+  box-shadow: 0 24px 80px rgb(0 0 0 / 0.24);
+  transition:
+    transform 280ms var(--ease-out),
+    opacity 200ms ease;
+}
+.lilt-drawer[data-starting-style],
+.lilt-drawer[data-ending-style] {
+  opacity: 0;
+  transform: translateX(-16px);
+}
+.lilt-drawer__head {
+  display: flex;
+  height: 56px;
+  flex: none;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 10px 0 18px;
+}
+.lilt-drawer__tabs {
+  display: flex;
+  flex: none;
+  gap: 2px;
+  margin: 0 12px 8px;
+  padding: 3px;
+  border-radius: 999px;
+  background: var(--hover);
+}
+.lilt-drawer__tab {
+  flex: 1;
+  height: 30px;
+  padding: 0;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--muted-foreground);
+  font-size: 12.5px;
+  font-weight: 500;
+  cursor: pointer;
+}
+.lilt-drawer__tab[aria-selected='true'] {
+  background: var(--surface);
+  color: var(--foreground);
+  box-shadow: 0 1px 2px rgb(0 0 0 / 0.08);
+}
+.lilt-drawer__scroll {
+  flex: 1;
+  overflow-y: auto;
+  padding: 8px 10px 24px;
+}
+.lilt-drawer .lilt-sidebar__item {
+  min-height: 40px;
+}
+
+@media (max-width: 1279px) {
+  .lilt-site {
+    grid-template-columns: var(--lilt-site-sidebar) minmax(0, 1fr);
+  }
+  .lilt-site__toc {
+    display: none;
+  }
+}
+@media (max-width: 1023px) {
+  .lilt-site {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .lilt-site__sidebar {
+    display: none;
+  }
+  .lilt-site__main {
+    padding: 20px 24px 96px;
+  }
+}
+@media (max-width: 639px) {
+  .lilt-site__main {
+    padding: 12px 16px 80px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .lilt-drawer,
+  .lilt-drawer__backdrop {
+    transition: none;
+  }
+}
+
+/* Each row's mark: a chart family drawn as itself, quiet at rest, in full colour when it is the
+   page or under the pointer. Other pages carry their icon in the same chip. */
+.lilt-sidebar__mark {
+  position: relative;
+  display: grid;
+  width: 30px;
+  height: 20px;
+  flex: none;
+  place-items: center;
+  overflow: hidden;
+  border-radius: 6px;
+  background: var(--hover);
+  box-shadow: inset 0 0 0 1px var(--line);
+  color: var(--muted-foreground);
+  transition:
+    background-color 200ms ease,
+    box-shadow 200ms ease;
+}
+.lilt-chart-glyph {
+  display: block;
+  width: 100%;
+  height: 100%;
+  padding: 2px 1px;
+  container-type: normal;
+}
+.lilt-sidebar__mark .lilt-chart-glyph {
+  opacity: 0.55;
+  filter: grayscale(1);
+  transition:
+    filter 260ms var(--ease-out),
+    opacity 260ms var(--ease-out);
+}
+.lilt-sidebar__item:hover .lilt-chart-glyph,
+.lilt-sidebar__item[aria-current='page'] .lilt-chart-glyph {
+  opacity: 1;
+  filter: none;
+}
+.lilt-sidebar__item[aria-current='page'] .lilt-sidebar__mark {
+  background: var(--surface);
+  box-shadow:
+    inset 0 0 0 1px var(--line-strong),
+    0 1px 2px rgb(0 0 0 / 0.06);
+  color: var(--foreground);
+}
+@media (prefers-reduced-motion: reduce) {
+  .lilt-sidebar__mark,
+  .lilt-sidebar__mark .lilt-chart-glyph {
+    transition: none;
+  }
+}

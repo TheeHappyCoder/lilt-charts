@@ -7,30 +7,44 @@
 
 :root {
   /* The site's UI face, in one place. */
-  --font-ui: var(--font-manrope);
+  --font-ui: var(--font-geist);
   color-scheme: light;
-  --background: #f7f7f5;
+  /* Page, raised surface, and the quiet panel that stages a chart. */
+  --background: #fcfcfc;
   --surface: #ffffff;
-  --foreground: #37352f;
-  --muted-foreground: #787771;
-  --border: #e7e7e4;
-  --hover: #f1f1ef;
+  --panel: #f4f4f3;
+  --foreground: #0d0d0d;
+  --muted-foreground: #6b6b68;
+  --faint: #a3a39f;
+  /* Opaque: chart cards draw their grid with it. Site chrome uses the hairlines below. */
+  --border: #ebebea;
+  --line: rgb(13 13 13 / 0.07);
+  --line-strong: rgb(13 13 13 / 0.12);
+  --hover: rgb(13 13 13 / 0.04);
+  --active: rgb(13 13 13 / 0.065);
   --sidebar: var(--background);
   --brand-primary: #7c5cff;
   --jade: var(--brand-primary);
   --jade-strong: #6846ef;
   --ring: var(--brand-primary);
   --radius: 12px;
+  --header-height: 60px;
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .dark {
   color-scheme: dark;
-  --background: #111111;
-  --surface: #191919;
-  --foreground: #d9d9d8;
-  --muted-foreground: #9b9b98;
-  --border: #333331;
-  --hover: #242424;
+  --background: #0e0e0e;
+  --surface: #181818;
+  --panel: #141414;
+  --foreground: #f2f2f2;
+  --muted-foreground: #8d8d8a;
+  --faint: #5e5e5b;
+  --border: #272727;
+  --line: rgb(255 255 255 / 0.065);
+  --line-strong: rgb(255 255 255 / 0.11);
+  --hover: rgb(255 255 255 / 0.045);
+  --active: rgb(255 255 255 / 0.075);
   --sidebar: var(--background);
   --brand-primary: #8b6dff;
   --jade: var(--brand-primary);
@@ -88,19 +102,14 @@
 }
 
 body {
-  overflow: hidden;
+  /* Full-bleed backgrounds may reach past the scrollbar; never let them scroll the page sideways. */
+  overflow-x: clip;
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-ui), sans-serif;
   font-synthesis: none;
+  -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
-}
-
-.lilt-shell {
-  height: 100svh;
-  overflow: hidden;
-  padding: 8px 8px 8px 8px;
-  background: var(--background);
 }
 
 .lilt-theme-mode {
@@ -140,43 +149,6 @@ body {
 .lilt-theme-mode__button svg {
   position: relative;
   z-index: 1;
-}
-
-.lilt-shell__main-frame {
-  position: relative;
-  display: flex;
-  height: calc(100svh - 16px);
-  min-width: 0;
-  flex-direction: column;
-  overflow: hidden;
-  margin-left: 224px;
-}
-
-.lilt-shell__content {
-  padding: 24px;
-  background: transparent;
-}
-
-.lilt-shell__mobile-backdrop {
-  position: fixed;
-  z-index: 50;
-  inset: 0;
-  border: 0;
-  background: rgb(0 0 0 / 0.22);
-}
-
-.lilt-shell__mobile-dialog {
-  position: fixed;
-  z-index: 51;
-  inset: 8px auto 8px 8px;
-  display: flex;
-  width: min(224px, calc(100vw - 32px));
-  flex-direction: column;
-  overflow: hidden;
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  background: var(--sidebar);
-  box-shadow: 0 18px 60px rgb(0 0 0 / 0.18);
 }
 
 .lilt-main {
@@ -409,14 +381,6 @@ body {
 }
 
 @media (max-width: 767px) {
-  .lilt-shell__main-frame {
-    margin-left: 0;
-  }
-
-  .lilt-shell__content {
-    padding: 16px;
-  }
-
   .lilt-qa-grid {
     grid-template-columns: 1fr;
   }

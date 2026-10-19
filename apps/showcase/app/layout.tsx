@@ -1,6 +1,6 @@
 import { Analytics } from '@vercel/analytics/next';
 import type { Metadata } from 'next';
-import { Geist_Mono, Manrope } from 'next/font/google';
+import { Geist, Geist_Mono, Instrument_Serif } from 'next/font/google';
 import { ThemeProvider } from 'next-themes';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import './globals.css';
@@ -8,20 +8,16 @@ import '@lilt-ui/charts/styles.css';
 import './studio.css';
 import './docs.css';
 import './lab.css';
-import './home.css';
-import './home-story.css';
-import './home-scenes.css';
-import './home-craft.css';
-import './home-flight.css';
-import './home-scroll.css';
-import './tuner.css';
 import './api-reference.css';
 import './getting-started.css';
 import './motion-guide.css';
 import './performance.css';
-import './shell.css';
-import './rail-shell.css';
-import './style-notch.css';
+import './site-header.css';
+import './site-shell.css';
+import './style-menu.css';
+import './gallery.css';
+import './landing.css';
+import './personality.css';
 import '@/components/motion/blur-fade.css';
 import '@/components/ui/surface.css';
 import '@/components/ui/segmented.css';
@@ -31,7 +27,15 @@ import '@/components/ui/card-carousel.css';
 import './chart-stage.css';
 import './not-found.css';
 
-const manrope = Manrope({ subsets: ['latin'], variable: '--font-manrope', display: 'swap' });
+const geist = Geist({ subsets: ['latin'], variable: '--font-geist', display: 'swap' });
+/** The site's italic voice: one word in a headline, as in the wordmark's Lilt. */
+const serif = Instrument_Serif({
+  subsets: ['latin'],
+  weight: '400',
+  style: 'italic',
+  variable: '--font-serif',
+  display: 'swap',
+});
 const geistMono = Geist_Mono({
   subsets: ['latin'],
   variable: '--font-geist-mono',
@@ -52,7 +56,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
     <html
       lang="en"
       suppressHydrationWarning
-      className={`${manrope.variable} ${geistMono.variable}`}
+      className={`${geist.variable} ${serif.variable} ${geistMono.variable}`}
     >
       <body>
         <ThemeProvider

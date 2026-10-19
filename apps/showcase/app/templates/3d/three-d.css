@@ -221,12 +221,6 @@
   flex: 1;
   text-align: start;
 }
-.g-top .lilt-shell__theme {
-  width: 32px;
-  height: 32px;
-  border-radius: 9px;
-  color: var(--g-muted);
-}
 .g-avatar {
   display: grid;
   width: 30px;

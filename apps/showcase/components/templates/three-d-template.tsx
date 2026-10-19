@@ -25,7 +25,7 @@ import { motion, useReducedMotion } from 'motion/react';
 import Link from 'next/link';
 import { useTheme } from 'next-themes';
 import { useCallback, useEffect, useId, useMemo, useRef, useState } from 'react';
-import { ThemeModeSwitcher } from '@/components/shell/theme-switcher';
+import { ThemeSegmented } from '@/components/shell/theme-switcher';
 import { TooltipHint } from '@/components/ui/tooltip';
 import { StoreCommandMenu, type StoreCommand } from './store-command-menu';
 import {
@@ -546,7 +546,7 @@ export function ThreeDTemplate() {
                 <span>Search</span>
                 <kbd>{shortcut}</kbd>
               </button>
-              <ThemeModeSwitcher compact start="top-right" />
+              <ThemeSegmented />
               <span className="g-avatar g-avatar--me" aria-label="Jamie Lee, owner" role="img">
                 JL
               </span>

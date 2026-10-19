@@ -1,30 +1,70 @@
-/** A quiet field of chart bars, drawn here so the website owns its background artwork. */
+const COLUMNS = 72;
+const CELLS = 22;
+const CELL = 8;
+const GAP = 4;
+const WIDTH = 14;
+
+/** A smooth, deterministic level for each column: two slow swells and a quicker ripple. */
+const levelAt = (index: number) => {
+  const t = index / (COLUMNS - 1);
+  const swell =
+    0.55 + 0.25 * Math.sin(t * Math.PI * 2.2 + 0.6) + 0.12 * Math.sin(t * Math.PI * 7.1);
+  const ripple = 0.08 * Math.sin(index * 1.7) * Math.cos(index * 0.37);
+  return Math.max(0.12, Math.min(1, swell + ripple));
+};
+
+/**
+ * The hero's ground: Lilt's level meter, very large and very quiet. Columns of segmented cells
+ * rise once from the floor in the brand's violet-to-rose, fading out toward the edges and up
+ * behind the words. It is drawn, not fetched, so the server renders it whole.
+ */
 export function HomeBackdrop() {
+  const height = CELLS * (CELL + GAP);
+  const width = COLUMNS * (WIDTH + GAP);
   return (
-    <div className="lilt-home__backdrop" aria-hidden="true">
+    <div className="lilt-backdrop" aria-hidden="true">
+      <div className="lilt-backdrop__glow" />
       <svg
-        className="lilt-home__field"
-        viewBox="0 0 1440 720"
-        preserveAspectRatio="xMidYMid slice"
+        className="lilt-backdrop__meter"
+        viewBox={`0 0 ${width} ${height}`}
+        preserveAspectRatio="xMidYMax slice"
         focusable="false"
       >
-        {Array.from({ length: 32 }, (_, row) =>
-          Array.from({ length: 76 }, (_, column) => {
-            const wave = Math.sin(column * 0.16 + row * 0.24);
-            const height = 5 + (wave + 1) * 6;
-            return (
-              <rect
-                key={`${row}-${column}`}
-                x={column * 24 - row * 9}
-                y={row * 28 - height}
-                width="3"
-                height={height}
-                rx="1.5"
-                opacity={0.2 + (wave + 1) * 0.14}
-              />
-            );
-          }),
-        )}
+        <defs>
+          <linearGradient
+            id="lilt-backdrop-ink"
+            gradientUnits="userSpaceOnUse"
+            x1="0"
+            y1={height}
+            x2="0"
+            y2={0}
+          >
+            <stop offset="0" stopColor="#7c5cff" />
+            <stop offset="0.65" stopColor="#b252d8" />
+            <stop offset="1" stopColor="#e5489c" />
+          </linearGradient>
+        </defs>
+        {Array.from({ length: COLUMNS }, (_, column) => {
+          const lit = Math.round(levelAt(column) * CELLS);
+          return (
+            <g
+              key={column}
+              className="lilt-backdrop__column"
+              style={{ '--i': Math.abs(column - COLUMNS / 2) } as React.CSSProperties}
+            >
+              {Array.from({ length: lit }, (_, cell) => (
+                <rect
+                  key={cell}
+                  x={column * (WIDTH + GAP)}
+                  y={height - (cell + 1) * (CELL + GAP)}
+                  width={WIDTH}
+                  height={CELL}
+                  rx={2}
+                />
+              ))}
+            </g>
+          );
+        })}
       </svg>
     </div>
   );

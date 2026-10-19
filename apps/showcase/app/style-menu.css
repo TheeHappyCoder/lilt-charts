@@ -1,0 +1,243 @@
+/* The chart style panel: a floating inspector under the header's Style control. */
+.lilt-style-menu {
+  position: fixed;
+  z-index: 50;
+  top: calc(var(--header-height) + 4px);
+  right: 16px;
+  display: flex;
+  width: min(340px, calc(100vw - 24px));
+  max-height: calc(100svh - var(--header-height) - 20px);
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid var(--line-strong);
+  border-radius: 22px;
+  background: color-mix(in srgb, var(--surface) 92%, transparent);
+  box-shadow:
+    0 1px 0 rgb(255 255 255 / 0.04) inset,
+    0 24px 64px -16px rgb(0 0 0 / 0.24),
+    0 4px 16px -8px rgb(0 0 0 / 0.12);
+  backdrop-filter: blur(20px) saturate(1.4);
+  transform-origin: calc(100% - 120px) 0;
+}
+.lilt-style-menu__head {
+  display: flex;
+  flex: none;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 18px 14px 6px 20px;
+}
+.lilt-style-menu__head h2 {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+.lilt-style-menu__head p {
+  margin: 2px 0 0;
+  color: var(--muted-foreground);
+  font-size: 12.5px;
+}
+.lilt-style-menu__close {
+  display: grid;
+  width: 30px;
+  height: 30px;
+  place-items: center;
+  padding: 0;
+  border: 0;
+  border-radius: 999px;
+  background: var(--hover);
+  color: var(--muted-foreground);
+  cursor: pointer;
+}
+.lilt-style-menu__close:hover {
+  color: var(--foreground);
+}
+.lilt-style-menu__scroll {
+  min-height: 0;
+  flex: 1;
+  overflow-y: auto;
+  padding: 6px 20px 12px;
+  scrollbar-width: thin;
+}
+.lilt-style-menu__section {
+  display: grid;
+  gap: 8px;
+  padding: 14px 0;
+}
+.lilt-style-menu__section + .lilt-style-menu__section {
+  border-top: 1px solid var(--line);
+}
+.lilt-style-menu__section h3 {
+  margin: 0 0 2px;
+  color: var(--faint);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.lilt-style-menu__palettes {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 6px;
+}
+.lilt-style-menu__palette {
+  display: grid;
+  justify-items: center;
+  gap: 8px;
+  padding: 12px 4px 10px;
+  border: 0;
+  border-radius: 14px;
+  background: var(--hover);
+  color: var(--muted-foreground);
+  font-size: 12px;
+  cursor: pointer;
+  transition:
+    background-color 160ms ease,
+    color 160ms ease,
+    box-shadow 160ms ease;
+}
+.lilt-style-menu__palette:hover {
+  color: var(--foreground);
+}
+.lilt-style-menu__palette[aria-pressed='true'] {
+  background: var(--surface);
+  color: var(--foreground);
+  box-shadow:
+    0 0 0 1px var(--line-strong),
+    0 1px 3px rgb(0 0 0 / 0.08);
+}
+
+/* Three bars in the palette's own colours. */
+.lilt-style-menu__colors {
+  /* It carries data-lilt-chart for the palette's colours, but none of a card's containment. */
+  container-type: normal;
+  display: inline-flex;
+  width: auto;
+  min-width: 0;
+  padding: 0;
+  background: none;
+  height: 18px;
+  flex: none;
+  align-items: flex-end;
+  gap: 2px;
+}
+.lilt-style-menu__colors i {
+  width: 5px;
+  height: 10px;
+  border-radius: 2px;
+  background: var(--lilt-series-1);
+}
+.lilt-style-menu__colors i:nth-child(2) {
+  height: 18px;
+  background: var(--lilt-series-2);
+}
+.lilt-style-menu__colors i:nth-child(3) {
+  height: 14px;
+  background: var(--lilt-series-3);
+}
+.lilt-style-trigger .lilt-style-menu__colors {
+  height: 14px;
+}
+.lilt-style-trigger .lilt-style-menu__colors i {
+  width: 3px;
+  height: 8px;
+  border-radius: 1.5px;
+}
+.lilt-style-trigger .lilt-style-menu__colors i:nth-child(2) {
+  height: 14px;
+}
+.lilt-style-trigger .lilt-style-menu__colors i:nth-child(3) {
+  height: 11px;
+}
+
+.lilt-style-menu__seg {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  padding: 3px;
+  border-radius: 999px;
+  background: var(--hover);
+}
+.lilt-style-menu__seg button {
+  display: inline-flex;
+  height: 32px;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--muted-foreground);
+  font-size: 12.5px;
+  font-weight: 500;
+  cursor: pointer;
+}
+.lilt-style-menu__seg button[aria-pressed='true'] {
+  background: var(--surface);
+  color: var(--foreground);
+  box-shadow:
+    0 0 0 1px var(--line),
+    0 1px 2px rgb(0 0 0 / 0.08);
+}
+
+.lilt-style-menu__row {
+  display: flex;
+  min-height: 36px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.lilt-style-menu__row-label {
+  color: var(--muted-foreground);
+  font-size: 13px;
+  text-decoration: none;
+}
+.lilt-style-menu__row-label:hover {
+  color: var(--foreground);
+}
+.lilt-style-menu__select {
+  width: 136px;
+  min-width: 0;
+  flex: none;
+  height: 32px;
+  border-radius: 999px;
+  font-size: 12.5px;
+}
+.lilt-style-menu__select[data-changed] {
+  color: var(--brand-primary);
+}
+
+.lilt-style-menu__foot {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 14px 14px 20px;
+  border-top: 1px solid var(--line);
+  color: var(--muted-foreground);
+  font-size: 12.5px;
+}
+.lilt-style-menu__reset {
+  height: 32px;
+  padding: 0 14px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--foreground);
+  color: var(--background);
+  font-size: 12.5px;
+  font-weight: 500;
+  cursor: pointer;
+}
+.lilt-style-menu__reset:disabled {
+  background: var(--hover);
+  color: var(--faint);
+  cursor: default;
+}
+
+@media (max-width: 639px) {
+  .lilt-style-menu {
+    right: 12px;
+  }
+}
