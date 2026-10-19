@@ -49,6 +49,14 @@ export type RouteIcon =
   | 'orderbook'
   | 'portfolio'
   | 'price'
+  | 'watchlist'
+  | 'marketmap'
+  | 'volumeprofile'
+  | 'monthlyreturns'
+  | 'earnings'
+  | 'yieldcurve'
+  | 'payoff'
+  | 'cohort'
   | 'sync'
   | 'pin'
   | 'compare'
@@ -261,6 +269,18 @@ export const appRoutes = [
     pathname: '/charts/heatmap',
     icon: 'heatmap',
     navigation: true,
+  },
+  {
+    id: 'cohort-retention',
+    group: 'Charts',
+    job: 'Patterns',
+    label: 'Cohort retention',
+    title: 'Cohort retention',
+    href: '/charts/cohort-retention',
+    pathname: '/charts/cohort-retention',
+    icon: 'cohort',
+    navigation: true,
+    badge: 'New',
   },
   {
     id: 'scatter',
@@ -635,6 +655,83 @@ export const appRoutes = [
     href: '/finance/portfolio',
     pathname: '/finance/portfolio',
     icon: 'portfolio',
+    navigation: true,
+    badge: 'New',
+  },
+  {
+    id: 'watchlist',
+    group: 'Finance',
+    label: 'Watchlist',
+    title: 'Watchlist',
+    href: '/finance/watchlist',
+    pathname: '/finance/watchlist',
+    icon: 'watchlist',
+    navigation: true,
+    badge: 'New',
+  },
+  {
+    id: 'market-map',
+    group: 'Finance',
+    label: 'Market map',
+    title: 'Market map',
+    href: '/finance/market-map',
+    pathname: '/finance/market-map',
+    icon: 'marketmap',
+    navigation: true,
+    badge: 'New',
+  },
+  {
+    id: 'volume-profile',
+    group: 'Finance',
+    label: 'Volume profile',
+    title: 'Volume profile',
+    href: '/finance/volume-profile',
+    pathname: '/finance/volume-profile',
+    icon: 'volumeprofile',
+    navigation: true,
+    badge: 'New',
+  },
+  {
+    id: 'monthly-returns',
+    group: 'Finance',
+    label: 'Monthly returns',
+    title: 'Monthly returns',
+    href: '/finance/monthly-returns',
+    pathname: '/finance/monthly-returns',
+    icon: 'monthlyreturns',
+    navigation: true,
+    badge: 'New',
+  },
+  {
+    id: 'earnings',
+    group: 'Finance',
+    label: 'Earnings',
+    title: 'Earnings',
+    href: '/finance/earnings',
+    pathname: '/finance/earnings',
+    icon: 'earnings',
+    navigation: true,
+    badge: 'New',
+  },
+  {
+    id: 'yield-curve',
+    group: 'Finance',
+    label: 'Yield curve',
+    title: 'Yield curve',
+    href: '/finance/yield-curve',
+    pathname: '/finance/yield-curve',
+    icon: 'yieldcurve',
+    navigation: true,
+    badge: 'New',
+  },
+  {
+    id: 'payoff',
+    group: 'Finance',
+    label: 'Options payoff',
+    title: 'Options payoff',
+    href: '/finance/payoff',
+    pathname: '/finance/payoff',
+    icon: 'payoff',
     navigation: true,
     badge: 'New',
   },

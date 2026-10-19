@@ -31,6 +31,14 @@ import {
 } from './card-docs/cool';
 import { candlestickDoc } from './card-docs/candlestick';
 import { depthDoc } from './card-docs/depth';
+import { watchlistDoc } from './card-docs/watchlist';
+import { marketMapDoc } from './card-docs/market-map';
+import { volumeProfileDoc } from './card-docs/volume-profile';
+import { monthlyReturnsDoc } from './card-docs/monthly-returns';
+import { earningsDoc } from './card-docs/earnings';
+import { yieldCurveDoc } from './card-docs/yield-curve';
+import { payoffDoc } from './card-docs/payoff';
+import { cohortRetentionDoc } from './card-docs/cohort-retention';
 import { indicatorDoc } from './card-docs/indicator';
 import { orderBookDoc } from './card-docs/order-book';
 import { portfolioDoc } from './card-docs/portfolio';
@@ -112,6 +120,14 @@ export const cardDocsByRoute: Readonly<Record<string, CardDocContent>> = {
   depth: depthDoc,
   'order-book': orderBookDoc,
   portfolio: portfolioDoc,
+  watchlist: watchlistDoc,
+  'market-map': marketMapDoc,
+  'volume-profile': volumeProfileDoc,
+  'monthly-returns': monthlyReturnsDoc,
+  earnings: earningsDoc,
+  'yield-curve': yieldCurveDoc,
+  payoff: payoffDoc,
+  'cohort-retention': cohortRetentionDoc,
 };
 
 /** Every chart in sidebar order, with the page that documents it. */
@@ -144,7 +160,7 @@ const header = [
   '## Rules',
   '',
   "- Every card is a client component. In the Next.js App Router, render cards from a file that starts with `'use client'`.",
-  `- Import cards and parts from \`${PACKAGE_NAME}\`, and finance cards (candlestick, indicators, price, depth, order book, portfolio) from \`${PACKAGE_NAME}/finance\`. Server-safe data helpers (\`summarizeRange\`, \`toChartCsv\`, \`summarizeFunnelStages\`) are also in \`${PACKAGE_NAME}/data\`.`,
+  `- Import cards and parts from \`${PACKAGE_NAME}\`, and finance cards (candlestick, indicators, price, depth, order book, portfolio, watchlist, market map, volume profile, monthly returns, earnings, yield curve, options payoff) from \`${PACKAGE_NAME}/finance\`. Server-safe data helpers (\`summarizeRange\`, \`toChartCsv\`, \`summarizeFunnelStages\`) are also in \`${PACKAGE_NAME}/data\`.`,
   '- Card titles are optional: omit `title` to render no title. `header={false}` removes the entire header, including headline, delta and period controls. Supply an `aria-label` when your app owns the visible heading. Pass the selected rows through `data` when your app owns period selection.',
   '- Where a card supports legend layouts, `legend={false}` removes the legend without changing its data. `surface="ghost"` only removes the visual frame; it does not hide content. Radial charts keep their centre, pointer inspection, and keyboard inspection when the legend is hidden; Escape clears a pin in every layout.',
   '- Pass rows as they are. `x`, `category`, `value`, and each series `key` name fields of the row type; TypeScript rejects unknown or non-numeric fields.',

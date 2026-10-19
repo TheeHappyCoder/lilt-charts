@@ -12,6 +12,7 @@ import {
   productProfiles,
   profilesWithGaps,
 } from './sculpted-data';
+import { marketData, marketRangeSets } from './market-data';
 
 const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 const utcDay = (day: number) => new Date(Date.UTC(2026, 8, day));
@@ -1390,6 +1391,7 @@ export const deliveryTimes = ['Express', 'Standard', 'Economy'].flatMap((carrier
 );
 
 export const datasets = {
+  ...marketData,
   ...spatialData,
   ...expansionData,
   teamHandoffs,
@@ -1470,6 +1472,7 @@ export const datasets = {
 
 /** Period selects, printed as `ranges={ranges}`. */
 export const rangeSets = {
+  ...marketRangeSets,
   visitorRanges,
   sessionRanges,
   orderRanges,

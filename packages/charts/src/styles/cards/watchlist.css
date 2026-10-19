@@ -1,0 +1,197 @@
+@layer lilt {
+  /* The watchlist: one row per instrument. Its sparkline draws in, the range marks where the price
+     sits, and prices roll when they update. Hovering a row quiets the others. */
+  .lilt-watchlist__scroll {
+    min-width: 0;
+    overflow-x: auto;
+    margin-inline: -6px;
+    padding-inline: 6px;
+  }
+  .lilt-watchlist__table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    font-size: 13px;
+    font-variant-numeric: tabular-nums;
+  }
+  .lilt-watchlist__table th,
+  .lilt-watchlist__table td {
+    padding: 8px 6px;
+    text-align: left;
+    white-space: nowrap;
+  }
+  .lilt-watchlist__table [data-align='end'] {
+    text-align: right;
+  }
+  .lilt-watchlist__table thead th {
+    padding-block: 0 6px;
+    color: var(--lilt-muted);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  .lilt-watchlist__sort {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    padding: 2px 4px;
+    margin: -2px -4px;
+    border: 0;
+    border-radius: 6px;
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    letter-spacing: inherit;
+    text-transform: inherit;
+    cursor: pointer;
+    transition: color var(--lilt-duration-quick) ease;
+  }
+  .lilt-watchlist__sort:hover,
+  .lilt-watchlist__sort[data-active] {
+    color: var(--lilt-text);
+  }
+  .lilt-watchlist__sort:focus-visible {
+    outline: 2px solid var(--lilt-focus);
+    outline-offset: 1px;
+  }
+  .lilt-watchlist__table tbody tr {
+    outline: none;
+    transition: opacity var(--lilt-duration-quick) ease;
+    animation: lilt-watchlist-in 420ms var(--lilt-ease-reveal) backwards;
+    animation-delay: var(--lilt-watchlist-delay, 0ms);
+  }
+  .lilt-watchlist__table tbody tr > * {
+    border-top: 1px solid color-mix(in srgb, var(--lilt-border) 70%, transparent);
+    transition: background-color var(--lilt-duration-quick) ease;
+  }
+  .lilt-watchlist__table tbody tr[data-active] > * {
+    background: color-mix(in srgb, var(--lilt-text) 4%, transparent);
+  }
+  .lilt-watchlist__table tbody tr[data-active] > :first-child {
+    border-radius: 8px 0 0 8px;
+  }
+  .lilt-watchlist__table tbody tr[data-active] > :last-child {
+    border-radius: 0 8px 8px 0;
+  }
+  .lilt-watchlist__table tbody tr[data-muted] {
+    opacity: 0.55;
+  }
+  .lilt-watchlist__table tbody tr:focus-visible > * {
+    box-shadow: inset 0 0 0 2px var(--lilt-focus);
+  }
+  @keyframes lilt-watchlist-in {
+    from {
+      opacity: 0;
+      transform: translateY(4px);
+      filter: blur(2px);
+    }
+  }
+  .lilt-watchlist__symbol {
+    display: block;
+    color: var(--lilt-text);
+    font-weight: 600;
+    letter-spacing: 0.01em;
+  }
+  .lilt-watchlist__name {
+    display: block;
+    max-width: 14ch;
+    overflow: hidden;
+    color: var(--lilt-muted);
+    font-size: 11.5px;
+    font-weight: 500;
+    text-overflow: ellipsis;
+  }
+  .lilt-watchlist__price {
+    color: var(--lilt-text);
+    font-weight: 600;
+  }
+  .lilt-watchlist__spark {
+    display: block;
+    width: 72px;
+    height: 28px;
+    overflow: visible;
+    color: var(--lilt-candle-up);
+    transition: color 420ms var(--lilt-ease-reveal);
+  }
+  .lilt-watchlist__spark[data-direction='down'] {
+    color: var(--lilt-candle-down);
+  }
+  .lilt-watchlist__spark-line {
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-dasharray: 1;
+    animation: lilt-watchlist-draw 720ms var(--lilt-ease-reveal) backwards;
+    animation-delay: var(--lilt-watchlist-delay, 0ms);
+  }
+  @keyframes lilt-watchlist-draw {
+    from {
+      stroke-dashoffset: 1;
+    }
+  }
+  /* The period's range: a quiet track, the price a short upright tick on it. */
+  .lilt-watchlist__range {
+    position: relative;
+    display: block;
+    width: 64px;
+    height: 4px;
+    border-radius: 999px;
+    background: linear-gradient(
+      to right,
+      color-mix(in srgb, var(--lilt-candle-down) 40%, transparent),
+      color-mix(in srgb, var(--lilt-muted) 25%, transparent) 50%,
+      color-mix(in srgb, var(--lilt-candle-up) 40%, transparent)
+    );
+  }
+  .lilt-watchlist__range-mark {
+    position: absolute;
+    top: 50%;
+    left: calc(var(--lilt-watchlist-place) * 100%);
+    width: 3px;
+    height: 12px;
+    border-radius: 2px;
+    background: var(--lilt-text);
+    box-shadow: 0 0 0 2px var(--lilt-card-background, var(--lilt-surface));
+    transform: translate(-50%, -50%);
+    transition: left var(--lilt-duration-spring) var(--lilt-ease-spring);
+  }
+  /* A new period reshapes each sparkline and slides each range tick, never redraws them. */
+  .lilt-watchlist__spark-line,
+  .lilt-watchlist__spark-area {
+    transition:
+      d 640ms var(--lilt-ease-reveal),
+      color var(--lilt-duration-quick) ease;
+  }
+  .lilt-watchlist__table .lilt-card__delta {
+    min-width: 64px;
+    justify-content: flex-end;
+    transition:
+      color 420ms var(--lilt-ease-reveal),
+      background-color 420ms var(--lilt-ease-reveal);
+  }
+  .lilt-watchlist__placeholder > * {
+    height: 45px;
+    border-top: 1px solid color-mix(in srgb, var(--lilt-border) 50%, transparent);
+  }
+  .lilt-watchlist__placeholder [data-align='end'] .lilt-skeleton__block {
+    margin-left: auto;
+  }
+  [data-motion='none'] .lilt-watchlist__table tbody tr,
+  [data-motion='none'] .lilt-watchlist__spark-line,
+  [data-motion='none'] .lilt-watchlist__spark-area {
+    animation: none;
+    transition: none;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .lilt-watchlist__table tbody tr,
+    .lilt-watchlist__spark-line,
+    .lilt-watchlist__spark-area,
+    .lilt-watchlist__range-mark {
+      animation: none;
+      transition: none;
+    }
+  }
+}

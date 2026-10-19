@@ -167,6 +167,8 @@ export { FunnelChartCard } from './cards/funnel-chart-card';
 export type { FunnelChartCardProps } from './cards/funnel-chart-card';
 export { HeatmapChartCard } from './cards/heatmap-chart-card';
 export { TreemapChartCard } from './cards/treemap-chart-card';
+export { CohortRetentionCard } from './cards/cohort-retention-card';
+export type { CohortRetentionCardProps } from './cards/cohort-retention-card';
 export type { TreemapChartCardProps } from './cards/treemap-chart-card';
 export { CalendarHeatmapCard } from './cards/calendar-heatmap-card';
 export type { CalendarHeatmapCardProps } from './cards/calendar-heatmap-card';

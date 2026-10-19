@@ -1,0 +1,71 @@
+@layer lilt {
+  /* Payoff: the area between the curve and zero, green where the strategy profits and red where
+     it loses, a solid zero line, and a ringed dot at each breakeven. */
+  .lilt-card__payoff-fill path[data-side='gain'] {
+    fill: color-mix(in srgb, var(--lilt-candle-up) 22%, transparent);
+  }
+  .lilt-card__payoff-fill path[data-side='loss'] {
+    fill: color-mix(in srgb, var(--lilt-candle-down) 20%, transparent);
+  }
+  .lilt-card__payoff-zero {
+    stroke: color-mix(in srgb, var(--lilt-text) 30%, transparent);
+    stroke-width: 1;
+    vector-effect: non-scaling-stroke;
+  }
+  .lilt-card__payoff-breakeven {
+    fill: var(--lilt-card-background, var(--lilt-surface));
+    stroke: var(--lilt-text);
+    stroke-width: 1.5;
+  }
+
+  /* Yield curve: a faint red band over every stretch that inverts. */
+  .lilt-card__inversions rect {
+    fill: color-mix(in srgb, var(--lilt-candle-down) 8%, transparent);
+  }
+
+  /* Tiles that carry their own number pick dark or light text from their fill, so a pale tile
+     stays as readable as a deep one. */
+  .lilt-market-map-card .lilt-observations-card__mark span,
+  .lilt-monthly-returns-card .lilt-observations-card__mark span,
+  .lilt-cohort-retention-card .lilt-observations-card__mark span {
+    padding: 0 4px;
+    font-size: 11px;
+    font-variant-numeric: tabular-nums;
+    text-shadow: none;
+  }
+  @supports (color: oklch(from red l c h)) {
+    .lilt-market-map-card .lilt-observations-card__mark span,
+    .lilt-monthly-returns-card .lilt-observations-card__mark span,
+    .lilt-cohort-retention-card .lilt-observations-card__mark span {
+      color: oklch(from var(--lilt-observation-color) clamp(0, (0.7 - l) * 1000, 1) 0 0);
+    }
+  }
+  .lilt-market-map-card .lilt-observations-card__mark {
+    border-radius: 3px;
+  }
+  .lilt-market-map-card .lilt-observations-card__mark span {
+    white-space: normal;
+    line-height: 1.25;
+    text-align: center;
+  }
+
+  /* Earnings: the gap between estimate and result, drawn in the beat or miss color, and the
+     estimate a ring rather than a dot. */
+  .lilt-earnings-card .lilt-observations-card__path[data-enter='draw'] {
+    stroke-width: 2;
+    stroke-linecap: round;
+  }
+  .lilt-earnings-card .lilt-observations-card__plot .lilt-observations-card__mark[data-future] {
+    background: var(--lilt-card-background, var(--lilt-surface));
+    box-shadow: inset 0 0 0 2px color-mix(in srgb, var(--lilt-muted) 70%, transparent);
+  }
+
+  /* Volume profile: square-ended bars, and the point of control's line dashed over them. */
+  .lilt-volume-profile-card .lilt-observations-card__mark {
+    border-radius: 1px;
+  }
+  .lilt-volume-profile-card .lilt-observations-card__path[stroke] {
+    stroke-width: 1;
+    stroke-dasharray: 3 3;
+  }
+}

@@ -64,8 +64,16 @@ import {
   Candles,
   CandlestickChartCard,
   DepthChartCard,
+  EarningsCard,
   IndicatorChartCard,
+  MarketMapCard,
+  MonthlyReturnsCard,
   OrderBook,
+  PayoffChartCard,
+  VolumeProfileCard,
+  WatchlistCard,
+  YieldCurveCard,
+  payoffSummary,
   PortfolioChartCard,
   PriceChartCard,
   depthLevels,
@@ -284,13 +292,49 @@ function financeContract() {
   PortfolioChartCard({ title: 'P', data: ohlc, x: 'day', value: 'c', basis: 'o' });
   DepthChartCard({ title: 'B', bids: [{ price: 1, size: 2 }], asks: [{ price: 2, size: 1 }] });
   OrderBook({ title: 'B', bids: [], asks: [], levels: 5 });
+  const quotes = [{ s: 'SOL', p: 205, c: 0.04, h: [190, 205], cap: 90, sector: 'L1' }];
+  WatchlistCard({
+    data: quotes,
+    symbol: 's',
+    price: 'p',
+    change: 'c',
+    history: 'h',
+    sort: 'change',
+  });
+  // @ts-expect-error A sparkline reads an array of prices, not one number.
+  WatchlistCard({ data: quotes, symbol: 's', price: 'p', change: 'c', history: 'p' });
+  MarketMapCard({ data: quotes, label: 's', value: 'cap', change: 'c', group: 'sector' });
+  // @ts-expect-error Tile areas must be numeric fields.
+  MarketMapCard({ data: quotes, label: 's', value: 'sector', change: 'c' });
+  MonthlyReturnsCard({ data: ohlc, x: 'day', price: 'c', total: false });
+  VolumeProfileCard({ data: ohlc, close: 'c', open: 'o', volume: 'c', bins: 32 });
+  EarningsCard({
+    data: [{ q: 'Q1', e: 1, a: null as number | null }],
+    period: 'q',
+    estimate: 'e',
+    actual: 'a',
+  });
+  YieldCurveCard({
+    data: [{ m: '2Y', y: 4.6, ago: 4.4 }],
+    maturity: 'm',
+    yield: 'y',
+    versus: [{ key: 'ago' }],
+  });
+  PayoffChartCard({ legs: [{ type: 'put', side: 'short', strike: 90, premium: 2 }], spot: 100 });
+  // @ts-expect-error Legs are calls, puts, or stock.
+  PayoffChartCard({ legs: [{ type: 'future', strike: 90 }] });
+  const outcomes: number | null = payoffSummary(
+    [{ type: 'call', strike: 1 }],
+    100,
+    [0, 2],
+  ).maxProfit;
   Candles({ series: 'price', open: 'open', high: 'high', low: 'low', display: 'hollow' });
   const closes: number[] = [1, 2, 3];
   const averages: (number | null)[] = sma(closes, 2);
   const oscillator: (number | null)[] = rsi(closes);
   const { histogram } = macd(closes, 2, 3, 2);
   const book: DepthSummary = depthLevels([{ price: 1, size: 1 }], [{ price: 2, size: 1 }]);
-  return [averages, oscillator, histogram, book];
+  return [averages, oscillator, histogram, book, outcomes];
 }
 void financeContract;
 
@@ -744,6 +788,7 @@ import {
   MilestoneProgressCard,
   ViolinCard,
   CorrelationMatrixCard,
+  CohortRetentionCard,
 } from '@lilt-ui/charts';
 
 {
@@ -817,4 +862,13 @@ import {
   GoalPacingCard({ data: rows, x: 'x', actual: 'label', expected: 'expected', at: 1, target: 10 });
   // @ts-expect-error Violin measurements must be numeric fields.
   ViolinCard({ data: rows, category: 'group', value: 'label' });
+  const cohorts = [{ month: 'Jan', users: 120, w0: 1, w1: 0.42, w2: null as number | null }];
+  CohortRetentionCard({
+    data: cohorts,
+    cohort: 'month',
+    periods: ['w0', 'w1', 'w2'],
+    size: 'users',
+  });
+  // @ts-expect-error Periods must be numeric fields.
+  CohortRetentionCard({ data: cohorts, cohort: 'month', periods: ['month'] });
 }

@@ -23,7 +23,202 @@ const line = {
 /** A deterministic shade for heatmap cells, so the tile reads the same on every render. */
 const shade = [0.2, 0.55, 0.35, 0.8, 0.25, 0.6, 0.95, 0.4];
 
+/** A repeatable signed move per cell, for the returns grid and market map glyphs. */
+const moves = [0.6, -0.3, 0.9, 0.2, -0.7, 0.4, -0.2, 0.8, 0.3, -0.5, 0.7, -0.1];
+
 const glyphs: Partial<Record<RouteIcon, ReactNode>> = {
+  watchlist: (
+    <>
+      {[
+        [up, 'M28 13 L32 11 L36 12 L40 9 L44 10 L48 7'],
+        [down, 'M28 18 L32 20 L36 19 L40 22 L44 21 L48 24'],
+        [up, 'M28 32 L32 30 L36 31 L40 28 L44 29 L48 27'],
+      ].map(([color, path], i) => (
+        <g key={i}>
+          <rect
+            x={6}
+            y={[8, 19, 28][i]}
+            width={14}
+            height={4}
+            rx={2}
+            fill="currentColor"
+            opacity={0.4}
+          />
+          <path d={path} stroke={color} {...line} strokeWidth={1.3} />
+          <rect
+            x={56}
+            y={[6, 18, 27][i]! + 1}
+            width={18}
+            height={6}
+            rx={3}
+            fill={color}
+            opacity={0.32}
+          />
+        </g>
+      ))}
+    </>
+  ),
+  marketmap: (
+    <>
+      {(
+        [
+          [6, 4, 30, 17, 0.9],
+          [6, 23, 30, 9, -0.4],
+          [39, 4, 20, 12, 0.5],
+          [62, 4, 12, 12, -0.8],
+          [39, 19, 13, 13, 0.3],
+          [55, 19, 19, 13, -0.2],
+        ] as const
+      ).map(([x, y, width, height, move]) => (
+        <rect
+          key={`${x}-${y}`}
+          x={x}
+          y={y}
+          width={width}
+          height={height}
+          rx={1.5}
+          fill={move >= 0 ? up : down}
+          opacity={0.3 + Math.abs(move) * 0.6}
+        />
+      ))}
+    </>
+  ),
+  volumeprofile: (
+    <>
+      {[8, 14, 22, 34, 46, 38, 27, 18, 11, 6].map((width, i) => (
+        <g key={i}>
+          <rect
+            x={10}
+            y={3 + i * 3.1}
+            width={width * 0.6}
+            height={2.3}
+            rx={0.6}
+            fill={up}
+            opacity={i >= 2 && i <= 6 ? 0.85 : 0.4}
+          />
+          <rect
+            x={10 + width * 0.6}
+            y={3 + i * 3.1}
+            width={width * 0.4}
+            height={2.3}
+            rx={0.6}
+            fill={down}
+            opacity={i >= 2 && i <= 6 ? 0.85 : 0.4}
+          />
+        </g>
+      ))}
+      <path
+        d="M8 17.5 H70"
+        stroke="currentColor"
+        strokeWidth={0.8}
+        strokeDasharray="2 2"
+        opacity={0.6}
+      />
+    </>
+  ),
+  monthlyreturns: (
+    <>
+      {[0, 1, 2].flatMap((row) =>
+        Array.from({ length: 8 }, (_, column) => {
+          const move = moves[(row * 5 + column) % moves.length]!;
+          return (
+            <rect
+              key={`${row}-${column}`}
+              x={8 + column * 8.2}
+              y={6 + row * 8.6}
+              width={7}
+              height={7.4}
+              rx={1.4}
+              fill={move >= 0 ? up : down}
+              opacity={0.25 + Math.abs(move) * 0.65}
+            />
+          );
+        }),
+      )}
+    </>
+  ),
+  earnings: (
+    <>
+      {(
+        [
+          [14, 22, 18],
+          [28, 19, 15],
+          [42, 16, 19],
+          [56, 13, 9],
+        ] as const
+      ).map(([x, estimate, actual]) => (
+        <g key={x}>
+          <path
+            d={`M${x} ${estimate} V${actual}`}
+            stroke={actual < estimate ? up : down}
+            strokeWidth={1.4}
+          />
+          <circle
+            cx={x}
+            cy={estimate}
+            r={3.2}
+            fill="none"
+            stroke="currentColor"
+            strokeWidth={1.2}
+            opacity={0.5}
+          />
+          <circle cx={x} cy={actual} r={3.2} fill={actual < estimate ? up : down} />
+        </g>
+      ))}
+      <circle
+        cx={70}
+        cy={10}
+        r={3.2}
+        fill="none"
+        stroke="currentColor"
+        strokeWidth={1.2}
+        opacity={0.5}
+      />
+    </>
+  ),
+  yieldcurve: (
+    <>
+      <rect x={14} y={4} width={22} height={28} fill={down} opacity={0.1} />
+      <path
+        d="M6 22 C16 19 28 16 40 17 S62 12 74 9"
+        stroke={c2}
+        {...line}
+        strokeDasharray="2 3"
+        opacity={0.7}
+      />
+      <path d="M6 12 C12 12 16 14 24 18 S36 23 44 21 S62 16 74 14" stroke={c1} {...line} />
+      {[6, 24, 44, 74].map((x, i) => (
+        <circle key={x} cx={x} cy={[12, 18, 21, 14][i]} r={1.8} fill={c1} />
+      ))}
+    </>
+  ),
+  payoff: (
+    <>
+      <path d="M6 24 H74" stroke="currentColor" strokeWidth={0.8} opacity={0.35} />
+      <path d="M33 24 L50 10 H74 V24Z" fill={up} opacity={0.25} />
+      <path d="M6 30 H24 L33 24Z" fill={down} opacity={0.25} />
+      <path d="M6 30 H24 L50 10 H74" stroke="currentColor" {...line} />
+      <circle cx={33} cy={24} r={2.2} fill="none" stroke="currentColor" strokeWidth={1.2} />
+    </>
+  ),
+  cohort: (
+    <>
+      {Array.from({ length: 5 }, (_, row) =>
+        Array.from({ length: 7 - row }, (_, column) => (
+          <rect
+            key={`${row}-${column}`}
+            x={12 + column * 8.6}
+            y={4 + row * 6.2}
+            width={7.6}
+            height={5.2}
+            rx={1.2}
+            fill={c1}
+            opacity={Math.max(0.12, 1 - column * 0.15 - row * 0.02)}
+          />
+        )),
+      )}
+    </>
+  ),
   treemap: (
     <>
       <rect x={7} y={5} width={30} height={26} rx={2} fill={c1} />

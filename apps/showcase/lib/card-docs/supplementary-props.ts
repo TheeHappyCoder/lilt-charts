@@ -54,6 +54,7 @@ const supplementaryProps: readonly { kinds: readonly CardKind[]; row: PropRow }[
       'candlestick',
       'indicator',
       'price',
+      'yieldcurve',
       'portfolio',
     ],
     row: {
@@ -84,6 +85,7 @@ const supplementaryProps: readonly { kinds: readonly CardKind[]; row: PropRow }[
       'candlestick',
       'indicator',
       'price',
+      'yieldcurve',
       'depth',
       'orderbook',
       'portfolio',
@@ -116,6 +118,7 @@ const supplementaryProps: readonly { kinds: readonly CardKind[]; row: PropRow }[
       'candlestick',
       'indicator',
       'price',
+      'yieldcurve',
       'portfolio',
     ],
     row: {
@@ -135,6 +138,7 @@ const supplementaryProps: readonly { kinds: readonly CardKind[]; row: PropRow }[
       'candlestick',
       'indicator',
       'price',
+      'yieldcurve',
       'portfolio',
     ],
     row: {
@@ -196,6 +200,7 @@ const supplementaryProps: readonly { kinds: readonly CardKind[]; row: PropRow }[
       'candlestick',
       'indicator',
       'price',
+      'yieldcurve',
       'portfolio',
     ],
     row: {
@@ -226,6 +231,7 @@ const supplementaryProps: readonly { kinds: readonly CardKind[]; row: PropRow }[
       'candlestick',
       'indicator',
       'price',
+      'yieldcurve',
       'portfolio',
     ],
     row: {
@@ -257,6 +263,7 @@ const supplementaryProps: readonly { kinds: readonly CardKind[]; row: PropRow }[
       'candlestick',
       'indicator',
       'price',
+      'yieldcurve',
       'depth',
       'orderbook',
       'portfolio',
@@ -285,6 +292,7 @@ const supplementaryProps: readonly { kinds: readonly CardKind[]; row: PropRow }[
       'candlestick',
       'indicator',
       'price',
+      'yieldcurve',
       'depth',
       'orderbook',
       'portfolio',
@@ -333,6 +341,11 @@ const supplementaryProps: readonly { kinds: readonly CardKind[]; row: PropRow }[
       'blockcity',
       'ridgeline',
       'spiral',
+      'marketmap',
+      'monthlyreturns',
+      'earnings',
+      'volumeprofile',
+      'cohort',
     ],
     row: {
       name: 'onKeyDown',
@@ -342,7 +355,17 @@ const supplementaryProps: readonly { kinds: readonly CardKind[]; row: PropRow }[
     },
   },
   {
-    kinds: ['line', 'bar', 'range', 'boxplot', 'candlestick', 'indicator', 'price', 'portfolio'],
+    kinds: [
+      'line',
+      'bar',
+      'range',
+      'boxplot',
+      'candlestick',
+      'indicator',
+      'price',
+      'yieldcurve',
+      'portfolio',
+    ],
     row: {
       name: 'pillValue',
       type: "'series' | 'stack'",
@@ -385,7 +408,7 @@ const supplementaryProps: readonly { kinds: readonly CardKind[]; row: PropRow }[
     },
   },
   {
-    kinds: ['combo', 'price', 'portfolio'],
+    kinds: ['combo', 'price', 'yieldcurve', 'portfolio'],
     row: {
       name: 'bleed',
       type: 'boolean',

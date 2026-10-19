@@ -54,14 +54,22 @@ import {
   ScatterChartCard,
   SlopeChartCard,
   StatCard,
+  CohortRetentionCard,
 } from '@lilt-ui/charts';
 import {
   CandlestickChartCard,
   DepthChartCard,
+  EarningsCard,
   IndicatorChartCard,
+  MarketMapCard,
+  MonthlyReturnsCard,
   OrderBook,
+  PayoffChartCard,
   PortfolioChartCard,
   PriceChartCard,
+  VolumeProfileCard,
+  WatchlistCard,
+  YieldCurveCard,
 } from '@lilt-ui/charts/finance';
 import type { ComponentProps, ReactElement, ReactNode } from 'react';
 import { bookSets, datasets } from '@/lib/card-docs/data';
@@ -132,6 +140,14 @@ const components = {
   candlestick: CandlestickChartCard,
   indicator: IndicatorChartCard,
   depth: DepthChartCard,
+  watchlist: WatchlistCard,
+  volumeprofile: VolumeProfileCard,
+  monthlyreturns: MonthlyReturnsCard,
+  marketmap: MarketMapCard,
+  payoff: PayoffChartCard,
+  yieldcurve: YieldCurveCard,
+  earnings: EarningsCard,
+  cohort: CohortRetentionCard,
   orderbook: OrderBook,
   portfolio: PortfolioChartCard,
   price: PriceChartCard,

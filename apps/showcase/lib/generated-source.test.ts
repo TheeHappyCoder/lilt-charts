@@ -26,6 +26,14 @@ import { appRoutes, routeFor, type AppRoute } from './routes';
 import { boxPlotDoc } from './card-docs/box-plot';
 import { candlestickDoc } from './card-docs/candlestick';
 import { depthDoc } from './card-docs/depth';
+import { watchlistDoc } from './card-docs/watchlist';
+import { marketMapDoc } from './card-docs/market-map';
+import { volumeProfileDoc } from './card-docs/volume-profile';
+import { monthlyReturnsDoc } from './card-docs/monthly-returns';
+import { earningsDoc } from './card-docs/earnings';
+import { yieldCurveDoc } from './card-docs/yield-curve';
+import { payoffDoc } from './card-docs/payoff';
+import { cohortRetentionDoc } from './card-docs/cohort-retention';
 import { indicatorDoc } from './card-docs/indicator';
 import { orderBookDoc } from './card-docs/order-book';
 import { portfolioDoc } from './card-docs/portfolio';
@@ -154,6 +162,14 @@ describe('retained chart previews', () => {
       depthDoc,
       orderBookDoc,
       portfolioDoc,
+      watchlistDoc,
+      marketMapDoc,
+      volumeProfileDoc,
+      monthlyReturnsDoc,
+      earningsDoc,
+      yieldCurveDoc,
+      payoffDoc,
+      cohortRetentionDoc,
     ]) {
       for (const example of [doc.hero, ...doc.examples]) {
         sources.set(`card-${doc.kind}-${example.id}.tsx`, exampleSource(example, 'Example'));

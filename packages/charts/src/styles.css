@@ -33,3 +33,5 @@
 @import './styles/loading.css';
 @import './styles/empty.css';
 @import './styles/finance.css';
+@import './styles/cards/finance-marks.css';
+@import './styles/cards/watchlist.css';

@@ -52,6 +52,14 @@ import {
 } from './spatial';
 import { statDoc } from './stat';
 import { treemapDoc } from './treemap';
+import { watchlistDoc } from './watchlist';
+import { marketMapDoc } from './market-map';
+import { volumeProfileDoc } from './volume-profile';
+import { monthlyReturnsDoc } from './monthly-returns';
+import { earningsDoc } from './earnings';
+import { yieldCurveDoc } from './yield-curve';
+import { payoffDoc } from './payoff';
+import { cohortRetentionDoc } from './cohort-retention';
 
 /** Every chart family's documentation, by its page, for the gallery and the home page. */
 export const chartDocs: Readonly<Record<string, CardDocContent>> = {
@@ -98,6 +106,14 @@ export const chartDocs: Readonly<Record<string, CardDocContent>> = {
   '/charts/wind-rose': windRoseDoc,
   '/finance/candlestick': candlestickDoc,
   '/finance/depth': depthDoc,
+  '/finance/watchlist': watchlistDoc,
+  '/finance/market-map': marketMapDoc,
+  '/finance/volume-profile': volumeProfileDoc,
+  '/finance/monthly-returns': monthlyReturnsDoc,
+  '/finance/earnings': earningsDoc,
+  '/finance/yield-curve': yieldCurveDoc,
+  '/finance/payoff': payoffDoc,
+  '/charts/cohort-retention': cohortRetentionDoc,
   '/finance/indicator': indicatorDoc,
   '/finance/order-book': orderBookDoc,
   '/finance/portfolio': portfolioDoc,

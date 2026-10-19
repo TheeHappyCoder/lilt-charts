@@ -32,6 +32,13 @@ const PERIOD_KINDS: ReadonlySet<CardKind> = new Set<CardKind>([
   'indicator',
   'price',
   'portfolio',
+  'watchlist',
+  'volumeprofile',
+  'monthlyreturns',
+  'marketmap',
+  'yieldcurve',
+  'earnings',
+  'cohort',
 ]);
 
 /** Charts over time, whose previous period varies row by row like real history. */

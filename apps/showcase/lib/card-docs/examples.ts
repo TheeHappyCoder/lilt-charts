@@ -53,14 +53,22 @@ import type {
   ScatterChartCardProps,
   SlopeChartCardProps,
   StatCardProps,
+  CohortRetentionCardProps,
 } from '@lilt-ui/charts';
 import type {
   CandlestickChartCardProps,
   DepthChartCardProps,
+  EarningsCardProps,
   IndicatorChartCardProps,
+  MarketMapCardProps,
+  MonthlyReturnsCardProps,
   OrderBookProps,
+  PayoffChartCardProps,
   PortfolioChartCardProps,
   PriceChartCardProps,
+  VolumeProfileCardProps,
+  WatchlistCardProps,
+  YieldCurveCardProps,
 } from '@lilt-ui/charts/finance';
 import {
   bookSets,
@@ -131,7 +139,15 @@ export type CardKind =
   | 'depth'
   | 'orderbook'
   | 'portfolio'
-  | 'price';
+  | 'price'
+  | 'watchlist'
+  | 'volumeprofile'
+  | 'monthlyreturns'
+  | 'marketmap'
+  | 'payoff'
+  | 'yieldcurve'
+  | 'earnings'
+  | 'cohort';
 export type SourceName = DataName | RangeName | BookName;
 
 export const cardComponents: Record<CardKind, string> = {
@@ -194,6 +210,14 @@ export const cardComponents: Record<CardKind, string> = {
   orderbook: 'OrderBook',
   portfolio: 'PortfolioChartCard',
   price: 'PriceChartCard',
+  watchlist: 'WatchlistCard',
+  volumeprofile: 'VolumeProfileCard',
+  monthlyreturns: 'MonthlyReturnsCard',
+  marketmap: 'MarketMapCard',
+  payoff: 'PayoffChartCard',
+  yieldcurve: 'YieldCurveCard',
+  earnings: 'EarningsCard',
+  cohort: 'CohortRetentionCard',
 };
 
 const financeKinds: readonly CardKind[] = [
@@ -203,6 +227,13 @@ const financeKinds: readonly CardKind[] = [
   'orderbook',
   'portfolio',
   'price',
+  'watchlist',
+  'volumeprofile',
+  'monthlyreturns',
+  'marketmap',
+  'payoff',
+  'yieldcurve',
+  'earnings',
 ];
 
 /** Where a card is imported from: finance cards have their own entry point. */
@@ -219,7 +250,23 @@ type RowOf<S extends SourceName> = S extends DataName
 /** Cards that take an order book's bids and asks instead of rows. */
 type BookKind = 'depth' | 'orderbook';
 
-type PropsFor<K extends CardKind, Row> = K extends 'streamgraph'
+type PropsFor<K extends CardKind, Row> = K extends 'watchlist'
+  ? WatchlistCardProps<Row>
+  : K extends 'volumeprofile'
+    ? VolumeProfileCardProps<Row, NumericKey<Row>>
+    : K extends 'monthlyreturns'
+      ? MonthlyReturnsCardProps<Row, NumericKey<Row>>
+      : K extends 'marketmap'
+        ? MarketMapCardProps<Row, NumericKey<Row>>
+        : K extends 'yieldcurve'
+          ? YieldCurveCardProps<Row, NumericKey<Row>>
+          : K extends 'earnings'
+            ? EarningsCardProps<Row, NumericKey<Row>>
+            : K extends 'cohort'
+              ? CohortRetentionCardProps<Row, NumericKey<Row>>
+              : PropsForCore<K, Row>;
+
+type PropsForCore<K extends CardKind, Row> = K extends 'streamgraph'
   ? StreamgraphCardProps<Row, NumericKey<Row>>
   : K extends 'diverging'
     ? DivergingBarCardProps<Row, NumericKey<Row>>
@@ -445,7 +492,7 @@ export const ROW_STYLE = {
 
 /** Declare an example; its props are checked against the real card props for its rows. */
 export function cardExample<
-  K extends Exclude<CardKind, 'progress' | BookKind>,
+  K extends Exclude<CardKind, 'progress' | 'payoff' | BookKind>,
   S extends DataName | RangeName,
 >(example: {
   id: string;
@@ -466,6 +513,17 @@ export function bookExample<K extends BookKind>(example: {
   kind: K;
   source: BookName;
   props: Omit<K extends 'depth' ? DepthChartCardProps : OrderBookProps, 'bids' | 'asks'>;
+}): CardExample {
+  return example as unknown as CardExample;
+}
+
+/** Declare an example for a card drawn from an options strategy's legs rather than rows. */
+export function legsExample(example: {
+  id: string;
+  title: string;
+  description: string;
+  kind: 'payoff';
+  props: PayoffChartCardProps;
 }): CardExample {
   return example as unknown as CardExample;
 }

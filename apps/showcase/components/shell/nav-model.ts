@@ -13,6 +13,12 @@ import MarketAnalysisIcon from '@hugeicons/core-free-icons/MarketAnalysisIcon';
 import MarketOrderIcon from '@hugeicons/core-free-icons/MarketOrderIcon';
 import TradeUpIcon from '@hugeicons/core-free-icons/TradeUpIcon';
 import Wallet01Icon from '@hugeicons/core-free-icons/Wallet01Icon';
+import EyeIcon from '@hugeicons/core-free-icons/EyeIcon';
+import Calendar03Icon from '@hugeicons/core-free-icons/Calendar03Icon';
+import ChartBarIncreasingIcon from '@hugeicons/core-free-icons/ChartBarIncreasingIcon';
+import ChartBubble01Icon from '@hugeicons/core-free-icons/ChartBubble01Icon';
+import ChartLineData01Icon from '@hugeicons/core-free-icons/ChartLineData01Icon';
+import CoinsDollarIcon from '@hugeicons/core-free-icons/CoinsDollarIcon';
 import GridViewIcon from '@hugeicons/core-free-icons/GridViewIcon';
 import SlidersHorizontalIcon from '@hugeicons/core-free-icons/SlidersHorizontalIcon';
 import BookOpen01Icon from '@hugeicons/core-free-icons/BookOpen01Icon';
@@ -98,6 +104,14 @@ export const icons: Record<RouteIcon, IconSvgElement> = {
   orderbook: MarketOrderIcon,
   portfolio: Wallet01Icon,
   price: TradeUpIcon,
+  watchlist: EyeIcon,
+  marketmap: DashboardSquare01Icon,
+  volumeprofile: ChartBarIncreasingIcon,
+  monthlyreturns: Calendar03Icon,
+  earnings: ChartBubble01Icon,
+  yieldcurve: ChartLineData01Icon,
+  payoff: CoinsDollarIcon,
+  cohort: GridTableIcon,
   start: CodeIcon,
   api: FileScriptIcon,
   motion: WaveIcon,

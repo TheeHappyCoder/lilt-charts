@@ -23,6 +23,14 @@ import { tuneControls, tuneSpecs } from './tune';
 import { boxPlotDoc } from './box-plot';
 import { candlestickDoc } from './candlestick';
 import { depthDoc } from './depth';
+import { watchlistDoc } from './watchlist';
+import { marketMapDoc } from './market-map';
+import { volumeProfileDoc } from './volume-profile';
+import { monthlyReturnsDoc } from './monthly-returns';
+import { earningsDoc } from './earnings';
+import { yieldCurveDoc } from './yield-curve';
+import { payoffDoc } from './payoff';
+import { cohortRetentionDoc } from './cohort-retention';
 import { indicatorDoc } from './indicator';
 import { orderBookDoc } from './order-book';
 import { portfolioDoc } from './portfolio';
@@ -113,6 +121,14 @@ const docs = [
   depthDoc,
   orderBookDoc,
   portfolioDoc,
+  watchlistDoc,
+  marketMapDoc,
+  volumeProfileDoc,
+  monthlyReturnsDoc,
+  earningsDoc,
+  yieldCurveDoc,
+  payoffDoc,
+  cohortRetentionDoc,
 ];
 
 const cardsOf = (example: DocExample): readonly CardExample[] =>
@@ -134,7 +150,7 @@ function expectPrinted(jsx: string, card: CardExample, indent: string) {
 
 describe('card documentation examples', () => {
   it('gives every retained family one stage and all three loading styles', () => {
-    expect(docs).toHaveLength(47);
+    expect(docs).toHaveLength(55);
     for (const doc of docs) {
       expect(doc.props.find((prop) => prop.name === 'loadingStyle')?.type).toBe(
         "'shimmer' | 'draw' | 'breathe'",
