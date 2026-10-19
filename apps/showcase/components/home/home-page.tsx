@@ -9,8 +9,9 @@ import SparklesIcon from '@hugeicons/core-free-icons/SparklesIcon';
 import Target03Icon from '@hugeicons/core-free-icons/Target03Icon';
 import { ChartSettingsProvider } from '@/components/docs/chart-settings';
 import { InstallCommand } from '@/components/docs/install-command';
-import { GalleryTile } from '@/components/gallery/chart-gallery';
+import { HomeAgentPrompt } from '@/components/home/home-agent-prompt';
 import { HomeBackdrop } from '@/components/home/home-backdrop';
+import { HomeCatalog } from '@/components/home/home-catalog';
 import { HomeMeter } from '@/components/home/home-meter';
 import { HomePlayground } from '@/components/home/home-playground';
 import { BlurFade } from '@/components/motion/blur-fade';
@@ -19,20 +20,24 @@ import { groupsByTab } from '@/components/shell/nav-model';
 import { SiteShell } from '@/components/shell/site-shell';
 import { chartDocs } from '@/lib/card-docs/registry';
 import { GITHUB_URL, getGitHubStars } from '@/lib/github-stars';
+import { SITE_URL } from '@/lib/llms';
 import { getDownloads } from '@/lib/npm-downloads';
 
-/** The collection on the home page: a few families that show the range, the first one wide. */
+/** The collection on the home page: families that show the range, each with something to try. */
 const collection = [
-  '/charts/area',
-  '/charts/sankey',
-  '/charts/stat-cards',
-  '/charts/radar',
-  '/charts/heatmap',
-  '/charts/skyline',
-  '/finance/candlestick',
-  '/charts/treemap',
-  '/charts/scatter',
+  { href: '/charts/area', hint: 'Hover to read any month' },
+  { href: '/charts/sankey', hint: 'Hover a ribbon to follow it' },
+  { href: '/charts/stat-cards', hint: 'Hover the sparkline' },
+  { href: '/charts/radar', hint: 'Hover an axis' },
+  { href: '/charts/heatmap', hint: 'Hover any hour' },
+  { href: '/charts/skyline', hint: 'A year, stood up in depth' },
+  { href: '/finance/candlestick', hint: 'Hover a candle for its range' },
+  { href: '/charts/treemap', hint: 'Hover a block for its share' },
+  { href: '/charts/scatter', hint: 'Hover any point' },
 ] as const;
+
+/** What to paste into an agent to get a first card on screen. */
+const AGENT_PROMPT = `Add a Lilt AreaChartCard of monthly visitors to my dashboard. Docs: ${SITE_URL}/llms.txt`;
 
 const features: readonly {
   icon: IconSvgElement;
@@ -155,6 +160,7 @@ export async function HomePage() {
             </BlurFade>
             <BlurFade delay={160} className="lilt-landing__install">
               <InstallCommand />
+              <HomeAgentPrompt prompt={AGENT_PROMPT} />
             </BlurFade>
           </section>
 
@@ -165,27 +171,31 @@ export async function HomePage() {
           <section className="lilt-landing__section" aria-labelledby="collection-title">
             <div className="lilt-landing__head">
               <div>
-                <p className="lilt-landing__eyebrow">The collection</p>
+                <p className="lilt-landing__eyebrow">
+                  <span className="lilt-landing__index">01</span>The collection
+                </p>
                 <h2 id="collection-title">
                   One card per <em>job</em>, all speaking the same props.
                 </h2>
               </div>
-              <Link href="/charts" className="lilt-landing__link">
-                All {families} charts
-                <Icon icon={ArrowRight01Icon} size={14} strokeWidth={2} aria-hidden="true" />
-              </Link>
+              <p className="lilt-landing__aside">
+                Live cards, not screenshots. Hover them, replay them, and take one away as code or
+                as a prompt for your agent.
+              </p>
             </div>
-            <div className="lilt-landing__wall">
-              {collection.map((href, index) => (
-                <GalleryTile key={href} href={href} wide={index === 0} />
-              ))}
-            </div>
+            <HomeCatalog items={collection} />
+            <Link href="/charts" className="lilt-landing__more">
+              Browse all {families} chart families
+              <Icon icon={ArrowRight01Icon} size={14} strokeWidth={2} aria-hidden="true" />
+            </Link>
           </section>
 
           <section className="lilt-landing__section" aria-labelledby="features-title">
             <div className="lilt-landing__head">
               <div>
-                <p className="lilt-landing__eyebrow">Built in</p>
+                <p className="lilt-landing__eyebrow">
+                  <span className="lilt-landing__index">02</span>Built in
+                </p>
                 <h2 id="features-title">
                   The interactions you would otherwise <em>build yourself.</em>
                 </h2>

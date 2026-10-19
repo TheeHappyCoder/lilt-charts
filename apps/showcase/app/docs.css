@@ -25,6 +25,32 @@
 .lilt-docs__header-aside {
   align-self: end;
 }
+/* A chart family's spec, like the label on a part: its number, its component, its entry. */
+.lilt-docs__spec {
+  display: grid;
+  gap: 4px;
+  margin: 0;
+  padding: 2px 0 4px 16px;
+  border-left: 1px solid var(--line-strong);
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 11.5px;
+  line-height: 18px;
+}
+.lilt-docs__spec div {
+  display: grid;
+  grid-template-columns: 76px auto;
+}
+.lilt-docs__spec dt {
+  color: var(--faint);
+}
+.lilt-docs__spec dd {
+  margin: 0;
+  color: var(--muted-foreground);
+  white-space: nowrap;
+}
+.lilt-docs__spec dd[data-tone='brand'] {
+  color: var(--brand-primary);
+}
 .lilt-breadcrumb {
   display: flex;
   align-items: center;

@@ -17,6 +17,7 @@ import './site-shell.css';
 import './style-menu.css';
 import './gallery.css';
 import './landing.css';
+import './catalog.css';
 import './personality.css';
 import '@/components/motion/blur-fade.css';
 import '@/components/ui/surface.css';

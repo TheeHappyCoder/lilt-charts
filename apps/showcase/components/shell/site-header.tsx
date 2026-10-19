@@ -10,11 +10,14 @@ import { GitHubStars } from '@/components/github-stars';
 import type { GitHubStars as Stars } from '@/lib/github-stars';
 import { HeaderSearch } from './docs-search';
 import { LiltLogo } from './logo';
-import { tabHref, tabs, type Tab } from './nav-model';
+import { groupsByTab, tabHref, tabs, type Tab } from './nav-model';
 import { StyleMenuTrigger } from './style-menu';
 import { ThemeSegmented } from './theme-switcher';
 
 const SPRING = { type: 'spring', stiffness: 520, damping: 42 } as const;
+
+/** How many chart families there are, shown beside Charts like a shelf's label. */
+const CHART_COUNT = groupsByTab.charts.reduce((sum, group) => sum + group.routes.length, 0);
 
 /**
  * One bar across the top of every page: the wordmark and the four places to browse on the left;
@@ -76,6 +79,9 @@ export function SiteHeader({
                   />
                 ) : null}
                 <span className="lilt-header__link-text">{option.label}</span>
+                {option.value === 'charts' ? (
+                  <span className="lilt-header__count">{CHART_COUNT}</span>
+                ) : null}
               </Link>
             );
           })}

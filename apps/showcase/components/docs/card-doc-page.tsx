@@ -8,6 +8,8 @@ import type { CardDocContent } from '@/lib/card-docs/content';
 import { tuneControls } from '@/lib/card-docs/tune';
 import { stageExamples } from '@/lib/card-docs/resolve-example';
 import { cardComponents, cardModule } from '@/lib/card-docs/examples';
+import { chartDocs } from '@/lib/card-docs/registry';
+import { catalogCode } from '@/components/shell/catalog-code';
 
 /** The documentation page every card family shares, so all of them read the same way. */
 export function CardDocPage({ doc }: { doc: CardDocContent }) {
@@ -30,9 +32,32 @@ export function CardDocPage({ doc }: { doc: CardDocContent }) {
   });
   const tune = tuneControls(doc.kind, props);
   const importLine = `import { ${component} } from '${cardModule(doc.kind)}';`;
+  const href = Object.keys(chartDocs).find((key) => chartDocs[key]!.kind === doc.kind);
+  const code = href ? catalogCode(href) : null;
   const content = (
     <>
-      <PageHeader title={doc.title} lede={doc.lede} />
+      <PageHeader
+        title={doc.title}
+        lede={doc.lede}
+        aside={
+          code ? (
+            <dl className="lilt-docs__spec">
+              <div>
+                <dt>Part</dt>
+                <dd data-tone="brand">{code}</dd>
+              </div>
+              <div>
+                <dt>Component</dt>
+                <dd>{component}</dd>
+              </div>
+              <div>
+                <dt>From</dt>
+                <dd>{cardModule(doc.kind)}</dd>
+              </div>
+            </dl>
+          ) : undefined
+        }
+      />
 
       <section className="lilt-docs__hero" id="overview" aria-label={`${doc.title} preview`}>
         <ChartStage tune={tune} label={doc.title} importLine={importLine} filename={doc.heroFile} />

@@ -101,6 +101,66 @@
   text-align: left;
 }
 
+/* Ask your agent: one line under the install command, the whole row copies it. */
+.lilt-agent {
+  display: grid;
+  width: 100%;
+  gap: 6px;
+  margin-top: 10px;
+  padding: 12px 14px 12px 18px;
+  border: 0;
+  border-radius: 16px;
+  background: transparent;
+  box-shadow: inset 0 0 0 1px var(--line);
+  color: var(--foreground);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition:
+    background-color 160ms ease,
+    box-shadow 160ms ease;
+}
+.lilt-agent:hover {
+  background: var(--hover);
+  box-shadow: inset 0 0 0 1px var(--line-strong);
+}
+.lilt-agent:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+.lilt-agent__label {
+  color: var(--faint);
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 11px;
+  letter-spacing: 0.02em;
+}
+.lilt-agent__line {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 13px;
+}
+.lilt-agent__caret {
+  color: var(--brand-primary);
+  font-weight: 600;
+}
+.lilt-agent__text {
+  min-width: 0;
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.lilt-agent .lilt-ui-icon-swap {
+  flex: none;
+  color: var(--muted-foreground);
+}
+.lilt-agent[data-copied] .lilt-ui-icon-swap {
+  color: var(--brand-primary);
+}
+
 /* Sections */
 .lilt-landing__section {
   padding: 48px 0;
@@ -114,10 +174,37 @@
   margin-bottom: 24px;
 }
 .lilt-landing__eyebrow {
-  margin: 0 0 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 14px;
   color: var(--muted-foreground);
   font-size: 13px;
   font-weight: 500;
+}
+/* A section's number, like a page in a catalog. */
+.lilt-landing__index {
+  color: var(--faint);
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 11.5px;
+  font-weight: 400;
+}
+.lilt-landing__index::after {
+  display: inline-block;
+  width: 18px;
+  height: 1px;
+  margin-left: 10px;
+  background: var(--line-strong);
+  content: '';
+  vertical-align: middle;
+}
+.lilt-landing__aside {
+  max-width: 340px;
+  margin: 0;
+  color: var(--muted-foreground);
+  font-size: 14.5px;
+  line-height: 1.6;
+  text-wrap: pretty;
 }
 .lilt-landing__head h2,
 .lilt-landing__closing h2 {
@@ -129,29 +216,30 @@
   letter-spacing: -0.035em;
   text-wrap: balance;
 }
-.lilt-landing__link {
-  display: inline-flex;
+.lilt-landing__more {
+  display: flex;
+  width: fit-content;
   align-items: center;
   gap: 6px;
+  margin: 20px auto 0;
+  padding: 8px 14px;
+  border-radius: 999px;
   color: var(--muted-foreground);
   font-size: 14px;
   text-decoration: none;
-  transition: color 160ms ease;
+  transition:
+    background-color 160ms ease,
+    color 160ms ease;
 }
-.lilt-landing__link:hover {
+.lilt-landing__more:hover {
+  background: var(--hover);
   color: var(--foreground);
 }
-
-/* The collection: a bento wall of live tiles, the first one wide. */
-.lilt-landing__wall {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 12px;
+.lilt-landing__more svg {
+  transition: transform 220ms var(--ease-out);
 }
-.lilt-landing__wall > :first-child {
-  grid-column: span 2;
-  grid-row: span 2;
-  grid-template-rows: minmax(0, 1fr) auto;
+.lilt-landing__more:hover svg {
+  transform: translateX(3px);
 }
 
 /* Built in */
@@ -508,9 +596,6 @@
     min-height: 0;
     padding: 64px 16px 24px;
   }
-  .lilt-landing__wall {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
   .lilt-landing__features {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -534,18 +619,8 @@
   .lilt-landing__section {
     padding: 32px 0;
   }
-  .lilt-landing__wall,
   .lilt-landing__features {
     grid-template-columns: minmax(0, 1fr);
-  }
-  .lilt-landing__wall > :first-child {
-    grid-column: auto;
-    grid-row: auto;
-  }
-  .lilt-landing__wall > :first-child .lilt-tile__stage {
-    aspect-ratio: 5 / 4;
-    height: auto;
-    min-height: 0;
   }
   .lilt-landing__closing {
     padding: 48px 20px 40px;

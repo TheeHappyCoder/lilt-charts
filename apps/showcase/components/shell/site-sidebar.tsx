@@ -80,7 +80,11 @@ export function SiteSidebar({
             )}
           </span>
           <span className="lilt-sidebar__label">{text}</span>
-          {badge ? <span className="lilt-sidebar__badge">{badge}</span> : null}
+          {badge ? (
+            <span className="lilt-sidebar__badge" title={badge}>
+              {badge}
+            </span>
+          ) : null}
         </Link>
       </li>
     );
