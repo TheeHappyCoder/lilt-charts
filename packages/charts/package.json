@@ -1,6 +1,6 @@
 {
   "name": "@lilt-ui/charts",
-  "version": "0.13.1",
+  "version": "0.14.0",
   "description": "Beautiful, key-typed React chart cards with linked hover, targets, forecasts, finance charts, and calm motion.",
   "keywords": [
     "react",

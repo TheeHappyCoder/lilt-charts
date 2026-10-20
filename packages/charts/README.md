@@ -92,9 +92,9 @@ The headline, value tiles, and hover come from your rows. Supply `delta` when yo
 | **Parts and goals**  | Radial, Treemap, Progress, and Activity ring                                                    |
 | **Rankings**         | Horizontal bar, with shares and an "Other" row                                                  |
 | **Flows and change** | Funnel, Sankey, and Slope                                                                       |
-| **Patterns**         | Heatmap (matrix and calendar), Scatter (points, strip, beeswarm), Radar                         |
+| **Patterns**         | Heatmap (matrix and calendar), Scatter (points, strip, beeswarm), Radar, Cohort retention       |
 | **Spread**           | Range (floating bars, error bars, timeline intervals) and Box plot                              |
-| **Markets**          | Candlestick, Indicators, Price, Depth, Order book, and Portfolio                                |
+| **Markets**          | Candlestick, Indicators, Price, Depth, Order book, Portfolio, Watchlist, Market map, and more   |
 | **Cool**             | 23 spatial families, from Skyline and Terrain to Chord loom, Sunburst terraces, and Voxel cloud |
 
 ### Charts drawn in depth
@@ -162,8 +162,15 @@ export function MarketCard() {
 | `DepthChartCard`       | How much could trade at each price, buying and selling, and the gap between    |
 | `OrderBook`            | Resting orders level by level, the best prices meeting in the middle           |
 | `PortfolioChartCard`   | What an account is worth next to what went in, and its fall from its best      |
+| `WatchlistCard`        | Sortable rows of prices, moves, and sparklines that roll between periods       |
+| `MarketMapCard`        | Holdings sized by weight and coloured by how far each moved                    |
+| `VolumeProfileCard`    | Volume traded at each price, with the point of control and value area          |
+| `MonthlyReturnsCard`   | A year-by-month grid of returns, with each year's total                        |
+| `EarningsCard`         | Estimate against actual each quarter, and how far each one surprised           |
+| `YieldCurveCard`       | Yield by maturity over earlier curves, with every inversion shaded             |
+| `PayoffChartCard`      | An options strategy at expiry, with its breakevens and best and worst outcomes |
 
-Candles draw into a handful of paths however many there are, so years of daily history stay fast. `scale="log"` spaces long histories by ratio, and `live` follows new rows as they arrive. The indicator math (`sma`, `ema`, `rsi`, `macd`, `bollinger`, `drawdown`, `depthLevels`) is exported too, for your own layouts.
+Candles draw into a handful of paths however many there are, so years of daily history stay fast. `scale="log"` spaces long histories by ratio, and `live` follows new rows as they arrive. The indicator math (`sma`, `ema`, `rsi`, `macd`, `bollinger`, `drawdown`, `depthLevels`, `volumeProfile`, `monthlyReturns`, `payoffAt`, `payoffSummary`, `curveSpread`) is exported too, for your own layouts.
 
 ## Built in, one prop away
 

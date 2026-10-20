@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.14.0
+
+Eight new chart families: seven for markets and one for retention.
+
+- From `@lilt-ui/charts/finance`: `WatchlistCard` (sortable rows with rolling prices and morphing sparklines), `MarketMapCard` (a treemap sized by weight and coloured by move), `VolumeProfileCard` (volume at each price with the point of control and value area), `MonthlyReturnsCard` (a year-by-month grid of returns), `EarningsCard` (estimate against actual, with each surprise), `YieldCurveCard` (yield by maturity over earlier curves, with inversions shaded) and `PayoffChartCard` (an options strategy at expiry, with breakevens and max profit and loss).
+- From the main entry: `CohortRetentionCard`, a triangle of retention by cohort and period.
+- Helpers for your own layouts: `sparkPath`, `volumeProfile`, `monthlyReturns`, `payoffAt`, `payoffSummary`, `curveSpread` and `surprise`.
+- Every new family has the shared shimmer/draw/breathe loading and skeleton exit, an empty state, hover, keyboard inspection and an accessible table. All of them except the payoff chart animate between periods through `ranges`.
+
 ## 0.13.1
 
 - `PriceChartCard` now honors `formatValue` for prices. Instrument comparisons continue to use signed percentages.
