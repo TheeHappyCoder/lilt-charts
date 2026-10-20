@@ -10,6 +10,24 @@ hover pills, period switches, variants and entrances are the package's own.
 | `cool`  | The Cool charts: a drone pass over the skyline, then a tour of all thirteen    |
 | `cool2` | Cool charts part 2: an orbit by the `yaw` prop, then the other ten             |
 
+## Site films
+
+`site.mjs` films the docs site itself rather than a stage of cards. A script in `site/<name>.mjs`
+lists timed actions (navigate, click, type, key presses), cursor moves aimed at selectors, smooth
+scrolls, camera shots and captions. It uses the same virtual clock and animation stepping as
+`render.mjs`. The camera is a crop of each screenshot, re-rendered at the zoom, so push-ins stay
+sharp. `site/overlay.js` is injected into every page for the cursor, captions and end card.
+
+| Film   | What it shows                                                                      |
+| ------ | ---------------------------------------------------------------------------------- |
+| `docs` | Home, playground, catalog, a chart page and its variants, the Style panel, finance |
+
+```bash
+node site.mjs --film=docs --scale=2 --sub=3            # out/docs.mp4, 1920 wide
+node site.mjs --film=docs --scale=1 --fps=30 --stills=2000,9000
+node site.mjs --film=docs --base=http://localhost:3000  # a local build instead of the live site
+```
+
 ## How it works
 
 - `src/films/<name>.tsx` is one film: a stage of real cards plus its script (camera shots,
