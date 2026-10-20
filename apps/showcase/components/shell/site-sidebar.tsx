@@ -102,32 +102,38 @@ export function SiteSidebar({
           <ul>{item('/charts', CHARTS_OVERVIEW, 'All charts', 'overview')}</ul>
         </section>
       ) : null}
-      {groupsByTab[tab].map((group) => (
-        <section
-          key={group.key}
-          className="lilt-sidebar__group"
-          aria-label={group.heading ?? label}
-        >
-          {group.heading ? (
-            <h3 className="lilt-sidebar__heading">
-              <span>{group.heading}</span>
-              <span className="lilt-sidebar__count">{group.routes.length}</span>
-            </h3>
-          ) : null}
-          <ul>
-            {group.routes.map((route) =>
-              item(
-                route.href,
-                route.id,
-                route.label,
-                route.icon,
-                route.badge,
-                Boolean(route.parent),
-              ),
-            )}
-          </ul>
-        </section>
-      ))}
+      {groupsByTab[tab].map((group) => {
+        // When a whole group is new, say so once on its heading rather than dotting every row.
+        const allNew =
+          group.routes.length > 1 && group.routes.every((route) => route.badge === 'New');
+        return (
+          <section
+            key={group.key}
+            className="lilt-sidebar__group"
+            aria-label={group.heading ?? label}
+          >
+            {group.heading ? (
+              <h3 className="lilt-sidebar__heading">
+                <span>{group.heading}</span>
+                <span className="lilt-sidebar__count">{group.routes.length}</span>
+                {allNew ? <span className="lilt-sidebar__new">New</span> : null}
+              </h3>
+            ) : null}
+            <ul>
+              {group.routes.map((route) =>
+                item(
+                  route.href,
+                  route.id,
+                  route.label,
+                  route.icon,
+                  allNew ? undefined : route.badge,
+                  Boolean(route.parent),
+                ),
+              )}
+            </ul>
+          </section>
+        );
+      })}
     </nav>
   );
 }

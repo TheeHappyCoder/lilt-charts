@@ -81,6 +81,20 @@
   letter-spacing: 0;
   font-variant-numeric: tabular-nums;
 }
+.lilt-sidebar__new {
+  display: inline-flex;
+  height: 16px;
+  align-items: center;
+  margin-left: auto;
+  margin-right: 4px;
+  padding: 0 6px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--brand-primary) 16%, transparent);
+  color: var(--brand-primary);
+  font-size: 9.5px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+}
 .lilt-sidebar__item {
   position: relative;
   display: flex;

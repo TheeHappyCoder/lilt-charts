@@ -553,8 +553,14 @@ function dataLines(source: SourceName | undefined): string[] {
   return [`  data={${source}}`];
 }
 
+/** A string as a hand-written source file would quote it. */
+const quote = (text: string) =>
+  `'${text.replace(/\\/g, '\\\\').replace(/'/g, "\\'").replace(/\n/g, '\\n')}'`;
+/** A bare key when it is an identifier, quoted otherwise. */
+const printKey = (key: string) => (/^[A-Za-z_$][\w$]*$/.test(key) ? key : quote(key));
+
 function printValue(value: unknown, indent: string): string {
-  if (typeof value === 'string') return JSON.stringify(value);
+  if (typeof value === 'string') return quote(value);
   if (value instanceof Date) return `new Date('${value.toISOString()}')`;
   if (Array.isArray(value)) {
     if (value.length === 0) return '[]';
@@ -563,7 +569,7 @@ function printValue(value: unknown, indent: string): string {
   }
   if (value && typeof value === 'object') {
     const entries = Object.entries(value).map(
-      ([key, item]) => `${JSON.stringify(key)}: ${printValue(item, indent)}`,
+      ([key, item]) => `${printKey(key)}: ${printValue(item, indent)}`,
     );
     return `{ ${entries.join(', ')} }`;
   }

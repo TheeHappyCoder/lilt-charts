@@ -138,7 +138,7 @@
   padding: 0 6px 0 12px;
   border: 1px solid var(--line);
   border-radius: 999px;
-  background: var(--hover);
+  background: var(--panel);
   color: var(--muted-foreground);
   font-size: 13.5px;
   cursor: pointer;
@@ -161,7 +161,7 @@
   padding: 0 7px;
   border: 1px solid var(--line);
   border-radius: 999px;
-  background: var(--background);
+  background: var(--surface);
   color: var(--muted-foreground);
   font-family: var(--font-ui), sans-serif;
   font-size: 11px;
@@ -175,7 +175,7 @@
   padding: 3px;
   border: 1px solid var(--line);
   border-radius: 999px;
-  background: var(--hover);
+  background: var(--panel);
 }
 .lilt-theme-seg__button {
   position: relative;
@@ -216,6 +216,7 @@
   padding: 0 12px;
   border: 1px solid var(--line);
   border-radius: 999px;
+  background: var(--panel);
   color: var(--muted-foreground);
   font-size: 13px;
   transition:
@@ -267,7 +268,7 @@
   padding: 3px;
   border: 1px solid var(--line);
   border-radius: 999px;
-  background: var(--hover);
+  background: var(--panel);
 }
 .lilt-style-trigger__depth,
 .lilt-style-trigger__open {

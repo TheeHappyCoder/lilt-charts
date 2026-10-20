@@ -22,7 +22,7 @@
   padding: 0 12px 0 10px;
   border: 1px solid var(--line);
   border-radius: 999px;
-  background: var(--hover);
+  background: var(--panel);
   color: var(--muted-foreground);
   font-size: 13px;
   text-decoration: none;
@@ -88,29 +88,126 @@
 .lilt-landing__button[data-variant='quiet'] {
   padding: 0 20px;
   border: 1px solid var(--line-strong);
-  background: transparent;
+  background: var(--panel);
   color: var(--foreground);
 }
 .lilt-landing__button[data-variant='quiet']:hover {
-  background: var(--hover);
+  background: color-mix(in srgb, var(--foreground) 4%, var(--panel));
   opacity: 1;
 }
 .lilt-landing__install {
-  width: min(460px, 100%);
-  margin-top: 36px;
+  width: min(500px, 100%);
+  margin-top: 40px;
   text-align: left;
 }
 
-/* Ask your agent: one line under the install command, the whole row copies it. */
-.lilt-agent {
+/* Quickstart: install and the agent prompt as one lifted card, each line copies itself. */
+.lilt-quickstart {
+  position: relative;
+  border-radius: 18px;
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--foreground) 3%, var(--panel)),
+    var(--panel) 60%
+  );
+  box-shadow:
+    0 0 0 1px var(--line),
+    inset 0 1px 0 color-mix(in srgb, var(--foreground) 6%, transparent),
+    0 24px 48px -28px rgb(0 0 0 / 0.45),
+    0 2px 6px -2px rgb(0 0 0 / 0.12);
+}
+/* A brand hairline along the top edge, fading out at the corners. */
+.lilt-quickstart::before {
+  position: absolute;
+  top: -1px;
+  left: 18%;
+  right: 18%;
+  height: 1px;
+  background: var(--lilt-brand-gradient);
+  opacity: 0.7;
+  content: '';
+  mask-image: linear-gradient(90deg, transparent, #000 30%, #000 70%, transparent);
+}
+.lilt-quickstart__row {
   display: grid;
-  width: 100%;
-  gap: 6px;
-  margin-top: 10px;
-  padding: 12px 14px 12px 18px;
+  gap: 8px;
+  padding: 14px 10px 10px;
+}
+.lilt-quickstart__row + .lilt-quickstart__row {
+  border-top: 1px dashed var(--line-strong);
+}
+.lilt-quickstart__head {
+  display: flex;
+  min-height: 24px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 0 8px;
+}
+.lilt-quickstart__label {
+  color: var(--faint);
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.lilt-quickstart__managers {
+  display: inline-flex;
+  gap: 2px;
+}
+.lilt-quickstart__manager {
+  position: relative;
+  height: 24px;
+  padding: 0 9px;
   border: 0;
-  border-radius: 16px;
+  border-radius: 999px;
   background: transparent;
+  color: var(--muted-foreground);
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 11.5px;
+  cursor: pointer;
+  transition: color 150ms ease;
+}
+.lilt-quickstart__manager:hover,
+.lilt-quickstart__manager[aria-checked='true'] {
+  color: var(--foreground);
+}
+.lilt-quickstart__manager:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 1px;
+}
+.lilt-quickstart__thumb {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: var(--active);
+  box-shadow: inset 0 0 0 1px var(--line);
+}
+.lilt-quickstart__manager-text {
+  position: relative;
+}
+.lilt-quickstart__llms {
+  color: var(--muted-foreground);
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 11.5px;
+  text-decoration: underline;
+  text-decoration-color: var(--line-strong);
+  text-underline-offset: 3px;
+  transition: color 150ms ease;
+}
+.lilt-quickstart__llms:hover {
+  color: var(--foreground);
+}
+/* The copyable line: a recessed well, the whole row is the button. */
+.lilt-quickstart__line {
+  display: flex;
+  width: 100%;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 11px 12px 11px 14px;
+  border: 0;
+  border-radius: 11px;
+  background: color-mix(in srgb, var(--background) 70%, var(--panel));
   box-shadow: inset 0 0 0 1px var(--line);
   color: var(--foreground);
   font: inherit;
@@ -120,44 +217,55 @@
     background-color 160ms ease,
     box-shadow 160ms ease;
 }
-.lilt-agent:hover {
-  background: var(--hover);
+.lilt-quickstart__line:hover {
   box-shadow: inset 0 0 0 1px var(--line-strong);
 }
-.lilt-agent:focus-visible {
+.lilt-quickstart__line:focus-visible {
   outline: 2px solid var(--ring);
   outline-offset: 2px;
 }
-.lilt-agent__label {
-  color: var(--faint);
-  font-family: var(--font-geist-mono), monospace;
-  font-size: 11px;
-  letter-spacing: 0.02em;
-}
-.lilt-agent__line {
+.lilt-quickstart__code {
   display: flex;
   min-width: 0;
-  align-items: center;
+  flex: 1;
   gap: 10px;
+  overflow: hidden;
   font-family: var(--font-geist-mono), monospace;
   font-size: 13px;
-}
-.lilt-agent__caret {
-  color: var(--brand-primary);
-  font-weight: 600;
-}
-.lilt-agent__text {
-  min-width: 0;
-  flex: 1;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  font-weight: 400;
+  line-height: 21px;
   white-space: nowrap;
 }
-.lilt-agent .lilt-ui-icon-swap {
+.lilt-quickstart__code[data-wrap] {
+  white-space: normal;
+  text-wrap: pretty;
+}
+.lilt-quickstart__sigil {
   flex: none;
+  color: var(--faint);
+  user-select: none;
+}
+.lilt-quickstart__sigil[data-agent] {
+  background: var(--lilt-brand-gradient);
+  background-clip: text;
+  color: transparent;
+  font-weight: 700;
+}
+.lilt-quickstart__muted {
   color: var(--muted-foreground);
 }
-.lilt-agent[data-copied] .lilt-ui-icon-swap {
+.lilt-quickstart__copy {
+  display: grid;
+  flex: none;
+  height: 21px;
+  place-items: center;
+  color: var(--faint);
+  transition: color 160ms ease;
+}
+.lilt-quickstart__line:hover .lilt-quickstart__copy {
+  color: var(--foreground);
+}
+.lilt-quickstart__line[data-copied] .lilt-quickstart__copy {
   color: var(--brand-primary);
 }
 

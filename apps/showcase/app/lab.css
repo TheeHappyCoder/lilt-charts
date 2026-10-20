@@ -283,6 +283,11 @@
   .lilt-studio__tile:is([data-span='third'], [data-span='half']) {
     grid-column: span 1;
   }
+  /* After a full-width lead, an odd tile out takes the whole last row instead of leaving a hole. */
+  .lilt-studio__tile[data-span='wide']:first-child
+    ~ .lilt-studio__tile:not([data-span='wide']):last-child:nth-child(even) {
+    grid-column: span 2;
+  }
 }
 @container (max-width: 560px) {
   .lilt-studio__bento {

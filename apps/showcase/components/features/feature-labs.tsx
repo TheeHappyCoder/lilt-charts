@@ -13,6 +13,7 @@ import {
 
 const usd = { style: 'currency', currency: 'USD', maximumFractionDigits: 0 } as const;
 const percent = { style: 'percent', maximumFractionDigits: 1 } as const;
+const whole = { maximumFractionDigits: 0 } as const;
 const ms = (value: number) => `${Math.round(value)} ms`;
 
 /** Four families on one name: hovering any of them moves them all. */
@@ -37,6 +38,7 @@ function KpiCards({ sync }: { sync: string }) {
           x="date"
           series={[{ key: 'activeUsers', label: 'Active users' }]}
           aggregate="mean"
+          valueFormat={whole}
           tiles={false}
         />
       </Tile>

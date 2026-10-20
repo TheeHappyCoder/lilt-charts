@@ -64,7 +64,7 @@ export function InstallCommand({ packages = CHARTS_PACKAGE }: { packages?: strin
             </TabsTab>
           ))}
         </TabsList>
-        <CopyButton text={command(manager)} label="Copy command" />
+        <CopyButton text={command(manager)} label="Copy command" compact />
       </div>
       {PACKAGE_MANAGERS.map(({ id }) => (
         <TabsPanel key={id} value={id} className="lilt-docs-install__panel">

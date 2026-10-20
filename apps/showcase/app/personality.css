@@ -179,10 +179,11 @@
   height: 78%;
   fill: url(#lilt-backdrop-ink);
   opacity: 0.16;
-  /* Gone behind the headline, strongest along the floor and towards the sides. */
+  /* Gone behind the headline and the quickstart card, strongest along the floor and towards the sides. */
   mask-image:
     linear-gradient(to top, #000 0%, rgb(0 0 0 / 0.55) 45%, transparent 92%),
-    radial-gradient(ellipse 46% 72% at 50% 32%, transparent 45%, #000 100%);
+    radial-gradient(ellipse 46% 72% at 50% 32%, transparent 45%, #000 100%),
+    radial-gradient(ellipse 34% 46% at 50% 70%, transparent 58%, #000 100%);
   mask-composite: intersect;
 }
 .dark .lilt-backdrop__meter {

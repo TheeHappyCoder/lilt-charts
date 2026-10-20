@@ -8,8 +8,7 @@ import Pin02Icon from '@hugeicons/core-free-icons/Pin02Icon';
 import SparklesIcon from '@hugeicons/core-free-icons/SparklesIcon';
 import Target03Icon from '@hugeicons/core-free-icons/Target03Icon';
 import { ChartSettingsProvider } from '@/components/docs/chart-settings';
-import { InstallCommand } from '@/components/docs/install-command';
-import { HomeAgentPrompt } from '@/components/home/home-agent-prompt';
+import { HomeQuickstart } from '@/components/home/home-quickstart';
 import { HomeBackdrop } from '@/components/home/home-backdrop';
 import { HomeCatalog } from '@/components/home/home-catalog';
 import { HomeMeter } from '@/components/home/home-meter';
@@ -37,7 +36,7 @@ const collection = [
 ] as const;
 
 /** What to paste into an agent to get a first card on screen. */
-const AGENT_PROMPT = `Add a Lilt AreaChartCard of monthly visitors to my dashboard. Docs: ${SITE_URL}/llms.txt`;
+const AGENT_TASK = 'Add a Lilt AreaChartCard of monthly visitors to my dashboard.';
 
 const features: readonly {
   icon: IconSvgElement;
@@ -159,8 +158,7 @@ export async function HomePage() {
               </div>
             </BlurFade>
             <BlurFade delay={160} className="lilt-landing__install">
-              <InstallCommand />
-              <HomeAgentPrompt prompt={AGENT_PROMPT} />
+              <HomeQuickstart task={AGENT_TASK} docsUrl={`${SITE_URL}/llms.txt`} />
             </BlurFade>
           </section>
 

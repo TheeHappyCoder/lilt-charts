@@ -140,7 +140,7 @@
 .lilt-tile__caption {
   display: flex;
   min-width: 0;
-  align-items: center;
+  align-items: flex-start;
   gap: 12px;
   padding: 14px 16px 16px;
 }
@@ -174,12 +174,16 @@
   letter-spacing: -0.01em;
 }
 .lilt-tile__lede {
+  display: -webkit-box;
+  /* Two lines, held open, so every caption in a row sits at the same height. */
+  min-height: 38px;
   overflow: hidden;
   color: var(--muted-foreground);
   font-size: 13px;
   line-height: 19px;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  text-wrap: pretty;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
 }
 .lilt-tile__go {
   display: grid;
