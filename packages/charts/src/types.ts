@@ -276,10 +276,11 @@ export type ChartHoverReadout = 'pills' | 'tooltip' | 'strip' | 'headline';
 /** The series marker on each tooltip row: a rounded `square` (default), a `dot`, or a `line`. */
 export type ChartTooltipIndicator = 'square' | 'dot' | 'line';
 /**
- * Series color sets, each validated for color-vision deficiency in light and dark mode. `iris`
- * is the default.
+ * Series color sets, each validated for color-vision deficiency in light and dark mode.
+ * `spectrum` (the default) gives every series its own hue; `iris`, `cobalt`, and `emerald` keep
+ * one color family.
  */
-export type ChartPalette = 'iris' | 'cobalt' | 'emerald';
+export type ChartPalette = 'spectrum' | 'iris' | 'cobalt' | 'emerald';
 /** Texture behind the plot marks, faded toward the plot edges. */
 export type ChartBackground = 'dots' | 'grid' | 'lines' | 'none';
 /** Card treatments: raised `elevated` (default), border-only `outline`, or `ghost` for use inside your own card. */

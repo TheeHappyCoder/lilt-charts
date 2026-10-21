@@ -18,6 +18,7 @@ import { TooltipHint } from '@/components/ui/tooltip';
 import { HERO_LOOK, heroSource, heroWithLook, type HeroLook } from '@/lib/home-hero';
 
 const palettes: readonly { value: ChartPalette; label: string; colors: [string, string] }[] = [
+  { value: 'spectrum', label: 'Spectrum', colors: ['#7c5cff', '#1d9bf0'] },
   { value: 'iris', label: 'Iris', colors: ['#7c5cff', '#e5489c'] },
   { value: 'cobalt', label: 'Cobalt', colors: ['#2f6fed', '#0fb3d3'] },
   { value: 'emerald', label: 'Emerald', colors: ['#0e9a77', '#84cc16'] },

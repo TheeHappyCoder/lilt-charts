@@ -30,6 +30,7 @@ const groups = [
 ] as const;
 const paletteNames: Record<string, string> = {
   [AUTO]: 'Auto',
+  spectrum: 'Spectrum',
   iris: 'Iris',
   cobalt: 'Cobalt',
   emerald: 'Emerald',
@@ -49,7 +50,7 @@ function PaletteMark({ palette }: { palette: string }) {
     <span
       className="lilt-style-menu__colors"
       data-lilt-chart=""
-      data-lilt-palette={palette === AUTO ? 'iris' : palette}
+      data-lilt-palette={palette === AUTO ? 'spectrum' : palette}
       aria-hidden="true"
     >
       <i />

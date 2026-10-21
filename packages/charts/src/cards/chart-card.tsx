@@ -1,6 +1,8 @@
 import {
   createContext,
   useContext,
+  useLayoutEffect,
+  useRef,
   type CSSProperties,
   type KeyboardEventHandler,
   type ReactElement,
@@ -8,6 +10,7 @@ import {
 } from 'react';
 import { AnimatedNumber, type AnimatedNumberVariant } from '../motion/animated-number';
 import { MotionScope } from '../motion/motion-scope';
+import { EntranceSeenProvider, useFirstSight } from '../motion/entrance-gate';
 import { RangeSelect, useCustomRangeSelect } from './range-select';
 
 const NumberStyleContext = createContext<AnimatedNumberVariant>('count');
@@ -36,6 +39,12 @@ export interface ChartCardProps {
   style?: CSSProperties | ChartStyle;
   'aria-label'?: string;
   onKeyDown?: KeyboardEventHandler<HTMLElement>;
+  /**
+   * Told whether the card has been on screen yet, before paint. A card mounted below the fold
+   * reports `false` and then `true` once it scrolls into view; charts inside the card hold their
+   * entrance until then on their own. Use it to hold an entrance you drive yourself.
+   */
+  onSightChange?: (seen: boolean) => void;
 }
 
 /** The card surface every Lilt card shares: padding, radius, border, and theme tokens. */
@@ -50,17 +59,29 @@ export function ChartCard({
   style,
   'aria-label': ariaLabel,
   onKeyDown,
+  onSightChange,
 }: ChartCardProps): ReactElement {
   const tabbed = badge !== undefined && badge !== null && badge !== false;
   const framed = tabbed;
+  // A card below the fold holds its entrance, CSS animations included, until it is seen.
+  const sightRef = useRef<HTMLElement | null>(null);
+  const seen = useFirstSight(sightRef, motion !== 'none');
+  useLayoutEffect(() => {
+    onSightChange?.(seen);
+  }, [onSightChange, seen]);
+  const sight = (node: HTMLElement | null) => {
+    sightRef.current = node;
+  };
   const root = {
     'data-lilt-chart': '',
     'data-lilt-palette': palette,
     'data-motion': motion === 'none' ? ('none' as const) : undefined,
+    'data-lilt-unseen': seen ? undefined : '',
     style: style as CSSProperties,
   };
   const card = (
     <section
+      ref={framed ? undefined : sight}
       {...(framed ? { 'data-lilt-chart': '' } : root)}
       data-surface={surface}
       className={cx('lilt-card', !framed && className)}
@@ -72,21 +93,24 @@ export function ChartCard({
   );
   return (
     <NumberStyleContext.Provider value={numberStyle}>
-      <MotionScope>
-        {framed ? (
-          <div
-            {...root}
-            className={cx('lilt-card-frame', className)}
-            data-tabbed={tabbed || undefined}
-            data-surface={surface}
-          >
-            {tabbed ? <CardBadge>{badge}</CardBadge> : null}
-            {card}
-          </div>
-        ) : (
-          card
-        )}
-      </MotionScope>
+      <EntranceSeenProvider value={seen}>
+        <MotionScope>
+          {framed ? (
+            <div
+              ref={sight}
+              {...root}
+              className={cx('lilt-card-frame', className)}
+              data-tabbed={tabbed || undefined}
+              data-surface={surface}
+            >
+              {tabbed ? <CardBadge>{badge}</CardBadge> : null}
+              {card}
+            </div>
+          ) : (
+            card
+          )}
+        </MotionScope>
+      </EntranceSeenProvider>
     </NumberStyleContext.Provider>
   );
 }

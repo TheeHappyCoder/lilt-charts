@@ -113,6 +113,12 @@ const channelRevenue = [
     },
     { name: 'color', type: 'string', description: 'Any CSS color for the bars.' },
     {
+      name: 'colors',
+      type: "'categories' | 'single'",
+      description:
+        'Each row in its own palette color, kept by name as rows re-rank, or every row in one color. Defaults to categories for six named rows or fewer.',
+    },
+    {
       name: 'depth',
       type: 'boolean',
       description:

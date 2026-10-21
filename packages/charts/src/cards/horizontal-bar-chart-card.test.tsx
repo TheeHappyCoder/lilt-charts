@@ -222,4 +222,57 @@ describe('HorizontalBarChartCard with a selection you own', { timeout: 15_000 },
       unmount();
     }
   });
+
+  it('gives each named row its own color, kept by name through a re-rank', async () => {
+    const hue = (host: HTMLElement, label: string) =>
+      [...host.querySelectorAll<HTMLElement>('.lilt-list__rows > li')]
+        .find((row) => row.textContent?.includes(label))
+        ?.style.getPropertyValue('--lilt-list-hue');
+    const element = (rows: typeof channels) => (
+      <HorizontalBarChartCard motion="none" data={rows} category="channel" value="revenue" />
+    );
+    const host = document.createElement('div');
+    document.body.append(host);
+    const root = createRoot(host);
+    await act(async () => root.render(element(channels)));
+    const organic = hue(host, 'Organic');
+    const direct = hue(host, 'Direct');
+    expect(organic).toMatch(/^var\(--lilt-series-\d\)$/);
+    expect(direct).toMatch(/^var\(--lilt-series-\d\)$/);
+    expect(organic).not.toBe(direct);
+    // Direct overtakes Organic; both keep their colors.
+    await act(async () =>
+      root.render(
+        element([
+          { channel: 'Organic', revenue: 10 },
+          { channel: 'Direct', revenue: 90 },
+        ]),
+      ),
+    );
+    expect(hue(host, 'Organic')).toBe(organic);
+    expect(hue(host, 'Direct')).toBe(direct);
+    act(() => root.unmount());
+    host.remove();
+  });
+
+  it('paints every row in one color when asked, or when there are more than six', async () => {
+    const many = Array.from({ length: 7 }, (_, index) => ({
+      channel: `Channel ${index + 1}`,
+      revenue: 10 + index,
+    }));
+    for (const props of [
+      { data: channels, colors: 'single' as const },
+      { data: many },
+      { data: channels, color: '#ff0000' },
+    ]) {
+      const { host, unmount } = await render(
+        <HorizontalBarChartCard motion="none" category="channel" value="revenue" {...props} />,
+      );
+      const hues = [...host.querySelectorAll<HTMLElement>('.lilt-list__rows > li')].map((row) =>
+        row.style.getPropertyValue('--lilt-list-hue'),
+      );
+      expect(hues.every((value) => value === '')).toBe(true);
+      unmount();
+    }
+  });
 });

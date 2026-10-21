@@ -1,0 +1,10 @@
+@layer lilt {
+  /* A card that has not been seen yet holds every CSS entrance at its first frame and plays it
+     when it scrolls into view, the same moment script-driven entrances start. */
+  [data-lilt-unseen],
+  [data-lilt-unseen] *,
+  [data-lilt-unseen] *::before,
+  [data-lilt-unseen] *::after {
+    animation-play-state: paused !important;
+  }
+}

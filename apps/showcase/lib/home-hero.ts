@@ -20,7 +20,7 @@ export interface HeroLook {
 
 /** How the hero draws it, and so where the studio starts. */
 export const HERO_LOOK: HeroLook = {
-  palette: 'iris',
+  palette: 'spectrum',
   barStyle: 'segmented',
   depth: false,
   surface: 'elevated',
@@ -28,7 +28,7 @@ export const HERO_LOOK: HeroLook = {
 
 /** The card's own defaults: printed code names only what differs from them. */
 export const CARD_DEFAULTS: HeroLook = {
-  palette: 'iris',
+  palette: 'spectrum',
   barStyle: 'solid',
   depth: false,
   surface: 'elevated',

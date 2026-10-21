@@ -788,7 +788,7 @@ export function ScatterChartCard<Row, const Key extends NumericKey<Row>>({
                               style={
                                 {
                                   transform: `translate(${point.cx}px, ${point.cy}px)`,
-                                  '--lilt-scatter-card-delay': `${Math.round((point.order / Math.max(1, points.length - 1)) * 320)}ms`,
+                                  '--lilt-scatter-card-delay': `${Math.round((point.order / Math.max(1, points.length - 1)) * 480)}ms`,
                                 } as CSSProperties
                               }
                             >

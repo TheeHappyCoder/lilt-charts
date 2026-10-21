@@ -15,8 +15,8 @@ const levelAt = (index: number) => {
 
 /**
  * The hero's ground: Lilt's level meter, very large and very quiet. Columns of segmented cells
- * rise once from the floor in the brand's violet-to-rose, fading out toward the edges and up
- * behind the words. It is drawn, not fetched, so the server renders it whole.
+ * rise once from the floor in the default palette's hues, sweeping left to right, fading out
+ * toward the edges and up behind the words. It is drawn, not fetched, so the server renders it whole.
  */
 export function HomeBackdrop() {
   const height = CELLS * (CELL + GAP);
@@ -35,13 +35,15 @@ export function HomeBackdrop() {
             id="lilt-backdrop-ink"
             gradientUnits="userSpaceOnUse"
             x1="0"
-            y1={height}
-            x2="0"
-            y2={0}
+            y1="0"
+            x2={width}
+            y2="0"
           >
-            <stop offset="0" stopColor="#7c5cff" />
-            <stop offset="0.65" stopColor="#b252d8" />
-            <stop offset="1" stopColor="#e5489c" />
+            <stop offset="0" stopColor="#1d9bf0" />
+            <stop offset="0.3" stopColor="#7c5cff" />
+            <stop offset="0.5" stopColor="#3cc98f" />
+            <stop offset="0.72" stopColor="#f0459a" />
+            <stop offset="1" stopColor="#7c5cff" />
           </linearGradient>
         </defs>
         {Array.from({ length: COLUMNS }, (_, column) => {

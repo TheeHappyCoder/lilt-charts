@@ -66,7 +66,7 @@
     cursor: pointer;
     -webkit-tap-highlight-color: transparent;
     transition: opacity var(--lilt-duration-quick) ease;
-    animation: lilt-observation-in 420ms var(--lilt-ease-reveal) backwards;
+    animation: lilt-observation-in 560ms var(--lilt-ease-reveal) backwards;
     animation-delay: var(--lilt-observation-delay);
   }
   /* Around a period change, marks travel and resize on Lilt's spring and colours re-tint in a
@@ -416,7 +416,7 @@
   @keyframes lilt-observation-in {
     from {
       opacity: 0;
-      transform: scale(0.86);
+      transform: scale(0.72);
       filter: blur(6px);
     }
   }

@@ -35,7 +35,8 @@ export type { ObservationPrism } from './prism';
 import type { CardRange } from './cartesian-card';
 
 /** Shared presentation options for observation-based cards. */
-export interface ObservationsCardProps<Row> extends Omit<ChartCardProps, 'children'> {
+export interface ObservationsCardProps<Row>
+  extends Omit<ChartCardProps, 'children' | 'onSightChange'> {
   title?: string;
   header?: boolean;
   data?: readonly Row[];

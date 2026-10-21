@@ -317,11 +317,14 @@ export function FunnelChartCard<Row, const Key extends NumericKey<Row>>({
   if (transition.to !== heights)
     setTransition({ key: transition.key + 1, from: shownRef.current, to: heights, initial: false });
   // A first view sweeps in from the left; a period change lands on the spring, like bars.
+  // Held at its first frame until the card is on screen.
+  const [seen, setSeen] = useState(true);
   const progress = useChartTimeline(
     {
       key: transition.key,
       active: !skeletonShown,
-      duration: transition.initial ? 720 : 550,
+      seen,
+      duration: transition.initial ? 1000 : 550,
       spring: !transition.initial,
     },
     reduced,
@@ -537,6 +540,7 @@ export function FunnelChartCard<Row, const Key extends NumericKey<Row>>({
 
   return (
     <ChartCard
+      onSightChange={setSeen}
       motion={motionMode}
       className={['lilt-funnel-card', className].filter(Boolean).join(' ')}
       style={

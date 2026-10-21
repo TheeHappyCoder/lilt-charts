@@ -12,7 +12,7 @@ describe('lifecycle generations', () => {
   });
 
   it('uses the documented finite clocks and reduced-motion commit', () => {
-    expect(durationForPhase('initial', false)).toBe(720);
+    expect(durationForPhase('initial', false)).toBe(1000);
     expect(durationForPhase('matched-update', false)).toBe(420);
     expect(durationForPhase('topology-update', false)).toBe(240);
   });

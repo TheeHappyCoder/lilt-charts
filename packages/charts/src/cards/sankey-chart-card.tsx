@@ -351,9 +351,11 @@ export function SankeyChartCard<Row, const Key extends NumericKey<Row>>({
 
   // Flows sweep in from the left on first view. A period change then reshapes the same flows on
   // the spring, nodes and ribbons moving from where they are, instead of sweeping in again.
+  // Held at its first frame until the card is on screen.
+  const [seen, setSeen] = useState(true);
   const sweepTimeline = useChartTimeline(
     // Only once the plot has a size, so the sweep is seen rather than spent off screen.
-    { key: 'first', active: !skeletonShown && measured > 0, duration: 720 },
+    { key: 'first', active: !skeletonShown && measured > 0, seen, duration: 1000 },
     reduced,
   );
   const sweep = measured > 0 ? sweepTimeline : 0;
@@ -497,6 +499,7 @@ export function SankeyChartCard<Row, const Key extends NumericKey<Row>>({
 
   return (
     <ChartCard
+      onSightChange={setSeen}
       motion={motionMode}
       className={['lilt-sankey-card', className].filter(Boolean).join(' ')}
       style={style}

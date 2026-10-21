@@ -358,11 +358,14 @@ export function RadialChartCard<Row, const Key extends NumericKey<Row>>({
   // Each period change restarts the light motion blur over the slices.
   const snaps = transition.initial ? 0 : transition.key;
   // A first draw sweeps in clockwise; a period change lands on the spring, like bars.
+  // Held at its first frame until the card is on screen.
+  const [seen, setSeen] = useState(true);
   const progress = useChartTimeline(
     {
       key: transition.key,
       active: !skeletonShown,
-      duration: transition.initial ? 900 : 550,
+      seen,
+      duration: transition.initial ? 1200 : 550,
       spring: !transition.initial,
     },
     reduced,
@@ -820,6 +823,7 @@ export function RadialChartCard<Row, const Key extends NumericKey<Row>>({
 
   return (
     <ChartCard
+      onSightChange={setSeen}
       motion={motionMode}
       className={['lilt-radial-card', className].filter(Boolean).join(' ')}
       style={style}

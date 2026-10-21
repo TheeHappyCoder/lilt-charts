@@ -52,6 +52,7 @@ import { EmptyShapeContext, EmptySlot } from './lifecycle/chart-empty';
 import { useReducedMotion } from './motion/use-chart-motion';
 import { useSeriesWeights } from './motion/use-series-weights';
 import { COMPACT_ENTRANCE_DURATION, entranceProgress, entranceSweep } from './motion/entrance';
+import { useEntranceSeen } from './motion/entrance-gate';
 import { useFocusDomain } from './motion/use-focus-domain';
 import { validateStack } from './engine/stack';
 import { canMorphByKey, keyedFrame, mixDomain, morphEase } from './engine/keyed';
@@ -517,6 +518,8 @@ export function ChartPlotRenderer<T>({
     [margins, narrow],
   );
   const reducedMotion = useReducedMotion(motionPreference);
+  // Inside a card below the fold, the entrance waits for the card to be seen.
+  const seen = useEntranceSeen();
   const normalizedResult = useNormalizedData(data, series, x, arrangement.stack);
   const target = normalizedResult.value;
   const validTarget = target !== null && target.rows.length > 0 && hasFiniteValue(target);
@@ -927,6 +930,10 @@ export function ChartPlotRenderer<T>({
       setPhase('ready');
       return;
     }
+    if (transition.kind === 'initial' && !seen) {
+      setTransitionProgress(0);
+      return;
+    }
     const started = performance.now();
     let frame = 0;
     const tick = (now: number) => {
@@ -955,7 +962,7 @@ export function ChartPlotRenderer<T>({
       window.cancelAnimationFrame(frame);
       document.removeEventListener('visibilitychange', settleHidden);
     };
-  }, [entranceDisabled, reducedMotion, transition]);
+  }, [entranceDisabled, reducedMotion, seen, transition]);
 
   // Data landing on a skeleton waits for it to leave, then mounts with its own entrance.
   const currentData =

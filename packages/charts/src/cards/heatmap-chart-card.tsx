@@ -474,7 +474,7 @@ export function HeatmapChartCard<Row, const Key extends NumericKey<Row>>({
                                   cell.intensity === null
                                     ? undefined
                                     : `${cellStrength(cell.intensity)}%`,
-                                '--lilt-heatmap-card-delay': `${Math.min(160, columnIndex * 12)}ms`,
+                                '--lilt-heatmap-card-delay': `${Math.min(360, columnIndex * 24)}ms`,
                                 // Colour changes ripple diagonally from the top-left cell.
                                 '--lilt-heatmap-card-ripple': `${Math.round(((rowIndex + columnIndex) / Math.max(1, grid.rows.length + grid.columns.length - 2)) * 320)}ms`,
                               } as CSSProperties

@@ -214,8 +214,8 @@ const sharedProps: readonly PropRow[] = [
   },
   {
     name: 'palette',
-    type: "'iris' | 'cobalt' | 'emerald'",
-    description: 'Series colors. Iris by default; explicit series colors still win.',
+    type: "'spectrum' | 'iris' | 'cobalt' | 'emerald'",
+    description: 'Series colors. Spectrum by default; explicit series colors still win.',
   },
   {
     name: 'axisInset',

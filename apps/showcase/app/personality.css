@@ -178,7 +178,7 @@
   width: 100%;
   height: 78%;
   fill: url(#lilt-backdrop-ink);
-  opacity: 0.16;
+  opacity: 0.2;
   /* Gone behind the headline and the quickstart card, strongest along the floor and towards the sides. */
   mask-image:
     linear-gradient(to top, #000 0%, rgb(0 0 0 / 0.55) 45%, transparent 92%),

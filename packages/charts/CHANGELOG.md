@@ -1,5 +1,14 @@
 # Changelog
 
+## Unreleased
+
+Bolder color and entrances that are seen.
+
+- New default palette, `spectrum`: violet, sky, pink, amber, mint and ember, spaced around the wheel so every series reads as its own thing. Every pair stays separable under color-vision deficiency in light and dark mode, and the dark set is brighter so colors stay clean on dark cards. `iris`, `cobalt` and `emerald` remain as single-family palettes; pass `palette="iris"` for the previous look. The shadcn `--chart-*` fallbacks follow the new colors.
+- `HorizontalBarChartCard` gives each row its own palette color, kept by name as rows re-rank. `colors="single"` (or `color`) paints every row in one color, which is also the default beyond six named rows. Soft row fills are stronger in dark mode.
+- A card mounted below the fold holds its entrance at the first frame and plays it when it scrolls into view, CSS animations included. `ChartCard` reports this through `onSightChange` for entrances you drive yourself.
+- Entrances are longer and more visible: 1s draws (0.7s compact), wider bar and row staggers, cells that pop from further away, and slower radial, funnel, sankey and radar arrivals. Area fills and sankey flows are a little stronger.
+
 ## 0.14.0
 
 Eight new chart families: seven for markets and one for retention.

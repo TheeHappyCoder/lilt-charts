@@ -11,11 +11,11 @@
     --lilt-grid: var(--border, #e7e7e4);
     --lilt-border: var(--border, #e7e7e4);
     --lilt-series-1: var(--chart-1, #7c5cff);
-    --lilt-series-2: var(--chart-2, #e5489a);
-    --lilt-series-3: var(--chart-3, #f29a1d);
-    --lilt-series-4: var(--chart-4, #c03fd6);
-    --lilt-series-5: var(--chart-5, #f2665a);
-    --lilt-series-6: #5b4bd1;
+    --lilt-series-2: var(--chart-2, #1d9bf0);
+    --lilt-series-3: var(--chart-3, #f0459a);
+    --lilt-series-4: var(--chart-4, #f29a12);
+    --lilt-series-5: var(--chart-5, #3cc98f);
+    --lilt-series-6: #d9480f;
     --lilt-reference: #89968d;
     --lilt-positive: #168267;
     --lilt-negative: #b65d54;
@@ -27,7 +27,10 @@
     --lilt-sequential-2: #a8d8c2;
     --lilt-sequential-3: #6db99a;
     --lilt-sequential-4: #168267;
-    --lilt-area-fill-start: 0.34;
+    --lilt-area-fill-start: 0.4;
+    /* Soft fills behind labels, e.g. ranked rows: strong enough to read as the row's color. */
+    --lilt-soft-fill: 20%;
+    --lilt-soft-fill-active: 34%;
     --lilt-area-fill-end: 0;
     --lilt-focus: var(--ring, #7c5cff);
     --lilt-tooltip-bg: var(--lilt-axis-active);
@@ -98,12 +101,12 @@
     --lilt-muted: var(--muted-foreground, #9b9b98);
     --lilt-grid: var(--border, #333331);
     --lilt-border: var(--border, #333331);
-    --lilt-series-1: var(--chart-1, #8b6dff);
-    --lilt-series-2: var(--chart-2, #ee5aa6);
-    --lilt-series-3: var(--chart-3, #f2a43a);
-    --lilt-series-4: var(--chart-4, #cf55e3);
-    --lilt-series-5: var(--chart-5, #f47a6c);
-    --lilt-series-6: #6f62e8;
+    --lilt-series-1: var(--chart-1, #8f73ff);
+    --lilt-series-2: var(--chart-2, #3aaaf7);
+    --lilt-series-3: var(--chart-3, #f45ea8);
+    --lilt-series-4: var(--chart-4, #f7ab2e);
+    --lilt-series-5: var(--chart-5, #4dd69c);
+    --lilt-series-6: #e8601f;
     --lilt-reference: #879a8c;
     --lilt-positive: #67d9af;
     --lilt-negative: #ec9a91;
@@ -111,9 +114,11 @@
     --lilt-sequential-2: #2e7056;
     --lilt-sequential-3: #4eac81;
     --lilt-sequential-4: #94dfb7;
-    --lilt-area-fill-start: 0.3;
+    --lilt-area-fill-start: 0.36;
+    --lilt-soft-fill: 30%;
+    --lilt-soft-fill-active: 46%;
     --lilt-area-fill-end: 0;
-    --lilt-focus: var(--ring, #8b6dff);
+    --lilt-focus: var(--ring, #8f73ff);
     --lilt-tooltip-muted: #3d403c;
     --lilt-tooltip-accent: #13745c;
     --lilt-tooltip-border: rgb(0 0 0 / 0.12);
@@ -134,9 +139,40 @@
     --lilt-card-shadow: 0 1px 2px rgb(0 0 0 / 0.25), 0 16px 40px -16px rgb(0 0 0 / 0.6);
   }
 
-  /* Validated categorical palettes (adjacent CVD ΔE ≥ 8, normal-vision ΔE ≥ 15, both modes). Each
-     has its own family: iris is violet, rose, and amber; cobalt blue, cyan, and indigo; emerald
-     green, lime, and deep teal. */
+  /* Validated categorical palettes (adjacent CVD ΔE ≥ 8, normal-vision ΔE ≥ 15, both modes).
+     Spectrum, the default, spaces six hues around the wheel so every series reads as its own
+     thing: violet, sky, pink, amber, mint, and ember, with every pair separable (all-pairs CVD
+     ΔE ≥ 8 in both modes). Its dark set is deliberately brighter than a muted chart band, so
+     colors stay clean on a dark card. The others keep one family each: iris is violet, rose,
+     and amber; cobalt blue, cyan, and indigo; emerald green, lime, and deep teal. */
+  [data-lilt-chart][data-lilt-palette='spectrum']:not(:where([data-lilt-chart] *)),
+  [data-lilt-palette='spectrum'] [data-lilt-chart]:not(:where([data-lilt-chart] *)) {
+    --lilt-series-1: #7c5cff;
+    --lilt-series-2: #1d9bf0;
+    --lilt-series-3: #f0459a;
+    --lilt-series-4: #f29a12;
+    --lilt-series-5: #3cc98f;
+    --lilt-series-6: #d9480f;
+    --lilt-focus: #7c5cff;
+  }
+  :is([data-theme='dark'], .dark)
+    [data-lilt-chart][data-lilt-palette='spectrum']:not(:where([data-lilt-chart] *)),
+  :is([data-theme='dark'], .dark)
+    [data-lilt-palette='spectrum']
+    [data-lilt-chart]:not(:where([data-lilt-chart] *)),
+  [data-lilt-chart][data-lilt-palette='spectrum'][data-lilt-theme='dark']:not(
+      :where([data-lilt-chart] *)
+    ),
+  [data-lilt-palette='spectrum'][data-lilt-theme='dark']
+    [data-lilt-chart]:not(:where([data-lilt-chart] *)) {
+    --lilt-series-1: #8f73ff;
+    --lilt-series-2: #3aaaf7;
+    --lilt-series-3: #f45ea8;
+    --lilt-series-4: #f7ab2e;
+    --lilt-series-5: #4dd69c;
+    --lilt-series-6: #e8601f;
+    --lilt-focus: #8f73ff;
+  }
   [data-lilt-chart][data-lilt-palette='cobalt']:not(:where([data-lilt-chart] *)),
   [data-lilt-palette='cobalt'] [data-lilt-chart]:not(:where([data-lilt-chart] *)) {
     --lilt-series-1: #2f6fed;

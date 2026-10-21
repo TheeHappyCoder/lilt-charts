@@ -122,7 +122,7 @@ const quotes = [
     },
     {
       name: 'palette',
-      type: "'iris' | 'cobalt' | 'emerald'",
+      type: "'spectrum' | 'iris' | 'cobalt' | 'emerald'",
       description: 'Accent colors inside the card.',
     },
     {

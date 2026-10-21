@@ -14,7 +14,12 @@ import { CartesianScene, CompareCard, EnsembleScene, ScaleCard, ScaleScene } fro
 import { LabStudio, type LabOption } from './lab-studio';
 
 const palettes: readonly LabOption<ChartPalette>[] = [
-  { value: 'iris', label: 'Iris', note: 'Violet, rose, and amber. The default.' },
+  {
+    value: 'spectrum',
+    label: 'Spectrum',
+    note: 'Violet, sky, pink, amber, mint, and ember. Every series its own hue. The default.',
+  },
+  { value: 'iris', label: 'Iris', note: 'Violet, rose, and amber. One warm family.' },
   { value: 'cobalt', label: 'Cobalt', note: 'Blue, cyan, and indigo. Cool and product-like.' },
   { value: 'emerald', label: 'Emerald', note: 'Green, lime, and deep teal. Calm and natural.' },
 ];
@@ -25,7 +30,7 @@ export function ColorsLab() {
       label="Palette"
       prop="palette"
       options={palettes}
-      defaultValue="iris"
+      defaultValue="spectrum"
       scene={(palette) => <EnsembleScene palette={palette} />}
       compare={(palette) => <CompareCard palette={palette} />}
     />

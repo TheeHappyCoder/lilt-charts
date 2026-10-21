@@ -96,6 +96,12 @@ export interface HorizontalBarChartCardProps<Row, Key extends NumericKey<Row>> {
   formatValue?: (value: number) => string;
   /** Any CSS color for the bars. Defaults to the palette's first color. */
   color?: string;
+  /**
+   * `categories` gives each row its own palette color, kept by name as rows re-rank; `single`
+   * paints every row in the first color (or `color`). Defaults to `categories` for six named
+   * rows or fewer, and `single` beyond that or when `color` is set.
+   */
+  colors?: 'categories' | 'single';
   surface?: ChartSurface;
   /** A glass tab tucked behind the card's top edge, e.g. a caption, a command, or actions. */
   badge?: ReactNode;
@@ -152,6 +158,7 @@ export function HorizontalBarChartCard<Row, const Key extends NumericKey<Row>>({
   locale,
   formatValue: suppliedFormatValue,
   color,
+  colors: suppliedColors,
   surface = 'elevated',
   badge,
   numberStyle,
@@ -272,11 +279,23 @@ export function HorizontalBarChartCard<Row, const Key extends NumericKey<Row>>({
     if (list)
       list.style.setProperty('--lilt-list-columns', getComputedStyle(list).gridTemplateColumns);
   }, [order]);
+  // A category keeps its color by name, so a row re-ranking or a new period never repaints it.
+  const named = rows.filter((row) => !row.other).length;
+  const colors = suppliedColors ?? (color || named > 6 ? 'single' : 'categories');
+  const slots = useRef(new Map<string, number>());
+  const colorOf = (row: (typeof rows)[number]) => {
+    if (colors === 'single' || row.other) return undefined;
+    if (!slots.current.has(row.id)) slots.current.set(row.id, slots.current.size % 6);
+    return `var(--lilt-series-${slots.current.get(row.id)! + 1})`;
+  };
+  // Rows hold their arrival until the card is on screen.
+  const [seen, setSeen] = useState(true);
   const cardStyle = color ? ({ ...style, '--lilt-series-1': color } as ChartStyle) : style;
 
   return (
     <MotionScope layout>
       <ChartCard
+        onSightChange={setSeen}
         motion={motionMode}
         className={['lilt-list', className].filter(Boolean).join(' ')}
         style={cardStyle}
@@ -358,7 +377,7 @@ export function HorizontalBarChartCard<Row, const Key extends NumericKey<Row>>({
                   const bar = rankingBar(row.value, domain);
                   const isActive = row.id === active?.id;
                   const rowShare = shareOf(row.value);
-                  const delay = reduced ? 0 : entranceStagger(index, rows.length, 120) / 1000;
+                  const delay = reduced ? 0 : entranceStagger(index, rows.length, 260) / 1000;
                   return (
                     <m.li
                       key={row.id}
@@ -369,8 +388,9 @@ export function HorizontalBarChartCard<Row, const Key extends NumericKey<Row>>({
                       data-other={row.other || undefined}
                       data-travel={travel.passes.has(row.id) ? travel.count % 2 : undefined}
                       data-pass={travel.passes.get(row.id)}
+                      style={{ '--lilt-list-hue': colorOf(row) } as CSSProperties}
                       initial={reduced ? false : { opacity: 0, filter: 'blur(8px)', y: 8 }}
-                      animate={{ opacity: 1, filter: 'blur(0px)', y: 0 }}
+                      animate={seen ? { opacity: 1, filter: 'blur(0px)', y: 0 } : undefined}
                       exit="leave"
                       variants={{
                         leave: {
@@ -418,7 +438,9 @@ export function HorizontalBarChartCard<Row, const Key extends NumericKey<Row>>({
                               className="lilt-list__bar"
                               data-negative={row.value < 0 || undefined}
                               initial={reduced ? false : { left: `${bar.zero}%`, width: '0%' }}
-                              animate={{ left: `${bar.left}%`, width: `${bar.width}%` }}
+                              animate={
+                                seen ? { left: `${bar.left}%`, width: `${bar.width}%` } : undefined
+                              }
                               variants={{
                                 // A leaving row drains its bar back to zero as it fades.
                                 leave: {

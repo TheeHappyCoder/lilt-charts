@@ -12,7 +12,7 @@ describe('entrance choreography', () => {
     for (let index = 0; index < count; index++) {
       const delay = entranceStagger(index, count);
       expect(delay).toBeGreaterThanOrEqual(0);
-      expect(delay).toBeLessThanOrEqual(100);
+      expect(delay).toBeLessThanOrEqual(220);
       expect(entranceProgress(0, delay, ENTRANCE_DURATION - delay)).toBe(0);
       expect(entranceProgress(ENTRANCE_DURATION, delay, ENTRANCE_DURATION - delay)).toBe(1);
     }

@@ -321,8 +321,10 @@ export function RadarChartCard<Row, const Key extends NumericKey<Row>>({
       const { x, y } = spokePoint(index, SKELETON.length, level, radius);
       return `${index ? 'L' : 'M'}${(cx + x).toFixed(2)},${(cy + y).toFixed(2)}`;
     }).join(' ') + ' Z';
+  // Held at its first frame until the card is on screen.
+  const [seen, setSeen] = useState(true);
   const timeline = useChartTimeline(
-    { key: 'first', active: !skeletonShown && count > 0 && measured > 0, duration: 640 },
+    { key: 'first', active: !skeletonShown && count > 0 && measured > 0, seen, duration: 900 },
     reduced,
   );
   // Nothing is drawn until the plot has a size, so the grow is seen from its start.
@@ -470,6 +472,7 @@ export function RadarChartCard<Row, const Key extends NumericKey<Row>>({
 
   return (
     <ChartCard
+      onSightChange={setSeen}
       motion={motionMode}
       className={['lilt-radar-card', className].filter(Boolean).join(' ')}
       style={style}

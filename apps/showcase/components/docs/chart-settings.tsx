@@ -94,6 +94,7 @@ export const controls: readonly Control<keyof ChartDocSettings>[] = [
     href: '/customize/colors',
     options: [
       { value: AUTO, label: 'Auto' },
+      { value: 'spectrum', label: swatch('#1d9bf0', 'Spectrum') },
       { value: 'iris', label: swatch('#7c5cff', 'Iris') },
       { value: 'cobalt', label: swatch('#2f6fed', 'Cobalt') },
       { value: 'emerald', label: swatch('#0e9a77', 'Emerald') },

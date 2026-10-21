@@ -65,7 +65,7 @@
     transition:
       fill-opacity var(--lilt-duration-quick) ease,
       stroke-width var(--lilt-duration-quick) ease;
-    animation: lilt-scatter-card-in 460ms var(--lilt-ease-reveal) backwards;
+    animation: lilt-scatter-card-in 560ms var(--lilt-ease-reveal) backwards;
     animation-delay: var(--lilt-scatter-card-delay);
   }
   .lilt-scatter-card__point[data-active] circle {
