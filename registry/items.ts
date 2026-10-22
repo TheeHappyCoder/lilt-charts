@@ -200,6 +200,12 @@ const uiPages: readonly PageSpec[] = [
   page('components', 'presence', 'Presence', 'presence.tsx'),
   page('components', 'hold-to-confirm', 'HoldToConfirm', 'hold-to-confirm.tsx'),
   page('components', 'command-copy', 'CommandCopy', 'command-copy.tsx'),
+  page('components', 'stream-text', 'StreamText', 'stream-text.tsx'),
+  page('components', 'tool-trace', 'ToolTrace', 'tool-trace.tsx'),
+  page('components', 'number-roll', 'NumberRoll', 'number-roll.tsx'),
+  page('components', 'swipe-row', 'SwipeRow', 'swipe-row.tsx'),
+  page('components', 'theme-flip', 'ThemeFlip', 'theme-flip.tsx'),
+  page('components', 'dynamic-island', 'DynamicIsland', 'dynamic-island.tsx'),
 ];
 
 const under = (folder: string) => (path: string) => `${folder}/${path}`;

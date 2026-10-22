@@ -3,6 +3,12 @@ import { act } from 'react';
 import { createRoot, type Root } from 'react-dom/client';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { CommandCopy } from './command-copy';
+import { DynamicIsland } from './dynamic-island';
+import { NumberRoll } from './number-roll';
+import { StreamText } from './stream-text';
+import { SwipeRow } from './swipe-row';
+import { ThemeFlip } from './theme-flip';
+import { formatDuration, ToolTrace } from './tool-trace';
 import { ConnectButton } from './connect-button';
 import { HoldToConfirm } from './hold-to-confirm';
 import { Presence } from './presence';
@@ -42,6 +48,7 @@ afterEach(() => {
   act(() => root.unmount());
   host.remove();
   vi.useRealTimers();
+  vi.unstubAllGlobals();
 });
 
 describe('ConnectButton', () => {
@@ -128,5 +135,101 @@ describe('CommandCopy', () => {
     await act(async () => copy.click());
     expect(writeText).toHaveBeenCalledWith('npm install x');
     expect(host.querySelector('button[aria-label="Copied"]')).not.toBeNull();
+  });
+});
+
+describe('NumberRoll', () => {
+  it('reads as the plain number and keys digits by place, so a new column is added, not shifted', () => {
+    render(<NumberRoll value={999} locales="en-US" />);
+    expect(host.textContent).toContain('999');
+    render(<NumberRoll value={1000} locales="en-US" />);
+    const spoken = host.querySelector('span > span:first-child')!;
+    expect(spoken.textContent).toBe('1,000');
+  });
+});
+
+describe('DynamicIsland', () => {
+  it('shows the content for its view', () => {
+    vi.stubGlobal(
+      'ResizeObserver',
+      class {
+        observe() {}
+        disconnect() {}
+      },
+    );
+    render(
+      <DynamicIsland view="timer">
+        <span>4:59</span>
+      </DynamicIsland>,
+    );
+    expect(host.textContent).toContain('4:59');
+  });
+});
+
+describe('StreamText', () => {
+  it('appends what arrives without remounting the words already there', () => {
+    render(<StreamText text="Hello" streaming />);
+    const first = host.querySelector('[data-delay]');
+    render(<StreamText text="Hello there" streaming />);
+    expect(host.querySelector('[data-delay]')).toBe(first);
+    expect(host.textContent).toBe('Hello there');
+    expect(host.querySelector('[aria-busy="true"]')).not.toBeNull();
+  });
+
+  it('starts over when the text is not a continuation', () => {
+    render(<StreamText text="Hello there" />);
+    render(<StreamText text="Bye" />);
+    expect(host.textContent).toBe('Bye');
+  });
+});
+
+describe('ToolTrace', () => {
+  it('names the running step while it works and summarises once done', () => {
+    const steps = [
+      { id: 'a', label: 'Read', detail: 'a.ts', status: 'done' as const, duration: 340 },
+      { id: 'b', label: 'Ran', detail: 'tests', status: 'running' as const },
+    ];
+    render(<ToolTrace steps={steps} />);
+    const header = host.querySelector('button')!;
+    expect(header.getAttribute('aria-expanded')).toBe('false');
+    expect(header.textContent).toContain('Ran');
+    render(<ToolTrace steps={steps.map((step) => ({ ...step, status: 'done' as const }))} />);
+    expect(host.querySelector('button')!.textContent).toContain('Used 2 tools');
+    act(() => host.querySelector('button')!.click());
+    expect(host.querySelectorAll('li')).toHaveLength(2);
+  });
+
+  it('writes durations short', () => {
+    expect(formatDuration(340)).toBe('340ms');
+    expect(formatDuration(1240)).toBe('1.2s');
+    expect(formatDuration(12_400)).toBe('12s');
+  });
+});
+
+describe('SwipeRow', () => {
+  it('offers each action as a button on hover, for mice and keyboards', () => {
+    const onAction = vi.fn();
+    render(
+      <SwipeRow end={{ label: 'Archive', tone: '#8b6cff', onAction, dismiss: false }}>
+        <span>Row</span>
+      </SwipeRow>,
+    );
+    const front = host.querySelector<HTMLElement>('[tabindex="0"]')!;
+    act(() => front.focus());
+    const archive = host.querySelector<HTMLButtonElement>('button[aria-label="Archive"]')!;
+    expect(archive).not.toBeNull();
+    act(() => archive.click());
+    expect(onAction).toHaveBeenCalledOnce();
+  });
+});
+
+describe('ThemeFlip', () => {
+  it('names the theme it switches to and switches without view transitions', () => {
+    const onThemeChange = vi.fn();
+    render(<ThemeFlip theme="dark" onThemeChange={onThemeChange} />);
+    const button = host.querySelector('button')!;
+    expect(button.getAttribute('aria-label')).toBe('Switch to light theme');
+    act(() => button.click());
+    expect(onThemeChange).toHaveBeenCalledWith('light');
   });
 });

@@ -118,6 +118,12 @@ export type RouteIcon =
   | 'presence'
   | 'holdtoconfirm'
   | 'commandcopy'
+  | 'streamtext'
+  | 'tooltrace'
+  | 'numberroll'
+  | 'swiperow'
+  | 'themeflip'
+  | 'dynamicisland'
   | 'starfield'
   | 'topography'
   | 'matrix'
@@ -1677,6 +1683,28 @@ export const appRoutes = [
     badge: 'New',
   },
   {
+    id: 'component-stream-text',
+    group: 'Components',
+    label: 'Stream text',
+    title: 'Stream text',
+    href: '/components/stream-text',
+    pathname: '/components/stream-text',
+    icon: 'streamtext',
+    navigation: true,
+    badge: 'New',
+  },
+  {
+    id: 'component-tool-trace',
+    group: 'Components',
+    label: 'Tool trace',
+    title: 'Tool trace',
+    href: '/components/tool-trace',
+    pathname: '/components/tool-trace',
+    icon: 'tooltrace',
+    navigation: true,
+    badge: 'New',
+  },
+  {
     id: 'component-status-pill',
     group: 'Components',
     label: 'Status pill',
@@ -1699,6 +1727,17 @@ export const appRoutes = [
     badge: 'New',
   },
   {
+    id: 'component-number-roll',
+    group: 'Components',
+    label: 'Number roll',
+    title: 'Number roll',
+    href: '/components/number-roll',
+    pathname: '/components/number-roll',
+    icon: 'numberroll',
+    navigation: true,
+    badge: 'New',
+  },
+  {
     id: 'component-hold-to-confirm',
     group: 'Components',
     label: 'Hold to confirm',
@@ -1717,6 +1756,39 @@ export const appRoutes = [
     href: '/components/command-copy',
     pathname: '/components/command-copy',
     icon: 'commandcopy',
+    navigation: true,
+    badge: 'New',
+  },
+  {
+    id: 'component-swipe-row',
+    group: 'Components',
+    label: 'Swipe row',
+    title: 'Swipe row',
+    href: '/components/swipe-row',
+    pathname: '/components/swipe-row',
+    icon: 'swiperow',
+    navigation: true,
+    badge: 'New',
+  },
+  {
+    id: 'component-theme-flip',
+    group: 'Components',
+    label: 'Theme flip',
+    title: 'Theme flip',
+    href: '/components/theme-flip',
+    pathname: '/components/theme-flip',
+    icon: 'themeflip',
+    navigation: true,
+    badge: 'New',
+  },
+  {
+    id: 'component-dynamic-island',
+    group: 'Components',
+    label: 'Dynamic island',
+    title: 'Dynamic island',
+    href: '/components/dynamic-island',
+    pathname: '/components/dynamic-island',
+    icon: 'dynamicisland',
     navigation: true,
     badge: 'New',
   },
