@@ -12,7 +12,7 @@ import { worldDocs } from './ascii-docs/worlds';
  * prop is also a control in the page's Customize panel, so its default here must match the
  * package's default.
  */
-/** A page's id: its last path segment under `/components` or `/ascii`. */
+/** A page's id: its last path segment under `/ascii`. */
 export type AsciiSceneId = string;
 
 interface ControlBase {
@@ -38,12 +38,13 @@ export type AsciiControl = ControlBase &
 export type AsciiValue = number | boolean | string | readonly string[];
 
 /**
- * The shelves the pages sit on in the rail, in order. Interface and Text are UI components and
- * live under Components; the rest are ASCII scenes. Both install as source from the registry.
+ * The shelves the pages sit on in the ASCII rail, in order. Everything drawn in type is ASCII,
+ * interface pieces and text effects included; all of it installs as source from the registry.
  */
-export const componentShelves = ['Interface', 'Text'] as const;
 export const asciiShelves = [
   'Lettering',
+  'Text',
+  'Interface',
   'Backgrounds',
   'Media',
   'Data',
@@ -53,10 +54,7 @@ export const asciiShelves = [
   'Nature',
   'Science',
 ] as const;
-export type AsciiShelf = (typeof componentShelves)[number] | (typeof asciiShelves)[number];
-
-/** The two sections these pages live in. */
-export type SceneSection = 'components' | 'ascii';
+export type AsciiShelf = (typeof asciiShelves)[number];
 
 export interface AsciiSceneDoc {
   id: AsciiSceneId;
@@ -703,16 +701,8 @@ export const asciiScenes: readonly AsciiSceneDoc[] = [
 
 export const asciiScene = (id: string) => asciiScenes.find((scene) => scene.id === id);
 
-/** Which section a page lives in: Components for interface pieces and text effects, else ASCII. */
-export const sectionOf = (scene: AsciiSceneDoc): SceneSection =>
-  (componentShelves as readonly string[]).includes(scene.shelf) ? 'components' : 'ascii';
-
-/** The pages in one section, in rail order. */
-export const scenesIn = (section: SceneSection) =>
-  asciiScenes.filter((scene) => sectionOf(scene) === section);
-
-/** A page's address: `/components/<id>` or `/ascii/<id>`. */
-export const scenePath = (scene: AsciiSceneDoc) => `/${sectionOf(scene)}/${scene.id}`;
+/** A page's address. */
+export const scenePath = (scene: AsciiSceneDoc) => `/ascii/${scene.id}`;
 
 /** How a control's type reads in the props table. */
 export function typeOf(control: AsciiControl): string {

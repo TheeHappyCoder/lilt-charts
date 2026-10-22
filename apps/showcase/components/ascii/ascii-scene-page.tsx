@@ -7,7 +7,7 @@ import { canvasControls, literal, typeOf, type AsciiSceneDoc } from '@/lib/ascii
 import { registryInstall } from '@/lib/registry';
 
 /**
- * One Components or ASCII page: the playground, how to add its source, how to use it, then its
+ * One ASCII page: the playground, how to add its source, how to use it, then its
  * props.
  */
 export function AsciiScenePage({ scene }: { scene: AsciiSceneDoc }) {

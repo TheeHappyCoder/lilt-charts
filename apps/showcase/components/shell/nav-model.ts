@@ -100,7 +100,13 @@ import CloudIcon from '@hugeicons/core-free-icons/CloudIcon';
 import LogsIcon from '@hugeicons/core-free-icons/LogsIcon';
 import StatusIcon from '@hugeicons/core-free-icons/StatusIcon';
 import ScrollVerticalIcon from '@hugeicons/core-free-icons/ScrollVerticalIcon';
-import { asciiScene, asciiShelves, componentShelves } from '@/lib/ascii-scenes';
+import AiMagicIcon from '@hugeicons/core-free-icons/AiMagicIcon';
+import CheckmarkCircle02Icon from '@hugeicons/core-free-icons/CheckmarkCircle02Icon';
+import UserGroupIcon from '@hugeicons/core-free-icons/UserGroupIcon';
+import Delete02Icon from '@hugeicons/core-free-icons/Delete02Icon';
+import CommandLineIcon from '@hugeicons/core-free-icons/CommandLineIcon';
+import { asciiScene, asciiShelves } from '@/lib/ascii-scenes';
+import { componentDoc, componentShelves } from '@/lib/component-docs';
 import { appRoutes, type AppRoute, type RouteGroup, type RouteIcon } from '@/lib/routes';
 
 /**
@@ -214,6 +220,12 @@ export const icons: Record<RouteIcon, IconSvgElement> = {
   topography: MountainIcon,
   matrix: BinaryCodeIcon,
   dotgrid: GridIcon,
+  connectbutton: AiMagicIcon,
+  thinking: Loading03Icon,
+  statuspill: CheckmarkCircle02Icon,
+  presence: UserGroupIcon,
+  holdtoconfirm: Delete02Icon,
+  commandcopy: CommandLineIcon,
   scrollmeter: ScrollVerticalIcon,
   statusrail: StatusIcon,
   livelog: LogsIcon,
@@ -292,11 +304,14 @@ export const referenceRoutes = topIn('Reference');
 
 /**
  * A registry line's rail: its pages on their shelves, leaving out empty shelves. A page's shelf
- * comes from the ASCII docs.
+ * comes from its docs.
  */
-function shelvesOf(group: 'Components' | 'Ascii', shelves: readonly string[]): TileGroup[] {
+function shelvesOf(
+  group: 'Components' | 'Ascii',
+  shelves: readonly string[],
+  shelfOf: (id: string) => string | undefined,
+): TileGroup[] {
   const prefix = group === 'Components' ? 'component-' : 'ascii-';
-  const shelfOf = (id: string) => asciiScene(id)?.shelf;
   return shelves
     .map((shelf) => ({
       key: `${group.toLowerCase()}-${shelf}`,
@@ -318,8 +333,9 @@ export const groupsByTab: Record<Tab, readonly TileGroup[]> = {
     { key: 'features', heading: 'Features', routes: featureRoutes },
     { key: 'reference', heading: 'Reference', routes: referenceRoutes },
   ],
-  components: shelvesOf('Components', componentShelves),
-  ascii: shelvesOf('Ascii', asciiShelves),
+  // Anything drawn in type is ASCII; Components is for pieces that are not.
+  components: shelvesOf('Components', componentShelves, (id) => componentDoc(id)?.shelf),
+  ascii: shelvesOf('Ascii', asciiShelves, (id) => asciiScene(id)?.shelf),
 };
 
 /** Where each product opens: the chart gallery, or its first page. */

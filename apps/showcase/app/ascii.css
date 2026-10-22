@@ -22,6 +22,12 @@
   place-items: center;
 }
 
+/* A Component: interface type, and a stage sized for a piece rather than a scene. */
+.lilt-ascii-stage__canvas--piece {
+  height: clamp(300px, 40vh, 420px);
+  font-family: var(--font-sans), system-ui, sans-serif;
+}
+
 .lilt-ascii-stage__touch {
   padding: 10px 16px 12px;
   font-size: 12.5px;

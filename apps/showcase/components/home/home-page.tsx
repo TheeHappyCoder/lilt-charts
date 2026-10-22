@@ -50,7 +50,9 @@ const footer = [
     links: [
       { label: 'All scenes', href: groupsByTab.ascii[0]!.routes[0]!.href },
       ...groupsByTab.ascii
-        .filter((group) => ['Backgrounds', 'Media', 'Data'].includes(group.heading!))
+        .filter((group) =>
+          ['Text', 'Interface', 'Backgrounds', 'Media', 'Data'].includes(group.heading!),
+        )
         .map(shelf),
     ],
   },
@@ -110,7 +112,12 @@ function Section({
 export async function HomePage() {
   const stars = await getGitHubStars();
   const families = Object.keys(chartDocs).length;
-  const components = groupsByTab.components.flatMap((group) => group.routes).length;
+  // Interface pieces and text effects are drawn in type, so they live in ASCII.
+  const pieces = groupsByTab.ascii.filter((group) =>
+    ['Interface', 'Text'].includes(group.heading!),
+  );
+  const piecesHref = pieces[0]!.routes[0]!.href;
+  const pieceCount = pieces.flatMap((group) => group.routes).length;
   const scenes = groupsByTab.ascii.flatMap((group) => group.routes).length;
   return (
     <ChartSettingsProvider>
@@ -136,7 +143,7 @@ export async function HomePage() {
 
             <Section
               index="02"
-              eyebrow="Components"
+              eyebrow="ASCII interface"
               id="interface-title"
               title={
                 <>
@@ -144,7 +151,7 @@ export async function HomePage() {
                 </>
               }
               aside="Loaders, counters, glyph borders, a terminal that types itself, and the curtain every page on this site changes behind. Add one with the shadcn CLI and the source is yours."
-              more={{ href: '/components', label: `Explore all ${components} components` }}
+              more={{ href: piecesHref, label: `Explore all ${pieceCount} interface pieces` }}
             >
               <HomeInterface />
             </Section>

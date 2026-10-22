@@ -3,6 +3,7 @@
 import RotateLeft01Icon from '@hugeicons/core-free-icons/RotateLeft01Icon';
 import { HugeiconsIcon } from '@hugeicons/react';
 import * as ascii from '@lilt-ui/registry';
+import * as ui from '@lilt-ui/registry/ui';
 import { useMemo, useState, type ComponentType } from 'react';
 import { GuideCode } from '@/components/docs/guide-code';
 import {
@@ -23,14 +24,16 @@ import {
   type AsciiSceneId,
   type AsciiValue,
 } from '@/lib/ascii-scenes';
+import { componentDoc } from '@/lib/component-docs';
 
 // Every component is found by its name in the registry. They take loosely typed props here
 // because the panel builds them from data.
-const components = ascii as unknown as Record<string, ComponentType<Record<string, unknown>>>;
+type Registry = Record<string, ComponentType<Record<string, unknown>>>;
+const lines = { ascii: ascii as unknown as Registry, components: ui as unknown as Registry };
 
 const backdrops = {
-  night: { background: '#07070a', color: '#e8e8ee' },
-  paper: { background: '#f5f3ee', color: '#1d1c1a' },
+  night: { background: '#07070a', color: '#e8e8ee', colorScheme: 'dark' },
+  paper: { background: '#f5f3ee', color: '#1d1c1a', colorScheme: 'light' },
 } as const;
 
 type Backdrop = keyof typeof backdrops;
@@ -38,20 +41,36 @@ type Backdrop = keyof typeof backdrops;
 const same = (a: AsciiValue, b: AsciiValue) => JSON.stringify(a) === JSON.stringify(b);
 
 /**
- * A scene on its stage, the Customize panel beneath it, and the source for what you see. Every
- * control is a prop; the code lists the ones you changed, imported from where the shadcn CLI puts
- * the component (`from`).
+ * A scene or component on its stage, the Customize panel beneath it, and the source for what you
+ * see. Every control is a prop; the code lists the ones you changed, imported from where the
+ * shadcn CLI puts the component (`from`).
  */
-export function AsciiPlayground({ id, from }: { id: AsciiSceneId; from: string }) {
-  const scene = asciiScene(id)!;
+export function AsciiPlayground({
+  id,
+  from,
+  line = 'ascii',
+}: {
+  id: AsciiSceneId;
+  from: string;
+  line?: keyof typeof lines;
+}) {
+  // Components are real DOM, centred on the stage; scenes say for themselves.
+  const scene = useMemo(
+    () =>
+      line === 'ascii'
+        ? { ...asciiScene(id)!, surfaceProp: undefined }
+        : { ...componentDoc(id)!, kind: 'dom' as const, layout: 'center' as const },
+    [id, line],
+  );
+  const canvas = scene.kind !== 'dom';
   const controls = useMemo(
-    () => [...scene.controls, ...(scene.kind === 'dom' ? [] : canvasControls)],
-    [scene],
+    () => [...scene.controls, ...(canvas ? canvasControls : [])],
+    [scene, canvas],
   );
   const defaults = useMemo(() => defaultsOf(controls), [controls]);
   const [values, setValues] = useState(defaults);
   const [backdrop, setBackdrop] = useState<Backdrop>('night');
-  const Scene = components[scene.demo ?? scene.component]!;
+  const Scene = lines[line][scene.demo ?? scene.component]!;
   const colours = backdrops[backdrop];
 
   const changed = controls.filter((control) => !same(values[control.name]!, control.defaultValue));
@@ -83,7 +102,13 @@ export function AsciiPlayground({ id, from }: { id: AsciiSceneId; from: string }
       : `import { ${scene.component} } from '${from}';
 
 ${filled}`
-    : `import { ${scene.component} } from '${from}';
+    : !canvas
+      ? `import { ${scene.component} } from '${from}';
+
+export function Example() {
+  return ${element};
+}`
+      : `import { ${scene.component} } from '${from}';
 
 export function Hero() {
   return (
@@ -97,14 +122,20 @@ export function Hero() {
     <div className="lilt-ascii-playground">
       <figure className="lilt-ascii-stage" style={{ background: colours.background }}>
         <div
-          className={
-            scene.layout === 'center'
-              ? 'lilt-ascii-stage__canvas lilt-ascii-stage__canvas--center'
-              : 'lilt-ascii-stage__canvas'
-          }
-          style={{ ...scene.stage, color: colours.color }}
+          className={[
+            'lilt-ascii-stage__canvas',
+            scene.layout === 'center' ? 'lilt-ascii-stage__canvas--center' : '',
+            line === 'components' ? 'lilt-ascii-stage__canvas--piece' : '',
+          ]
+            .filter(Boolean)
+            .join(' ')}
+          style={{ ...scene.stage, color: colours.color, colorScheme: colours.colorScheme }}
         >
-          <Scene {...values} style={{ color: colours.color }} />
+          <Scene
+            {...values}
+            {...(scene.surfaceProp ? { [scene.surfaceProp]: colours.background } : {})}
+            style={{ color: colours.color }}
+          />
         </div>
         <figcaption
           className="lilt-ascii-stage__touch"
@@ -147,7 +178,7 @@ export function Hero() {
         </FieldGrid>
       </section>
 
-      <GuideCode code={code} title="hero.tsx" />
+      <GuideCode code={code} title={canvas ? 'hero.tsx' : 'example.tsx'} />
     </div>
   );
 }

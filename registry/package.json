@@ -7,18 +7,23 @@
   "type": "module",
   "exports": {
     ".": "./ascii/index.ts",
+    "./ui": "./ui/index.ts",
     "./items": "./items.ts"
   },
   "sideEffects": false,
   "scripts": {
     "build": "node build.ts",
     "typecheck": "tsc --noEmit",
-    "lint": "eslint ascii items.ts build.ts",
+    "lint": "eslint ascii ui items.ts build.ts",
     "test": "vitest run",
-    "format:check": "prettier --check ascii items.ts build.ts vitest.config.ts tsconfig.json"
+    "format:check": "prettier --check ascii ui items.ts build.ts vitest.config.ts tsconfig.json"
   },
   "peerDependencies": {
     "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react-dom": "^19.0.0",
+    "motion": "^13.4.0"
+  },
+  "devDependencies": {
+    "motion": "13.4.0"
   }
 }

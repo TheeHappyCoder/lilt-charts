@@ -5,7 +5,7 @@ import { join, posix } from 'node:path';
  * The registry: every Component and ASCII scene a reader can add with the shadcn CLI, and the
  * shared pieces they stand on. An item names only its entry file; its other files are found by
  * following relative imports, and any file that belongs to a shared item becomes a dependency on
- * that item instead. Files keep their place under `components/lilt/` (`ascii/…`), so the relative imports between them work unchanged
+ * that item instead. Files keep their place under `components/lilt/` (`ascii/…` or `ui/…`), so the relative imports between them work unchanged
  * in the reader's project. Packages a file imports, such as `motion`, become the item's
  * npm dependencies.
  */
@@ -120,17 +120,20 @@ const page = (
   entry: string,
 ): PageSpec => ({ name, section, component, entry });
 
-/** One item per ASCII docs page, in the order the rails list them. */
+/**
+ * One item per ASCII docs page, in the order the rails list them. Anything drawn in type is ASCII,
+ * interface pieces and text effects included; Components is for pieces that are not.
+ */
 const asciiPages: readonly PageSpec[] = [
-  page('components', 'loader', 'AsciiLoader', 'interface/ascii-loader.tsx'),
-  page('components', 'frame', 'AsciiFrame', 'interface/ascii-frame.tsx'),
-  page('components', 'transition', 'AsciiTransition', 'interface/ascii-transition.tsx'),
-  page('components', 'curtain', 'AsciiCurtain', 'interface/ascii-curtain.tsx'),
-  page('components', 'cursor-trail', 'AsciiCursorTrail', 'interface/ascii-cursor-trail.tsx'),
-  page('components', 'scramble', 'AsciiScramble', 'text/ascii-scramble.tsx'),
-  page('components', 'terminal', 'AsciiTerminal', 'text/ascii-terminal.tsx'),
-  page('components', 'glitch', 'AsciiGlitch', 'text/ascii-glitch.tsx'),
-  page('components', 'counter', 'AsciiCounter', 'live/counter.tsx'),
+  page('ascii', 'loader', 'AsciiLoader', 'interface/ascii-loader.tsx'),
+  page('ascii', 'frame', 'AsciiFrame', 'interface/ascii-frame.tsx'),
+  page('ascii', 'transition', 'AsciiTransition', 'interface/ascii-transition.tsx'),
+  page('ascii', 'curtain', 'AsciiCurtain', 'interface/ascii-curtain.tsx'),
+  page('ascii', 'cursor-trail', 'AsciiCursorTrail', 'interface/ascii-cursor-trail.tsx'),
+  page('ascii', 'scramble', 'AsciiScramble', 'text/ascii-scramble.tsx'),
+  page('ascii', 'terminal', 'AsciiTerminal', 'text/ascii-terminal.tsx'),
+  page('ascii', 'glitch', 'AsciiGlitch', 'text/ascii-glitch.tsx'),
+  page('ascii', 'counter', 'AsciiCounter', 'live/counter.tsx'),
   page('ascii', 'logo', 'AsciiLogo', 'text/ascii-logo.tsx'),
   page('ascii', 'dot-grid', 'AsciiDotGrid', 'backgrounds/ascii-dot-grid.tsx'),
   page('ascii', 'matrix', 'AsciiMatrix', 'backgrounds/ascii-matrix.tsx'),
@@ -172,18 +175,31 @@ const asciiPages: readonly PageSpec[] = [
   page('ascii', 'helix', 'AsciiHelix', 'worlds/ascii-helix.tsx'),
   page('ascii', 'visualizer', 'AsciiVisualizer', 'worlds/ascii-visualizer.tsx'),
   page('ascii', 'flag', 'AsciiFlag', 'worlds/ascii-flag.tsx'),
-  page('components', 'split-flap', 'AsciiSplitFlap', 'text/ascii-split-flap.tsx'),
-  page('components', 'redact', 'AsciiRedact', 'text/ascii-redact.tsx'),
-  page('components', 'wave', 'AsciiWave', 'text/ascii-wave.tsx'),
-  page('components', 'spotlight', 'AsciiSpotlight', 'text/ascii-spotlight.tsx'),
-  page('components', 'particle-word', 'AsciiParticleWord', 'text/ascii-particle-word.tsx'),
-  page('components', 'empty-state', 'AsciiEmptyState', 'interface/ascii-empty-state.tsx'),
-  page('components', 'countdown', 'AsciiCountdown', 'interface/ascii-countdown.tsx'),
-  page('components', 'dissolve', 'AsciiDissolve', 'interface/ascii-dissolve.tsx'),
-  page('components', 'logo-cloud', 'AsciiLogoCloud', 'interface/ascii-logo-cloud.tsx'),
-  page('components', 'log', 'AsciiLog', 'interface/ascii-log.tsx'),
-  page('components', 'status', 'AsciiStatus', 'interface/ascii-status.tsx'),
-  page('components', 'scroll-meter', 'AsciiScrollMeter', 'interface/ascii-scroll-meter.tsx'),
+  page('ascii', 'split-flap', 'AsciiSplitFlap', 'text/ascii-split-flap.tsx'),
+  page('ascii', 'redact', 'AsciiRedact', 'text/ascii-redact.tsx'),
+  page('ascii', 'wave', 'AsciiWave', 'text/ascii-wave.tsx'),
+  page('ascii', 'spotlight', 'AsciiSpotlight', 'text/ascii-spotlight.tsx'),
+  page('ascii', 'particle-word', 'AsciiParticleWord', 'text/ascii-particle-word.tsx'),
+  page('ascii', 'empty-state', 'AsciiEmptyState', 'interface/ascii-empty-state.tsx'),
+  page('ascii', 'countdown', 'AsciiCountdown', 'interface/ascii-countdown.tsx'),
+  page('ascii', 'dissolve', 'AsciiDissolve', 'interface/ascii-dissolve.tsx'),
+  page('ascii', 'logo-cloud', 'AsciiLogoCloud', 'interface/ascii-logo-cloud.tsx'),
+  page('ascii', 'log', 'AsciiLog', 'interface/ascii-log.tsx'),
+  page('ascii', 'status', 'AsciiStatus', 'interface/ascii-status.tsx'),
+  page('ascii', 'scroll-meter', 'AsciiScrollMeter', 'interface/ascii-scroll-meter.tsx'),
+];
+
+/**
+ * One item per Components page: interface pieces that are not drawn in type. They live under
+ * `ui/` and land in `components/lilt/ui/`.
+ */
+const uiPages: readonly PageSpec[] = [
+  page('components', 'connect-button', 'ConnectButton', 'connect-button.tsx'),
+  page('components', 'thinking', 'Thinking', 'thinking.tsx'),
+  page('components', 'status-pill', 'StatusPill', 'status-pill.tsx'),
+  page('components', 'presence', 'Presence', 'presence.tsx'),
+  page('components', 'hold-to-confirm', 'HoldToConfirm', 'hold-to-confirm.tsx'),
+  page('components', 'command-copy', 'CommandCopy', 'command-copy.tsx'),
 ];
 
 const under = (folder: string) => (path: string) => `${folder}/${path}`;
@@ -192,6 +208,7 @@ const sharedItems: readonly SharedSpec[] = [
 ];
 const pageItems: readonly PageSpec[] = [
   ...asciiPages.map((item) => ({ ...item, entry: under('ascii')(item.entry) })),
+  ...uiPages.map((item) => ({ ...item, entry: under('ui')(item.entry) })),
 ];
 
 /** Where every file lands in the reader's project, under their components alias. */

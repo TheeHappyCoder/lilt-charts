@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { AsciiScenePage } from '@/components/ascii/ascii-scene-page';
-import { asciiScene, scenesIn, sectionOf } from '@/lib/ascii-scenes';
+import { asciiScene, asciiScenes } from '@/lib/ascii-scenes';
 
 interface Props {
   params: Promise<{ scene: string }>;
@@ -10,13 +10,10 @@ interface Props {
 export const dynamicParams = false;
 
 export function generateStaticParams() {
-  return scenesIn('ascii').map((scene) => ({ scene: scene.id }));
+  return asciiScenes.map((scene) => ({ scene: scene.id }));
 }
 
-const sceneFor = async (params: Props['params']) => {
-  const scene = asciiScene((await params).scene);
-  return scene && sectionOf(scene) === 'ascii' ? scene : undefined;
-};
+const sceneFor = async (params: Props['params']) => asciiScene((await params).scene);
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const scene = await sceneFor(params);

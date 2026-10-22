@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import { AsciiScenePage } from '@/components/ascii/ascii-scene-page';
-import { asciiScene, scenesIn, sectionOf } from '@/lib/ascii-scenes';
+import { ComponentPage } from '@/components/ascii/component-page';
+import { componentDoc, componentDocs } from '@/lib/component-docs';
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -10,21 +10,16 @@ interface Props {
 export const dynamicParams = false;
 
 export function generateStaticParams() {
-  return scenesIn('components').map((page) => ({ slug: page.id }));
+  return componentDocs.map((doc) => ({ slug: doc.id }));
 }
 
-const sceneFor = async (params: Props['params']) => {
-  const scene = asciiScene((await params).slug);
-  return scene && sectionOf(scene) === 'components' ? scene : undefined;
-};
-
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const scene = await sceneFor(params);
-  return scene ? { title: `${scene.title} · Components`, description: scene.lede } : {};
+  const doc = componentDoc((await params).slug);
+  return doc ? { title: `${doc.title} · Components`, description: doc.lede } : {};
 }
 
 export default async function ComponentRoute({ params }: Props) {
-  const scene = await sceneFor(params);
-  if (!scene) notFound();
-  return <AsciiScenePage scene={scene} />;
+  const doc = componentDoc((await params).slug);
+  if (!doc) notFound();
+  return <ComponentPage doc={doc} />;
 }

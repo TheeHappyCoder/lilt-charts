@@ -42,7 +42,7 @@ export function HomeInterface() {
     <div className="lilt-bento" data-layout="interface">
       <HomeTile
         area="terminal"
-        href="/components/terminal"
+        href="/ascii/terminal"
         name="Terminal"
         hint="Types itself"
         center
@@ -51,7 +51,7 @@ export function HomeInterface() {
       </HomeTile>
       <HomeTile
         area="transition"
-        href="/components/transition"
+        href="/ascii/transition"
         name="Transition"
         hint="Click the card, or follow any link"
         center
@@ -61,7 +61,7 @@ export function HomeInterface() {
       </HomeTile>
       <HomeTile
         area="loader"
-        href="/components/loader"
+        href="/ascii/loader"
         name="Loader"
         hint="Four ways to wait"
         center
@@ -73,12 +73,12 @@ export function HomeInterface() {
           <AsciiLoader variant="scramble" label="Decrypting" />
         </span>
       </HomeTile>
-      <HomeTile area="glitch" href="/components/glitch" name="Glitch" hint="Hover it" center>
+      <HomeTile area="glitch" href="/ascii/glitch" name="Glitch" hint="Hover it" center>
         <AsciiGlitch text="404" intensity={0.6} className="lilt-tile__huge" />
       </HomeTile>
       <HomeTile
         area="trail"
-        href="/components/cursor-trail"
+        href="/ascii/cursor-trail"
         name="Cursor trail"
         hint="Move through it"
       >
@@ -86,7 +86,7 @@ export function HomeInterface() {
       </HomeTile>
       <HomeTile
         area="scramble"
-        href="/components/scramble"
+        href="/ascii/scramble"
         name="Scramble"
         hint="Hover to decode"
         center
@@ -95,7 +95,7 @@ export function HomeInterface() {
       </HomeTile>
       <HomeTile
         area="counter"
-        href="/components/counter"
+        href="/ascii/counter"
         name="Counter & frame"
         hint="Click to add readers"
         center
