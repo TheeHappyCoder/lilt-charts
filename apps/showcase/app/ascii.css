@@ -1,3 +1,13 @@
+/* The stage's own paper and ink, following the site's theme: warm paper by day, night after dark. */
+:root {
+  --lilt-stage-paper: #f5f3ee;
+  --lilt-stage-ink: #1d1c1a;
+}
+.dark {
+  --lilt-stage-paper: #07070a;
+  --lilt-stage-ink: #e8e8ee;
+}
+
 /* ASCII scene pages: a dark stage for the canvas, and the options table. */
 .lilt-ascii-stage {
   display: grid;

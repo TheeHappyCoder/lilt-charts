@@ -79,6 +79,11 @@ export interface AsciiSceneDoc {
   /** `fill` (the default) fills the stage; `center` sits in the middle of it, at its own size. */
   layout?: 'fill' | 'center';
   /**
+   * The stage follows the site's theme. A scene that only makes sense after dark, such as a sky
+   * or deep space, sets `night` to keep a night stage in light mode too.
+   */
+  backdrop?: 'night';
+  /**
    * The code shown under the panel, with `{element}` where the component goes, or `{props}` after
    * a tag the template writes itself (for components that wrap children), and `{from}` for the
    * component's import path. A template that starts with its own import keeps it. Without one, the component fills a 560px hero section.
@@ -311,6 +316,7 @@ export const asciiScenes: readonly AsciiSceneDoc[] = [
   },
   {
     id: 'planet',
+    backdrop: 'night',
     shelf: 'Space',
     title: 'Planet',
     component: 'AsciiPlanet',
@@ -362,6 +368,7 @@ export const asciiScenes: readonly AsciiSceneDoc[] = [
   },
   {
     id: 'ember',
+    backdrop: 'night',
     shelf: 'Nature',
     title: 'Campfire',
     component: 'AsciiEmber',
@@ -547,6 +554,7 @@ export const asciiScenes: readonly AsciiSceneDoc[] = [
   },
   {
     id: 'aurora',
+    backdrop: 'night',
     shelf: 'Light',
     title: 'Aurora',
     component: 'AsciiAurora',
@@ -657,6 +665,7 @@ export const asciiScenes: readonly AsciiSceneDoc[] = [
   },
   {
     id: 'galaxy',
+    backdrop: 'night',
     shelf: 'Space',
     title: 'Galaxy',
     component: 'AsciiGalaxy',

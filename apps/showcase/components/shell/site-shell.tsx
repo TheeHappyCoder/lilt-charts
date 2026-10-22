@@ -3,6 +3,7 @@
 import { Dialog as DialogPrimitive } from '@base-ui/react/dialog';
 import { HugeiconsIcon as Icon } from '@hugeicons/react';
 import Cancel01Icon from '@hugeicons/core-free-icons/Cancel01Icon';
+import { restoreBurntCursor } from '@lilt-ui/registry';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useCallback, useEffect, useState } from 'react';
@@ -47,6 +48,8 @@ export function SiteShell({
   useEffect(() => {
     if (document.activeElement === document.body) pageScroller()?.focus({ preventScroll: true });
   }, []);
+  // A pointer burnt in the home page's campfire stays burnt on every page for the session.
+  useEffect(() => restoreBurntCursor(), []);
 
   return (
     <DocsSearchProvider onOpen={closeMobile}>

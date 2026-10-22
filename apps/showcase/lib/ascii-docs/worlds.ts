@@ -4,6 +4,7 @@ import type { AsciiSceneDoc } from '../ascii-scenes';
 export const worldDocs: readonly AsciiSceneDoc[] = [
   {
     id: 'black-hole',
+    backdrop: 'night',
     shelf: 'Space',
     title: 'Black hole',
     component: 'AsciiBlackHole',
@@ -44,6 +45,7 @@ export const worldDocs: readonly AsciiSceneDoc[] = [
   },
   {
     id: 'wormhole',
+    backdrop: 'night',
     shelf: 'Space',
     title: 'Wormhole',
     component: 'AsciiWormhole',
@@ -83,6 +85,7 @@ export const worldDocs: readonly AsciiSceneDoc[] = [
   },
   {
     id: 'orrery',
+    backdrop: 'night',
     shelf: 'Space',
     title: 'Orrery',
     component: 'AsciiOrrery',
@@ -128,6 +131,7 @@ export const worldDocs: readonly AsciiSceneDoc[] = [
   },
   {
     id: 'night-city',
+    backdrop: 'night',
     shelf: 'Light',
     title: 'Night city',
     component: 'AsciiNightCity',
@@ -219,6 +223,7 @@ export const worldDocs: readonly AsciiSceneDoc[] = [
   },
   {
     id: 'lighthouse',
+    backdrop: 'night',
     shelf: 'Water',
     title: 'Lighthouse',
     component: 'AsciiLighthouse',
@@ -267,6 +272,7 @@ export const worldDocs: readonly AsciiSceneDoc[] = [
   },
   {
     id: 'window-rain',
+    backdrop: 'night',
     shelf: 'Water',
     title: 'Rain on glass',
     component: 'AsciiWindowRain',
@@ -358,6 +364,7 @@ export const worldDocs: readonly AsciiSceneDoc[] = [
   },
   {
     id: 'fireflies',
+    backdrop: 'night',
     shelf: 'Nature',
     title: 'Fireflies',
     component: 'AsciiFireflies',

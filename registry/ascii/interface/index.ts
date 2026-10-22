@@ -36,4 +36,4 @@ export {
 } from './ascii-status';
 export { AsciiScrollMeter, type AsciiScrollMeterProps } from './ascii-scroll-meter';
 export { AsciiScrollMeterDemo } from './ascii-scroll-meter-demo';
-export { CursorWarmth, type CursorWarmthProps } from './cursor-warmth';
+export { CursorWarmth, restoreBurntCursor, type CursorWarmthProps } from './cursor-warmth';

@@ -89,6 +89,7 @@ export const backgroundDocs: readonly AsciiSceneDoc[] = [
   },
   {
     id: 'matrix',
+    backdrop: 'night',
     shelf: 'Backgrounds',
     title: 'Matrix',
     component: 'AsciiMatrix',
@@ -176,6 +177,7 @@ export const backgroundDocs: readonly AsciiSceneDoc[] = [
   },
   {
     id: 'starfield',
+    backdrop: 'night',
     shelf: 'Backgrounds',
     title: 'Starfield',
     component: 'AsciiStarfield',

@@ -31,12 +31,25 @@ import { componentDoc } from '@/lib/component-docs';
 type Registry = Record<string, ComponentType<Record<string, unknown>>>;
 const lines = { ascii: ascii as unknown as Registry, components: ui as unknown as Registry };
 
+// `theme` takes its colours from the stage's CSS variables, which follow the site's theme, so the
+// stage matches the page without waiting for the client to know which theme is on.
 const backdrops = {
+  theme: {
+    background: 'var(--lilt-stage-paper)',
+    color: 'var(--lilt-stage-ink)',
+    colorScheme: undefined,
+  },
   night: { background: '#07070a', color: '#e8e8ee', colorScheme: 'dark' },
   paper: { background: '#f5f3ee', color: '#1d1c1a', colorScheme: 'light' },
 } as const;
 
 type Backdrop = keyof typeof backdrops;
+
+const backdropOptions = [
+  { value: 'theme', label: 'Theme' },
+  { value: 'night', label: 'Night' },
+  { value: 'paper', label: 'Paper' },
+] as const;
 
 const same = (a: AsciiValue, b: AsciiValue) => JSON.stringify(a) === JSON.stringify(b);
 
@@ -69,12 +82,13 @@ export function AsciiPlayground({
   );
   const defaults = useMemo(() => defaultsOf(controls), [controls]);
   const [values, setValues] = useState(defaults);
-  const [backdrop, setBackdrop] = useState<Backdrop>('night');
+  const startBackdrop: Backdrop = scene.backdrop ?? 'theme';
+  const [backdrop, setBackdrop] = useState<Backdrop>(startBackdrop);
   const Scene = lines[line][scene.demo ?? scene.component]!;
   const colours = backdrops[backdrop];
 
   const changed = controls.filter((control) => !same(values[control.name]!, control.defaultValue));
-  const dirty = changed.length > 0 || backdrop !== 'night';
+  const dirty = changed.length > 0 || backdrop !== startBackdrop;
   const set = (name: string, value: AsciiValue) =>
     setValues((current) => ({ ...current, [name]: value }));
 
@@ -112,7 +126,9 @@ export function Example() {
 
 export function Hero() {
   return (
-    <section style={{ height: 560, background: '${colours.background}', color: '${colours.color}' }}>
+    <section style={{ height: 560${
+      backdrop === 'theme' ? '' : `, background: '${colours.background}', color: '${colours.color}'`
+    } }}>
       ${element}
     </section>
   );
@@ -154,7 +170,7 @@ export function Hero() {
             disabled={!dirty}
             onClick={() => {
               setValues(defaults);
-              setBackdrop('night');
+              setBackdrop(startBackdrop);
             }}
           >
             <HugeiconsIcon icon={RotateLeft01Icon} size={14} strokeWidth={1.8} />
@@ -170,10 +186,11 @@ export function Hero() {
               onChange={(value) => set(control.name, value)}
             />
           ))}
-          <SwitchField
-            label="Paper"
-            checked={backdrop === 'paper'}
-            onChange={(on) => setBackdrop(on ? 'paper' : 'night')}
+          <ChoiceField
+            label="Backdrop"
+            value={backdrop}
+            options={backdropOptions}
+            onChange={setBackdrop}
           />
         </FieldGrid>
       </section>

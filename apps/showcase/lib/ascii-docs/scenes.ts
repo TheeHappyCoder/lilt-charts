@@ -4,6 +4,7 @@ import type { AsciiSceneDoc } from '../ascii-scenes';
 export const sceneDocs: readonly AsciiSceneDoc[] = [
   {
     id: 'fireworks',
+    backdrop: 'night',
     shelf: 'Light',
     title: 'Fireworks',
     component: 'AsciiFireworks',

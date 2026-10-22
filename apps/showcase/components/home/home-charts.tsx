@@ -6,12 +6,25 @@ import { chartDocs } from '@/lib/card-docs/registry';
 import { featureCards } from '@/lib/home-showcase';
 import { HomeTile } from './home-tile';
 
-/** A family's hero card, as the gallery shows it: rising from the room's floor, live. */
-function Chart({ href, width, height }: { href: string; width: number; height: number }) {
+/**
+ * A family's hero card, as the gallery shows it, live. Wide rooms let it rise from the floor;
+ * tall or short ones hold the whole card, centred above the caption, so none ends mid-room.
+ */
+function Chart({
+  href,
+  width,
+  height,
+  fit = 'peek',
+}: {
+  href: string;
+  width: number;
+  height: number;
+  fit?: 'peek' | 'contain';
+}) {
   const doc = chartDocs[href];
   if (!doc) return null;
   const example = featureCards(doc.hero, { height })[0]!;
-  return <FittedPreview example={example} width={width} fit="peek" />;
+  return <FittedPreview example={example} width={width} fit={fit} />;
 }
 
 const builtIn = [
@@ -46,30 +59,33 @@ export function HomeCharts() {
       </HomeTile>
       <HomeTile
         area="radar"
+        floor
         href="/charts/radar"
         name="Radar"
         hint="Strengths at a glance"
         tone="room"
       >
-        <Chart href="/charts/radar" width={400} height={300} />
+        <Chart href="/charts/radar" width={400} height={300} fit="contain" />
       </HomeTile>
       <HomeTile
         area="stat"
+        floor
         href="/charts/stat-cards"
         name="Stat cards"
         hint="A number and its story"
         tone="room"
       >
-        <Chart href="/charts/stat-cards" width={400} height={300} />
+        <Chart href="/charts/stat-cards" width={400} height={300} fit="contain" />
       </HomeTile>
       <HomeTile
         area="candle"
+        floor
         href="/finance/candlestick"
         name="Candlestick"
         hint="Every session's range"
         tone="room"
       >
-        <Chart href="/finance/candlestick" width={600} height={320} />
+        <Chart href="/finance/candlestick" width={600} height={320} fit="contain" />
       </HomeTile>
       <HomeTile
         area="built"

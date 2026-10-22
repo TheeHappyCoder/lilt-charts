@@ -143,21 +143,6 @@ export async function HomePage() {
 
             <Section
               index="02"
-              eyebrow="ASCII interface"
-              id="interface-title"
-              title={
-                <>
-                  Every detail, <em>in type.</em>
-                </>
-              }
-              aside="Loaders, counters, glyph borders, a terminal that types itself, and the curtain every page on this site changes behind. Add one with the shadcn CLI and the source is yours."
-              more={{ href: piecesHref, label: `Explore all ${pieceCount} interface pieces` }}
-            >
-              <HomeInterface />
-            </Section>
-
-            <Section
-              index="03"
               eyebrow="Living scenes"
               id="scenes-title"
               title={
@@ -169,6 +154,21 @@ export async function HomePage() {
               more={{ href: '/ascii/koi', label: `Explore all ${scenes} ASCII scenes` }}
             >
               <HomeScenes />
+            </Section>
+
+            <Section
+              index="03"
+              eyebrow="ASCII interface"
+              id="interface-title"
+              title={
+                <>
+                  Every detail, <em>in type.</em>
+                </>
+              }
+              aside="Loaders, counters, glyph borders, a terminal that types itself, and the curtain every page on this site changes behind. Add one with the shadcn CLI and the source is yours."
+              more={{ href: piecesHref, label: `Explore all ${pieceCount} interface pieces` }}
+            >
+              <HomeInterface />
             </Section>
 
             <Section
