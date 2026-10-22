@@ -3,6 +3,7 @@ import { clamp, hash3 } from '../engine/noise';
 import type { GlyphSurface } from '../engine/surface';
 import type { AsciiGrid, AsciiPointer, AsciiScene } from '../engine/types';
 import { bitmapInk } from './bitmap-font';
+import { createCampfire, FIRE_COLORS } from './campfire';
 
 export interface LogoOptions {
   /** The word, set in type. Default 'lilt'. */
@@ -25,6 +26,13 @@ export interface LogoOptions {
    * The snow still falls the full height. Default 0.
    */
   clearBelow?: number;
+  /**
+   * Campfires on the ground (at `FIRE_GROUND` of the height), each a share of the width from 0 to
+   * 1, such as `[0.2, 0.8]`. Their flames reach toward a hand held near, snow that drifts in
+   * hisses into steam, and a click on a fire stokes it. Pair with `CursorWarmth` for a pointer
+   * that frosts over in the cold and thaws by the fire. Default none.
+   */
+  fires?: readonly number[];
 }
 
 export const DEFAULT_LOGO_COLORS: readonly string[] = ['#7c5cff', '#e5489c'];
@@ -36,6 +44,20 @@ const SHADES = 7;
 const DEEP = HUES * SHADES;
 const INK = DEEP + 1;
 const SNOW = DEEP + 2;
+const FIRE = DEEP + 3;
+/**
+ * Where the fires stand, as a share of the height from the top: the row they burn on. A page that
+ * marks its fires for CursorWarmth can place the marks from this.
+ */
+export const FIRE_GROUND = 0.9;
+/** Seconds a puff of steam lasts after snow falls into a fire. */
+const STEAM_LIFE = 0.9;
+
+interface Steam {
+  x: number;
+  y: number;
+  age: number;
+}
 
 /** Glyphs cut into the faces: clean where the light falls, denser in shadow. */
 const ENGRAVE = '.:-=';
@@ -193,9 +215,15 @@ export function createLogo(options: LogoOptions = {}): AsciiScene {
   const palette = [
     ...buildPalette(options.colors ?? DEFAULT_LOGO_COLORS),
     options.snowColor ?? '#e6ecfb',
+    ...FIRE_COLORS,
   ];
   const snowfall = clamp(options.snow ?? 0, 0, 2);
   const clearBelow = clamp(options.clearBelow ?? 0, 0, 0.7);
+  const firePlaces = (options.fires ?? []).map((x) => clamp(x, 0.02, 0.98));
+  const fires = firePlaces.map((_, k) => createCampfire(k + 1));
+  /** The row each fire burns on; its logs lie on the row below and the ground below that. */
+  let fireBase = 0;
+  const steam: Steam[] = [];
 
   let grid: AsciiGrid = { cols: 0, rows: 0, aspect: 2 };
   let cover: Float32Array = new Float32Array(0);
@@ -547,6 +575,63 @@ export function createLogo(options: LogoOptions = {}): AsciiScene {
     else surface.put(col, row, '.', SNOW, 0.5 + depth);
   }
 
+  /** Sets the fires on the ground line, sized to the sky. */
+  function placeFires() {
+    const { cols, rows } = grid;
+    const width = clamp(Math.round(cols * 0.075), 9, 17);
+    const height = Math.round(width * 1.05);
+    fireBase = Math.round(rows * FIRE_GROUND);
+    fires.forEach((fire, k) => fire.place(firePlaces[k]! * cols, fireBase, width, height));
+  }
+
+  function stepFires(dt: number, pointer: AsciiPointer) {
+    const { aspect } = grid;
+    // Flames reach toward a hand held near them.
+    for (const fire of fires) {
+      const d = Math.hypot(pointer.x - fire.centre.x, (pointer.y - fire.centre.y) * aspect);
+      const near = pointer.active ? clamp(1 - d / (fire.width * 4), 0, 1) : 0;
+      fire.step(dt, clamp((pointer.x - fire.centre.x) / (fire.width * 1.5), -1, 1) * near, aspect);
+    }
+    // Snow that drifts into a fire hisses into steam.
+    for (let n = fx.length - 1; n >= 0; n--) {
+      for (const fire of fires) {
+        if (Math.abs(fx[n]! - fire.centre.x) > fire.width * 0.45) continue;
+        if (Math.abs(fy[n]! - fire.centre.y) > fire.height * 0.55) continue;
+        steam.push({ x: fx[n]!, y: fy[n]!, age: 0 });
+        removeFlake(n);
+        break;
+      }
+    }
+    for (let i = steam.length - 1; i >= 0; i--) {
+      const puff = steam[i]!;
+      puff.age += dt;
+      if (puff.age > STEAM_LIFE) steam.splice(i, 1);
+      else puff.y -= dt * 3;
+    }
+  }
+
+  function drawFires(surface: GlyphSurface) {
+    const { cols } = grid;
+    // A low drift of snow either side of each fire, melted back into a clearing round it.
+    for (const fire of fires) {
+      const span = fire.width * 2.2;
+      for (let col = Math.floor(fire.centre.x - span); col <= fire.centre.x + span; col++) {
+        if (col < 0 || col >= cols) continue;
+        const dx = Math.abs(col + 0.5 - fire.centre.x);
+        if (dx < fire.width * 0.6) continue;
+        const depth = Math.pow(Math.max(0, 1 - dx / span), 0.7);
+        if (depth < 0.05) continue;
+        surface.put(col, fireBase + 1, depth > 0.5 ? ':' : '.', SNOW, 0.2 + depth * 0.5);
+        if (depth > 0.75) surface.put(col, fireBase, '.', SNOW, (depth - 0.75) * 1.6);
+      }
+      fire.draw(surface, FIRE);
+    }
+    for (const puff of steam) {
+      const t = puff.age / STEAM_LIFE;
+      surface.put(puff.x, puff.y, t < 0.5 ? '~' : '.', SNOW, (1 - t) * 0.7);
+    }
+  }
+
   function sheenAt(x: number, y: number) {
     if (time < SHEEN_FIRST) return 0;
     const phase = (time - SHEEN_FIRST) % SHEEN_EVERY;
@@ -569,6 +654,7 @@ export function createLogo(options: LogoOptions = {}): AsciiScene {
       grid = next;
       rings.length = 0;
       build();
+      if (fires.length) placeFires();
     },
     step(dt, pointer: AsciiPointer) {
       if (!grid.cols) return;
@@ -649,10 +735,19 @@ export function createLogo(options: LogoOptions = {}): AsciiScene {
       }
       moving = keep;
       if (snowfall > 0) stepSnow(dt);
+      if (fires.length) stepFires(dt, pointer);
     },
     press(x, y) {
       if (!grid.cols) return;
       const { cols, aspect } = grid;
+      // A click on a fire stokes it.
+      const poked = fires.find(
+        (fire) => Math.hypot(x - fire.centre.x, (y - fire.centre.y) * aspect) < fire.width * 1.3,
+      );
+      if (poked) {
+        poked.stoke();
+        return;
+      }
       const cx = x;
       const cy = y * aspect;
       rings.push({ x: cx, y: cy, age: 0 });
@@ -734,6 +829,7 @@ export function createLogo(options: LogoOptions = {}): AsciiScene {
       }
 
       if (snowfall > 0) drawSnow(surface);
+      if (fires.length) drawFires(surface);
 
       // The shockwave's ring, faint in the empty space around the word.
       for (const ring of rings) {

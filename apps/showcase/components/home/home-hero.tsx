@@ -2,7 +2,7 @@
 
 import { HugeiconsIcon as Icon } from '@hugeicons/react';
 import ArrowRight01Icon from '@hugeicons/core-free-icons/ArrowRight01Icon';
-import { AsciiLogo } from '@lilt-ui/registry';
+import { AsciiLogo, CursorWarmth, FIRE_GROUND } from '@lilt-ui/registry';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { BlurFade } from '@/components/motion/blur-fade';
@@ -12,6 +12,9 @@ import { BlurFade } from '@/components/motion/blur-fade';
  * out from the same number, so change both together.
  */
 const CLEAR_BELOW = 0.3;
+
+/** Two campfires on the ground, in the lower corners of the sky, clear of the headline. */
+const FIRES = [0.2, 0.8];
 
 /**
  * The hero: the wordmark lettered in solid type under falling snow, which settles on the letters
@@ -37,9 +40,21 @@ export function HomeHero() {
           cellSize={cellSize}
           clearBelow={CLEAR_BELOW}
           colors={['#7c5cff', '#b45cf0', '#e5489c']}
-          label="Lilt UI, lettered in solid type as snow falls and settles on the letters"
+          fires={FIRES}
+          label="Lilt UI, lettered in solid type as snow falls and settles on the letters, with two campfires burning below"
         />
       </div>
+      {/* Where the fires burn, for the pointer to warm at; the scene draws them. */}
+      {FIRES.map((x) => (
+        <span
+          key={x}
+          data-lilt-fire=""
+          aria-hidden="true"
+          className="lilt-home-hero__fire"
+          style={{ left: `${x * 100}%`, bottom: `${(1 - FIRE_GROUND) * 100}%` }}
+        />
+      ))}
+      <CursorWarmth scope=".lilt-home-hero" />
       <div className="lilt-home-hero__copy">
         <BlurFade delay={600}>
           <h1 id="lilt-home-title">
@@ -63,7 +78,7 @@ export function HomeHero() {
         <Link href="/ascii/glow">ASCII</Link>
       </nav>
       <p className="lilt-home-hero__hint" aria-hidden="true">
-        <span>move</span> through the letters <span>·</span> <span>click</span> for a shockwave
+        <span>move</span> through the letters <span>·</span> warm up by the <span>fire</span>
       </p>
     </section>
   );

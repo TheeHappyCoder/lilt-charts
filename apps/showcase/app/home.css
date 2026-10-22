@@ -105,8 +105,9 @@
   isolation: isolate;
   display: grid;
   overflow: hidden;
-  height: clamp(640px, calc(100svh - 76px), 940px);
-  margin: 4px 12px 0;
+  /* Right under the bar, ending the same 12px short of the window as its sides. */
+  height: clamp(600px, calc(100svh - var(--header-height) - 12px), 900px);
+  margin: 0 12px;
   align-content: start;
   justify-items: center;
   padding: 0 24px;
@@ -166,6 +167,14 @@
   justify-content: center;
   gap: 10px;
   margin-top: 28px;
+}
+/* Where each campfire burns, unseen: CursorWarmth warms the pointer within about its size. */
+.lilt-home-hero__fire {
+  position: absolute;
+  width: 10%;
+  height: 20%;
+  translate: -50% 0;
+  pointer-events: none;
 }
 /* The corners: the kit's three lines bottom left, what to try bottom right, in the same quiet
    mono, framing the poster. */

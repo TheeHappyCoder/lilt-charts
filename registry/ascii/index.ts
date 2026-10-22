@@ -35,6 +35,8 @@ export * from './more-scenes';
 
 export * from './media';
 
+export * from './worlds';
+
 export {
   AsciiCanvas,
   useSceneProps,

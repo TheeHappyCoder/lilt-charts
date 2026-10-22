@@ -76,6 +76,13 @@ export const textDocs: readonly AsciiSceneDoc[] = [
     ],
     props: [
       {
+        name: 'fires',
+        type: 'number[]',
+        defaultValue: '[]',
+        description:
+          'Campfires on the ground, each a share of the width, such as [0.2, 0.8]. Snow hisses into steam in them and a click stokes one. With fires the pointer has a temperature: it frosts over out in the snow, thaws and glows by a fire, and a small readout says how it is doing.',
+      },
+      {
         name: 'snowColor',
         type: 'string',
         defaultValue: "'#e6ecfb'",

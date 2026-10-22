@@ -76,6 +76,30 @@ import BorderFullIcon from '@hugeicons/core-free-icons/BorderFullIcon';
 import StarsIcon from '@hugeicons/core-free-icons/StarsIcon';
 import MountainIcon from '@hugeicons/core-free-icons/MountainIcon';
 import BinaryCodeIcon from '@hugeicons/core-free-icons/BinaryCodeIcon';
+import BlackHoleIcon from '@hugeicons/core-free-icons/BlackHoleIcon';
+import Tornado01Icon from '@hugeicons/core-free-icons/Tornado01Icon';
+import SolarSystemIcon from '@hugeicons/core-free-icons/SolarSystemIcon';
+import City01Icon from '@hugeicons/core-free-icons/City01Icon';
+import CloudFogIcon from '@hugeicons/core-free-icons/CloudFogIcon';
+import LighthouseIcon from '@hugeicons/core-free-icons/LighthouseIcon';
+import CloudAngledRainIcon from '@hugeicons/core-free-icons/CloudAngledRainIcon';
+import Plant02Icon from '@hugeicons/core-free-icons/Plant02Icon';
+import Bug01Icon from '@hugeicons/core-free-icons/Bug01Icon';
+import DnaIcon from '@hugeicons/core-free-icons/DnaIcon';
+import AudioWave01Icon from '@hugeicons/core-free-icons/AudioWave01Icon';
+import Flag02Icon from '@hugeicons/core-free-icons/Flag02Icon';
+import AirplaneTakeOff01Icon from '@hugeicons/core-free-icons/AirplaneTakeOff01Icon';
+import EyeOffIcon from '@hugeicons/core-free-icons/EyeOffIcon';
+import WavesIcon from '@hugeicons/core-free-icons/WavesIcon';
+import SpotlightIcon from '@hugeicons/core-free-icons/SpotlightIcon';
+import SparkleIcon from '@hugeicons/core-free-icons/SparkleIcon';
+import InboxCheckIcon from '@hugeicons/core-free-icons/InboxCheckIcon';
+import Timer01Icon from '@hugeicons/core-free-icons/Timer01Icon';
+import ImageUpscaleIcon from '@hugeicons/core-free-icons/ImageUpscaleIcon';
+import CloudIcon from '@hugeicons/core-free-icons/CloudIcon';
+import LogsIcon from '@hugeicons/core-free-icons/LogsIcon';
+import StatusIcon from '@hugeicons/core-free-icons/StatusIcon';
+import ScrollVerticalIcon from '@hugeicons/core-free-icons/ScrollVerticalIcon';
 import { asciiScene, asciiShelves, componentShelves } from '@/lib/ascii-scenes';
 import { appRoutes, type AppRoute, type RouteGroup, type RouteIcon } from '@/lib/routes';
 
@@ -190,6 +214,30 @@ export const icons: Record<RouteIcon, IconSvgElement> = {
   topography: MountainIcon,
   matrix: BinaryCodeIcon,
   dotgrid: GridIcon,
+  scrollmeter: ScrollVerticalIcon,
+  statusrail: StatusIcon,
+  livelog: LogsIcon,
+  logocloud: CloudIcon,
+  dissolve: ImageUpscaleIcon,
+  countdown: Timer01Icon,
+  emptystate: InboxCheckIcon,
+  particleword: SparkleIcon,
+  spotlight: SpotlightIcon,
+  wavetext: WavesIcon,
+  redact: EyeOffIcon,
+  splitflap: AirplaneTakeOff01Icon,
+  flag: Flag02Icon,
+  visualizer: AudioWave01Icon,
+  helix: DnaIcon,
+  fireflies: Bug01Icon,
+  bonsai: Plant02Icon,
+  windowrain: CloudAngledRainIcon,
+  lighthouse: LighthouseIcon,
+  smoke: CloudFogIcon,
+  nightcity: City01Icon,
+  orrery: SolarSystemIcon,
+  wormhole: Tornado01Icon,
+  blackhole: BlackHoleIcon,
 };
 
 export type Tab = 'charts' | 'components' | 'ascii';

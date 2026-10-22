@@ -115,7 +115,31 @@ export type RouteIcon =
   | 'starfield'
   | 'topography'
   | 'matrix'
-  | 'dotgrid';
+  | 'dotgrid'
+  | 'blackhole'
+  | 'wormhole'
+  | 'orrery'
+  | 'nightcity'
+  | 'smoke'
+  | 'lighthouse'
+  | 'windowrain'
+  | 'bonsai'
+  | 'fireflies'
+  | 'helix'
+  | 'visualizer'
+  | 'flag'
+  | 'splitflap'
+  | 'redact'
+  | 'wavetext'
+  | 'spotlight'
+  | 'particleword'
+  | 'emptystate'
+  | 'countdown'
+  | 'dissolve'
+  | 'logocloud'
+  | 'livelog'
+  | 'statusrail'
+  | 'scrollmeter';
 
 export interface AppRoute {
   id: string;
@@ -1359,6 +1383,270 @@ export const appRoutes = [
     pathname: '/guides/motion',
     icon: 'motion',
     navigation: true,
+  },
+  {
+    id: 'ascii-black-hole',
+    group: 'Ascii',
+    label: 'Black hole',
+    title: 'Black hole',
+    href: '/ascii/black-hole',
+    pathname: '/ascii/black-hole',
+    icon: 'blackhole',
+    navigation: true,
+    badge: 'New',
+  },
+  {
+    id: 'ascii-wormhole',
+    group: 'Ascii',
+    label: 'Wormhole',
+    title: 'Wormhole',
+    href: '/ascii/wormhole',
+    pathname: '/ascii/wormhole',
+    icon: 'wormhole',
+    navigation: true,
+    badge: 'New',
+  },
+  {
+    id: 'ascii-orrery',
+    group: 'Ascii',
+    label: 'Orrery',
+    title: 'Orrery',
+    href: '/ascii/orrery',
+    pathname: '/ascii/orrery',
+    icon: 'orrery',
+    navigation: true,
+    badge: 'New',
+  },
+  {
+    id: 'ascii-night-city',
+    group: 'Ascii',
+    label: 'Night city',
+    title: 'Night city',
+    href: '/ascii/night-city',
+    pathname: '/ascii/night-city',
+    icon: 'nightcity',
+    navigation: true,
+    badge: 'New',
+  },
+  {
+    id: 'ascii-smoke',
+    group: 'Ascii',
+    label: 'Smoke',
+    title: 'Smoke',
+    href: '/ascii/smoke',
+    pathname: '/ascii/smoke',
+    icon: 'smoke',
+    navigation: true,
+    badge: 'New',
+  },
+  {
+    id: 'ascii-lighthouse',
+    group: 'Ascii',
+    label: 'Lighthouse',
+    title: 'Lighthouse',
+    href: '/ascii/lighthouse',
+    pathname: '/ascii/lighthouse',
+    icon: 'lighthouse',
+    navigation: true,
+    badge: 'New',
+  },
+  {
+    id: 'ascii-window-rain',
+    group: 'Ascii',
+    label: 'Rain on glass',
+    title: 'Rain on glass',
+    href: '/ascii/window-rain',
+    pathname: '/ascii/window-rain',
+    icon: 'windowrain',
+    navigation: true,
+    badge: 'New',
+  },
+  {
+    id: 'ascii-bonsai',
+    group: 'Ascii',
+    label: 'Bonsai',
+    title: 'Bonsai',
+    href: '/ascii/bonsai',
+    pathname: '/ascii/bonsai',
+    icon: 'bonsai',
+    navigation: true,
+    badge: 'New',
+  },
+  {
+    id: 'ascii-fireflies',
+    group: 'Ascii',
+    label: 'Fireflies',
+    title: 'Fireflies',
+    href: '/ascii/fireflies',
+    pathname: '/ascii/fireflies',
+    icon: 'fireflies',
+    navigation: true,
+    badge: 'New',
+  },
+  {
+    id: 'ascii-helix',
+    group: 'Ascii',
+    label: 'DNA helix',
+    title: 'DNA helix',
+    href: '/ascii/helix',
+    pathname: '/ascii/helix',
+    icon: 'helix',
+    navigation: true,
+    badge: 'New',
+  },
+  {
+    id: 'ascii-visualizer',
+    group: 'Ascii',
+    label: 'Sound',
+    title: 'Sound',
+    href: '/ascii/visualizer',
+    pathname: '/ascii/visualizer',
+    icon: 'visualizer',
+    navigation: true,
+    badge: 'New',
+  },
+  {
+    id: 'ascii-flag',
+    group: 'Ascii',
+    label: 'Flag',
+    title: 'Flag',
+    href: '/ascii/flag',
+    pathname: '/ascii/flag',
+    icon: 'flag',
+    navigation: true,
+    badge: 'New',
+  },
+  {
+    id: 'component-split-flap',
+    group: 'Components',
+    label: 'Split-flap board',
+    title: 'Split-flap board',
+    href: '/components/split-flap',
+    pathname: '/components/split-flap',
+    icon: 'splitflap',
+    navigation: true,
+    badge: 'New',
+  },
+  {
+    id: 'component-redact',
+    group: 'Components',
+    label: 'Redact',
+    title: 'Redact',
+    href: '/components/redact',
+    pathname: '/components/redact',
+    icon: 'redact',
+    navigation: true,
+    badge: 'New',
+  },
+  {
+    id: 'component-wave',
+    group: 'Components',
+    label: 'Wave text',
+    title: 'Wave text',
+    href: '/components/wave',
+    pathname: '/components/wave',
+    icon: 'wavetext',
+    navigation: true,
+    badge: 'New',
+  },
+  {
+    id: 'component-spotlight',
+    group: 'Components',
+    label: 'Spotlight heading',
+    title: 'Spotlight heading',
+    href: '/components/spotlight',
+    pathname: '/components/spotlight',
+    icon: 'spotlight',
+    navigation: true,
+    badge: 'New',
+  },
+  {
+    id: 'component-particle-word',
+    group: 'Components',
+    label: 'Particle word',
+    title: 'Particle word',
+    href: '/components/particle-word',
+    pathname: '/components/particle-word',
+    icon: 'particleword',
+    navigation: true,
+    badge: 'New',
+  },
+  {
+    id: 'component-empty-state',
+    group: 'Components',
+    label: 'Empty state',
+    title: 'Empty state',
+    href: '/components/empty-state',
+    pathname: '/components/empty-state',
+    icon: 'emptystate',
+    navigation: true,
+    badge: 'New',
+  },
+  {
+    id: 'component-countdown',
+    group: 'Components',
+    label: 'Countdown',
+    title: 'Countdown',
+    href: '/components/countdown',
+    pathname: '/components/countdown',
+    icon: 'countdown',
+    navigation: true,
+    badge: 'New',
+  },
+  {
+    id: 'component-dissolve',
+    group: 'Components',
+    label: 'Dissolve image',
+    title: 'Dissolve image',
+    href: '/components/dissolve',
+    pathname: '/components/dissolve',
+    icon: 'dissolve',
+    navigation: true,
+    badge: 'New',
+  },
+  {
+    id: 'component-logo-cloud',
+    group: 'Components',
+    label: 'Logo cloud',
+    title: 'Logo cloud',
+    href: '/components/logo-cloud',
+    pathname: '/components/logo-cloud',
+    icon: 'logocloud',
+    navigation: true,
+    badge: 'New',
+  },
+  {
+    id: 'component-log',
+    group: 'Components',
+    label: 'Live log',
+    title: 'Live log',
+    href: '/components/log',
+    pathname: '/components/log',
+    icon: 'livelog',
+    navigation: true,
+    badge: 'New',
+  },
+  {
+    id: 'component-status',
+    group: 'Components',
+    label: 'Status rail',
+    title: 'Status rail',
+    href: '/components/status',
+    pathname: '/components/status',
+    icon: 'statusrail',
+    navigation: true,
+    badge: 'New',
+  },
+  {
+    id: 'component-scroll-meter',
+    group: 'Components',
+    label: 'Scroll meter',
+    title: 'Scroll meter',
+    href: '/components/scroll-meter',
+    pathname: '/components/scroll-meter',
+    icon: 'scrollmeter',
+    navigation: true,
+    badge: 'New',
   },
 ] as const satisfies readonly AppRoute[];
 

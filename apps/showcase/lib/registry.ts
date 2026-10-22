@@ -43,13 +43,3 @@ export function registryInstall(name: string): RegistryInstall | null {
     ],
   };
 }
-
-/**
- * A kit example's source, as a reader would write it: the demo's relative import of its
- * component becomes the path the CLI installs it at.
- */
-export function kitExampleSource(component: string, file: string): string {
-  return sourceOf(root, `ui/${component}/demos/${file}.tsx`)
-    .replace(`from '../${component}'`, `from '@/${TARGET_ROOT}/ui/${component}/${component}'`)
-    .replace(/^'use client';\n\n/, '');
-}

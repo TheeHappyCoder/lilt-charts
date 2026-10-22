@@ -7,7 +7,8 @@ import type { AsciiPointer } from '../engine/types';
 import { AsciiGlitch } from './ascii-glitch';
 import { AsciiScramble } from './ascii-scramble';
 import { AsciiTerminal, DEFAULT_TERMINAL_LINES } from './ascii-terminal';
-import { createLogo } from './logo';
+import { FIRE_COLORS } from './campfire';
+import { createLogo, FIRE_GROUND } from './logo';
 
 (globalThis as { IS_REACT_ACT_ENVIRONMENT?: boolean }).IS_REACT_ACT_ENVIRONMENT = true;
 // jsdom has no 2D canvas: say so quietly, as a browser without one would.
@@ -290,7 +291,7 @@ describe('createLogo with snow', () => {
     const surface = new GlyphSurface();
     surface.resize(grid.cols, grid.rows);
     scene.draw(surface);
-    return { scene, surface, snow: scene.palette.length - 1 };
+    return { scene, surface, snow: scene.palette.indexOf('#e6ecfb') };
   }
 
   it('lets flakes fall and settles caps on the letters', () => {
@@ -334,5 +335,73 @@ describe('createLogo with snow', () => {
     after.resize(grid.cols, grid.rows);
     scene.draw(after);
     expect(capsIn(after)).toBeLessThan(capsIn(before));
+  });
+});
+
+describe('createLogo with fires', () => {
+  const grid = { cols: 160, rows: 60, aspect: 1.7 };
+  const idle: AsciiPointer = { x: 0, y: 0, active: false };
+
+  function run(options: Parameters<typeof createLogo>[0], seconds: number, pointer = idle) {
+    const scene = createLogo(options);
+    scene.resize(grid);
+    for (let t = 0; t < seconds; t += 1 / 60) scene.step(1 / 60, pointer);
+    return scene;
+  }
+  function draw(scene: ReturnType<typeof createLogo>) {
+    const surface = new GlyphSurface();
+    surface.resize(grid.cols, grid.rows);
+    scene.draw(surface);
+    return surface;
+  }
+  const fireTones = (scene: ReturnType<typeof createLogo>) => {
+    const first = scene.palette.indexOf(FIRE_COLORS[0]);
+    return new Set(FIRE_COLORS.map((_, k) => first + k));
+  };
+  /** Columns that hold flame, and how many cells of it, near the fires' ground line. */
+  function flameColumns(scene: ReturnType<typeof createLogo>) {
+    const surface = draw(scene);
+    const tones = fireTones(scene);
+    const ground = Math.round(grid.rows * FIRE_GROUND);
+    const columns: number[] = [];
+    for (let row = ground - 20; row <= ground + 1; row++) {
+      for (let col = 0; col < grid.cols; col++) {
+        const i = row * grid.cols + col;
+        if (surface.glyph[i] && tones.has(surface.tone[i]!)) columns.push(col);
+      }
+    }
+    return columns;
+  }
+
+  it('burns a fire at each place on the ground, and none without the option', () => {
+    const columns = flameColumns(run({ fires: [0.2, 0.8] }, 2));
+    expect(columns.some((col) => Math.abs(col - grid.cols * 0.2) < 8)).toBe(true);
+    expect(columns.some((col) => Math.abs(col - grid.cols * 0.8) < 8)).toBe(true);
+    expect(columns.every((col) => Math.abs(col - grid.cols * 0.5) > 20)).toBe(true);
+    expect(flameColumns(run({}, 2))).toHaveLength(0);
+  });
+
+  it('turns snow that falls into a fire into steam', () => {
+    // At the edge, clear of the word, so the letters do not catch the snow first.
+    const scene = run({ fires: [0.05], snow: 2 }, 2);
+    const snow = scene.palette.indexOf('#e6ecfb');
+    const steam = '~'.charCodeAt(0);
+    // Steam lasts under a second and comes when a flake happens in, so watch for ten seconds.
+    let puffs = 0;
+    for (let frame = 0; frame < 600 && !puffs; frame++) {
+      scene.step(1 / 60, idle);
+      const surface = draw(scene);
+      puffs = surface.glyph.filter((g, i) => g === steam && surface.tone[i] === snow).length;
+    }
+    expect(puffs).toBeGreaterThan(0);
+  });
+
+  it('stokes a fire on a click instead of sending a shockwave', () => {
+    const scene = run({ fires: [0.5] }, 2);
+    const before = flameColumns(scene).length;
+    const ground = Math.round(grid.rows * FIRE_GROUND);
+    scene.press?.(grid.cols / 2, ground - 4);
+    for (let i = 0; i < 12; i++) scene.step(1 / 60, idle);
+    expect(flameColumns(scene).length).toBeGreaterThan(before);
   });
 });

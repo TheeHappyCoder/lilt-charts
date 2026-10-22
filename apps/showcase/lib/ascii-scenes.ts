@@ -4,6 +4,8 @@ import { interfaceDocs } from './ascii-docs/interface';
 import { mediaDocs } from './ascii-docs/media';
 import { sceneDocs } from './ascii-docs/scenes';
 import { textDocs } from './ascii-docs/text';
+import { pieceDocs } from './ascii-docs/pieces';
+import { worldDocs } from './ascii-docs/worlds';
 
 /**
  * The ASCII scenes, as data for their pages: what each is, how to touch it, and its props. Each
@@ -49,6 +51,7 @@ export const asciiShelves = [
   'Space',
   'Water',
   'Nature',
+  'Science',
 ] as const;
 export type AsciiShelf = (typeof componentShelves)[number] | (typeof asciiShelves)[number];
 
@@ -246,6 +249,7 @@ const asciiChartScenes: readonly AsciiSceneDoc[] = [
 export const asciiScenes: readonly AsciiSceneDoc[] = [
   ...textDocs,
   ...interfaceDocs,
+  ...pieceDocs,
   ...backgroundDocs,
   ...mediaDocs,
   ...dataDocs,
@@ -694,6 +698,7 @@ export const asciiScenes: readonly AsciiSceneDoc[] = [
     ],
   },
   ...asciiChartScenes,
+  ...worldDocs,
 ];
 
 export const asciiScene = (id: string) => asciiScenes.find((scene) => scene.id === id);
