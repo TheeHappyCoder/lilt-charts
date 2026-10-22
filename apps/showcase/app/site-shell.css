@@ -1,9 +1,23 @@
+/* The page scrolls here, in the kit's ScrollArea, rather than in the window: one viewport-tall
+   area whose bar, rails and fades sit inside it. */
+.lilt-page-scroll {
+  height: 100dvh;
+}
+.lilt-page-scroll__viewport {
+  overscroll-behavior: auto;
+  scroll-padding-block: calc(var(--header-height) + 24px) 0;
+}
+/* The viewport takes focus so keys scroll it; that is not a place worth outlining. */
+.lilt-page-scroll__viewport:focus-visible {
+  outline: none;
+}
+
 /* The documentation frame: left rail, page, and "On this page", centred together. */
 .lilt-site {
   --lilt-site-sidebar: 248px;
   --lilt-site-toc: 208px;
   display: grid;
-  width: min(1520px, 100%);
+  width: min(var(--lilt-site-max), 100%);
   grid-template-columns: var(--lilt-site-sidebar) minmax(0, 1fr) var(--lilt-site-toc);
   margin-inline: auto;
 }
@@ -361,4 +375,13 @@
   .lilt-sidebar__mark .lilt-chart-glyph {
     transition: none;
   }
+}
+
+/* The curtain of type that pages change behind; it sits under the bar and never takes the pointer. */
+.lilt-route-curtain {
+  z-index: 39;
+  color: var(--foreground);
+  font:
+    500 13px var(--font-geist-mono),
+    monospace;
 }

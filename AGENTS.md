@@ -1,6 +1,10 @@
-# Lilt Charts
+# Lilt UI
 
 Work within this repository. Preserve user changes and designer audit evidence.
+
+## Identity (21 October 2026)
+
+Lilt is a React UI kit that maintains a charting library. Charts ship as the npm package `@lilt-ui/charts`. Components (`/components/*`: complete interface pieces and text effects, never generic primitives such as buttons, menus or dialogs) and ASCII (`/ascii/*`: living scenes) are copy-in source from `registry/`, delivered as shadcn registry items at `/r/<item>.json` and never published to npm. The header's three tabs are Charts · Components · ASCII. The rest of this file is the Charts direction. See `docs/product.md`.
 
 ## Current direction (24 September 2026, updated 28 September for finance and range families)
 
@@ -14,9 +18,9 @@ Treemap is a retained family under Part of a whole. Calendar heatmap, Timeline i
 
 ## Boundaries
 
-- React/TypeScript library: `packages/charts`; Next.js documentation browser: `apps/showcase`.
-- Package imports never reach into the showcase. No Next, Base UI, Tailwind, font, or app icon dependency in the package.
-- The docs site (redesigned 17 October 2026): a top header (sections, search, Style, theme), a section sidebar whose rows show each chart family as its own glyph in the live palette, the page, and an "On this page" rail. Geist and Geist Mono, with one Instrument Serif italic word in headlines in the violet-to-rose brand gradient; chart stages are quiet panels lit by the palette; Hugeicons Free. Mobile uses an accessible drawer. Personality comes from chart-native details, never decoration.
+- React/TypeScript library: `packages/charts`; registry source for Components and ASCII: `registry/` (items, `registry.json`, and the build that writes `apps/showcase/public/r/`); Next.js documentation browser: `apps/showcase`.
+- Package and registry imports never reach into the showcase. No Next, Base UI, Tailwind, font, or app icon dependency in the package or the ASCII registry items. Registry files import each other by relative path and keep their place under `components/lilt/ascii/` in the reader's project; `registry/items.ts` names each item's entry and shared pieces, and works out the rest from the imports. Items never import the `ascii/index.ts` barrel, which exists for the docs and tests. Run `node registry/build.ts` to write `/r/`; the showcase's dev and build scripts run it first.
+- The docs site (redesigned 17 October 2026): a top header (sections, search, Style, theme), a section sidebar whose rows show each chart family as its own glyph in the live palette, the page, and an "On this page" rail. Geist and Geist Mono, with one Instrument Serif italic word in headlines in the violet-to-rose brand gradient; chart stages are quiet panels lit by the palette; Hugeicons Free. Mobile uses an accessible drawer. On chart pages, personality comes from chart-native details, never decoration; ASCII type is the kit's signature look elsewhere.
 - OpenAnalytics code is AGPL-3.0; implement Lilt's written specification independently. Do not copy its source, snippets, CSS, or assets.
 - Do not publish, deploy, add a license, or claim package-name availability without a user request.
 

@@ -1,0 +1,642 @@
+/* The home page: a night-sky hero with the wordmark in type, then five sections that are each a
+   bento of one unit, the tile, so scenes, charts and controls read as one system. */
+.lilt-home {
+  --lilt-home-night: #07070a;
+  padding-bottom: 8px;
+}
+
+/* Shared pieces */
+.lilt-home-button {
+  display: inline-flex;
+  height: 44px;
+  align-items: center;
+  gap: 8px;
+  padding: 0 18px 0 20px;
+  border-radius: 999px;
+  background: var(--foreground);
+  color: var(--background);
+  font-size: 14.5px;
+  font-weight: 500;
+  text-decoration: none;
+  transition:
+    opacity 160ms ease,
+    transform 160ms var(--ease-out),
+    background-color 160ms ease;
+}
+.lilt-home-button:hover {
+  opacity: 0.9;
+}
+.lilt-home-button:active {
+  transform: scale(0.97);
+}
+.lilt-home-button[data-variant='glass'] {
+  padding: 0 20px;
+  background: color-mix(in srgb, var(--foreground) 7%, transparent);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--foreground) 14%, transparent);
+  color: var(--foreground);
+  backdrop-filter: blur(10px);
+}
+.lilt-home-button[data-variant='glass']:hover {
+  background: color-mix(in srgb, var(--foreground) 12%, transparent);
+  opacity: 1;
+}
+.lilt-home-button:focus-visible {
+  outline: 2px solid var(--brand-primary);
+  outline-offset: 3px;
+}
+.lilt-home-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 14px;
+  color: var(--muted-foreground);
+  font-size: 13px;
+  font-weight: 500;
+}
+.lilt-home-eyebrow span {
+  color: var(--faint);
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 11.5px;
+  font-weight: 400;
+}
+.lilt-home-eyebrow span::after {
+  display: inline-block;
+  width: 18px;
+  height: 1px;
+  margin-left: 10px;
+  background: var(--line-strong);
+  content: '';
+  vertical-align: middle;
+}
+.lilt-home-section {
+  padding: 56px 0;
+}
+.lilt-home-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px 32px;
+  margin-bottom: 28px;
+}
+.lilt-home-head h2,
+.lilt-home-closing h2 {
+  max-width: 600px;
+  margin: 0;
+  font-size: clamp(30px, 3.6vw, 44px);
+  font-weight: 600;
+  line-height: 1.06;
+  letter-spacing: -0.035em;
+  text-wrap: balance;
+}
+.lilt-home-head__aside {
+  max-width: 360px;
+  margin: 0;
+  color: var(--muted-foreground);
+  font-size: 14.5px;
+  line-height: 1.6;
+  text-wrap: pretty;
+}
+
+/* Hero: a poster in the night sky under the bar. The wordmark is the art; the headline is locked
+   to it, over its foot; the corners carry the kit's three lines and what to try. */
+.lilt-home-hero {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  overflow: hidden;
+  height: clamp(640px, calc(100svh - 76px), 940px);
+  margin: 4px 12px 0;
+  align-content: start;
+  justify-items: center;
+  padding: 0 24px;
+  container-type: size;
+  border-radius: 32px;
+  background:
+    radial-gradient(60% 50% at 50% 30%, rgb(124 92 255 / 0.16), transparent 70%),
+    radial-gradient(40% 40% at 78% 34%, rgb(229 72 156 / 0.1), transparent 70%),
+    var(--lilt-home-night);
+  box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.06);
+  color: var(--foreground);
+  text-align: center;
+}
+.lilt-home-hero__stage {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  color: #e8e6f2;
+  font-family: var(--font-geist-mono), monospace;
+}
+/* The headline covers the bottom quarter of the wordmark, whatever the window. The logo scene
+   sets the word in the band above CLEAR_BELOW (0.3, so 70% of the height), centred, as tall as
+   about 0.665 of that band or as wide as 82% of the sky, whichever binds first; "lilt UI" is
+   3.84 times as wide as it is tall. So the word's foot is at 35% of the height plus half its
+   height, and the headline starts a quarter of the word's height above that. */
+.lilt-home-hero__copy {
+  --lilt-word-height: min(46.5cqh, 21.4cqw + 10px);
+  position: relative;
+  display: grid;
+  margin-top: calc(35cqh + var(--lilt-word-height) * 0.25);
+  justify-items: center;
+  pointer-events: none;
+}
+.lilt-home-hero__copy > * {
+  pointer-events: auto;
+}
+.lilt-home-hero__copy::before {
+  position: absolute;
+  z-index: -1;
+  inset: -56px -160px -32px;
+  background: radial-gradient(closest-side, rgb(7 7 10 / 0.95) 55%, transparent);
+  content: '';
+  pointer-events: none;
+}
+.lilt-home-hero h1 {
+  max-width: 820px;
+  margin: 0;
+  font-size: clamp(40px, 6.6vw, 88px);
+  font-weight: 600;
+  line-height: 0.98;
+  letter-spacing: -0.05em;
+  text-wrap: balance;
+}
+.lilt-home-hero__ctas {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 28px;
+}
+/* The corners: the kit's three lines bottom left, what to try bottom right, in the same quiet
+   mono, framing the poster. */
+.lilt-home-hero__lines {
+  position: absolute;
+  bottom: 20px;
+  left: 28px;
+  display: flex;
+  gap: 10px;
+  color: rgb(255 255 255 / 0.32);
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 12px;
+}
+.lilt-home-hero__lines a {
+  color: rgb(255 255 255 / 0.62);
+  text-decoration: none;
+  transition: color 160ms ease;
+}
+.lilt-home-hero__lines a:hover,
+.lilt-home-hero__lines a:focus-visible {
+  color: rgb(255 255 255 / 0.95);
+}
+.lilt-home-hero__hint {
+  position: absolute;
+  right: 28px;
+  bottom: 20px;
+  margin: 0;
+  color: rgb(255 255 255 / 0.32);
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 12px;
+  pointer-events: none;
+}
+.lilt-home-hero__hint span {
+  color: rgb(255 255 255 / 0.55);
+}
+
+/* The tile: the page's one unit, in the chart gallery's language. A room lit by the palette (dark
+   for type and canvases, the theme's panel with its dot grid for chart cards), the live piece on
+   its stage, and a frosted caption with the page's mark, its name, what to try, and an arrow that
+   arrives on hover. Hover lifts the card in a room and brightens the light. */
+.lilt-bento {
+  display: grid;
+  grid-auto-rows: 250px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+}
+.lilt-bento[data-layout='scenes'] {
+  grid-template-areas:
+    'globe globe koi koi'
+    'globe globe jelly lava'
+    'galaxy aurora aurora fireworks';
+}
+.lilt-bento[data-layout='charts'] {
+  grid-template-areas:
+    'sankey sankey skyline skyline'
+    'sankey sankey skyline skyline'
+    'radar stat candle candle'
+    'radar stat candle candle'
+    'built built built built';
+  grid-template-rows: repeat(4, 250px) 196px;
+}
+.lilt-bento[data-layout='data'] {
+  grid-template-areas:
+    'card card type type'
+    'card card type type'
+    'bars bars heatmap heatmap'
+    'spark spark clock clock';
+}
+.lilt-bento[data-layout='media'] {
+  grid-template-areas:
+    'model model model image'
+    'model model model image';
+}
+.lilt-bento[data-layout='interface'] {
+  grid-template-areas:
+    'terminal terminal transition transition'
+    'terminal terminal transition transition'
+    'loader glitch counter counter'
+    'trail trail scramble scramble';
+}
+.lilt-home-tile {
+  --lilt-tile-lift: 0px;
+  --lilt-tile-light: 0.45;
+  position: relative;
+  display: block;
+  overflow: hidden;
+  min-width: 0;
+  border-radius: 24px;
+  background: var(--lilt-home-night);
+  box-shadow:
+    inset 0 0 0 1px rgb(255 255 255 / 0.06),
+    inset 0 1px 0 rgb(255 255 255 / 0.04);
+  color: var(--foreground);
+  text-decoration: none;
+  transition: box-shadow 260ms var(--ease-out);
+}
+.lilt-home-tile:hover {
+  --lilt-tile-lift: -6px;
+  --lilt-tile-light: 0.8;
+  box-shadow:
+    inset 0 0 0 1px rgb(255 255 255 / 0.14),
+    inset 0 1px 0 rgb(255 255 255 / 0.06),
+    0 24px 48px -28px rgb(0 0 0 / 0.45);
+}
+.lilt-home-tile[data-tone='room'] {
+  --lilt-tile-light: 0.75;
+  background: var(--panel);
+  box-shadow:
+    inset 0 0 0 1px var(--line),
+    inset 0 1px 0 rgb(255 255 255 / 0.04);
+}
+.lilt-home-tile[data-tone='room']:hover {
+  --lilt-tile-light: 1;
+  box-shadow:
+    inset 0 0 0 1px var(--line-strong),
+    inset 0 1px 0 rgb(255 255 255 / 0.06),
+    0 24px 48px -28px rgb(0 0 0 / 0.45);
+}
+.lilt-home-tile:focus-visible,
+.lilt-home-tile .lilt-tile__go:focus-visible,
+.lilt-tile__choice:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+/* Night rooms take the palette's light from below, where the scene stands. */
+.lilt-home-tile[data-tone='night'] .lilt-tile__light {
+  transform: scaleY(-1);
+}
+.lilt-home-tile__stage {
+  position: absolute;
+  inset: 0;
+  color: #e8e6f2;
+  font-family: var(--font-geist-mono), monospace;
+}
+.lilt-home-tile[data-tone='room'] .lilt-home-tile__stage {
+  color: var(--foreground);
+  font-family: inherit;
+  /* The card's foot runs out of view behind the caption. */
+  mask-image: linear-gradient(to bottom, #000 70%, transparent 96%);
+}
+.lilt-home-tile[data-floor] .lilt-home-tile__stage {
+  bottom: 72px;
+  mask-image: none;
+}
+.lilt-home-tile[data-tone='room'][data-floor] .lilt-home-tile__stage {
+  padding: 8px 8px 0;
+}
+.lilt-home-tile__stage[data-center] {
+  display: grid;
+  place-items: center;
+  padding: 20px 20px 80px;
+  font-size: 13px;
+}
+.lilt-home-tile__label {
+  position: absolute;
+  right: 12px;
+  bottom: 12px;
+  left: 12px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 8px 8px 8px;
+  border-radius: 16px;
+  background: rgb(7 7 10 / 0.62);
+  box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.08);
+  backdrop-filter: blur(14px);
+  color: var(--foreground);
+}
+.lilt-home-tile[data-tone='room'] .lilt-home-tile__label {
+  background: color-mix(in srgb, var(--panel) 78%, transparent);
+  box-shadow:
+    inset 0 0 0 1px var(--line),
+    0 8px 24px -16px rgb(0 0 0 / 0.4);
+}
+.lilt-home-tile__text {
+  display: grid;
+  min-width: 0;
+  flex: 1;
+  gap: 1px;
+}
+.lilt-home-tile__text strong {
+  font-size: 14px;
+  font-weight: 550;
+  letter-spacing: -0.01em;
+}
+.lilt-home-tile__text small {
+  overflow: hidden;
+  color: var(--muted-foreground);
+  font-size: 12.5px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.lilt-home-tile .lilt-tile__glyph {
+  color: var(--foreground);
+}
+.lilt-home-tile:hover .lilt-tile__go,
+.lilt-home-tile:focus-within .lilt-tile__go,
+.lilt-home-tile:focus-visible .lilt-tile__go {
+  opacity: 1;
+  transform: none;
+}
+.lilt-tile__choices {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+.lilt-tile__choice {
+  display: inline-flex;
+  height: 30px;
+  align-items: center;
+  gap: 7px;
+  padding: 0 11px 0 9px;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--muted-foreground);
+  cursor: pointer;
+  font: inherit;
+  font-size: 12.5px;
+  transition:
+    background-color 160ms ease,
+    color 160ms ease;
+}
+.lilt-tile__choice span {
+  width: 7px;
+  height: 7px;
+  border-radius: 2px;
+  background: var(--choice);
+  opacity: 0.5;
+}
+.lilt-tile__choice:hover {
+  color: var(--foreground);
+}
+.lilt-tile__choice[aria-checked='true'] {
+  background: color-mix(in srgb, var(--choice) 18%, transparent);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--choice) 45%, transparent);
+  color: var(--foreground);
+}
+.lilt-tile__choice[aria-checked='true'] span {
+  opacity: 1;
+}
+.lilt-tile__stack {
+  display: grid;
+  gap: 12px;
+  color: var(--muted-foreground);
+}
+.lilt-tile__huge {
+  color: var(--foreground);
+  font-size: 88px;
+  font-weight: 800;
+  line-height: 1;
+}
+.lilt-tile__big {
+  color: var(--foreground);
+  font-size: 40px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+/* Built in: what every chart card can do, as a numbered strip with a page each. */
+.lilt-built {
+  display: grid;
+  height: 100%;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.lilt-built li + li {
+  border-left: 1px dashed var(--line-strong);
+}
+.lilt-built a {
+  display: grid;
+  height: 100%;
+  align-content: start;
+  gap: 6px;
+  padding: 14px 18px;
+  border-radius: 14px;
+  color: inherit;
+  text-decoration: none;
+  transition: background-color 160ms ease;
+}
+.lilt-built a:hover {
+  background: color-mix(in srgb, var(--foreground) 4%, transparent);
+}
+.lilt-built a:focus-visible {
+  outline: 2px solid var(--brand-primary);
+  outline-offset: -2px;
+}
+.lilt-built__index {
+  color: var(--brand-primary);
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 11.5px;
+}
+.lilt-built strong {
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+.lilt-built small {
+  color: var(--muted-foreground);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+/* The close: a night panel with contour lines drifting behind the last word. */
+.lilt-home-closing {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  overflow: hidden;
+  justify-items: center;
+  margin: 56px 0 0;
+  padding: 96px 24px 64px;
+  border-radius: 32px;
+  background: var(--lilt-home-night);
+  box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.06);
+  color: var(--foreground);
+  text-align: center;
+}
+.lilt-home-closing__ground {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  color: #e8e6f2;
+  font-family: var(--font-geist-mono), monospace;
+  opacity: 0.7;
+  mask-image: radial-gradient(90% 80% at 50% 40%, transparent 20%, black 80%);
+}
+.lilt-home-closing__copy {
+  display: grid;
+  justify-items: center;
+}
+.lilt-home-closing h2 {
+  max-width: none;
+}
+.lilt-home-closing__copy > p {
+  max-width: 460px;
+  margin: 16px 0 0;
+  color: var(--muted-foreground);
+  font-size: 16px;
+  line-height: 1.6;
+}
+.lilt-home-closing__install {
+  width: min(520px, 100%);
+  margin-top: 40px;
+  text-align: left;
+}
+
+@media (max-width: 1023px) {
+  .lilt-bento {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .lilt-bento[data-layout='scenes'] {
+    grid-template-areas:
+      'globe globe'
+      'globe globe'
+      'koi koi'
+      'jelly lava'
+      'galaxy fireworks'
+      'aurora aurora';
+  }
+  .lilt-bento[data-layout='charts'] {
+    grid-template-areas:
+      'sankey sankey'
+      'sankey sankey'
+      'skyline skyline'
+      'skyline skyline'
+      'radar stat'
+      'radar stat'
+      'candle candle'
+      'candle candle'
+      'built built';
+    grid-template-rows: repeat(8, 250px) 320px;
+  }
+  .lilt-bento[data-layout='charts'] .lilt-built {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  .lilt-bento[data-layout='data'] {
+    grid-template-areas:
+      'card card'
+      'card card'
+      'type type'
+      'type type'
+      'bars bars'
+      'heatmap heatmap'
+      'spark spark'
+      'clock clock';
+  }
+  .lilt-bento[data-layout='media'] {
+    grid-template-areas:
+      'model model'
+      'model model'
+      'image image';
+  }
+  .lilt-bento[data-layout='interface'] {
+    grid-template-areas:
+      'terminal terminal'
+      'terminal terminal'
+      'transition transition'
+      'transition transition'
+      'loader glitch'
+      'counter counter'
+      'trail trail'
+      'scramble scramble';
+  }
+}
+@media (max-width: 639px) {
+  .lilt-home-hero {
+    /* The word is small on a phone, so the sky is shorter and the poster stays together. */
+    height: clamp(480px, 64svh, 600px);
+    margin: 4px 8px 0;
+    padding: 0 16px;
+    border-radius: 24px;
+  }
+  .lilt-home-hero__hint {
+    display: none;
+  }
+  .lilt-home-hero__lines {
+    right: 0;
+    left: 0;
+    justify-content: center;
+  }
+  .lilt-home-section {
+    padding: 36px 0;
+  }
+  /* One column: the tiles stack in order, each as tall as what it holds. */
+  .lilt-bento {
+    display: flex;
+    flex-direction: column;
+  }
+  .lilt-home-tile {
+    height: 280px;
+    flex: none;
+  }
+  .lilt-home-tile:is(
+    [data-area='sankey'],
+    [data-area='skyline'],
+    [data-area='radar'],
+    [data-area='stat'],
+    [data-area='candle'],
+    [data-area='card']
+  ) {
+    height: 540px;
+  }
+  .lilt-home-tile:is(
+    [data-area='globe'],
+    [data-area='type'],
+    [data-area='model'],
+    [data-area='transition']
+  ) {
+    height: 400px;
+  }
+  .lilt-home-tile:is([data-area='terminal'], [data-area='built']) {
+    height: 440px;
+  }
+  .lilt-built {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .lilt-built li + li {
+    border-top: 1px dashed var(--line-strong);
+    border-left: 0;
+  }
+  .lilt-built a {
+    padding: 10px 14px;
+  }
+  .lilt-tile__choices {
+    display: none;
+  }
+  .lilt-home-closing {
+    padding: 64px 20px 40px;
+    border-radius: 24px;
+  }
+}

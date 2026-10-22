@@ -1,276 +1,233 @@
 import Link from 'next/link';
-import { HugeiconsIcon as Icon, type IconSvgElement } from '@hugeicons/react';
+import { HugeiconsIcon as Icon } from '@hugeicons/react';
 import ArrowRight01Icon from '@hugeicons/core-free-icons/ArrowRight01Icon';
-import ArrowDataTransferHorizontalIcon from '@hugeicons/core-free-icons/ArrowDataTransferHorizontalIcon';
-import DashboardSpeed02Icon from '@hugeicons/core-free-icons/DashboardSpeed02Icon';
-import Link01Icon from '@hugeicons/core-free-icons/Link01Icon';
-import Pin02Icon from '@hugeicons/core-free-icons/Pin02Icon';
-import SparklesIcon from '@hugeicons/core-free-icons/SparklesIcon';
-import Target03Icon from '@hugeicons/core-free-icons/Target03Icon';
 import { ChartSettingsProvider } from '@/components/docs/chart-settings';
+import { HomeCharts } from '@/components/home/home-charts';
+import { HomeClosing } from '@/components/home/home-closing';
+import { HomeData } from '@/components/home/home-data';
+import { HomeHero } from '@/components/home/home-hero';
+import { HomeInterface } from '@/components/home/home-interface';
+import { HomeMedia } from '@/components/home/home-media';
 import { HomeQuickstart } from '@/components/home/home-quickstart';
-import { HomeBackdrop } from '@/components/home/home-backdrop';
-import { HomeCatalog } from '@/components/home/home-catalog';
-import { HomeMeter } from '@/components/home/home-meter';
-import { HomePlayground } from '@/components/home/home-playground';
-import { BlurFade } from '@/components/motion/blur-fade';
+import { HomeScenes } from '@/components/home/home-scenes';
 import { LiltLogo } from '@/components/shell/logo';
-import { groupsByTab } from '@/components/shell/nav-model';
+import {
+  customizeRoutes,
+  familyGroups,
+  featureRoutes,
+  groupsByTab,
+  referenceRoutes,
+  startRoutes,
+  type TileGroup,
+} from '@/components/shell/nav-model';
 import { SiteShell } from '@/components/shell/site-shell';
 import { chartDocs } from '@/lib/card-docs/registry';
 import { GITHUB_URL, getGitHubStars } from '@/lib/github-stars';
 import { SITE_URL } from '@/lib/llms';
-import { getDownloads } from '@/lib/npm-downloads';
-
-/** The collection on the home page: families that show the range, each with something to try. */
-const collection = [
-  { href: '/charts/area', hint: 'Hover to read any month' },
-  { href: '/charts/sankey', hint: 'Hover a ribbon to follow it' },
-  { href: '/charts/stat-cards', hint: 'Hover the sparkline' },
-  { href: '/charts/radar', hint: 'Hover an axis' },
-  { href: '/charts/heatmap', hint: 'Hover any hour' },
-  { href: '/charts/skyline', hint: 'A year, stood up in depth' },
-  { href: '/finance/candlestick', hint: 'Hover a candle for its range' },
-  { href: '/charts/treemap', hint: 'Hover a block for its share' },
-  { href: '/charts/scatter', hint: 'Hover any point' },
-] as const;
 
 /** What to paste into an agent to get a first card on screen. */
 const AGENT_TASK = 'Add a Lilt AreaChartCard of monthly visitors to my dashboard.';
 
-const features: readonly {
-  icon: IconSvgElement;
-  title: string;
-  body: string;
-  href: string;
-}[] = [
-  {
-    icon: Link01Icon,
-    title: 'Linked hover',
-    body: 'Give cards the same sync key and one pointer reads every chart on the same day.',
-    href: '/features/sync',
-  },
-  {
-    icon: Pin02Icon,
-    title: 'Pin',
-    body: 'Click to hold a reading in place while you compare it against the rest.',
-    href: '/features/pin',
-  },
-  {
-    icon: ArrowDataTransferHorizontalIcon,
-    title: 'Compare',
-    body: 'Drag across a stretch and the card tells you what changed between the ends.',
-    href: '/features/compare',
-  },
-  {
-    icon: Target03Icon,
-    title: 'Targets & forecasts',
-    body: 'Draw a goal over the data and project the last stretch with its range.',
-    href: '/features/targets',
-  },
-  {
-    icon: DashboardSpeed02Icon,
-    title: 'Performance',
-    body: 'Long series draw four points per pixel column, measured live in your browser.',
-    href: '/features/performance',
-  },
-  {
-    icon: SparklesIcon,
-    title: 'Motion that means something',
-    body: 'Entrances, loading and hover follow the data, and all of it respects reduced motion.',
-    href: '/guides/motion',
-  },
-];
+const shelf = (group: TileGroup) => ({ label: group.heading!, href: group.routes[0]!.href });
 
-const count = new Intl.NumberFormat('en-US');
-
-/** Footer columns: every section of the docs, then the project's links. */
+/**
+ * Footer columns: a handful of ways into each line and the docs, never every page. The rails
+ * list everything; the footer only points.
+ */
 const footer = [
   {
     heading: 'Charts',
-    links: groupsByTab.charts.map((group) => ({
-      label: group.heading!,
-      href: `/charts#${group.key}`,
-    })),
+    links: [
+      { label: 'All charts', href: '/charts' },
+      { label: 'Finance', href: familyGroups.at(-1)!.routes[0]!.href },
+      { label: 'Customize', href: customizeRoutes[0]!.href },
+      { label: 'Features', href: featureRoutes[0]!.href },
+    ],
   },
+  { heading: 'Components', links: groupsByTab.components.map(shelf) },
   {
-    heading: 'Customize',
-    links: groupsByTab.customize[0]!.routes.map((route) => ({
-      label: route.label,
-      href: route.href,
-    })),
-  },
-  {
-    heading: 'Features',
-    links: groupsByTab.features[0]!.routes.map((route) => ({
-      label: route.label,
-      href: route.href,
-    })),
+    heading: 'ASCII',
+    links: [
+      { label: 'All scenes', href: groupsByTab.ascii[0]!.routes[0]!.href },
+      ...groupsByTab.ascii
+        .filter((group) => ['Backgrounds', 'Media', 'Data'].includes(group.heading!))
+        .map(shelf),
+    ],
   },
   {
     heading: 'Docs',
     links: [
-      ...groupsByTab.docs.flatMap((group) =>
-        group.routes.map((route) => ({ label: route.label, href: route.href })),
-      ),
+      ...[...startRoutes, ...referenceRoutes].map((route) => ({
+        label: route.label,
+        href: route.href,
+      })),
       { label: 'llms.txt', href: '/llms.txt' },
     ],
   },
 ];
 
+/** One section: its number and name, the headline and a line beside it, then its bento. */
+function Section({
+  index,
+  eyebrow,
+  id,
+  title,
+  aside,
+  more,
+  children,
+}: {
+  index: string;
+  eyebrow: string;
+  id: string;
+  title: React.ReactNode;
+  aside: string;
+  more?: { href: string; label: string };
+  children: React.ReactNode;
+}) {
+  return (
+    <section className="lilt-home-section" aria-labelledby={id}>
+      <div className="lilt-home-head">
+        <div>
+          <p className="lilt-home-eyebrow">
+            <span>{index}</span>
+            {eyebrow}
+          </p>
+          <h2 id={id}>{title}</h2>
+        </div>
+        <p className="lilt-home-head__aside">{aside}</p>
+      </div>
+      {children}
+      {more ? (
+        <Link href={more.href} className="lilt-landing__more">
+          {more.label}
+          <Icon icon={ArrowRight01Icon} size={14} strokeWidth={2} aria-hidden="true" />
+        </Link>
+      ) : null}
+    </section>
+  );
+}
+
 export async function HomePage() {
-  const [downloads, stars] = await Promise.all([getDownloads(), getGitHubStars()]);
+  const stars = await getGitHubStars();
   const families = Object.keys(chartDocs).length;
+  const components = groupsByTab.components.flatMap((group) => group.routes).length;
+  const scenes = groupsByTab.ascii.flatMap((group) => group.routes).length;
   return (
     <ChartSettingsProvider>
       <SiteShell stars={stars} bare>
-        <div className="lilt-landing">
-          <section className="lilt-landing__hero" aria-labelledby="lilt-landing-title">
-            <HomeBackdrop />
-            <BlurFade>
-              <Link href="/charts" className="lilt-landing__pill">
-                <span className="lilt-landing__pill-dot" aria-hidden="true" />
-                {families} chart families for React
-                <Icon icon={ArrowRight01Icon} size={13} strokeWidth={2} aria-hidden="true" />
-              </Link>
-            </BlurFade>
-            <BlurFade delay={60}>
-              <h1 id="lilt-landing-title">
-                Give your data
-                <br />a little <em>Lilt.</em>
-              </h1>
-            </BlurFade>
-            <BlurFade delay={100}>
-              <p className="lilt-landing__lede">
-                Chart cards for React that arrive finished: fluid motion, precise inspection and
-                thoughtful interactions, from one import.
-              </p>
-            </BlurFade>
-            <BlurFade delay={140}>
-              <div className="lilt-landing__ctas">
-                <Link href="/guides/installation" className="lilt-landing__button">
-                  Get started
-                  <Icon icon={ArrowRight01Icon} size={15} strokeWidth={2} aria-hidden="true" />
-                </Link>
-                <Link href="/charts" className="lilt-landing__button" data-variant="quiet">
-                  Browse charts
-                </Link>
-              </div>
-            </BlurFade>
-            <BlurFade delay={160} className="lilt-landing__install">
-              <HomeQuickstart task={AGENT_TASK} docsUrl={`${SITE_URL}/llms.txt`} />
-            </BlurFade>
-          </section>
+        <div className="lilt-home">
+          <HomeHero />
 
-          <section className="lilt-landing__section" aria-label="Try it">
-            <HomePlayground />
-          </section>
+          <div className="lilt-landing">
+            <Section
+              index="01"
+              eyebrow="Chart cards"
+              id="charts-title"
+              title={
+                <>
+                  Charts that arrive <em>finished.</em>
+                </>
+              }
+              aside="Headline, hover readout, legend, loading and motion, from one import. Live cards, not screenshots: hover any of them."
+              more={{ href: '/charts', label: `Browse all ${families} chart families` }}
+            >
+              <HomeCharts />
+            </Section>
 
-          <section className="lilt-landing__section" aria-labelledby="collection-title">
-            <div className="lilt-landing__head">
-              <div>
-                <p className="lilt-landing__eyebrow">
-                  <span className="lilt-landing__index">01</span>The collection
-                </p>
-                <h2 id="collection-title">
-                  One card per <em>job</em>, all speaking the same props.
-                </h2>
-              </div>
-              <p className="lilt-landing__aside">
-                Live cards, not screenshots. Hover them, replay them, and take one away as code or
-                as a prompt for your agent.
-              </p>
-            </div>
-            <HomeCatalog items={collection} />
-            <Link href="/charts" className="lilt-landing__more">
-              Browse all {families} chart families
-              <Icon icon={ArrowRight01Icon} size={14} strokeWidth={2} aria-hidden="true" />
-            </Link>
-          </section>
+            <Section
+              index="02"
+              eyebrow="Components"
+              id="interface-title"
+              title={
+                <>
+                  Every detail, <em>in type.</em>
+                </>
+              }
+              aside="Loaders, counters, glyph borders, a terminal that types itself, and the curtain every page on this site changes behind. Add one with the shadcn CLI and the source is yours."
+              more={{ href: '/components', label: `Explore all ${components} components` }}
+            >
+              <HomeInterface />
+            </Section>
 
-          <section className="lilt-landing__section" aria-labelledby="features-title">
-            <div className="lilt-landing__head">
-              <div>
-                <p className="lilt-landing__eyebrow">
-                  <span className="lilt-landing__index">02</span>Built in
-                </p>
-                <h2 id="features-title">
-                  The interactions you would otherwise <em>build yourself.</em>
-                </h2>
+            <Section
+              index="03"
+              eyebrow="Living scenes"
+              id="scenes-title"
+              title={
+                <>
+                  A whole sky of <em>scenes.</em>
+                </>
+              }
+              aside="Each one fills its parent, takes its ink from your CSS, follows the pointer, rests off screen, and holds still for reduced motion."
+              more={{ href: '/ascii/koi', label: `Explore all ${scenes} ASCII scenes` }}
+            >
+              <HomeScenes />
+            </Section>
+
+            <Section
+              index="04"
+              eyebrow="Data in type"
+              id="data-title"
+              title={
+                <>
+                  Same numbers, <em>set in type.</em>
+                </>
+              }
+              aside="One year of visitors as a chart card and as an area of type, then the charts that only type can draw. Hover either."
+            >
+              <HomeData />
+            </Section>
+
+            <Section
+              index="05"
+              eyebrow="3D and media"
+              id="media-title"
+              title={
+                <>
+                  Real geometry, <em>rendered in type.</em>
+                </>
+              }
+              aside="A small rasteriser lights each face and sets it in blocks and glyphs. Pick a shape, lean it with the pointer, click to spin."
+            >
+              <HomeMedia />
+            </Section>
+
+            <HomeClosing github={GITHUB_URL}>
+              <div className="lilt-home-closing__install">
+                <HomeQuickstart task={AGENT_TASK} docsUrl={`${SITE_URL}/llms.txt`} />
               </div>
-            </div>
-            <div className="lilt-landing__features">
-              {features.map((feature) => (
-                <Link key={feature.title} href={feature.href} className="lilt-landing__feature">
-                  <span className="lilt-landing__feature-icon">
-                    <Icon icon={feature.icon} size={18} strokeWidth={1.7} aria-hidden="true" />
-                  </span>
-                  <h3>{feature.title}</h3>
-                  <p>{feature.body}</p>
-                </Link>
+            </HomeClosing>
+
+            <footer className="lilt-landing__footer">
+              <div className="lilt-landing__footer-brand">
+                <LiltLogo className="lilt-header__logo" />
+                <p>React components with a little lilt.</p>
+              </div>
+              {footer.map((column) => (
+                <nav
+                  key={column.heading}
+                  className="lilt-landing__footer-column"
+                  aria-label={column.heading}
+                >
+                  <h3>{column.heading}</h3>
+                  <ul>
+                    {column.links.map((link) => (
+                      <li key={link.href}>
+                        <Link href={link.href}>{link.label}</Link>
+                      </li>
+                    ))}
+                  </ul>
+                </nav>
               ))}
-            </div>
-          </section>
-
-          <section className="lilt-landing__closing" aria-labelledby="closing-title">
-            <h2 id="closing-title">
-              Ready when your <em>data</em> is.
-            </h2>
-            <p>Install the package, import the stylesheet once, and drop in a card.</p>
-            <div className="lilt-landing__ctas">
-              <Link href="/guides/installation" className="lilt-landing__button">
-                Read the guide
-                <Icon icon={ArrowRight01Icon} size={15} strokeWidth={2} aria-hidden="true" />
-              </Link>
-              <a
-                href={GITHUB_URL}
-                className="lilt-landing__button"
-                data-variant="quiet"
-                target="_blank"
-                rel="noreferrer"
-              >
-                View on GitHub
-              </a>
-            </div>
-            <HomeMeter downloads={downloads} />
-            <dl className="lilt-landing__stats">
-              <div>
-                <dt>Chart families</dt>
-                <dd>{families}</dd>
+              <div className="lilt-landing__footer-base">
+                <span>Charts from npm. Components and scenes as source you own.</span>
+                <span className="lilt-landing__footer-links">
+                  <a href={GITHUB_URL}>GitHub</a>
+                  <a href="https://www.npmjs.com/package/@lilt-ui/charts">npm</a>
+                </span>
               </div>
-              <div>
-                <dt>npm downloads</dt>
-                <dd>{downloads ? count.format(downloads.total) : '—'}</dd>
-              </div>
-              <div>
-                <dt>Import to start</dt>
-                <dd>1</dd>
-              </div>
-            </dl>
-          </section>
-
-          <footer className="lilt-landing__footer">
-            <div className="lilt-landing__footer-brand">
-              <LiltLogo className="lilt-header__logo" />
-              <p>Expressive React chart cards.</p>
-            </div>
-            {footer.map((column) => (
-              <nav
-                key={column.heading}
-                className="lilt-landing__footer-column"
-                aria-label={column.heading}
-              >
-                <h3>{column.heading}</h3>
-                <ul>
-                  {column.links.map((link) => (
-                    <li key={link.href}>
-                      <Link href={link.href}>{link.label}</Link>
-                    </li>
-                  ))}
-                </ul>
-              </nav>
-            ))}
-          </footer>
+            </footer>
+          </div>
         </div>
       </SiteShell>
     </ChartSettingsProvider>

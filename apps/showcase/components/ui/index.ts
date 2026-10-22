@@ -8,10 +8,10 @@ export {
   SelectField,
   SelectTrigger,
   SelectValue,
-  SelectPopup,
+  SelectContent,
   SelectItem,
   SelectGroup,
-  SelectGroupLabel,
+  SelectLabel,
   SelectSeparator,
   type SelectOption,
 } from './select';
@@ -61,3 +61,4 @@ export {
   type CommandSection,
 } from './command';
 export { TravelingHighlightScope, TravelingHighlightTarget } from './traveling-highlight';
+export { FieldGrid, RangeField, SwitchField, ChoiceField, ColorField, ColorsField } from './field';

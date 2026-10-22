@@ -22,7 +22,7 @@ import { VisitorsCard } from './visitors-card';
 
 createRoot(document.getElementById('root')!).render(<VisitorsCard />);`;
 
-const agentPrompt = `Use Lilt Charts (${PACKAGE_NAME}) for charts.
+const agentPrompt = `Use Lilt UI charts (${PACKAGE_NAME}) for charts.
 Read ${SITE_URL}/llms.txt first and follow its rules.`;
 
 export default function InstallationGuidePage() {

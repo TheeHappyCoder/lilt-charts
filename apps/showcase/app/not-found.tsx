@@ -12,7 +12,7 @@ export const metadata: Metadata = { title: 'Page not found' };
 export default function NotFound() {
   return (
     <section className="lilt-lost" aria-labelledby="lost-title">
-      <Link href="/" className="lilt-lost__brand" aria-label="Lilt Charts home">
+      <Link href="/" className="lilt-lost__brand" aria-label="Lilt UI home">
         <LiltLogo className="lilt-shell__brand-logo" />
       </Link>
       <div className="lilt-lost__copy">

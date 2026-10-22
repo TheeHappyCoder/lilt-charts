@@ -1,6 +1,18 @@
-# Lilt Charts product scope
+# Lilt UI product scope
 
 Current direction: 24 September 2026. This document supersedes earlier app-flow and family-expansion plans where they conflict.
+
+## Lilt UI: a UI kit that maintains a charting library (21 October 2026)
+
+Lilt is a React UI kit with three lines, and two ways of shipping them.
+
+- **Charts** are the npm package `@lilt-ui/charts`: geometry, inspection, interaction and comparison that need versioning and maintenance. Everything below this section is about Charts, and still applies.
+- **Components** (`/components/*`) are interface pieces and text effects: loader, frame, transition, cursor trail, scramble, terminal, glitch and counter. Components are complete pieces you drop in, never generic primitives: buttons, menus, selects, dialogs and the like are what shadcn and Base UI already give readers, so Lilt does not ship them (decided 22 October 2026). Motion worth keeping from that work moves into the charts, where it is native: the hover readout travels between points and its text slides in from the way the pointer moves.
+- **ASCII** (`/ascii/*`) is living scenes drawn in type: lettering, backgrounds, media, data, and the Light, Space, Water and Nature shelves.
+
+Components and ASCII are not an npm package. Their source lives in `registry/` (a private workspace that is never published) and is delivered as shadcn-compatible registry items at `/r/<item>.json`: `npx shadcn@latest add <site>/r/<item>.json` copies the item and the shared pieces it needs (`ascii-engine`, `ascii-canvas`, `ascii-motion` and so on) into the reader's project, and every page also shows the files to copy by hand. Readers own that code. Each item copies only what it uses, so items never import a barrel. The docs import each item by path from `registry/`, so the pages run exactly the code readers get.
+
+The header has three tabs (Charts · Components · ASCII), each with its own rail; the home page runs in the same order. The hero may be ASCII: the type is the kit's signature look. Chart pages still get their personality from chart-native details rather than decoration. The old removal of "recipe generation and registry maintenance" was about chart recipes and still holds for Charts.
 
 ## Card layer (25 September 2026)
 

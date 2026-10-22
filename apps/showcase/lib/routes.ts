@@ -1,4 +1,12 @@
-export type RouteGroup = 'Start' | 'Charts' | 'Finance' | 'Customize' | 'Features' | 'Reference';
+export type RouteGroup =
+  | 'Start'
+  | 'Charts'
+  | 'Finance'
+  | 'Customize'
+  | 'Features'
+  | 'Components'
+  | 'Ascii'
+  | 'Reference';
 /** The job a chart does, which groups the Charts section under quiet subheadings. */
 export type ChartJob = 'Trends' | 'Comparison' | 'Part of a whole' | 'KPIs' | 'Patterns' | 'Cool';
 export type RouteIcon =
@@ -74,7 +82,40 @@ export type RouteIcon =
   | 'numbers'
   | 'palette'
   | 'loading'
-  | 'empty';
+  | 'empty'
+  | 'glow'
+  | 'planet'
+  | 'ember'
+  | 'murmuration'
+  | 'rain'
+  | 'koi'
+  | 'jellyfish'
+  | 'aurora'
+  | 'meadow'
+  | 'sea'
+  | 'galaxy'
+  | 'asciimodel'
+  | 'asciivideo'
+  | 'asciiimage'
+  | 'snow'
+  | 'shore'
+  | 'lavalamp'
+  | 'fireworks'
+  | 'counter'
+  | 'asciiclock'
+  | 'globe'
+  | 'glitch'
+  | 'terminal'
+  | 'scramble'
+  | 'asciilogo'
+  | 'cursortrail'
+  | 'transition'
+  | 'frame'
+  | 'asciiloader'
+  | 'starfield'
+  | 'topography'
+  | 'matrix'
+  | 'dotgrid';
 
 export interface AppRoute {
   id: string;
@@ -889,6 +930,413 @@ export const appRoutes = [
     href: '/features/performance',
     pathname: '/features/performance',
     icon: 'speed',
+    navigation: true,
+    badge: 'New',
+  },
+  {
+    id: 'ascii-glow',
+    group: 'Ascii',
+    label: 'Glow',
+    title: 'Glow',
+    href: '/ascii/glow',
+    pathname: '/ascii/glow',
+    icon: 'glow',
+    navigation: true,
+    badge: 'New',
+  },
+  {
+    id: 'ascii-planet',
+    group: 'Ascii',
+    label: 'Planet',
+    title: 'Planet',
+    href: '/ascii/planet',
+    pathname: '/ascii/planet',
+    icon: 'planet',
+    navigation: true,
+    badge: 'New',
+  },
+  {
+    id: 'ascii-ember',
+    group: 'Ascii',
+    label: 'Campfire',
+    title: 'Campfire',
+    href: '/ascii/ember',
+    pathname: '/ascii/ember',
+    icon: 'ember',
+    navigation: true,
+    badge: 'New',
+  },
+  {
+    id: 'ascii-murmuration',
+    group: 'Ascii',
+    label: 'Murmuration',
+    title: 'Murmuration',
+    href: '/ascii/murmuration',
+    pathname: '/ascii/murmuration',
+    icon: 'murmuration',
+    navigation: true,
+    badge: 'New',
+  },
+  {
+    id: 'ascii-rain',
+    group: 'Ascii',
+    label: 'Rain',
+    title: 'Rain',
+    href: '/ascii/rain',
+    pathname: '/ascii/rain',
+    icon: 'rain',
+    navigation: true,
+    badge: 'New',
+  },
+  {
+    id: 'ascii-koi',
+    group: 'Ascii',
+    label: 'Koi pond',
+    title: 'Koi pond',
+    href: '/ascii/koi',
+    pathname: '/ascii/koi',
+    icon: 'koi',
+    navigation: true,
+    badge: 'New',
+  },
+  {
+    id: 'ascii-jellyfish',
+    group: 'Ascii',
+    label: 'Jellyfish',
+    title: 'Jellyfish',
+    href: '/ascii/jellyfish',
+    pathname: '/ascii/jellyfish',
+    icon: 'jellyfish',
+    navigation: true,
+    badge: 'New',
+  },
+  {
+    id: 'ascii-aurora',
+    group: 'Ascii',
+    label: 'Aurora',
+    title: 'Aurora',
+    href: '/ascii/aurora',
+    pathname: '/ascii/aurora',
+    icon: 'aurora',
+    navigation: true,
+    badge: 'New',
+  },
+  {
+    id: 'ascii-meadow',
+    group: 'Ascii',
+    label: 'Meadow',
+    title: 'Meadow',
+    href: '/ascii/meadow',
+    pathname: '/ascii/meadow',
+    icon: 'meadow',
+    navigation: true,
+    badge: 'New',
+  },
+  {
+    id: 'ascii-sea',
+    group: 'Ascii',
+    label: 'Moonlit sea',
+    title: 'Moonlit sea',
+    href: '/ascii/sea',
+    pathname: '/ascii/sea',
+    icon: 'sea',
+    navigation: true,
+    badge: 'New',
+  },
+  {
+    id: 'ascii-galaxy',
+    group: 'Ascii',
+    label: 'Galaxy',
+    title: 'Galaxy',
+    href: '/ascii/galaxy',
+    pathname: '/ascii/galaxy',
+    icon: 'galaxy',
+    navigation: true,
+    badge: 'New',
+  },
+  {
+    id: 'ascii-area',
+    group: 'Ascii',
+    label: 'Area chart',
+    title: 'Area chart',
+    href: '/ascii/area',
+    pathname: '/ascii/area',
+    icon: 'area',
+    navigation: true,
+    badge: 'New',
+  },
+  {
+    id: 'ascii-bars',
+    group: 'Ascii',
+    label: 'Bar chart',
+    title: 'Bar chart',
+    href: '/ascii/bars',
+    pathname: '/ascii/bars',
+    icon: 'bar',
+    navigation: true,
+    badge: 'New',
+  },
+  {
+    id: 'ascii-heatmap',
+    group: 'Ascii',
+    label: 'Calendar heatmap',
+    title: 'Calendar heatmap',
+    href: '/ascii/heatmap',
+    pathname: '/ascii/heatmap',
+    icon: 'heatmap',
+    navigation: true,
+    badge: 'New',
+  },
+  {
+    id: 'ascii-dot-grid',
+    group: 'Ascii',
+    label: 'Dot grid',
+    title: 'Dot grid',
+    href: '/ascii/dot-grid',
+    pathname: '/ascii/dot-grid',
+    icon: 'dotgrid',
+    navigation: true,
+    badge: 'New',
+  },
+  {
+    id: 'ascii-matrix',
+    group: 'Ascii',
+    label: 'Matrix',
+    title: 'Matrix',
+    href: '/ascii/matrix',
+    pathname: '/ascii/matrix',
+    icon: 'matrix',
+    navigation: true,
+    badge: 'New',
+  },
+  {
+    id: 'ascii-topography',
+    group: 'Ascii',
+    label: 'Topography',
+    title: 'Topography',
+    href: '/ascii/topography',
+    pathname: '/ascii/topography',
+    icon: 'topography',
+    navigation: true,
+    badge: 'New',
+  },
+  {
+    id: 'ascii-starfield',
+    group: 'Ascii',
+    label: 'Starfield',
+    title: 'Starfield',
+    href: '/ascii/starfield',
+    pathname: '/ascii/starfield',
+    icon: 'starfield',
+    navigation: true,
+    badge: 'New',
+  },
+  {
+    id: 'component-loader',
+    group: 'Components',
+    label: 'Loader',
+    title: 'Loader',
+    href: '/components/loader',
+    pathname: '/components/loader',
+    icon: 'asciiloader',
+    navigation: true,
+    badge: 'New',
+  },
+  {
+    id: 'component-frame',
+    group: 'Components',
+    label: 'Frame',
+    title: 'Frame',
+    href: '/components/frame',
+    pathname: '/components/frame',
+    icon: 'frame',
+    navigation: true,
+    badge: 'New',
+  },
+  {
+    id: 'component-transition',
+    group: 'Components',
+    label: 'Transition',
+    title: 'Transition',
+    href: '/components/transition',
+    pathname: '/components/transition',
+    icon: 'transition',
+    navigation: true,
+    badge: 'New',
+  },
+  {
+    id: 'component-cursor-trail',
+    group: 'Components',
+    label: 'Cursor trail',
+    title: 'Cursor trail',
+    href: '/components/cursor-trail',
+    pathname: '/components/cursor-trail',
+    icon: 'cursortrail',
+    navigation: true,
+    badge: 'New',
+  },
+  {
+    id: 'ascii-logo',
+    group: 'Ascii',
+    label: 'Logo',
+    title: 'Logo',
+    href: '/ascii/logo',
+    pathname: '/ascii/logo',
+    icon: 'asciilogo',
+    navigation: true,
+    badge: 'New',
+  },
+  {
+    id: 'component-scramble',
+    group: 'Components',
+    label: 'Scramble',
+    title: 'Scramble',
+    href: '/components/scramble',
+    pathname: '/components/scramble',
+    icon: 'scramble',
+    navigation: true,
+    badge: 'New',
+  },
+  {
+    id: 'component-terminal',
+    group: 'Components',
+    label: 'Terminal',
+    title: 'Terminal',
+    href: '/components/terminal',
+    pathname: '/components/terminal',
+    icon: 'terminal',
+    navigation: true,
+    badge: 'New',
+  },
+  {
+    id: 'component-glitch',
+    group: 'Components',
+    label: 'Glitch',
+    title: 'Glitch',
+    href: '/components/glitch',
+    pathname: '/components/glitch',
+    icon: 'glitch',
+    navigation: true,
+    badge: 'New',
+  },
+  {
+    id: 'ascii-globe',
+    group: 'Ascii',
+    label: 'Globe',
+    title: 'Globe',
+    href: '/ascii/globe',
+    pathname: '/ascii/globe',
+    icon: 'globe',
+    navigation: true,
+    badge: 'New',
+  },
+  {
+    id: 'ascii-clock',
+    group: 'Ascii',
+    label: 'Clock',
+    title: 'Clock',
+    href: '/ascii/clock',
+    pathname: '/ascii/clock',
+    icon: 'asciiclock',
+    navigation: true,
+    badge: 'New',
+  },
+  {
+    id: 'component-counter',
+    group: 'Components',
+    label: 'Counter',
+    title: 'Counter',
+    href: '/components/counter',
+    pathname: '/components/counter',
+    icon: 'counter',
+    navigation: true,
+    badge: 'New',
+  },
+  {
+    id: 'ascii-sparkline',
+    group: 'Ascii',
+    label: 'Sparkline',
+    title: 'Sparkline',
+    href: '/ascii/sparkline',
+    pathname: '/ascii/sparkline',
+    icon: 'sparkline',
+    navigation: true,
+    badge: 'New',
+  },
+  {
+    id: 'ascii-fireworks',
+    group: 'Ascii',
+    label: 'Fireworks',
+    title: 'Fireworks',
+    href: '/ascii/fireworks',
+    pathname: '/ascii/fireworks',
+    icon: 'fireworks',
+    navigation: true,
+    badge: 'New',
+  },
+  {
+    id: 'ascii-lava-lamp',
+    group: 'Ascii',
+    label: 'Lava lamp',
+    title: 'Lava lamp',
+    href: '/ascii/lava-lamp',
+    pathname: '/ascii/lava-lamp',
+    icon: 'lavalamp',
+    navigation: true,
+    badge: 'New',
+  },
+  {
+    id: 'ascii-shore',
+    group: 'Ascii',
+    label: 'Shore',
+    title: 'Shore',
+    href: '/ascii/shore',
+    pathname: '/ascii/shore',
+    icon: 'shore',
+    navigation: true,
+    badge: 'New',
+  },
+  {
+    id: 'ascii-snow',
+    group: 'Ascii',
+    label: 'Snow',
+    title: 'Snow',
+    href: '/ascii/snow',
+    pathname: '/ascii/snow',
+    icon: 'snow',
+    navigation: true,
+    badge: 'New',
+  },
+  {
+    id: 'ascii-image',
+    group: 'Ascii',
+    label: 'Image',
+    title: 'Image',
+    href: '/ascii/image',
+    pathname: '/ascii/image',
+    icon: 'asciiimage',
+    navigation: true,
+    badge: 'New',
+  },
+  {
+    id: 'ascii-video',
+    group: 'Ascii',
+    label: 'Video',
+    title: 'Video',
+    href: '/ascii/video',
+    pathname: '/ascii/video',
+    icon: 'asciivideo',
+    navigation: true,
+    badge: 'New',
+  },
+  {
+    id: 'ascii-model',
+    group: 'Ascii',
+    label: '3D model',
+    title: '3D model',
+    href: '/ascii/model',
+    pathname: '/ascii/model',
+    icon: 'asciimodel',
     navigation: true,
     badge: 'New',
   },

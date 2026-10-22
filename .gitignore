@@ -19,3 +19,6 @@ docs/handoffs/01-evidence/*.png
 __pycache__/
 
 .vercel
+
+# Built from registry/ by registry/build.ts
+apps/showcase/public/r/

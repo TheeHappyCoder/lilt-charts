@@ -7,12 +7,23 @@ import {
   CHARTS_PACKAGE,
   PACKAGE_MANAGERS,
   PACKAGE_MANAGER_STORAGE_KEY,
+  registryAdd,
   type PackageManager,
 } from '@/lib/package-managers';
 import { CopyButton } from './docs-example';
 
-/** The install command in every package manager, remembering the reader's choice. */
-export function InstallCommand({ packages = CHARTS_PACKAGE }: { packages?: string }) {
+/**
+ * The install command in every package manager, remembering the reader's choice: `packages` from
+ * npm, or with `item`, the shadcn command that adds that registry item's source.
+ */
+export function InstallCommand({
+  packages = CHARTS_PACKAGE,
+  item,
+}: {
+  packages?: string;
+  /** A registry item's URL, such as `https://…/r/koi.json`. */
+  item?: string;
+}) {
   const [manager, setManager] = useState<PackageManager>('npm');
   const thumbId = `lilt-install-thumb-${useId()}`;
   const reducedMotion = useReducedMotion();
@@ -35,8 +46,10 @@ export function InstallCommand({ packages = CHARTS_PACKAGE }: { packages?: strin
       // The choice still applies for this visit.
     }
   };
-  const command = (id: PackageManager) =>
-    `${PACKAGE_MANAGERS.find((item) => item.id === id)!.install} ${packages}`;
+  const command = (id: PackageManager) => {
+    const manager = PACKAGE_MANAGERS.find((option) => option.id === id)!;
+    return item ? registryAdd(manager.run, item) : `${manager.install} ${packages}`;
+  };
 
   return (
     <Tabs

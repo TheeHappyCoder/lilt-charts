@@ -13,7 +13,7 @@
     "lint": "pnpm --recursive --if-present lint && pnpm lint:css",
     "lint:css": "stylelint \"packages/charts/src/**/*.css\" \"apps/showcase/app/**/*.css\" \"apps/showcase/components/**/*.css\" && node scripts/check-styles.mjs",
     "format:check": "prettier --check .",
-    "test": "pnpm --filter @lilt-ui/charts test && pnpm exec vitest run --maxWorkers=4 apps/showcase/lib/generated-source.test.ts apps/showcase/lib/api-docs.test.ts apps/showcase/lib/card-docs/card-docs.test.ts apps/showcase/lib/card-docs/public-props.test.ts apps/showcase/lib/card-docs/example-data.test.ts apps/showcase/lib/llms.test.ts apps/showcase/lib/github-stars.test.ts",
+    "test": "pnpm --filter @lilt-ui/charts test && pnpm exec vitest run --maxWorkers=4 apps/showcase/lib/generated-source.test.ts apps/showcase/lib/api-docs.test.ts apps/showcase/lib/card-docs/card-docs.test.ts apps/showcase/lib/card-docs/public-props.test.ts apps/showcase/lib/card-docs/example-data.test.ts apps/showcase/lib/llms.test.ts apps/showcase/lib/github-stars.test.ts apps/showcase/lib/registry.test.ts && pnpm --filter @lilt-ui/registry test",
     "test:package": "pnpm --filter @lilt-ui/charts build && pnpm --filter @lilt-ui/charts pack --out .local-pack/lilt-ui-charts.tgz && pnpm --dir examples/consumers/react install --ignore-workspace --no-frozen-lockfile --force && pnpm --dir examples/consumers/react check:package && pnpm --dir examples/consumers/react build",
     "start": "pnpm --filter @lilt/showcase start"
   },

@@ -1,0 +1,184 @@
+/* ASCII scene pages: a dark stage for the canvas, and the options table. */
+.lilt-ascii-stage {
+  display: grid;
+  margin: 28px 0 0;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  transition: background 240ms ease;
+}
+
+.lilt-ascii-stage__canvas {
+  height: clamp(360px, 62vh, 620px);
+  font-family: var(--font-mono), ui-monospace, monospace;
+  cursor: crosshair;
+}
+
+/* A component at its own size, in the middle of the stage. */
+.lilt-ascii-stage__canvas--center {
+  display: grid;
+  padding: 32px;
+  cursor: default;
+  place-items: center;
+}
+
+.lilt-ascii-stage__touch {
+  padding: 10px 16px 12px;
+  font-size: 12.5px;
+}
+
+.lilt-ascii-playground {
+  display: grid;
+  gap: 14px;
+  margin-top: 28px;
+}
+
+.lilt-ascii-playground > .lilt-ascii-stage {
+  margin: 0;
+}
+
+/* The Customize panel: a quiet frame of setting tiles under the stage. */
+.lilt-ascii-panel {
+  display: grid;
+  gap: 12px;
+  padding: 14px;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: color-mix(in srgb, var(--foreground) 1.5%, transparent);
+}
+
+.lilt-ascii-panel__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 2px;
+}
+
+.lilt-ascii-panel__head h2 {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.lilt-ascii-panel__reset {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 28px;
+  padding: 0 10px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--muted-foreground);
+  font: inherit;
+  font-size: 12.5px;
+  cursor: pointer;
+}
+
+.lilt-ascii-panel__reset:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+@media (hover: hover) {
+  .lilt-ascii-panel__reset:not(:disabled):hover {
+    background: color-mix(in srgb, var(--foreground) 6%, transparent);
+    color: var(--foreground);
+  }
+}
+
+.lilt-ascii-options {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.lilt-ascii-options th,
+.lilt-ascii-options td {
+  padding: 10px 12px 10px 0;
+  border-bottom: 1px solid var(--border);
+  text-align: left;
+  vertical-align: top;
+}
+
+.lilt-ascii-options thead th {
+  color: var(--muted-foreground);
+  font-weight: 500;
+}
+
+.lilt-ascii-options code {
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+/* The files a reader copies by hand: one row per file, its path in mono, opening to its source.
+   Shared pieces name the item they come from. */
+.lilt-registry-files {
+  display: grid;
+  margin-top: 12px;
+  border-top: 1px solid var(--border);
+}
+
+.lilt-registry-files__file {
+  border-bottom: 1px solid var(--border);
+}
+
+.lilt-registry-files__file summary {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 0;
+  cursor: pointer;
+  list-style: none;
+}
+
+.lilt-registry-files__file summary::-webkit-details-marker {
+  display: none;
+}
+
+.lilt-registry-files__file summary code {
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 12px;
+  overflow-wrap: anywhere;
+}
+
+.lilt-registry-files__file summary span {
+  color: var(--muted-foreground);
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+.lilt-registry-files__file[open] summary {
+  padding-bottom: 8px;
+}
+
+.lilt-registry-files__file[open] {
+  padding-bottom: 12px;
+}
+
+/* Base UI kit pages: each example on a quiet stage, the component centred in room to open. */
+.lilt-kit-example + .lilt-kit-example {
+  margin-top: 40px;
+}
+.lilt-kit-example__head {
+  margin-bottom: 14px;
+}
+.lilt-kit-example__head h2 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+.lilt-kit-example__head p {
+  margin: 6px 0 0;
+  color: var(--muted-foreground);
+  font-size: 14px;
+}
+.lilt-kit-stage {
+  display: grid;
+  min-height: 280px;
+  place-items: center;
+  padding: 48px 24px;
+}

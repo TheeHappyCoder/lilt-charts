@@ -158,16 +158,14 @@ main.lilt-scroll-area__viewport:focus-visible {
 :root {
   --studio-ease: cubic-bezier(0.22, 1, 0.36, 1);
   --lilt-logo-ink: #111111;
-  --lilt-logo-charts: #6b6e74;
   --lilt-logo-dot: var(--brand-primary);
 }
 .dark {
   --lilt-logo-ink: #f5f5f5;
-  --lilt-logo-charts: #8d939d;
 }
 .lilt-shell__brand-logo {
   display: block;
-  width: 90px;
+  width: 33px;
   height: auto;
   flex: 0 0 auto;
 }
@@ -177,24 +175,8 @@ main.lilt-scroll-area__viewport:focus-visible {
 .lilt-logo__dot {
   fill: var(--lilt-logo-dot);
 }
-.lilt-logo__charts {
-  fill: var(--lilt-logo-charts);
-}
 .lilt-main {
   width: min(1120px, 100%);
-}
-.lilt-button {
-  min-height: 36px;
-  border-radius: 8px;
-  font-size: 12px;
-  transition:
-    background 160ms,
-    color 160ms,
-    border-color 160ms,
-    transform 160ms var(--studio-ease);
-}
-.lilt-button:active:not(:disabled) {
-  transform: scale(0.97);
 }
 .lilt-code-block {
   counter-reset: source-line;
@@ -235,8 +217,4 @@ main.lilt-scroll-area__viewport:focus-visible {
 .dark .lilt-code-number {
   color: #e5b66d;
 }
-@media (prefers-reduced-motion: reduce) {
-  .lilt-button {
-    transition: none;
-  }
-}
+

@@ -10,8 +10,8 @@ import { useEffect, useId, useRef } from 'react';
 import { AUTO, controls, useChartSettings, type Control } from '@/components/docs/chart-settings';
 import {
   Select,
+  SelectContent,
   SelectItem,
-  SelectPopup,
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
@@ -169,13 +169,13 @@ export function StyleMenu() {
           >
             <SelectValue />
           </SelectTrigger>
-          <SelectPopup className="lilt-style-menu__select-popup" align="end">
+          <SelectContent className="lilt-style-menu__select-popup" align="end">
             {control.options.map((option) => (
               <SelectItem key={option.value} value={option.value}>
                 {textOf(option.label, option.value)}
               </SelectItem>
             ))}
-          </SelectPopup>
+          </SelectContent>
         </Select>
       </div>
     );

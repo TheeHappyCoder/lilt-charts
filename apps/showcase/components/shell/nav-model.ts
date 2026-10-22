@@ -20,8 +20,6 @@ import ChartBubble01Icon from '@hugeicons/core-free-icons/ChartBubble01Icon';
 import ChartLineData01Icon from '@hugeicons/core-free-icons/ChartLineData01Icon';
 import CoinsDollarIcon from '@hugeicons/core-free-icons/CoinsDollarIcon';
 import GridViewIcon from '@hugeicons/core-free-icons/GridViewIcon';
-import SlidersHorizontalIcon from '@hugeicons/core-free-icons/SlidersHorizontalIcon';
-import BookOpen01Icon from '@hugeicons/core-free-icons/BookOpen01Icon';
 import SparklesIcon from '@hugeicons/core-free-icons/SparklesIcon';
 import ChartAreaIcon from '@hugeicons/core-free-icons/ChartAreaIcon';
 import ChartColumnIcon from '@hugeicons/core-free-icons/ChartColumnIcon';
@@ -50,6 +48,35 @@ import CubeIcon from '@hugeicons/core-free-icons/CubeIcon';
 import LeftToRightListBulletIcon from '@hugeicons/core-free-icons/LeftToRightListBulletIcon';
 import WaveIcon from '@hugeicons/core-free-icons/WaveIcon';
 import WorkflowSquare05Icon from '@hugeicons/core-free-icons/WorkflowSquare05Icon';
+import FireIcon from '@hugeicons/core-free-icons/FireIcon';
+import BirdIcon from '@hugeicons/core-free-icons/BirdIcon';
+import CloudRainIcon from '@hugeicons/core-free-icons/CloudRainIcon';
+import Saturn01Icon from '@hugeicons/core-free-icons/Saturn01Icon';
+import TerminalIcon from '@hugeicons/core-free-icons/TerminalIcon';
+import FishIcon from '@hugeicons/core-free-icons/FishIcon';
+import GhostIcon from '@hugeicons/core-free-icons/GhostIcon';
+import Leaf01Icon from '@hugeicons/core-free-icons/Leaf01Icon';
+import Moon02Icon from '@hugeicons/core-free-icons/Moon02Icon';
+import GalaxyIcon from '@hugeicons/core-free-icons/GalaxyIcon';
+import WebcamIcon from '@hugeicons/core-free-icons/WebcamIcon';
+import Image01Icon from '@hugeicons/core-free-icons/Image01Icon';
+import SnowIcon from '@hugeicons/core-free-icons/SnowIcon';
+import BeachIcon from '@hugeicons/core-free-icons/BeachIcon';
+import Lamp01Icon from '@hugeicons/core-free-icons/Lamp01Icon';
+import FireworksIcon from '@hugeicons/core-free-icons/FireworksIcon';
+import Calculator01Icon from '@hugeicons/core-free-icons/Calculator01Icon';
+import EarthIcon from '@hugeicons/core-free-icons/EarthIcon';
+import ImageNotFound01Icon from '@hugeicons/core-free-icons/ImageNotFound01Icon';
+import ComputerTerminal01Icon from '@hugeicons/core-free-icons/ComputerTerminal01Icon';
+import ShuffleIcon from '@hugeicons/core-free-icons/ShuffleIcon';
+import TextFontIcon from '@hugeicons/core-free-icons/TextFontIcon';
+import CursorMagicSelection02Icon from '@hugeicons/core-free-icons/CursorMagicSelection02Icon';
+import TransitionRightIcon from '@hugeicons/core-free-icons/TransitionRightIcon';
+import BorderFullIcon from '@hugeicons/core-free-icons/BorderFullIcon';
+import StarsIcon from '@hugeicons/core-free-icons/StarsIcon';
+import MountainIcon from '@hugeicons/core-free-icons/MountainIcon';
+import BinaryCodeIcon from '@hugeicons/core-free-icons/BinaryCodeIcon';
+import { asciiScene, asciiShelves, componentShelves } from '@/lib/ascii-scenes';
 import { appRoutes, type AppRoute, type RouteGroup, type RouteIcon } from '@/lib/routes';
 
 /**
@@ -130,35 +157,62 @@ export const icons: Record<RouteIcon, IconSvgElement> = {
   speed: DashboardSpeed02Icon,
   loading: Loading03Icon,
   empty: InboxIcon,
+  glow: SparklesIcon,
+  planet: Saturn01Icon,
+  ember: FireIcon,
+  murmuration: BirdIcon,
+  rain: CloudRainIcon,
+  koi: FishIcon,
+  jellyfish: GhostIcon,
+  aurora: WaveIcon,
+  meadow: Leaf01Icon,
+  sea: Moon02Icon,
+  galaxy: GalaxyIcon,
+  asciimodel: CubeIcon,
+  asciivideo: WebcamIcon,
+  asciiimage: Image01Icon,
+  snow: SnowIcon,
+  shore: BeachIcon,
+  lavalamp: Lamp01Icon,
+  fireworks: FireworksIcon,
+  counter: Calculator01Icon,
+  asciiclock: Clock01Icon,
+  globe: EarthIcon,
+  glitch: ImageNotFound01Icon,
+  terminal: ComputerTerminal01Icon,
+  scramble: ShuffleIcon,
+  asciilogo: TextFontIcon,
+  cursortrail: CursorMagicSelection02Icon,
+  transition: TransitionRightIcon,
+  frame: BorderFullIcon,
+  asciiloader: Loading03Icon,
+  starfield: StarsIcon,
+  topography: MountainIcon,
+  matrix: BinaryCodeIcon,
+  dotgrid: GridIcon,
 };
 
-export type Tab = 'charts' | 'customize' | 'features' | 'docs';
+export type Tab = 'charts' | 'components' | 'ascii';
 
+/**
+ * The kit's three lines. Charts is the npm library; Components and ASCII are source you add from
+ * the registry. Each opens its own rail of pages.
+ */
 export const tabs: readonly { value: Tab; label: string; icon: IconSvgElement }[] = [
   { value: 'charts', label: 'Charts', icon: GridViewIcon },
-  { value: 'customize', label: 'Customize', icon: SlidersHorizontalIcon },
-  { value: 'features', label: 'Features', icon: SparklesIcon },
-  { value: 'docs', label: 'Docs', icon: BookOpen01Icon },
+  { value: 'components', label: 'Components', icon: DashboardSquare01Icon },
+  { value: 'ascii', label: 'ASCII', icon: TerminalIcon },
 ];
 
-/** Which tab a page lives under: charts and finance, what applies to every chart, what charts
-    do, and the rest (getting started and reference). */
+/** Which line a page belongs to: a component, an ASCII scene, or charts and everything about them. */
 export const tabOf = (group: RouteGroup): Tab =>
-  group === 'Charts' || group === 'Finance'
-    ? 'charts'
-    : group === 'Customize'
-      ? 'customize'
-      : group === 'Features'
-        ? 'features'
-        : 'docs';
+  group === 'Components' ? 'components' : group === 'Ascii' ? 'ascii' : 'charts';
 
 export interface TileGroup {
   key: string;
   /** A quiet heading over the tiles; none for a group that needs no name. */
   heading?: string;
   routes: readonly AppRoute[];
-  /** One tile across the whole row, for the way in. */
-  wide?: boolean;
 }
 
 const allRoutes: readonly AppRoute[] = appRoutes;
@@ -168,6 +222,7 @@ const topIn = (group: RouteGroup) => navRoutes.filter((r) => r.group === group &
 const withNested = (routes: readonly AppRoute[]): AppRoute[] =>
   routes.flatMap((route) => [route, ...withNested(navRoutes.filter((r) => r.parent === route.id))]);
 
+/** Every chart family by the job it does, then Finance: the gallery's shelves. */
 function chartGroups(): TileGroup[] {
   const charts = topIn('Charts');
   const jobs = [...new Set(charts.map((route) => route.job))];
@@ -181,20 +236,47 @@ function chartGroups(): TileGroup[] {
   ];
 }
 
+export const familyGroups: readonly TileGroup[] = chartGroups();
+export const startRoutes = topIn('Start');
+export const customizeRoutes = topIn('Customize');
+export const featureRoutes = withNested(topIn('Features'));
+export const referenceRoutes = topIn('Reference');
+
+/**
+ * A registry line's rail: its pages on their shelves, leaving out empty shelves. A page's shelf
+ * comes from the ASCII docs.
+ */
+function shelvesOf(group: 'Components' | 'Ascii', shelves: readonly string[]): TileGroup[] {
+  const prefix = group === 'Components' ? 'component-' : 'ascii-';
+  const shelfOf = (id: string) => asciiScene(id)?.shelf;
+  return shelves
+    .map((shelf) => ({
+      key: `${group.toLowerCase()}-${shelf}`,
+      heading: shelf,
+      routes: topIn(group).filter((route) => shelfOf(route.id.replace(prefix, '')) === shelf),
+    }))
+    .filter((tiles) => tiles.routes.length > 0);
+}
+
+/**
+ * Each product's rail. Charts opens on the way in, then the families, then what applies to every
+ * chart, what charts do, and the reference.
+ */
 export const groupsByTab: Record<Tab, readonly TileGroup[]> = {
-  charts: chartGroups(),
-  customize: [{ key: 'customize', routes: topIn('Customize') }],
-  features: [{ key: 'features', routes: withNested(topIn('Features')) }],
-  docs: [
-    { key: 'start', routes: topIn('Start'), wide: true },
-    { key: 'reference', heading: 'Reference', routes: topIn('Reference') },
+  charts: [
+    { key: 'start', routes: startRoutes },
+    ...familyGroups,
+    { key: 'customize', heading: 'Customize', routes: customizeRoutes },
+    { key: 'features', heading: 'Features', routes: featureRoutes },
+    { key: 'reference', heading: 'Reference', routes: referenceRoutes },
   ],
+  components: shelvesOf('Components', componentShelves),
+  ascii: shelvesOf('Ascii', asciiShelves),
 };
 
-/** Where each place opens: the chart gallery, or the first page of the others. */
+/** Where each product opens: the chart gallery, or its first page. */
 export const tabHref: Record<Tab, string> = {
   charts: '/charts',
-  customize: groupsByTab.customize[0]!.routes[0]!.href,
-  features: groupsByTab.features[0]!.routes[0]!.href,
-  docs: groupsByTab.docs[0]!.routes[0]!.href,
+  components: groupsByTab.components[0]!.routes[0]!.href,
+  ascii: groupsByTab.ascii[0]!.routes[0]!.href,
 };

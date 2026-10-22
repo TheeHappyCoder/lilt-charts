@@ -4,8 +4,8 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "next dev --hostname 0.0.0.0 --port 5173",
-    "build": "next build --webpack",
+    "dev": "node ../../registry/build.ts && next dev --hostname 0.0.0.0 --port 5173",
+    "build": "node ../../registry/build.ts && next build --webpack",
     "start": "next start --hostname 0.0.0.0 --port 5173",
     "typecheck": "tsc --noEmit",
     "lint": "eslint app components lib",
@@ -15,6 +15,7 @@
     "@base-ui/react": "1.6.0",
     "@hugeicons/core-free-icons": "4.3.5",
     "@hugeicons/react": "1.1.10",
+    "@lilt-ui/registry": "workspace:*",
     "@lilt-ui/charts": "workspace:*",
     "@vercel/analytics": "^2.0.1",
     "clsx": "2.1.1",

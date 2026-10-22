@@ -8,7 +8,25 @@ const nextConfig: NextConfig = {
   devIndicators: false,
   // Lets other devices on the local network load the dev server's scripts (development only).
   allowedDevOrigins: ['10.0.0.122'],
-  transpilePackages: ['@lilt-ui/charts'],
+  // The registry's package.json exports its TypeScript source, so it needs no alias.
+  transpilePackages: ['@lilt-ui/charts', '@lilt-ui/registry'],
+  // Interface pieces and text effects moved from ASCII to Components; old links still land.
+  async redirects() {
+    return [
+      'loader',
+      'frame',
+      'transition',
+      'cursor-trail',
+      'scramble',
+      'terminal',
+      'glitch',
+      'counter',
+    ].map((slug) => ({
+      source: `/ascii/${slug}`,
+      destination: `/components/${slug}`,
+      permanent: true,
+    }));
+  },
   turbopack: {
     resolveAlias: {
       '@lilt-ui/charts/finance': '../../packages/charts/src/finance/index.ts',

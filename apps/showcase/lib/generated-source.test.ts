@@ -98,6 +98,8 @@ describe('retained chart previews', () => {
           route.group === 'Features' ||
           route.group === 'Start' ||
           route.group === 'Customize' ||
+          route.group === 'Components' ||
+          route.group === 'Ascii' ||
           route.group === 'Reference',
       ),
     ).toBe(true);

@@ -1,0 +1,24 @@
+{
+  "name": "@lilt-ui/registry",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Source for Lilt UI's Components and ASCII scenes. Never published: readers add items with the shadcn CLI from the /r/ registry the docs site serves.",
+  "author": "Lilt UI",
+  "type": "module",
+  "exports": {
+    ".": "./ascii/index.ts",
+    "./items": "./items.ts"
+  },
+  "sideEffects": false,
+  "scripts": {
+    "build": "node build.ts",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint ascii items.ts build.ts",
+    "test": "vitest run",
+    "format:check": "prettier --check ascii items.ts build.ts vitest.config.ts tsconfig.json"
+  },
+  "peerDependencies": {
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  }
+}

@@ -10,19 +10,27 @@ import { GitHubStars } from '@/components/github-stars';
 import type { GitHubStars as Stars } from '@/lib/github-stars';
 import { HeaderSearch } from './docs-search';
 import { LiltLogo } from './logo';
-import { groupsByTab, tabHref, tabs, type Tab } from './nav-model';
+import { familyGroups, groupsByTab, tabHref, tabs, type Tab, type TileGroup } from './nav-model';
+import { pageScroller } from './page-scroll';
 import { StyleMenuTrigger } from './style-menu';
 import { ThemeSegmented } from './theme-switcher';
 
 const SPRING = { type: 'spring', stiffness: 520, damping: 42 } as const;
 
-/** How many chart families there are, shown beside Charts like a shelf's label. */
-const CHART_COUNT = groupsByTab.charts.reduce((sum, group) => sum + group.routes.length, 0);
+const countOf = (groups: readonly TileGroup[]) =>
+  groups.reduce((sum, group) => sum + group.routes.length, 0);
+
+/** How many chart families, components and scenes there are, beside each line like a shelf's label. */
+const COUNTS: Record<Tab, number> = {
+  charts: countOf(familyGroups),
+  components: countOf(groupsByTab.components),
+  ascii: countOf(groupsByTab.ascii),
+};
 
 /**
- * One bar across the top of every page: the wordmark and the four places to browse on the left;
- * search, the chart style, the theme, GitHub and the way in on the right. It is clear over the
- * page until the page scrolls under it.
+ * One bar across the top of every page: the wordmark and the product lines on the left;
+ * search, the chart style (on chart pages only), the theme, GitHub and the way in on the right.
+ * It is clear over the page until the page scrolls under it.
  */
 export function SiteHeader({
   tab,
@@ -38,10 +46,12 @@ export function SiteHeader({
   const reduced = Boolean(useReducedMotion());
   const [scrolled, setScrolled] = useState(false);
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 4);
+    const scroller = pageScroller();
+    if (!scroller) return;
+    const onScroll = () => setScrolled(scroller.scrollTop > 4);
     onScroll();
-    window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
+    scroller.addEventListener('scroll', onScroll, { passive: true });
+    return () => scroller.removeEventListener('scroll', onScroll);
   }, []);
 
   return (
@@ -57,7 +67,7 @@ export function SiteHeader({
             <Icon icon={Menu01Icon} size={18} strokeWidth={1.7} aria-hidden="true" />
           </button>
         ) : null}
-        <Link href="/" className="lilt-header__brand" aria-label="Lilt Charts home">
+        <Link href="/" className="lilt-header__brand" aria-label="Lilt UI home">
           <LiltLogo className="lilt-header__logo" />
         </Link>
         <nav className="lilt-header__nav" aria-label="Sections">
@@ -79,9 +89,7 @@ export function SiteHeader({
                   />
                 ) : null}
                 <span className="lilt-header__link-text">{option.label}</span>
-                {option.value === 'charts' ? (
-                  <span className="lilt-header__count">{CHART_COUNT}</span>
-                ) : null}
+                <span className="lilt-header__count">{COUNTS[option.value]}</span>
               </Link>
             );
           })}
@@ -89,7 +97,8 @@ export function SiteHeader({
 
         <div className="lilt-header__actions">
           <HeaderSearch className="lilt-header__search" wide />
-          <StyleMenuTrigger />
+          {/* Chart style is the charts' own control; Components, ASCII and home have no use for it. */}
+          {tab === 'charts' ? <StyleMenuTrigger /> : null}
           <ThemeSegmented />
           <span className="lilt-header__github">
             {/* A count only says something once it is large; until then the mark stands alone. */}

@@ -1,0 +1,122 @@
+/*
+ * Lilt's select, on the shared surface (lib/surface.css) and list rows (lib/list.css). Colours come from the shadcn theme variables your app already defines
+ * (--background, --foreground, --muted-foreground, --popover, --border, --input, --ring,
+ * --radius), each with a fallback, so it follows light, dark, and any `.dark` subtree.
+ */
+
+.lilt-select__trigger {
+  position: relative;
+  display: inline-flex;
+  min-width: 140px;
+  height: 36px;
+  align-items: center;
+  gap: 8px;
+  padding: 0 34px 0 12px;
+  border: 1px solid var(--input, var(--border, rgb(0 0 0 / 0.12)));
+  border-radius: calc(var(--radius, 12px) - 2px);
+  background: var(--background, #fff);
+  box-shadow: 0 1px 2px rgb(0 0 0 / 0.04);
+  color: var(--foreground, #18181b);
+  font: inherit;
+  font-size: 14px;
+  text-align: left;
+  cursor: pointer;
+  transition:
+    border-color 150ms ease,
+    box-shadow 150ms ease,
+    scale 150ms ease-out;
+}
+/* Hover and open firm the edge; the trigger itself stays solid. */
+.lilt-select__trigger:hover {
+  border-color: color-mix(in srgb, var(--foreground, #18181b) 20%, transparent);
+}
+.lilt-select__trigger[data-popup-open] {
+  border-color: color-mix(in srgb, var(--foreground, #18181b) 26%, transparent);
+  box-shadow:
+    0 1px 2px rgb(0 0 0 / 0.04),
+    0 0 0 3px color-mix(in srgb, var(--foreground, #18181b) 5%, transparent);
+}
+.lilt-select__trigger:active {
+  scale: 0.98;
+}
+.lilt-select__trigger:focus-visible {
+  outline: 2px solid var(--ring, #7c5cff);
+  outline-offset: 2px;
+}
+.lilt-select__trigger[data-disabled] {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* The value swaps in place: the new label rises in as the old one leaves over it. */
+.lilt-select__value {
+  position: relative;
+  display: inline-flex;
+  min-width: 0;
+  overflow: hidden;
+}
+.lilt-select__value > span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.lilt-select__value [data-placeholder] {
+  color: var(--muted-foreground, #71717a);
+}
+
+.lilt-select__chevron {
+  position: absolute;
+  right: 12px;
+  display: flex;
+  color: var(--muted-foreground, #71717a);
+  pointer-events: none;
+  transition: rotate 200ms cubic-bezier(0.23, 1, 0.32, 1);
+}
+.lilt-select__trigger[data-popup-open] .lilt-select__chevron {
+  rotate: 180deg;
+}
+
+.lilt-select__positioner {
+  z-index: 50;
+  outline: none;
+}
+
+/* The list sits on Lilt's frosted surface and holds Lilt's list rows. */
+.lilt-select__popup {
+  min-width: max(var(--anchor-width), 148px);
+  max-height: var(--available-height);
+  padding: 4px;
+  overflow-y: auto;
+}
+
+.lilt-select__item {
+  justify-content: space-between;
+  gap: 12px;
+}
+.lilt-select__item[data-selected] {
+  font-weight: 600;
+}
+
+.lilt-select__scroll {
+  position: absolute;
+  z-index: 2;
+  right: 0;
+  left: 0;
+  height: 16px;
+  pointer-events: none;
+}
+.lilt-select__scroll[data-edge='top'] {
+  top: 0;
+  background: linear-gradient(var(--popover, var(--background, #fff)), transparent);
+}
+.lilt-select__scroll[data-edge='bottom'] {
+  bottom: 0;
+  background: linear-gradient(transparent, var(--popover, var(--background, #fff)));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lilt-select__trigger,
+  .lilt-select__chevron {
+    transition: opacity 120ms ease;
+  }
+}

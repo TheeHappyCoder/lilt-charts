@@ -22,7 +22,7 @@
   top: 24px;
   left: 28px;
   display: block;
-  width: 116px;
+  width: 43px;
   border-radius: 8px;
 }
 .lilt-lost__brand:focus-visible {
@@ -83,7 +83,7 @@
   .lilt-lost__brand {
     top: 18px;
     left: 20px;
-    width: 96px;
+    width: 36px;
   }
   .lilt-lost__copy {
     padding-top: clamp(88px, 14svh, 120px);

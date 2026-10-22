@@ -2,6 +2,7 @@
 
 import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import { pageScroller } from './page-scroll';
 
 interface Heading {
   id: string;
@@ -47,20 +48,21 @@ export function SiteToc() {
   }, [pathname]);
 
   useEffect(() => {
-    if (headings.length < 2) return;
+    const scroller = pageScroller();
+    if (headings.length < 2 || !scroller) return;
     const onScroll = () => {
-      const line = window.innerHeight * 0.3;
+      const line = scroller.clientHeight * 0.3;
       let current = headings[0]!.id;
       for (const heading of headings) {
         const element = document.getElementById(heading.id);
         if (element && element.getBoundingClientRect().top <= line) current = heading.id;
       }
-      const bottom = window.innerHeight + window.scrollY >= document.body.scrollHeight - 4;
+      const bottom = scroller.scrollTop + scroller.clientHeight >= scroller.scrollHeight - 4;
       setActive(bottom ? headings.at(-1)!.id : current);
     };
     onScroll();
-    window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
+    scroller.addEventListener('scroll', onScroll, { passive: true });
+    return () => scroller.removeEventListener('scroll', onScroll);
   }, [headings]);
 
   if (headings.length < 2) return null;

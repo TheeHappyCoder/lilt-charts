@@ -1,0 +1,280 @@
+/* Settings tiles: a soft tile per setting, in the sidebar's track material. */
+.lilt-field-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 8px;
+}
+
+.lilt-field {
+  position: relative;
+  display: flex;
+  min-width: 0;
+  min-height: 46px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  overflow: hidden;
+  padding: 0 14px;
+  border: 0;
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--foreground) 3%, transparent);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--foreground) 7%, transparent);
+  color: var(--foreground);
+  font: inherit;
+  font-size: 13px;
+  text-align: left;
+}
+
+.lilt-field__label {
+  position: relative;
+  z-index: 1;
+  overflow: hidden;
+  color: var(--muted-foreground);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.lilt-field__value {
+  position: relative;
+  z-index: 1;
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 12.5px;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Range: the tile fills as the value rises, with a bright edge where it stops. */
+.lilt-field__fill {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: calc(var(--lilt-field-share) * 100%);
+  border-right: 2px solid color-mix(in srgb, var(--foreground) 45%, transparent);
+  background: color-mix(in srgb, var(--foreground) 6%, transparent);
+  transition: border-color 160ms ease;
+}
+
+.lilt-field__range {
+  position: absolute;
+  z-index: 2;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  opacity: 0;
+  cursor: ew-resize;
+}
+
+.lilt-field--range:focus-within {
+  box-shadow:
+    inset 0 0 0 1px color-mix(in srgb, var(--foreground) 7%, transparent),
+    0 0 0 2px var(--ring);
+}
+
+.lilt-field--range:active .lilt-field__fill {
+  border-color: var(--brand-primary);
+}
+
+/* Switch: off is a quiet track; on takes the brand's violet-to-rose. */
+.lilt-field--switch {
+  cursor: pointer;
+}
+
+.lilt-field__switch {
+  position: relative;
+  flex: none;
+  width: 34px;
+  height: 20px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--foreground) 12%, transparent);
+  transition: background 200ms ease;
+}
+
+.lilt-field__switch > span {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 14px;
+  height: 14px;
+  border-radius: 999px;
+  background: var(--background);
+  box-shadow: 0 1px 2px rgb(0 0 0 / 0.25);
+  transition: translate 220ms cubic-bezier(0.3, 1.4, 0.5, 1);
+}
+
+.lilt-field--switch[aria-checked='true'] .lilt-field__switch {
+  background: var(--lilt-brand-gradient);
+}
+
+.lilt-field--switch[aria-checked='true'] .lilt-field__switch > span {
+  background: #fff;
+  translate: 14px 0;
+}
+
+.lilt-field--switch:focus-visible,
+.lilt-field--choice:focus-within {
+  outline: 2px solid var(--ring);
+  outline-offset: 1px;
+}
+
+/* Choice: a native select that reads as the tile's value. */
+/* The kit's select, sitting flat in the tile: the value on the right with its chevron. */
+.lilt-field .lilt-field__select {
+  z-index: 1;
+  min-width: 0;
+  height: 28px;
+  justify-content: flex-end;
+  padding: 0 24px 0 8px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  box-shadow: none;
+  font-size: inherit;
+  font-weight: 500;
+}
+.lilt-field .lilt-field__select .lilt-select__chevron {
+  right: 6px;
+}
+
+.lilt-field .lilt-field__select:hover,
+.lilt-field .lilt-field__select[data-popup-open] {
+  box-shadow: none;
+  background: color-mix(in srgb, var(--foreground) 6%, transparent);
+}
+
+/* Colours: a row of swatches, each a native picker. */
+.lilt-field--colors {
+  display: grid;
+  grid-row: span 2;
+  align-content: start;
+  gap: 10px;
+  padding: 12px 12px 12px 14px;
+}
+
+.lilt-field__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.lilt-field__steps {
+  display: inline-flex;
+  gap: 2px;
+}
+
+.lilt-field__steps button {
+  display: inline-grid;
+  width: 24px;
+  height: 24px;
+  place-items: center;
+  border: 0;
+  border-radius: 7px;
+  background: transparent;
+  color: var(--muted-foreground);
+  cursor: pointer;
+}
+
+.lilt-field__steps button:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+.lilt-field__swatches {
+  display: grid;
+  grid-auto-columns: 1fr;
+  grid-auto-flow: column;
+  gap: 6px;
+}
+
+.lilt-field__swatch {
+  position: relative;
+  height: 40px;
+  border-radius: 9px;
+  box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.14);
+  cursor: pointer;
+  transition: scale 160ms ease;
+}
+
+.lilt-field__swatch input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.lilt-field__swatch:focus-within {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+
+@media (hover: hover) {
+  .lilt-field--switch:hover,
+  .lilt-field--choice:hover,
+  .lilt-field--range:hover {
+    background: color-mix(in srgb, var(--foreground) 4.5%, transparent);
+  }
+
+  .lilt-field__steps button:not(:disabled):hover {
+    background: color-mix(in srgb, var(--foreground) 8%, transparent);
+    color: var(--foreground);
+  }
+
+  .lilt-field__swatch:hover {
+    scale: 1.03;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lilt-field__switch > span,
+  .lilt-field__swatch {
+    transition: none;
+  }
+}
+
+/* One colour: its hex beside a chip; the whole tile opens the picker. */
+.lilt-field__color {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--muted-foreground);
+}
+
+.lilt-field__chip {
+  width: 18px;
+  height: 18px;
+  border-radius: 6px;
+  box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.16);
+}
+
+.lilt-field--color input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.lilt-field--color:focus-within {
+  outline: 2px solid var(--ring);
+  outline-offset: 1px;
+}
+
+/* Text: the value is an input that reads as plain type until it is focused. */
+.lilt-field__text {
+  min-width: 0;
+  flex: 1;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--foreground);
+  outline: none;
+  text-align: right;
+}
+
+.lilt-field--text:focus-within {
+  box-shadow:
+    inset 0 0 0 1px color-mix(in srgb, var(--foreground) 7%, transparent),
+    0 0 0 2px var(--ring);
+}

@@ -27,9 +27,9 @@ const apiTopicRoutes: readonly AppRoute[] = apiTopics.map((topic) => ({
 }));
 
 const sections: readonly CommandSection<AppRoute>[] = [
-  ...(['Start', 'Charts', 'Finance', 'Customize', 'Features', 'Reference'] as const).map(
+  ...(['Start', 'Charts', 'Finance', 'Customize', 'Features', 'Ascii', 'Reference'] as const).map(
     (group) => ({
-      label: group === 'Start' ? 'Get started' : group,
+      label: group === 'Start' ? 'Get started' : group === 'Ascii' ? 'ASCII' : group,
       items: appRoutes.filter((route) => route.navigation && route.group === group),
     }),
   ),

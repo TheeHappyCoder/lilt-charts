@@ -1,0 +1,38 @@
+import { join } from 'node:path';
+import { describe, expect, it } from 'vitest';
+import { resolveItems, sourceOf } from '@lilt-ui/registry/items';
+import { asciiScenes, sectionOf } from './ascii-scenes';
+
+const root = join(import.meta.dirname, '..', '..', '..', 'registry');
+const items = resolveItems(root);
+
+describe('registry', () => {
+  it('has an item for every Components and ASCII page, in the same section', () => {
+    for (const scene of asciiScenes) {
+      const item = items.find((candidate) => candidate.name === scene.id);
+      expect(item, scene.id).toBeDefined();
+      expect(item!.component, scene.id).toBe(scene.component);
+      expect(item!.section, scene.id).toBe(sectionOf(scene));
+    }
+  });
+
+  it("exports each item's component from its entry file", () => {
+    for (const item of items.filter((candidate) => candidate.component)) {
+      expect(sourceOf(root, item.files[0]!), item.name).toMatch(
+        new RegExp(`export (function|const) ${item.component}\\b`),
+      );
+    }
+  });
+
+  it('never copies the barrel or a demo, and depends only on items that exist', () => {
+    const names = new Set(items.map((item) => item.name));
+    for (const item of items) {
+      expect(item.files, item.name).not.toContain('ascii/index.ts');
+      expect(
+        item.files.some((file) => file.includes('/demos/')),
+        item.name,
+      ).toBe(false);
+      for (const dependency of item.registryDependencies) expect(names).toContain(dependency);
+    }
+  });
+});

@@ -2,7 +2,7 @@ import { HugeiconsIcon as Icon } from '@hugeicons/react';
 import ArrowUpRight01Icon from '@hugeicons/core-free-icons/ArrowUpRight01Icon';
 import Link from 'next/link';
 import { ChartGlyph } from '@/components/shell/chart-glyph';
-import { groupsByTab } from '@/components/shell/nav-model';
+import { familyGroups } from '@/components/shell/nav-model';
 import { chartDocs } from '@/lib/card-docs/registry';
 import { featureCards } from '@/lib/home-showcase';
 import { appRoutes, type AppRoute } from '@/lib/routes';
@@ -62,7 +62,7 @@ export function ChartGallery() {
   let index = 0;
   return (
     <div className="lilt-gallery">
-      {groupsByTab.charts.map((group) => (
+      {familyGroups.map((group) => (
         <section
           key={group.key}
           className="lilt-gallery__group"

@@ -1,3 +1,4 @@
+import { scenePath, scenesIn, type AsciiSceneDoc } from './ascii-scenes';
 import {
   sunburstTerracesDoc,
   clusterConstellationDoc,
@@ -143,9 +144,9 @@ export function documentedCharts(): { route: AppRoute; doc: CardDocContent; comp
 const code = (language: string, source: string) => `\`\`\`${language}\n${source}\n\`\`\``;
 
 const header = [
-  '# Lilt Charts',
+  '# Lilt UI',
   '',
-  `> React chart cards for dashboards. Pass your rows and name the fields. Each family supplies its own headline, readout, and interaction. Package: \`${PACKAGE_NAME}\` ${PACKAGE_VERSION} (MIT). Requires React and React DOM 19.`,
+  `> A React UI kit. Charts are the npm package \`${PACKAGE_NAME}\` ${PACKAGE_VERSION} (MIT): chart cards for dashboards. Pass your rows and name the fields; each family supplies its own headline, readout, and interaction. Components and ASCII scenes are source you add to your project with the shadcn CLI, and then own. Requires React and React DOM 19.`,
   '',
   '## Install',
   '',
@@ -202,6 +203,25 @@ function chartsByJob(): string[] {
   ]);
 }
 
+/** Components and ASCII scenes: how to add them, then each page with its export. */
+function registryIndex(): string[] {
+  const line = (scene: AsciiSceneDoc) =>
+    `- [${scene.title}](${SITE_URL}${scenePath(scene)}): \`${scene.component}\`. ${scene.lede}`;
+  const section = (title: string, lines: readonly string[]) => [`## ${title}`, '', ...lines, ''];
+  return [
+    '## Adding components and scenes',
+    '',
+    'Components and ASCII scenes are not an npm package. Each page names a registry item; add it with the shadcn CLI and its source lands in your project, with the shared engine it needs:',
+    '',
+    code('bash', `npx shadcn@latest add ${SITE_URL}/r/<item>.json`),
+    '',
+    'Each ASCII canvas fills its parent, takes its type from CSS `font-family` and its ink from `color`, pauses off screen, and holds still for reduced motion.',
+    '',
+    ...section('Components', scenesIn('components').map(line)),
+    ...section('ASCII scenes', scenesIn('ascii').map(line)),
+  ];
+}
+
 /** A short index: what Lilt is, how to install it, the rules, and the cards by job. */
 export function llmsIndex(): string {
   return [
@@ -212,6 +232,7 @@ export function llmsIndex(): string {
     'Pick the card for the job, then follow its link for examples, data shape, and props. Cards include loading and empty states; legends and inspection controls depend on the family.',
     '',
     ...chartsByJob(),
+    ...registryIndex(),
     '## Reference',
     '',
     `- [Every card with its example, data shape, and props](${SITE_URL}/llms-full.txt)`,

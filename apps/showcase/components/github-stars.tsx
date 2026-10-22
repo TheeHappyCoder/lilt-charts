@@ -16,8 +16,8 @@ export function GitHubStars({
   variant?: 'compact' | 'card';
 }) {
   const label = stars
-    ? `${count.format(stars.total)} GitHub ${stars.total === 1 ? 'star' : 'stars'}. View Lilt Charts on GitHub`
-    : 'View Lilt Charts on GitHub';
+    ? `${count.format(stars.total)} GitHub ${stars.total === 1 ? 'star' : 'stars'}. View Lilt UI on GitHub`
+    : 'View Lilt UI on GitHub';
   const link = (
     <a
       className="lilt-github-stars"

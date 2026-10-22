@@ -129,7 +129,7 @@ export function heroSource(look: HeroLook, scene?: SceneId) {
 export function heroPrompt(look: HeroLook, scene?: SceneId) {
   const { chosen } = heroSource(look, scene);
   const extras = chosen.length ? ` with ${chosen.join(', ')}` : '';
-  return `Add a daily sales chart with Lilt Charts.
+  return `Add a daily sales chart with Lilt UI charts.
 
 Use BarChartCard from '@lilt-ui/charts' and import
 '@lilt-ui/charts/styles.css' once. Stack two series,

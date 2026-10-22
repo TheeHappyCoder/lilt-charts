@@ -12,7 +12,16 @@ export function PageBreadcrumb() {
   const route = routeFor(usePathname());
   const tab = tabOf(route.group);
   const section = tabs.find((option) => option.value === tab)!.label;
-  const group = route.group === 'Finance' ? 'Finance' : route.job;
+  // Inside a product, the rail heading the page sits under.
+  const group =
+    route.group === 'Finance' ||
+    route.group === 'Customize' ||
+    route.group === 'Features' ||
+    route.group === 'Reference'
+      ? route.group
+      : route.group === 'Start'
+        ? 'Get started'
+        : route.job;
   return (
     <nav className="lilt-breadcrumb" aria-label="Breadcrumb">
       <Link href={tabHref[tab]}>{section}</Link>

@@ -46,7 +46,7 @@ export function StageCopyMenu({
   const ask = () => {
     const origin = window.location.origin;
     return [
-      `I'm looking at the Lilt Charts ${title} documentation: ${origin}${pathname}`,
+      `I'm looking at the Lilt UI ${title} documentation: ${origin}${pathname}`,
       `The page as Markdown: ${origin}${markdownPath}`,
       'Help me use it. Be ready to explain the options, give examples, or help debug.',
     ].join('\n');
