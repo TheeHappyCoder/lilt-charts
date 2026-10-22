@@ -7,6 +7,7 @@ import { ComparisonTooltip } from './comparison-tooltip';
 import { AdaptiveReadout } from './adaptive-readout';
 import { useTooltipView } from './tooltip-view';
 import { FieldList } from './field-values';
+import { BoundedText } from '../motion/bounded-text';
 
 /** A real, optional HTML part in ChartPlot's tooltip slot. */
 export function Tooltip<Row, Id extends string>(
@@ -82,6 +83,25 @@ export function Tooltip(
   const glide = view.reducedMotion
     ? { duration: 0 }
     : { type: 'spring' as const, stiffness: 520, damping: 42, mass: 0.6 };
+  const textMs = view.reducedMotion ? 0 : 170;
+  const title = (
+    <BoundedText
+      duration={textMs}
+      offset={6}
+      axis="x"
+      position={reading.x}
+      value={reading.formattedX}
+    />
+  );
+  const valueOf = (series: (typeof reading.series)[number]) => (
+    <BoundedText
+      duration={textMs}
+      offset={4}
+      axis="y"
+      position={series.value ?? undefined}
+      value={series.formattedValue}
+    />
+  );
   const color = (id: string) => view.colors[id] ?? 'var(--lilt-series-1)';
 
   if (props.layout === 'strip') {
@@ -118,7 +138,7 @@ export function Tooltip(
         }
       >
         <div className="lilt-chart__tooltip-panel">
-          <span className="lilt-chart__strip-title">{reading.formattedX}</span>
+          <span className="lilt-chart__strip-title">{title}</span>
           {props.renderContent ? (
             <span className="lilt-chart__tooltip-custom">{props.renderContent(reading)}</span>
           ) : (
@@ -134,7 +154,7 @@ export function Tooltip(
                   aria-hidden="true"
                   style={{ backgroundColor: color(series.id) }}
                 />
-                <strong>{series.formattedValue}</strong>
+                <strong>{valueOf(series)}</strong>
                 <span className="lilt-chart__tooltip-label">{series.label}</span>
               </span>
             ))
@@ -176,7 +196,7 @@ export function Tooltip(
     >
       <div className="lilt-chart__tooltip-panel" style={{ maxHeight: room }}>
         <div className="lilt-chart__tooltip-title">
-          <span>{reading.formattedX}</span>
+          <span>{title}</span>
           {reading.pinned && compactPanel ? (
             <button type="button" className="lilt-chart__tooltip-release" onClick={view.onRelease}>
               Unpin
@@ -222,7 +242,7 @@ export function Tooltip(
                 {series.status !== 'observed' ? (
                   <span className="lilt-chart__tooltip-status">{series.status}</span>
                 ) : null}
-                <strong>{series.formattedValue}</strong>
+                <strong>{valueOf(series)}</strong>
                 {series.fields.length ? <FieldList fields={series.fields} /> : null}
               </div>
             ))}

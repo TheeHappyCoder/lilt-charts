@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+- Hover readouts move with you. As the pointer travels, the date in the x pill and the tooltip title slide in from the side you are moving toward through a light blur, and the old date leaves the other way; values in the y pill and the tooltip rise in from above when they go up and from below when they go down. It keeps playing while you scrub, and holds still with reduced motion.
+
 ## 0.15.0
 
 Bolder color and entrances that are seen.

@@ -767,7 +767,13 @@ export function InspectionLayer<T>({
           }
           transition={{ duration: reducedMotion ? 0 : 0.12 }}
         >
-          <BoundedText duration={selection?.pinned ? 150 : 0} offset={5} value={tooltipTitle} />
+          <BoundedText
+            duration={reducedMotion ? 0 : 170}
+            offset={6}
+            axis="x"
+            position={selection?.x}
+            value={tooltipTitle}
+          />
         </m.div>
       ) : null}
       {!compactPlot && !peer && !hideAxisBadges ? (
@@ -798,8 +804,10 @@ export function InspectionLayer<T>({
             />
           ) : null}
           <BoundedText
-            duration={selection?.pinned ? 140 : 0}
-            offset={3}
+            duration={reducedMotion ? 0 : 160}
+            offset={4}
+            axis="y"
+            position={primaryValue ?? undefined}
             value={
               primaryValue === null
                 ? 'No data'
@@ -818,12 +826,20 @@ export function InspectionLayer<T>({
           transition={{ duration: reducedMotion ? 0 : 0.12 }}
         >
           <span>
-            <BoundedText duration={selection?.pinned ? 140 : 0} offset={3} value={tooltipTitle} />
+            <BoundedText
+              duration={reducedMotion ? 0 : 170}
+              offset={4}
+              axis="x"
+              position={selection?.x}
+              value={tooltipTitle}
+            />
           </span>
           <strong>
             <BoundedText
-              duration={selection?.pinned ? 140 : 0}
-              offset={3}
+              duration={reducedMotion ? 0 : 160}
+              offset={4}
+              axis="y"
+              position={primaryValue ?? undefined}
               value={
                 primaryValue === null
                   ? 'No data'
@@ -858,7 +874,13 @@ export function InspectionLayer<T>({
             }
           >
             <div className="lilt-chart__tooltip-title">
-              <BoundedText duration={selection?.pinned ? 160 : 0} offset={4} value={tooltipTitle} />
+              <BoundedText
+                duration={reducedMotion ? 0 : 170}
+                offset={6}
+                axis="x"
+                position={selection?.x}
+                value={tooltipTitle}
+              />
               <AnimatePresence initial={false}>
                 {selection?.pinned ? (
                   <m.span
@@ -920,8 +942,10 @@ export function InspectionLayer<T>({
                       ) : null}
                       <strong>
                         <BoundedText
-                          duration={selection?.pinned ? 160 : 0}
+                          duration={reducedMotion ? 0 : 160}
                           offset={4}
+                          axis="y"
+                          position={value ?? undefined}
                           value={label}
                         />
                       </strong>
@@ -946,8 +970,10 @@ export function InspectionLayer<T>({
                 <span>Total</span>
                 <strong>
                   <BoundedText
-                    duration={selection?.pinned ? 160 : 0}
+                    duration={reducedMotion ? 0 : 160}
                     offset={4}
+                    axis="y"
+                    position={total ?? undefined}
                     value={total === null ? 'Incomplete' : snapshot.formatValue(total)}
                   />
                 </strong>

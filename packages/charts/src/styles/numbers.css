@@ -131,7 +131,30 @@
     }
     to {
       opacity: 0;
-      transform: translateY(calc(var(--lilt-text-offset, 4px) * -1));
+      transform: translate(
+        var(--lilt-text-out-x, 0),
+        var(--lilt-text-out-y, calc(var(--lilt-text-offset, 4px) * -1))
+      );
+    }
+  }
+
+  /* Text that reads a travelling position leaves the way it came from, through a light blur. */
+  .lilt-bounded-text[data-axis] .lilt-bounded-text__outgoing {
+    animation-name: lilt-bounded-travel-out;
+    animation-duration: var(--lilt-text-duration, 160ms);
+    animation-timing-function: var(--lilt-ease-reveal);
+  }
+
+  @keyframes lilt-bounded-travel-out {
+    from {
+      opacity: 0.72;
+      filter: blur(0);
+      transform: translate(0, 0);
+    }
+    to {
+      opacity: 0;
+      filter: blur(1.5px);
+      transform: translate(var(--lilt-text-out-x, 0), var(--lilt-text-out-y, 0));
     }
   }
 }

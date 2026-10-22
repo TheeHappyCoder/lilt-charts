@@ -50,7 +50,7 @@ export function AdaptiveReadout<T>({
     <div className="lilt-chart__adaptive-readout" data-peer={peer || undefined}>
       <div className="lilt-chart__adaptive-heading">
         <span>
-          <BoundedText duration={duration} offset={3} value={title} />
+          <BoundedText duration={duration} offset={5} axis="x" position={labelX} value={title} />
         </span>
         {pinned && !peer ? (
           <div className="lilt-chart__adaptive-actions">
@@ -90,6 +90,8 @@ export function AdaptiveReadout<T>({
                     <BoundedText
                       duration={duration}
                       offset={3}
+                      axis="y"
+                      position={value ?? undefined}
                       value={
                         value === null
                           ? 'No data'
@@ -107,6 +109,8 @@ export function AdaptiveReadout<T>({
                   <BoundedText
                     duration={duration}
                     offset={3}
+                    axis="y"
+                    position={total ?? undefined}
                     value={total === null ? 'Incomplete' : snapshot.formatValue(total)}
                   />
                 </strong>
