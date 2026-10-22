@@ -70,13 +70,6 @@ export function HomeHero() {
           </div>
         </BlurFade>
       </div>
-      <nav className="lilt-home-hero__lines" aria-label="The kit">
-        <Link href="/charts">Charts</Link>
-        <span aria-hidden="true">·</span>
-        <Link href="/components">Components</Link>
-        <span aria-hidden="true">·</span>
-        <Link href="/ascii/glow">ASCII</Link>
-      </nav>
       <p className="lilt-home-hero__hint" aria-hidden="true">
         <span>move</span> through the letters <span>·</span> warm up by the <span>fire</span>
       </p>

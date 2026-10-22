@@ -176,31 +176,13 @@
   translate: -50% 0;
   pointer-events: none;
 }
-/* The corners: the kit's three lines bottom left, what to try bottom right, in the same quiet
-   mono, framing the poster. */
-.lilt-home-hero__lines {
-  position: absolute;
-  bottom: 20px;
-  left: 28px;
-  display: flex;
-  gap: 10px;
-  color: rgb(255 255 255 / 0.32);
-  font-family: var(--font-geist-mono), monospace;
-  font-size: 12px;
-}
-.lilt-home-hero__lines a {
-  color: rgb(255 255 255 / 0.62);
-  text-decoration: none;
-  transition: color 160ms ease;
-}
-.lilt-home-hero__lines a:hover,
-.lilt-home-hero__lines a:focus-visible {
-  color: rgb(255 255 255 / 0.95);
-}
+/* What to try, centred along the foot of the sky. */
 .lilt-home-hero__hint {
   position: absolute;
-  right: 28px;
   bottom: 20px;
+  left: 50%;
+  translate: -50% 0;
+  white-space: nowrap;
   margin: 0;
   color: rgb(255 255 255 / 0.32);
   font-family: var(--font-geist-mono), monospace;
@@ -592,11 +574,6 @@
   }
   .lilt-home-hero__hint {
     display: none;
-  }
-  .lilt-home-hero__lines {
-    right: 0;
-    left: 0;
-    justify-content: center;
   }
   .lilt-home-section {
     padding: 36px 0;
