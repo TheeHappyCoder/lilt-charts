@@ -109,6 +109,7 @@ export type RouteIcon =
   | 'scramble'
   | 'asciilogo'
   | 'cursortrail'
+  | 'ghostcursors'
   | 'transition'
   | 'frame'
   | 'asciiloader'
@@ -1208,6 +1209,17 @@ export const appRoutes = [
     href: '/ascii/cursor-trail',
     pathname: '/ascii/cursor-trail',
     icon: 'cursortrail',
+    navigation: true,
+    badge: 'New',
+  },
+  {
+    id: 'ascii-ghost-cursors',
+    group: 'Ascii',
+    label: 'Ghost cursors',
+    title: 'Ghost cursors',
+    href: '/ascii/ghost-cursors',
+    pathname: '/ascii/ghost-cursors',
+    icon: 'ghostcursors',
     navigation: true,
     badge: 'New',
   },

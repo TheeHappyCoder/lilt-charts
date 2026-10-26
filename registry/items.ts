@@ -130,6 +130,7 @@ const asciiPages: readonly PageSpec[] = [
   page('ascii', 'transition', 'AsciiTransition', 'interface/ascii-transition.tsx'),
   page('ascii', 'curtain', 'AsciiCurtain', 'interface/ascii-curtain.tsx'),
   page('ascii', 'cursor-trail', 'AsciiCursorTrail', 'interface/ascii-cursor-trail.tsx'),
+  page('ascii', 'ghost-cursors', 'CursorGhosts', 'interface/cursor-ghosts.tsx'),
   page('ascii', 'scramble', 'AsciiScramble', 'text/ascii-scramble.tsx'),
   page('ascii', 'terminal', 'AsciiTerminal', 'text/ascii-terminal.tsx'),
   page('ascii', 'glitch', 'AsciiGlitch', 'text/ascii-glitch.tsx'),

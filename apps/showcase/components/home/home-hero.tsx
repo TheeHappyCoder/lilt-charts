@@ -2,7 +2,7 @@
 
 import { HugeiconsIcon as Icon } from '@hugeicons/react';
 import ArrowRight01Icon from '@hugeicons/core-free-icons/ArrowRight01Icon';
-import { AsciiLogo, CursorWarmth, FIRE_GROUND } from '@lilt-ui/registry';
+import { AsciiLogo, CursorGhosts, CursorWarmth, FIRE_GROUND } from '@lilt-ui/registry';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { BlurFade } from '@/components/motion/blur-fade';
@@ -19,7 +19,8 @@ const FIRES = [0.2, 0.8];
 /**
  * The hero: the wordmark lettered in solid type under falling snow, which settles on the letters
  * and melts where the pointer passes. A quick pass knocks letters loose; a click sends a shockwave
- * through them. The headline and the ways in sit in the clear space beneath.
+ * through them. The headline and the ways in sit in the clear space beneath. A few ghost cursors
+ * keep the reader company, wandering the sky and hurrying to the fires when they get cold.
  */
 export function HomeHero() {
   // Phones get finer cells, so the letters keep their bevels at a quarter of the width.
@@ -54,6 +55,11 @@ export function HomeHero() {
           style={{ left: `${x * 100}%`, bottom: `${(1 - FIRE_GROUND) * 100}%` }}
         />
       ))}
+      {/* Imagined company, kept off the headline; phones get fewer, the sky being smaller. */}
+      <CursorGhosts
+        count={cellSize === 8 ? 2 : 3}
+        avoid=".lilt-home-hero h1, .lilt-home-hero__ctas"
+      />
       <CursorWarmth scope=".lilt-home-hero" />
       <div className="lilt-home-hero__copy">
         <BlurFade delay={600}>

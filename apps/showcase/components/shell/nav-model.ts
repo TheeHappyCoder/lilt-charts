@@ -71,6 +71,7 @@ import ComputerTerminal01Icon from '@hugeicons/core-free-icons/ComputerTerminal0
 import ShuffleIcon from '@hugeicons/core-free-icons/ShuffleIcon';
 import TextFontIcon from '@hugeicons/core-free-icons/TextFontIcon';
 import CursorMagicSelection02Icon from '@hugeicons/core-free-icons/CursorMagicSelection02Icon';
+import CursorAddSelection02Icon from '@hugeicons/core-free-icons/CursorAddSelection02Icon';
 import TransitionRightIcon from '@hugeicons/core-free-icons/TransitionRightIcon';
 import BorderFullIcon from '@hugeicons/core-free-icons/BorderFullIcon';
 import StarsIcon from '@hugeicons/core-free-icons/StarsIcon';
@@ -218,6 +219,7 @@ export const icons: Record<RouteIcon, IconSvgElement> = {
   scramble: ShuffleIcon,
   asciilogo: TextFontIcon,
   cursortrail: CursorMagicSelection02Icon,
+  ghostcursors: CursorAddSelection02Icon,
   transition: TransitionRightIcon,
   frame: BorderFullIcon,
   asciiloader: Loading03Icon,

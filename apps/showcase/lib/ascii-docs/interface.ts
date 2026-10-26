@@ -301,4 +301,97 @@ export function Layout({ children }: { children: React.ReactNode }) {
       },
     ],
   },
+  {
+    id: 'ghost-cursors',
+    shelf: 'Interface',
+    title: 'Ghost cursors',
+    component: 'CursorGhosts',
+    demo: 'CursorGhostsDemo',
+    kind: 'dom',
+    backdrop: 'night',
+    lede: 'Company for a hero: a few ghost cursors that wander it as if reading. Out in the cold they slowly freeze, shiver, and hurry to the nearest fire, where they circle until they are cosy again.',
+    touch:
+      'Watch a cold ghost rush to a fire. Your own pointer feels the cold too: warm it by a fire, and do not hold it there too long.',
+    controls: [
+      {
+        kind: 'range',
+        name: 'count',
+        label: 'Ghosts',
+        min: 1,
+        max: 8,
+        step: 1,
+        defaultValue: 3,
+        description: 'How many share the area at once. When one leaves, someone new arrives.',
+      },
+      {
+        kind: 'range',
+        name: 'chill',
+        label: 'Chill',
+        min: 6,
+        max: 40,
+        step: 1,
+        defaultValue: 18,
+        description: 'Roughly how many seconds a warm ghost takes to freeze.',
+      },
+      {
+        kind: 'toggle',
+        name: 'readings',
+        label: 'Readings',
+        defaultValue: true,
+        description: 'Show a small reading beside a ghost when it shivers, rushes or warms up.',
+      },
+      {
+        kind: 'color',
+        name: 'frost',
+        label: 'Frost',
+        defaultValue: '#a9d8ff',
+        description: 'Colour of the frost and of a cold reading.',
+      },
+      {
+        kind: 'color',
+        name: 'ember',
+        label: 'Embers',
+        defaultValue: '#ffb22e',
+        description: 'Colour of the embers and of a warm reading.',
+      },
+    ],
+    code: `import { CursorGhosts } from '{from}';
+
+// Inside a positioned area. Mark each fire with data-lilt-fire; the ghosts warm up there.
+export function Hero() {
+  return (
+    <section style={{ position: 'relative', height: 560 }}>
+      <span
+        data-lilt-fire=""
+        style={{ position: 'absolute', left: '20%', bottom: '10%', width: 96, height: 96 }}
+      />
+      <CursorGhosts avoid="h1"{props} />
+      <h1>Come in from the cold</h1>
+    </section>
+  );
+}`,
+    usage:
+      'Put CursorGhosts inside a positioned area, such as a hero, and mark each fire there with data-lilt-fire: any element works, drawn or not. The ghosts fill the area on one canvas that never takes the pointer and run only while it is on screen and the tab is showing. They are imagined, not real visitors, so do not label them as people online. Pass avoid with a selector to keep them off a headline. With reduced motion they do not appear. Pair it with CursorWarmth so the reader’s pointer feels the cold too; the demo also lights its fires with the Logo scene’s fires prop.',
+    props: [
+      {
+        name: 'fires',
+        type: 'string',
+        defaultValue: "'[data-lilt-fire]'",
+        description:
+          'Selector for the fires inside the area. Each warms within about its own size.',
+      },
+      {
+        name: 'avoid',
+        type: 'string',
+        defaultValue: 'none',
+        description: 'Selector for elements inside the area that wandering ghosts keep clear of.',
+      },
+      {
+        name: 'seed',
+        type: 'number',
+        defaultValue: 'random',
+        description: 'Seed for the walk, to replay the same one.',
+      },
+    ],
+  },
 ];
