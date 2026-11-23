@@ -92,7 +92,6 @@ export function HomeFooter({
               <LiltLogo className="lilt-home-foot__logo" />
               React components with a little lilt.
             </span>
-            <span>Charts from npm. Components and scenes as source you own.</span>
             <span className="lilt-home-foot__elsewhere">
               <a href={github}>
                 <Roll>GitHub</Roll>
