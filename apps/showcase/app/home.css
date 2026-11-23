@@ -527,12 +527,14 @@
   padding: var(--sec-sm) var(--gut) 0;
 }
 .lilt-home-foot__panel {
+  position: relative;
   display: flex;
   flex-direction: column;
   gap: 36px;
-  padding: 48px clamp(20px, 4vw, 48px) 0;
+  padding: 48px clamp(20px, 4vw, 48px) 32px;
   border-radius: var(--radius-panel) var(--radius-panel) 0 0;
   background: var(--dusk-panel);
+  overflow: hidden;
   container-type: inline-size;
 }
 .lilt-home-foot__panel > * {
@@ -659,25 +661,36 @@
   gap: 18px;
   margin-left: auto;
 }
-/* The wordmark, rising from the foot of the panel, cut off by its edge. */
+/* The wordmark, faded across the entire footer backdrop behind the content. */
 .lilt-home-foot__name {
+  position: absolute;
   z-index: 0;
-  height: clamp(44px, 6.2cqi, 80px);
-  margin-top: -12px;
+  inset: 0;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
   overflow: hidden;
   pointer-events: none;
   user-select: none;
+  mask-image: linear-gradient(
+    180deg,
+    transparent 0%,
+    rgb(0 0 0 / 0.5) 34%,
+    rgb(0 0 0 / 0.9) 76%,
+    rgb(0 0 0 / 0.25) 100%
+  );
 }
 .lilt-home-foot__name svg {
   display: block;
-  width: clamp(140px, 19cqi, 240px);
+  width: min(74cqi, 820px);
   height: auto;
+  transform: translateY(14%);
 }
 .lilt-home-foot__name .lilt-logo__ink {
-  fill: #20201e;
+  fill: rgb(255 255 255 / 0.045);
 }
 .lilt-home-foot__name .lilt-logo__dot {
-  fill: color-mix(in srgb, var(--brand-primary) 22%, #20201e);
+  fill: color-mix(in srgb, var(--brand-primary) 24%, rgb(255 255 255 / 0.045));
 }
 
 @media (max-width: 1023px) {
@@ -827,16 +840,14 @@
   .lilt-home-foot__panel {
     gap: 28px;
     padding-top: 36px;
+    padding-bottom: 24px;
   }
   .lilt-home-foot__elsewhere {
     margin-left: 0;
   }
-  .lilt-home-foot__name {
-    height: 13cqi;
-    margin-top: -8px;
-  }
   .lilt-home-foot__name svg {
-    width: 40cqi;
+    width: 96cqi;
+    transform: translateY(10%);
   }
 }
 @media (prefers-reduced-motion: reduce) {
