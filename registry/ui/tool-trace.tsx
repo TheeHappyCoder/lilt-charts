@@ -32,10 +32,7 @@ export interface ToolTraceProps {
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 const SPRING = { type: 'spring', stiffness: 420, damping: 36 } as const;
-const RED = '#f05d6c';
-const GREEN = '#32c484';
-const BLUE = '#8e9eff';
-const ICON = 18;
+const ICON = 16;
 
 const defaultSummary = (steps: readonly TraceStep[]) =>
   `Used ${steps.length} tool${steps.length === 1 ? '' : 's'}`;
@@ -47,9 +44,11 @@ export function formatDuration(ms: number) {
 }
 
 /**
- * What an agent did, housed in a machined inspector chassis. Closed, the header shows the step it
- * is on right now rolling up out of a blur and the total time inside a tabular readout chip. Open,
- * each step lands inside a recessed well with a luminous rail filling behind it as it completes.
+ * What an agent did, folded into one line. Closed, the line shows the step it is on right now,
+ * each new step rolling up out of a blur, and the time so far, so you can follow along without
+ * opening it; once it is finished it settles into a summary. Open, each step has its own row: an
+ * arc runs round its icon while it works and becomes a tick that draws itself, and the rail down
+ * the left fills in behind each step as it completes.
  */
 export function ToolTrace({
   steps,
@@ -88,12 +87,7 @@ export function ToolTrace({
       <style href="lilt-ui-tool-trace" precedence="default">
         {css}
       </style>
-      <div
-        className={['lilt-ttr', className].filter(Boolean).join(' ')}
-        data-status={overall}
-        style={style}
-      >
-        <span className="lilt-ttr-pool" aria-hidden="true" />
+      <div className={['lilt-ttr', className].filter(Boolean).join(' ')} style={style}>
         <button
           type="button"
           aria-expanded={open}
@@ -118,24 +112,23 @@ export function ToolTrace({
             </AnimatePresence>
           </span>
           <span className="lilt-ttr-total">{formatDuration(total)}</span>
-          <span className="lilt-ttr-chev" aria-hidden="true">
-            <motion.svg
-              aria-hidden="true"
-              width={13}
-              height={13}
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth={2.2}
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              initial={false}
-              animate={{ rotate: open ? 90 : 0 }}
-              transition={reduced ? { duration: 0 } : SPRING}
-            >
-              <path d="M9 6l6 6-6 6" />
-            </motion.svg>
-          </span>
+          <motion.svg
+            aria-hidden="true"
+            width={13}
+            height={13}
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth={2}
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            initial={false}
+            animate={{ rotate: open ? 90 : 0 }}
+            transition={reduced ? { duration: 0 } : SPRING}
+            className="lilt-ttr-chev"
+          >
+            <path d="M9 6l6 6-6 6" />
+          </motion.svg>
         </button>
 
         <AnimatePresence initial={false}>
@@ -203,10 +196,7 @@ function Row({
             </span>
           ) : null}
         </span>
-        <span
-          className="lilt-ttr-ms"
-          style={{ color: failed ? RED : undefined, opacity: failed ? 0.95 : undefined }}
-        >
+        <span className="lilt-ttr-ms" style={{ color: failed ? 'var(--ttr-err)' : undefined }}>
           {failed ? 'Failed' : formatDuration(ms)}
         </span>
       </div>
@@ -221,9 +211,7 @@ function Row({
               position: 'absolute',
               inset: 0,
               originY: 0,
-              background: failed
-                ? RED
-                : 'linear-gradient(180deg, rgba(142, 158, 255, 0.72), rgba(50, 196, 132, 0.72))',
+              background: failed ? 'var(--ttr-err)' : 'var(--ttr-rail-fill)',
             }}
           />
         </span>
@@ -234,10 +222,11 @@ function Row({
 
 /** An arc running round a faint track while it works, a tick that draws itself, or a cross. */
 function StepIcon({ status, reduced }: { status: StepStatus; reduced: boolean }) {
-  const stroke = 1.9;
-  const r = (ICON - stroke - 3) / 2;
+  const stroke = 1.75;
+  const r = (ICON - stroke) / 2;
   const around = 2 * Math.PI * r;
-  const tone = status === 'error' ? RED : status === 'done' ? GREEN : BLUE;
+  const tone =
+    status === 'error' ? 'var(--ttr-err)' : status === 'done' ? 'var(--ttr-ok)' : 'currentColor';
   return (
     <span aria-hidden="true" className="lilt-ttr-ico" style={{ color: tone }}>
       <AnimatePresence mode="popLayout" initial={false}>
@@ -260,27 +249,27 @@ function StepIcon({ status, reduced }: { status: StepStatus; reduced: boolean })
               animate={reduced ? undefined : { rotate: 360 }}
               transition={{ duration: 0.85, ease: 'linear', repeat: Infinity }}
             >
-              <circle cx={ICON / 2} cy={ICON / 2} r={r} opacity={0.22} />
+              <circle cx={ICON / 2} cy={ICON / 2} r={r} opacity={0.2} />
               <circle
                 cx={ICON / 2}
                 cy={ICON / 2}
                 r={r}
                 strokeLinecap="round"
-                strokeDasharray={`${around * 0.3} ${around}`}
+                strokeDasharray={`${around * 0.28} ${around}`}
               />
             </motion.svg>
           ) : (
-            <svg width={ICON} height={ICON} viewBox="0 0 18 18">
-              <circle cx="9" cy="9" r="8" fill="currentColor" opacity={0.14} />
+            <svg width={ICON} height={ICON} viewBox="0 0 16 16">
+              <circle cx="8" cy="8" r="7.5" fill="currentColor" opacity={0.12} />
               <motion.path
                 d={
                   status === 'error'
-                    ? 'M6.4 6.4l5.2 5.2M11.6 6.4l-5.2 5.2'
-                    : 'M5.6 9.3l2.3 2.3 4.6-4.9'
+                    ? 'M5.6 5.6l4.8 4.8M10.4 5.6l-4.8 4.8'
+                    : 'M4.8 8.3l2.2 2.2 4.3-4.6'
                 }
                 fill="none"
                 stroke="currentColor"
-                strokeWidth={1.85}
+                strokeWidth={1.7}
                 strokeLinecap="round"
                 strokeLinejoin="round"
                 initial={{ pathLength: reduced ? 1 : 0 }}
@@ -319,89 +308,46 @@ function useStartTimes(steps: readonly TraceStep[]) {
 
 const css = /* css */ `
 .lilt-ttr {
-  --ttr-a: #ffffff;
-  --ttr-b: #f1f2f6;
-  --ttr-ring: rgba(15, 20, 40, 0.085);
-  --ttr-top: #ffffff;
-  --ttr-lip: #dde0e8;
-  --ttr-drop: 0 20px 36px -18px rgba(15, 20, 40, 0.24), 0 3px 8px rgba(15, 20, 40, 0.06);
-  --ttr-well-a: #e8eaef;
-  --ttr-well-b: #f4f5f8;
-  --ttr-well-in: inset 0 2px 5px rgba(15, 20, 40, 0.11), inset 0 0 0 1px rgba(15, 20, 40, 0.05);
-  --ttr-well-out: 0 1px 0 rgba(255, 255, 255, 0.92);
-  --ttr-chip-bg: rgba(255, 255, 255, 0.78);
-  --ttr-chip-ring: rgba(15, 20, 40, 0.08);
-  --ttr-rail: rgba(15, 20, 40, 0.1);
-  --ttr-badge-bg: rgba(15, 20, 40, 0.045);
-  --ttr-chev-bg: rgba(15, 20, 40, 0.04);
-  position: relative;
-  width: min(450px, 100%);
-  border-radius: 17px;
-  background: linear-gradient(180deg, var(--ttr-a), var(--ttr-b));
-  box-shadow:
-    0 0 0 1px var(--ttr-ring),
-    inset 0 1.5px 0 var(--ttr-top),
-    inset 0 -2.5px 0 var(--ttr-lip),
-    var(--ttr-drop);
-  isolation: isolate;
+  --ttr-panel: #f4f4f2;
+  --ttr-surface: #ffffff;
+  --ttr-chip: #f4f4f2;
+  --ttr-line: rgb(26 26 24 / 0.08);
+  --ttr-muted: #6b6b66;
+  --ttr-faint: #8c8c87;
+  --ttr-rail: rgb(26 26 24 / 0.1);
+  --ttr-rail-fill: rgb(26 26 24 / 0.32);
+  --ttr-ok: #2d8a4e;
+  --ttr-err: #d93848;
+  width: min(444px, 100%);
+  border: 1px solid var(--ttr-line);
+  border-radius: 14px;
+  background: var(--ttr-panel);
+  overflow: hidden;
   -webkit-font-smoothing: antialiased;
 }
 :where(.dark, [data-theme="dark"]) .lilt-ttr {
-  --ttr-a: #22242c;
-  --ttr-b: #16181f;
-  --ttr-ring: rgba(255, 255, 255, 0.1);
-  --ttr-top: rgba(255, 255, 255, 0.11);
-  --ttr-lip: rgba(0, 0, 0, 0.78);
-  --ttr-drop: 0 24px 44px -18px rgba(0, 0, 0, 0.78), 0 3px 10px rgba(0, 0, 0, 0.42);
-  --ttr-well-a: #0e0f14;
-  --ttr-well-b: #14161d;
-  --ttr-well-in: inset 0 2px 6px rgba(0, 0, 0, 0.72), inset 0 0 0 1px rgba(255, 255, 255, 0.055);
-  --ttr-well-out: 0 1px 0 rgba(255, 255, 255, 0.06);
-  --ttr-chip-bg: rgba(255, 255, 255, 0.06);
-  --ttr-chip-ring: rgba(255, 255, 255, 0.08);
-  --ttr-rail: rgba(255, 255, 255, 0.1);
-  --ttr-badge-bg: rgba(255, 255, 255, 0.06);
-  --ttr-chev-bg: rgba(255, 255, 255, 0.05);
+  --ttr-panel: #151514;
+  --ttr-surface: #1b1b19;
+  --ttr-chip: #151514;
+  --ttr-line: rgb(244 244 242 / 0.08);
+  --ttr-muted: #a3a39d;
+  --ttr-faint: #73736e;
+  --ttr-rail: rgb(244 244 242 / 0.1);
+  --ttr-rail-fill: rgb(244 244 242 / 0.32);
+  --ttr-ok: #5cc485;
+  --ttr-err: #f05d6c;
 }
 [data-theme="light"] .lilt-ttr {
-  --ttr-a: #ffffff;
-  --ttr-b: #f1f2f6;
-  --ttr-ring: rgba(15, 20, 40, 0.085);
-  --ttr-top: #ffffff;
-  --ttr-lip: #dde0e8;
-  --ttr-drop: 0 20px 36px -18px rgba(15, 20, 40, 0.24), 0 3px 8px rgba(15, 20, 40, 0.06);
-  --ttr-well-a: #e8eaef;
-  --ttr-well-b: #f4f5f8;
-  --ttr-well-in: inset 0 2px 5px rgba(15, 20, 40, 0.11), inset 0 0 0 1px rgba(15, 20, 40, 0.05);
-  --ttr-well-out: 0 1px 0 rgba(255, 255, 255, 0.92);
-  --ttr-chip-bg: rgba(255, 255, 255, 0.78);
-  --ttr-chip-ring: rgba(15, 20, 40, 0.08);
-  --ttr-rail: rgba(15, 20, 40, 0.1);
-  --ttr-badge-bg: rgba(15, 20, 40, 0.045);
-  --ttr-chev-bg: rgba(15, 20, 40, 0.04);
-}
-
-.lilt-ttr-pool {
-  position: absolute;
-  left: 12%;
-  right: 12%;
-  bottom: -12px;
-  height: 28px;
-  border-radius: 50%;
-  background: linear-gradient(90deg, #9fadff, #c8a8e8 50%, #ffb89e);
-  filter: blur(18px);
-  opacity: 0.34;
-  pointer-events: none;
-  z-index: -1;
-  transition: background 500ms ease, opacity 500ms ease;
-}
-.lilt-ttr[data-status="done"] .lilt-ttr-pool {
-  background: linear-gradient(90deg, #32c484, #8fd6c0 55%, #a8b5ff);
-  opacity: 0.3;
-}
-.lilt-ttr[data-status="error"] .lilt-ttr-pool {
-  background: #f05d6c;
-  opacity: 0.36;
+  --ttr-panel: #f4f4f2;
+  --ttr-surface: #ffffff;
+  --ttr-chip: #f4f4f2;
+  --ttr-line: rgb(26 26 24 / 0.08);
+  --ttr-muted: #6b6b66;
+  --ttr-faint: #8c8c87;
+  --ttr-rail: rgb(26 26 24 / 0.1);
+  --ttr-rail-fill: rgb(26 26 24 / 0.32);
+  --ttr-ok: #2d8a4e;
+  --ttr-err: #d93848;
 }
 
 .lilt-ttr-head {
@@ -409,10 +355,9 @@ const css = /* css */ `
   align-items: center;
   gap: 10px;
   width: 100%;
-  height: 46px;
-  padding: 0 10px 0 13px;
+  height: 44px;
+  padding: 0 12px;
   border: 0;
-  border-radius: 17px;
   background: none;
   color: inherit;
   font: inherit;
@@ -430,12 +375,12 @@ const css = /* css */ `
 .lilt-ttr-headline-inner {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 7px;
   min-width: 0;
   white-space: nowrap;
 }
 .lilt-ttr-label {
-  font-weight: 550;
+  font-weight: 500;
   letter-spacing: -0.01em;
   white-space: nowrap;
 }
@@ -444,45 +389,36 @@ const css = /* css */ `
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  padding: 2px 7px;
+  padding: 2px 6px;
+  border: 1px solid var(--ttr-line);
   border-radius: 6px;
-  background: var(--ttr-chip-bg);
-  box-shadow: inset 0 0 0 1px var(--ttr-chip-ring);
+  background: var(--ttr-chip);
+  color: var(--ttr-muted);
   font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
   font-size: 11.5px;
-  opacity: 0.72;
 }
 .lilt-ttr-total {
-  padding: 2px 7px;
-  border-radius: 6px;
-  background: var(--ttr-badge-bg);
+  color: var(--ttr-faint);
   font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
   font-size: 11.5px;
   font-variant-numeric: tabular-nums;
-  opacity: 0.62;
   flex-shrink: 0;
 }
 .lilt-ttr-chev {
-  display: grid;
-  place-items: center;
-  width: 24px;
-  height: 24px;
-  border-radius: 7px;
-  background: var(--ttr-chev-bg);
-  opacity: 0.65;
+  color: var(--ttr-faint);
   flex-shrink: 0;
 }
 
 .lilt-ttr-well-wrap {
-  padding: 0 8px 9px;
+  padding: 0 6px 6px;
 }
 .lilt-ttr-well {
   margin: 0;
-  padding: 4px 11px 12px;
+  padding: 4px 12px 12px;
   list-style: none;
-  border-radius: 11px;
-  background: linear-gradient(180deg, var(--ttr-well-a), var(--ttr-well-b));
-  box-shadow: var(--ttr-well-in), var(--ttr-well-out);
+  border: 1px solid var(--ttr-line);
+  border-radius: 10px;
+  background: var(--ttr-surface);
 }
 .lilt-ttr-row {
   display: grid;
@@ -495,14 +431,14 @@ const css = /* css */ `
 .lilt-ttr-row-text {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 7px;
   min-width: 0;
 }
 .lilt-ttr-ms {
+  color: var(--ttr-faint);
   font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
   font-size: 11.5px;
   font-variant-numeric: tabular-nums;
-  opacity: 0.5;
 }
 .lilt-ttr-rail {
   position: absolute;
@@ -510,7 +446,7 @@ const css = /* css */ `
   top: ${12 + ICON + 4}px;
   bottom: -8px;
   width: 1.5px;
-  border-radius: 2px;
+  border-radius: 1px;
   overflow: hidden;
   background: var(--ttr-rail);
 }

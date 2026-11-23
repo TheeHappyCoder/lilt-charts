@@ -263,7 +263,7 @@ export function Collaborators() {
         kind: 'color',
         name: 'tone',
         label: 'Colour',
-        defaultValue: '#ff4d5e',
+        defaultValue: '#d93848',
         description: "The fill's colour.",
       },
     ],

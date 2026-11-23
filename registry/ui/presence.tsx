@@ -5,7 +5,7 @@ import { useState, type CSSProperties } from 'react';
 
 export interface Person {
   name: string;
-  /** A photo. Without one the avatar shows initials on a gradient picked from the name. */
+  /** A photo. Without one the avatar shows initials on a tone picked from the name. */
   src?: string;
   /** Here right now: a thin ring in their colour. Everyone else sits back a little. */
   live?: boolean;
@@ -37,25 +37,25 @@ const DEFAULT_PEOPLE: readonly Person[] = [
   { name: 'Lea Moreau', note: 'Here last week' },
 ];
 
-const GRADIENTS = [
-  ['#8e9eff', '#c8a8e8'],
-  ['#78b8ff', '#8e9eff'],
-  ['#ffb496', '#ff8fa3'],
-  ['#5ad4a4', '#6eb8ff'],
-  ['#f7bd63', '#f58b6f'],
-  ['#c89bff', '#7aa4ff'],
+const PALETTE = [
+  ['#7c5cff', '#6546e0'],
+  ['#2f7cf6', '#2160c9'],
+  ['#2d8a4e', '#216e3d'],
+  ['#c2701c', '#a35b12'],
+  ['#c74277', '#a63260'],
+  ['#5b6478', '#424959'],
 ] as const;
 
 /** The ring's width, and the gap between it and the face. */
-const RING = 1.75;
-const GAP = 2;
-const SPRING = { type: 'spring', stiffness: 380, damping: 28 } as const;
+const RING = 1.5;
+const GAP = 1.5;
+const SPRING = { type: 'spring', stiffness: 380, damping: 30 } as const;
 
 /** The same colours for the same name, every time. */
 function coloursOf(name: string) {
   let hash = 0;
   for (const char of name) hash = (hash * 31 + char.charCodeAt(0)) >>> 0;
-  return GRADIENTS[hash % GRADIENTS.length]!;
+  return PALETTE[hash % PALETTE.length]!;
 }
 
 const initialsOf = (name: string) =>
@@ -66,11 +66,11 @@ const initialsOf = (name: string) =>
     .join('');
 
 /**
- * Who else is here. Faces overlap inside a subtle machined tray at rest; point at the stack and
- * they fan apart on a spring, and pointing at one lifts it and reveals a floating glass callout
- * card. Whoever is here now wears a luminous ring in their colour, and while they are busy that
- * ring becomes a spinner. The rest fold into a machined count pill. Each face is a focusable
- * button, so the names are there for keyboards too.
+ * Who else is here. Faces overlap at rest; point at the stack and they fan apart on a spring, and
+ * pointing at one lifts it and names them. Whoever is here now wears a thin ring in their colour,
+ * and while they are busy that ring becomes a spinner, a faint track with an arc running round it.
+ * The rest fold into a count. Each face is a focusable button, so the names are there for
+ * keyboards too.
  */
 export function Presence({
   people = DEFAULT_PEOPLE,
@@ -86,7 +86,7 @@ export function Presence({
   const shown = people.slice(0, max);
   const rest = people.length - shown.length;
   const outer = size + (RING + GAP) * 2;
-  const overlap = Math.round(outer * 0.3);
+  const overlap = Math.round(outer * 0.32);
   const live = people.filter((person) => person.live).length;
 
   return (
@@ -98,7 +98,6 @@ export function Presence({
         role="group"
         aria-label={`${people.length} people, ${live} here now`}
         className={['lilt-prs', className].filter(Boolean).join(' ')}
-        data-open={open || undefined}
         onPointerEnter={() => setOpen(true)}
         onPointerLeave={() => {
           setOpen(false);
@@ -111,7 +110,7 @@ export function Presence({
             setActive(null);
           }
         }}
-        style={{ '--prs-surface': surface, ...style } as CSSProperties}
+        style={style}
       >
         {shown.map((person, index) => {
           const [accent] = coloursOf(person.name);
@@ -125,17 +124,16 @@ export function Presence({
               onFocus={() => setActive(index)}
               initial={false}
               animate={{
-                marginLeft: index === 0 ? 0 : open && !reduced ? 5 : -overlap,
-                y: active === index && !reduced ? -4 : 0,
-                scale: active === index && !reduced ? 1.05 : 1,
+                marginLeft: index === 0 ? 0 : open && !reduced ? 4 : -overlap,
+                y: active === index && !reduced ? -3 : 0,
               }}
               transition={SPRING}
               style={{
                 zIndex: active === index ? shown.length + 2 : shown.length - index,
                 width: outer,
                 height: outer,
-                background: 'var(--prs-cut)',
-                boxShadow: '0 0 0 2px var(--prs-cut), 0 6px 14px -6px rgba(15, 20, 40, 0.28)',
+                background: surface,
+                boxShadow: `0 0 0 2px ${surface}`,
               }}
             >
               <Face person={person} size={size} />
@@ -152,16 +150,10 @@ export function Presence({
                   <motion.span
                     aria-hidden="true"
                     className="lilt-prs-tip"
-                    initial={{ opacity: 0, y: 6, scale: 0.94, filter: 'blur(4px)' }}
-                    animate={{ opacity: 1, y: 0, scale: 1, filter: 'blur(0px)' }}
-                    exit={{
-                      opacity: 0,
-                      y: 3,
-                      scale: 0.96,
-                      filter: 'blur(3px)',
-                      transition: { duration: 0.12 },
-                    }}
-                    transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
+                    initial={{ opacity: 0, y: 4, filter: 'blur(3px)' }}
+                    animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+                    exit={{ opacity: 0, y: 2, filter: 'blur(3px)', transition: { duration: 0.12 } }}
+                    transition={{ duration: 0.18, ease: [0.22, 1, 0.36, 1] }}
                   >
                     <span className="lilt-prs-tip-head">
                       <span
@@ -169,7 +161,6 @@ export function Presence({
                         style={{
                           background: person.live ? accent : 'currentColor',
                           opacity: person.live ? 1 : 0.28,
-                          boxShadow: person.live ? `0 0 8px ${accent}` : undefined,
                         }}
                       />
                       <span className="lilt-prs-name">{person.name}</span>
@@ -186,14 +177,13 @@ export function Presence({
             aria-hidden="true"
             className="lilt-prs-rest"
             initial={false}
-            animate={{ marginLeft: open && !reduced ? 5 : -overlap }}
+            animate={{ marginLeft: open && !reduced ? 4 : -overlap }}
             transition={SPRING}
             style={{
               minWidth: outer,
               height: outer,
               fontSize: Math.round(size * 0.34),
-              boxShadow:
-                '0 0 0 2px var(--prs-cut), inset 0 1px 0 var(--prs-top), 0 6px 14px -6px rgba(15, 20, 40, 0.2)',
+              boxShadow: `0 0 0 2px ${surface}`,
             }}
           >
             +{rest}
@@ -231,23 +221,18 @@ function Ring({
       fill="none"
       stroke={colour}
       strokeWidth={RING}
-      style={{
-        position: 'absolute',
-        inset: 0,
-        pointerEvents: 'none',
-        filter: `drop-shadow(0 0 3px color-mix(in srgb, ${colour} 45%, transparent))`,
-      }}
+      style={{ position: 'absolute', inset: 0, pointerEvents: 'none' }}
       animate={{ rotate: spinning ? 360 : 0 }}
-      transition={spinning ? { duration: 0.9, ease: 'linear', repeat: Infinity } : { duration: 0 }}
+      transition={spinning ? { duration: 0.85, ease: 'linear', repeat: Infinity } : { duration: 0 }}
     >
-      <circle cx={size / 2} cy={size / 2} r={r} opacity={spinning ? 0.24 : 0.92} />
+      <circle cx={size / 2} cy={size / 2} r={r} opacity={spinning ? 0.24 : 0.9} />
       {spinning ? (
         <circle
           cx={size / 2}
           cy={size / 2}
           r={r}
           strokeLinecap="round"
-          strokeDasharray={`${around * 0.3} ${around}`}
+          strokeDasharray={`${around * 0.28} ${around}`}
         />
       ) : null}
     </motion.svg>
@@ -256,7 +241,7 @@ function Ring({
 
 function Face({ person, size }: { person: Person; size: number }) {
   // Whoever is not here sits back a little, so the live faces read first.
-  const away = person.live ? 1 : 0.58;
+  const away = person.live ? 1 : 0.56;
   const [from, to] = coloursOf(person.name);
   return person.src ? (
     <img
@@ -264,33 +249,23 @@ function Face({ person, size }: { person: Person; size: number }) {
       alt=""
       width={size}
       height={size}
-      style={{
-        display: 'block',
-        borderRadius: '50%',
-        objectFit: 'cover',
-        opacity: away,
-        boxShadow: 'inset 0 1px 0 rgb(255 255 255 / 0.3)',
-      }}
+      style={{ display: 'block', borderRadius: '50%', objectFit: 'cover', opacity: away }}
     />
   ) : (
     <span
       aria-hidden="true"
       style={{
-        position: 'relative',
         display: 'grid',
         placeItems: 'center',
         width: size,
         height: size,
         borderRadius: '50%',
-        background: `linear-gradient(145deg, ${from}, ${to})`,
+        background: `linear-gradient(180deg, ${from}, ${to})`,
         color: '#fff',
         fontSize: Math.round(size * 0.33),
-        fontWeight: 650,
+        fontWeight: 550,
         letterSpacing: '0.01em',
         opacity: away,
-        boxShadow:
-          'inset 0 1.5px 0 rgb(255 255 255 / 0.42), inset 0 -1.5px 2px rgb(15 20 40 / 0.16)',
-        textShadow: '0 1px 2px rgb(15 20 40 / 0.18)',
       }}
     >
       {initialsOf(person.name)}
@@ -300,60 +275,32 @@ function Face({ person, size }: { person: Person; size: number }) {
 
 const css = /* css */ `
 .lilt-prs {
-  --prs-tray-a: rgba(255, 255, 255, 0.94);
-  --prs-tray-b: rgba(240, 242, 247, 0.94);
-  --prs-cut: #f6f7fa;
-  --prs-ring: rgba(15, 20, 40, 0.08);
-  --prs-top: rgba(255, 255, 255, 0.96);
-  --prs-lip: #dfe2ea;
-  --prs-drop: 0 14px 28px -14px rgba(15, 20, 40, 0.2), 0 2px 5px rgba(15, 20, 40, 0.05);
-  --prs-rest-a: #ffffff;
-  --prs-rest-b: #eceef4;
-  --prs-tip-a: #ffffff;
-  --prs-tip-b: #f3f4f8;
-  --prs-tip-shadow: 0 18px 34px -12px rgba(15, 20, 40, 0.28), 0 3px 8px rgba(15, 20, 40, 0.08);
-  --prs-focus: rgba(23, 23, 23, 0.28);
+  --prs-rest: #f4f4f2;
+  --prs-tip: #ffffff;
+  --prs-line: rgb(26 26 24 / 0.1);
+  --prs-muted: #6b6b66;
+  --prs-pop: 0 12px 32px rgb(26 26 24 / 0.1);
+  --prs-ring: #7c5cff;
   display: inline-flex;
   align-items: center;
-  padding: 6px 8px;
-  border-radius: 999px;
-  background: linear-gradient(180deg, var(--prs-tray-a), var(--prs-tray-b));
-  box-shadow:
-    0 0 0 1px var(--prs-ring),
-    inset 0 1.5px 0 var(--prs-top),
-    inset 0 -2px 0 var(--prs-lip),
-    var(--prs-drop);
+  padding: 4px;
   -webkit-font-smoothing: antialiased;
 }
 :where(.dark, [data-theme="dark"]) .lilt-prs {
-  --prs-tray-a: #22242c;
-  --prs-tray-b: #16181e;
-  --prs-cut: #1c1e25;
-  --prs-ring: rgba(255, 255, 255, 0.1);
-  --prs-top: rgba(255, 255, 255, 0.11);
-  --prs-lip: rgba(0, 0, 0, 0.72);
-  --prs-drop: 0 16px 30px -12px rgba(0, 0, 0, 0.7), 0 2px 6px rgba(0, 0, 0, 0.36);
-  --prs-rest-a: #282b34;
-  --prs-rest-b: #1b1d24;
-  --prs-tip-a: #262933;
-  --prs-tip-b: #191b22;
-  --prs-tip-shadow: 0 20px 38px -12px rgba(0, 0, 0, 0.78), 0 3px 10px rgba(0, 0, 0, 0.45);
-  --prs-focus: rgba(255, 255, 255, 0.32);
+  --prs-rest: #1e1e1c;
+  --prs-tip: #181817;
+  --prs-line: rgb(244 244 242 / 0.1);
+  --prs-muted: #a3a39d;
+  --prs-pop: 0 14px 36px rgb(0 0 0 / 0.45);
+  --prs-ring: #9a82ff;
 }
 [data-theme="light"] .lilt-prs {
-  --prs-tray-a: rgba(255, 255, 255, 0.94);
-  --prs-tray-b: rgba(240, 242, 247, 0.94);
-  --prs-cut: #f6f7fa;
-  --prs-ring: rgba(15, 20, 40, 0.08);
-  --prs-top: rgba(255, 255, 255, 0.96);
-  --prs-lip: #dfe2ea;
-  --prs-drop: 0 14px 28px -14px rgba(15, 20, 40, 0.2), 0 2px 5px rgba(15, 20, 40, 0.05);
-  --prs-rest-a: #ffffff;
-  --prs-rest-b: #eceef4;
-  --prs-tip-a: #ffffff;
-  --prs-tip-b: #f3f4f8;
-  --prs-tip-shadow: 0 18px 34px -12px rgba(15, 20, 40, 0.28), 0 3px 8px rgba(15, 20, 40, 0.08);
-  --prs-focus: rgba(23, 23, 23, 0.28);
+  --prs-rest: #f4f4f2;
+  --prs-tip: #ffffff;
+  --prs-line: rgb(26 26 24 / 0.1);
+  --prs-muted: #6b6b66;
+  --prs-pop: 0 12px 32px rgb(26 26 24 / 0.1);
+  --prs-ring: #7c5cff;
 }
 
 .lilt-prs-btn {
@@ -370,27 +317,25 @@ const css = /* css */ `
   outline: none;
 }
 .lilt-prs-btn:focus-visible {
-  outline: 2px solid var(--prs-focus);
+  outline: 2px solid var(--prs-ring);
   outline-offset: 2px;
 }
 
 .lilt-prs-tip {
   position: absolute;
-  bottom: calc(100% + 12px);
+  bottom: calc(100% + 10px);
   left: 50%;
   translate: -50% 0;
   display: grid;
   gap: 2px;
-  padding: 8px 12px;
-  border-radius: 11px;
+  padding: 7px 11px;
+  border: 1px solid var(--prs-line);
+  border-radius: 10px;
   white-space: nowrap;
   text-align: left;
   pointer-events: none;
-  background: linear-gradient(180deg, var(--prs-tip-a), var(--prs-tip-b));
-  box-shadow:
-    0 0 0 1px var(--prs-ring),
-    inset 0 1px 0 var(--prs-top),
-    var(--prs-tip-shadow);
+  background: var(--prs-tip);
+  box-shadow: var(--prs-pop);
 }
 .lilt-prs-tip-head {
   display: inline-flex;
@@ -405,24 +350,25 @@ const css = /* css */ `
 }
 .lilt-prs-name {
   font-size: 12.5px;
-  font-weight: 600;
+  font-weight: 500;
   letter-spacing: -0.01em;
 }
 .lilt-prs-note {
-  font-size: 11.5px;
-  opacity: 0.58;
   padding-left: 12px;
+  color: var(--prs-muted);
+  font-size: 11.5px;
 }
 .lilt-prs-rest {
   position: relative;
   z-index: 0;
   display: grid;
   place-items: center;
-  padding: 0 9px;
+  padding: 0 8px;
+  border: 1px solid var(--prs-line);
   border-radius: 999px;
-  font-weight: 600;
+  font-weight: 500;
   font-variant-numeric: tabular-nums;
-  background: linear-gradient(180deg, var(--prs-rest-a), var(--prs-rest-b));
+  background: var(--prs-rest);
   flex-shrink: 0;
 }
 `;

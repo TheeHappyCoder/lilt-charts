@@ -19,10 +19,10 @@ const SHAPE = { type: 'spring', stiffness: 340, damping: 26, mass: 0.9 } as cons
 const EASE = [0.22, 1, 0.36, 1] as const;
 
 /**
- * One anodized obsidian shape that becomes whatever it needs to be: a pill for a timer, a wide
- * card for a call. Change `view` and the old content blurs away first, then the shape springs to
- * the size of the new content, and the new content clears out of a blur as it lands. Growing, the
- * shape leads; shrinking, it waits for the old content to go, so nothing is ever squeezed.
+ * One black shape that becomes whatever it needs to be: a pill for a timer, a wide card for a
+ * call. Change `view` and the old content blurs away first, then the shape springs to the size of
+ * the new content, and the new content clears out of a blur as it lands. Growing, the shape leads;
+ * shrinking, it waits for the old content to go, so nothing is ever squeezed.
  */
 export function DynamicIsland({
   view,
@@ -65,7 +65,6 @@ export function DynamicIsland({
         transition={reduced ? { duration: 0 } : SHAPE}
         style={style}
       >
-        <span className="lilt-dis-sheen" aria-hidden="true" />
         <div ref={content} className="lilt-dis-inner">
           <AnimatePresence initial={false}>
             <motion.div
@@ -97,23 +96,13 @@ const css = /* css */ `
 .lilt-dis {
   position: relative;
   overflow: hidden;
-  background: linear-gradient(180deg, #111216 0%, #050507 52%, #000000 100%);
-  color: #f4f4f6;
+  background: #0b0b0c;
+  color: #f4f4f2;
   box-shadow:
-    0 0 0 1px rgba(255, 255, 255, 0.08),
-    inset 0 1px 0 rgba(255, 255, 255, 0.18),
-    inset 0 -1.5px 0 rgba(0, 0, 0, 0.9),
-    0 22px 44px -16px rgba(0, 0, 0, 0.72),
-    0 4px 12px rgba(0, 0, 0, 0.36);
+    inset 0 0 0 1px rgb(244 244 242 / 0.09),
+    0 10px 28px rgb(0 0 0 / 0.22);
   color-scheme: dark;
   -webkit-font-smoothing: antialiased;
-}
-.lilt-dis-sheen {
-  position: absolute;
-  inset: 0 14% auto;
-  height: 44%;
-  background: radial-gradient(80% 100% at 50% 0%, rgba(255, 255, 255, 0.09), transparent 72%);
-  pointer-events: none;
 }
 .lilt-dis-inner {
   position: absolute;

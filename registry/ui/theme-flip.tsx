@@ -38,10 +38,11 @@ type Transitioning = Document & {
 };
 
 /**
- * A machined hardware theme keycap whose new theme spreads out from the button. The sun's rays
- * draw in as a bite slides across it and it swells into a moon, on a spring; an internal solar or
- * lunar wash tints the recessed lens, and the whole page changes inside a circle growing from
- * where you pressed with a soft, feathered edge. Uses browser view transitions when available.
+ * A theme toggle whose new theme spreads out from the button. The sun's rays draw in as a bite
+ * slides across it and it swells into a moon, on a spring; and the whole page changes inside a
+ * circle growing from where you pressed, with a soft, feathered edge rather than a hard wipe. It
+ * uses the browser's view transitions, and simply switches where they are missing or motion is
+ * reduced.
  */
 export function ThemeFlip({
   theme,
@@ -103,7 +104,6 @@ export function ThemeFlip({
         data-mode={theme}
         style={style}
       >
-        <span className="lilt-tfl-glow" aria-hidden="true" />
         <SunMoon dark={theme === 'dark'} reduced={reduced} />
       </button>
     </>
@@ -122,13 +122,13 @@ function SunMoon({ dark, reduced }: { dark: boolean; reduced: boolean }) {
   return (
     <motion.svg
       aria-hidden="true"
-      width={18}
-      height={18}
+      width={17}
+      height={17}
       viewBox="0 0 24 24"
       initial={false}
       animate={{ rotate: dark ? -24 : 90 }}
       transition={transition}
-      style={{ position: 'relative', zIndex: 1, overflow: 'visible' }}
+      style={{ overflow: 'visible' }}
     >
       <mask id={mask}>
         <rect x="-4" y="-4" width="32" height="32" fill="#fff" />
@@ -178,61 +178,36 @@ function SunMoon({ dark, reduced }: { dark: boolean; reduced: boolean }) {
 
 const css = /* css */ `
 .lilt-tfl {
-  --tfl-a: #ffffff;
-  --tfl-b: #f0f2f6;
-  --tfl-ring: rgba(15, 20, 40, 0.09);
-  --tfl-top: #ffffff;
-  --tfl-lip: #dde0e8;
-  --tfl-drop: 0 8px 18px -8px rgba(15, 20, 40, 0.22), 0 2px 4px rgba(15, 20, 40, 0.06);
-  --tfl-glow: radial-gradient(circle at 50% 50%, rgba(255, 190, 120, 0.36), transparent 72%);
-  --tfl-ink: #c97c24;
-  position: relative;
+  --tfl-bg: #f4f4f2;
+  --tfl-hover: #ededea;
+  --tfl-line: rgb(26 26 24 / 0.08);
+  --tfl-ring: #7c5cff;
   display: grid;
   place-items: center;
-  width: 38px;
-  height: 38px;
+  width: 34px;
+  height: 34px;
   padding: 0;
-  border: 0;
-  border-radius: 12px;
-  overflow: hidden;
-  background: linear-gradient(180deg, var(--tfl-a), var(--tfl-b));
-  box-shadow:
-    0 0 0 1px var(--tfl-ring),
-    inset 0 1.5px 0 var(--tfl-top),
-    inset 0 -2px 0 var(--tfl-lip),
-    var(--tfl-drop);
-  color: var(--tfl-ink);
+  border: 1px solid var(--tfl-line);
+  border-radius: 9px;
+  background: var(--tfl-bg);
+  color: inherit;
   cursor: pointer;
-  transition:
-    transform 180ms cubic-bezier(0.22, 1, 0.36, 1),
-    box-shadow 240ms cubic-bezier(0.22, 1, 0.36, 1),
-    color 240ms ease;
+  transition: background-color 160ms ease, transform 140ms ease;
 }
 .lilt-tfl[data-mode="dark"] {
-  --tfl-a: #272a34;
-  --tfl-b: #191b22;
-  --tfl-ring: rgba(255, 255, 255, 0.11);
-  --tfl-top: rgba(255, 255, 255, 0.12);
-  --tfl-lip: rgba(0, 0, 0, 0.78);
-  --tfl-drop: 0 10px 20px -8px rgba(0, 0, 0, 0.72), 0 2px 5px rgba(0, 0, 0, 0.38);
-  --tfl-glow: radial-gradient(circle at 50% 50%, rgba(163, 177, 255, 0.32), transparent 72%);
-  --tfl-ink: #b9c4ff;
+  --tfl-bg: #1c1c1a;
+  --tfl-hover: #242422;
+  --tfl-line: rgb(244 244 242 / 0.09);
+  --tfl-ring: #9a82ff;
 }
 .lilt-tfl:hover {
-  transform: translateY(-1px);
+  background: var(--tfl-hover);
 }
 .lilt-tfl:active {
-  transform: translateY(1px) scale(0.94);
+  transform: scale(0.95);
 }
 .lilt-tfl:focus-visible {
-  outline: 2px solid color-mix(in srgb, currentColor 45%, transparent);
+  outline: 2px solid var(--tfl-ring);
   outline-offset: 2px;
-}
-.lilt-tfl-glow {
-  position: absolute;
-  inset: 0;
-  background: var(--tfl-glow);
-  pointer-events: none;
-  z-index: 0;
 }
 `;

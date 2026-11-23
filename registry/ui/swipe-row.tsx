@@ -44,11 +44,11 @@ const SNAP = { type: 'spring', stiffness: 520, damping: 40 } as const;
 const EASE = [0.22, 1, 0.36, 1] as const;
 
 /**
- * A list row you can swipe, like a mail inbox. Drag it and the recessed action well shows
- * underneath; cross the line and lit colour floods the well, the icon jumps and starts riding the
- * edge with your finger, and phones that can give a small tap of haptics. Let go past the line and
- * the row slides away and folds shut; short of it, it springs home. With a mouse or keyboard a
- * machined glass dock surfaces the same actions at the row's end on hover and focus.
+ * A list row you can swipe, like a mail inbox. Drag it and the action shows underneath, faint;
+ * cross the line and the colour floods in, the icon jumps and starts riding the edge with your
+ * finger, and phones that can give a small tap of haptics. Let go past the line and the row slides
+ * away and folds shut; short of it, it springs home. With a mouse or keyboard the same actions sit
+ * at the row's end on hover and focus, and do exactly what the swipe does.
  */
 export function SwipeRow({
   children,
@@ -182,16 +182,10 @@ export function SwipeRow({
           <AnimatePresence>
             {near && !gone && !dragging && !armed ? (
               <motion.div
-                initial={{ opacity: 0, x: 6, scale: 0.96, filter: 'blur(4px)' }}
-                animate={{ opacity: 1, x: 0, scale: 1, filter: 'blur(0px)' }}
-                exit={{
-                  opacity: 0,
-                  x: 6,
-                  scale: 0.96,
-                  filter: 'blur(4px)',
-                  transition: { duration: 0.12 },
-                }}
-                transition={{ duration: 0.2, ease: EASE }}
+                initial={{ opacity: 0, x: 5, filter: 'blur(3px)' }}
+                animate={{ opacity: 1, x: 0, filter: 'blur(0px)' }}
+                exit={{ opacity: 0, x: 5, filter: 'blur(3px)', transition: { duration: 0.12 } }}
+                transition={{ duration: 0.18, ease: EASE }}
                 className="lilt-swr-dock"
                 style={{ '--swr-surface': surface } as CSSProperties}
               >
@@ -211,7 +205,7 @@ export function SwipeRow({
                         style={{ '--swr-tone': action.tone } as CSSProperties}
                       >
                         {action.icon ?? (
-                          <span style={{ fontSize: 11, fontWeight: 600 }}>{action.label[0]}</span>
+                          <span style={{ fontSize: 11, fontWeight: 500 }}>{action.label[0]}</span>
                         )}
                       </button>
                     );
@@ -226,8 +220,8 @@ export function SwipeRow({
 }
 
 /**
- * The action under the row. Recessed and faint while you drag toward it; armed, it floods with
- * top-lit colour and its icon jumps, then rides the row's edge beside your finger.
+ * The action under the row. Faint while you drag toward it; armed, it floods with colour and its
+ * icon jumps, then rides the row's edge so it is always just beside your finger.
  */
 function Under({
   side,
@@ -266,13 +260,13 @@ function Under({
         style={{ x: ride, opacity: appear, display: 'inline-flex', alignItems: 'center', gap: 8 }}
       >
         <motion.span
-          animate={{ scale: armed ? 1.14 : 0.88 }}
+          animate={{ scale: armed ? 1.12 : 0.88 }}
           transition={reduced ? { duration: 0 } : { type: 'spring', stiffness: 600, damping: 18 }}
           style={{ display: 'grid', placeItems: 'center' }}
         >
           {action.icon}
         </motion.span>
-        <span style={{ fontSize: 13, fontWeight: 600, letterSpacing: '-0.01em' }}>
+        <span style={{ fontSize: 13, fontWeight: 500, letterSpacing: '-0.01em' }}>
           {action.label}
         </span>
       </motion.span>
@@ -282,29 +276,20 @@ function Under({
 
 const css = /* css */ `
 .lilt-swr {
-  --swr-dock-a: #ffffff;
-  --swr-dock-b: #f1f2f6;
-  --swr-dock-ring: rgba(15, 20, 40, 0.09);
-  --swr-dock-top: #ffffff;
-  --swr-dock-lip: #dfe2ea;
-  --swr-dock-drop: 0 8px 18px -6px rgba(15, 20, 40, 0.22), 0 2px 4px rgba(15, 20, 40, 0.06);
+  --swr-dock: #ffffff;
+  --swr-line: rgb(26 26 24 / 0.1);
+  --swr-shadow: 0 2px 8px rgb(26 26 24 / 0.08);
   -webkit-font-smoothing: antialiased;
 }
 :where(.dark, [data-theme="dark"]) .lilt-swr {
-  --swr-dock-a: #282b34;
-  --swr-dock-b: #1b1d24;
-  --swr-dock-ring: rgba(255, 255, 255, 0.12);
-  --swr-dock-top: rgba(255, 255, 255, 0.12);
-  --swr-dock-lip: rgba(0, 0, 0, 0.72);
-  --swr-dock-drop: 0 10px 22px -6px rgba(0, 0, 0, 0.72), 0 2px 6px rgba(0, 0, 0, 0.4);
+  --swr-dock: #1e1e1c;
+  --swr-line: rgb(244 244 242 / 0.1);
+  --swr-shadow: 0 2px 10px rgb(0 0 0 / 0.36);
 }
 [data-theme="light"] .lilt-swr {
-  --swr-dock-a: #ffffff;
-  --swr-dock-b: #f1f2f6;
-  --swr-dock-ring: rgba(15, 20, 40, 0.09);
-  --swr-dock-top: #ffffff;
-  --swr-dock-lip: #dfe2ea;
-  --swr-dock-drop: 0 8px 18px -6px rgba(15, 20, 40, 0.22), 0 2px 4px rgba(15, 20, 40, 0.06);
+  --swr-dock: #ffffff;
+  --swr-line: rgb(26 26 24 / 0.1);
+  --swr-shadow: 0 2px 8px rgb(26 26 24 / 0.08);
 }
 
 .lilt-swr-front {
@@ -315,7 +300,6 @@ const css = /* css */ `
 }
 .lilt-swr-front[data-dragging] {
   cursor: grabbing;
-  box-shadow: 0 0 20px rgba(15, 20, 40, 0.14);
 }
 
 .lilt-swr-under {
@@ -323,38 +307,28 @@ const css = /* css */ `
   inset: 0;
   display: flex;
   align-items: center;
-  padding: 0 22px;
-  background: color-mix(in srgb, var(--swr-tone) 14%, transparent);
-  box-shadow: inset 0 2px 8px rgba(15, 20, 40, 0.14), inset 0 -1px 4px rgba(15, 20, 40, 0.06);
+  padding: 0 20px;
+  background: color-mix(in srgb, var(--swr-tone) 12%, transparent);
   color: var(--swr-tone);
-  transition: background 180ms ease, color 180ms ease, box-shadow 180ms ease;
+  transition: background-color 180ms ease, color 180ms ease;
 }
 .lilt-swr-under[data-armed] {
-  background: linear-gradient(
-    180deg,
-    color-mix(in srgb, var(--swr-tone) 86%, white),
-    var(--swr-tone)
-  );
-  box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.22);
+  background: var(--swr-tone);
   color: #ffffff;
 }
 
 .lilt-swr-dock {
   position: absolute;
   top: 50%;
-  right: 12px;
+  right: 10px;
   translate: 0 -50%;
   display: flex;
-  gap: 4px;
-  padding: 4px;
-  border-radius: 12px;
-  background: linear-gradient(180deg, var(--swr-dock-a), var(--swr-dock-b));
-  box-shadow:
-    0 0 0 1px var(--swr-dock-ring),
-    inset 0 1px 0 var(--swr-dock-top),
-    inset 0 -1.5px 0 var(--swr-dock-lip),
-    var(--swr-dock-drop),
-    0 0 22px 10px var(--swr-surface);
+  gap: 3px;
+  padding: 3px;
+  border: 1px solid var(--swr-line);
+  border-radius: 10px;
+  background: var(--swr-dock);
+  box-shadow: var(--swr-shadow), 0 0 18px 8px var(--swr-surface);
 }
 .lilt-swr-dock-btn {
   display: grid;
@@ -363,17 +337,16 @@ const css = /* css */ `
   height: 28px;
   padding: 0;
   border: 0;
-  border-radius: 8px;
-  background: color-mix(in srgb, var(--swr-tone) 10%, transparent);
+  border-radius: 7px;
+  background: transparent;
   color: var(--swr-tone);
   cursor: pointer;
-  transition: background-color 160ms ease, transform 160ms cubic-bezier(0.22, 1, 0.36, 1);
+  transition: background-color 150ms ease, transform 140ms ease;
 }
 .lilt-swr-dock-btn:hover {
-  background: color-mix(in srgb, var(--swr-tone) 20%, transparent);
-  transform: translateY(-0.5px);
+  background: color-mix(in srgb, var(--swr-tone) 12%, transparent);
 }
 .lilt-swr-dock-btn:active {
-  transform: scale(0.92);
+  transform: scale(0.93);
 }
 `;

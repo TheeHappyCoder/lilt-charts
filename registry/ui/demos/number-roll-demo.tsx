@@ -21,7 +21,7 @@ const CHANGE: Intl.NumberFormatOptions = {
   signDisplay: 'always',
 };
 
-/** The docs stage's number: a machined revenue card that rolls to a new figure, or on a click. */
+/** The docs stage's number: a clean revenue card that rolls to a new figure, or on a click. */
 export function NumberRollDemo({
   format = 'currency',
   cycle = true,
@@ -43,7 +43,7 @@ export function NumberRollDemo({
   const before = VALUES[(index + VALUES.length - 1) % VALUES.length]!;
   const change = (value - before) / before;
   const up = change >= 0;
-  const tone = up ? '#32c484' : '#f05d6c';
+  const tone = up ? 'var(--nrd-up)' : 'var(--nrd-down)';
   const { format: options, scale } = FORMATS[format];
 
   return (
@@ -51,198 +51,130 @@ export function NumberRollDemo({
       <style href="lilt-ui-number-roll-demo" precedence="default">
         {css}
       </style>
-      <div className="lilt-nrd-wrap" data-up={up || undefined}>
-        <span className="lilt-nrd-pool" aria-hidden="true" />
-        <button
-          type="button"
-          onClick={() => setIndex((i) => (i + 1) % VALUES.length)}
-          aria-label="Roll to the next figure"
-          className="lilt-nrd"
-          style={style}
-        >
-          <span className="lilt-nrd-head">
-            <span className="lilt-nrd-title">
-              <span
-                className="lilt-nrd-led"
-                style={{ background: tone, boxShadow: `0 0 8px ${tone}` }}
-              />
-              Revenue this month
-            </span>
-            <span className="lilt-nrd-hint">Click to roll</span>
-          </span>
-
-          <span className="lilt-nrd-well">
-            <NumberRoll
-              value={value * scale}
-              format={options}
-              locales="en-US"
-              style={{ fontSize: 42, fontWeight: 600, letterSpacing: '-0.035em' }}
-            />
-          </span>
-
-          <span className="lilt-nrd-foot">
-            <span
-              className="lilt-nrd-delta"
-              style={{
-                color: tone,
-                background: `color-mix(in srgb, ${tone} 13%, transparent)`,
-                boxShadow: `inset 0 0 0 1px color-mix(in srgb, ${tone} 24%, transparent)`,
-              }}
+      <button
+        type="button"
+        onClick={() => setIndex((i) => (i + 1) % VALUES.length)}
+        aria-label="Roll to the next figure"
+        className="lilt-nrd"
+        style={style}
+      >
+        <span className="lilt-nrd-head">
+          <span className="lilt-nrd-title">Revenue this month</span>
+          <span className="lilt-nrd-hint">Click to roll</span>
+        </span>
+        <NumberRoll
+          value={value * scale}
+          format={options}
+          locales="en-US"
+          style={{ fontSize: 44, fontWeight: 500, letterSpacing: '-0.04em' }}
+        />
+        <span className="lilt-nrd-foot">
+          <span
+            className="lilt-nrd-delta"
+            style={{
+              color: tone,
+              background: `color-mix(in srgb, ${tone} 11%, transparent)`,
+            }}
+          >
+            <motion.svg
+              aria-hidden="true"
+              width={12}
+              height={12}
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth={2.4}
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              initial={false}
+              animate={{ rotate: up ? 0 : 180 }}
+              transition={
+                reduced ? { duration: 0 } : { type: 'spring', stiffness: 300, damping: 20 }
+              }
             >
-              <motion.svg
-                aria-hidden="true"
-                width={12}
-                height={12}
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth={2.6}
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                initial={false}
-                animate={{ rotate: up ? 0 : 180 }}
-                transition={
-                  reduced ? { duration: 0 } : { type: 'spring', stiffness: 300, damping: 20 }
-                }
-              >
-                <path d="M12 19V5M5.5 11.5L12 5l6.5 6.5" />
-              </motion.svg>
-              <NumberRoll value={change} format={CHANGE} locales="en-US" />
-            </span>
-            <span className="lilt-nrd-sub">on last month</span>
+              <path d="M12 19V5M5.5 11.5L12 5l6.5 6.5" />
+            </motion.svg>
+            <NumberRoll value={change} format={CHANGE} locales="en-US" />
           </span>
-        </button>
-      </div>
+          <span className="lilt-nrd-sub">on last month</span>
+        </span>
+      </button>
     </>
   );
 }
 
 const css = /* css */ `
-.lilt-nrd-wrap {
-  --nrd-a: #ffffff;
-  --nrd-b: #f1f2f6;
-  --nrd-ring: rgba(15, 20, 40, 0.085);
-  --nrd-top: #ffffff;
-  --nrd-lip: #dde0e8;
-  --nrd-drop: 0 22px 40px -18px rgba(15, 20, 40, 0.24), 0 3px 8px rgba(15, 20, 40, 0.06);
-  --nrd-well-a: #e8eaef;
-  --nrd-well-b: #f5f6f9;
-  --nrd-well-in: inset 0 2px 5px rgba(15, 20, 40, 0.1), inset 0 0 0 1px rgba(15, 20, 40, 0.05);
-  --nrd-well-out: 0 1px 0 rgba(255, 255, 255, 0.92);
-  --nrd-hint-bg: rgba(15, 20, 40, 0.045);
-  position: relative;
-  display: inline-grid;
-  isolation: isolate;
-}
-:where(.dark, [data-theme="dark"]) .lilt-nrd-wrap {
-  --nrd-a: #22242c;
-  --nrd-b: #16181f;
-  --nrd-ring: rgba(255, 255, 255, 0.1);
-  --nrd-top: rgba(255, 255, 255, 0.11);
-  --nrd-lip: rgba(0, 0, 0, 0.78);
-  --nrd-drop: 0 24px 46px -18px rgba(0, 0, 0, 0.78), 0 3px 10px rgba(0, 0, 0, 0.42);
-  --nrd-well-a: #0e0f14;
-  --nrd-well-b: #14161d;
-  --nrd-well-in: inset 0 2px 6px rgba(0, 0, 0, 0.72), inset 0 0 0 1px rgba(255, 255, 255, 0.055);
-  --nrd-well-out: 0 1px 0 rgba(255, 255, 255, 0.06);
-  --nrd-hint-bg: rgba(255, 255, 255, 0.06);
-}
-[data-theme="light"] .lilt-nrd-wrap {
-  --nrd-a: #ffffff;
-  --nrd-b: #f1f2f6;
-  --nrd-ring: rgba(15, 20, 40, 0.085);
-  --nrd-top: #ffffff;
-  --nrd-lip: #dde0e8;
-  --nrd-drop: 0 22px 40px -18px rgba(15, 20, 40, 0.24), 0 3px 8px rgba(15, 20, 40, 0.06);
-  --nrd-well-a: #e8eaef;
-  --nrd-well-b: #f5f6f9;
-  --nrd-well-in: inset 0 2px 5px rgba(15, 20, 40, 0.1), inset 0 0 0 1px rgba(15, 20, 40, 0.05);
-  --nrd-well-out: 0 1px 0 rgba(255, 255, 255, 0.92);
-  --nrd-hint-bg: rgba(15, 20, 40, 0.045);
-}
-
-.lilt-nrd-pool {
-  position: absolute;
-  left: 12%;
-  right: 12%;
-  bottom: -14px;
-  height: 32px;
-  border-radius: 50%;
-  background: linear-gradient(90deg, #f05d6c, #ffb89e);
-  filter: blur(20px);
-  opacity: 0.36;
-  pointer-events: none;
-  z-index: 0;
-  transition: background 480ms ease, opacity 480ms ease;
-}
-.lilt-nrd-wrap[data-up] .lilt-nrd-pool {
-  background: linear-gradient(90deg, #32c484, #8fd6c0 55%, #a8b5ff);
-}
-
 .lilt-nrd {
-  position: relative;
-  z-index: 1;
+  --nrd-bg: #ffffff;
+  --nrd-hover: #fafaf8;
+  --nrd-chip: #f4f4f2;
+  --nrd-line: rgb(26 26 24 / 0.08);
+  --nrd-muted: #6b6b66;
+  --nrd-faint: #8c8c87;
+  --nrd-up: #2d8a4e;
+  --nrd-down: #d93848;
+  --nrd-shadow: 0 1px 2px rgb(26 26 24 / 0.04);
   display: grid;
-  gap: 12px;
-  min-width: 330px;
-  padding: 16px 18px 18px;
-  border: 0;
-  border-radius: 18px;
-  background: linear-gradient(180deg, var(--nrd-a), var(--nrd-b));
-  box-shadow:
-    0 0 0 1px var(--nrd-ring),
-    inset 0 1.5px 0 var(--nrd-top),
-    inset 0 -2.5px 0 var(--nrd-lip),
-    var(--nrd-drop);
+  gap: 10px;
+  min-width: 316px;
+  padding: 20px 22px;
+  border: 1px solid var(--nrd-line);
+  border-radius: 14px;
+  background: var(--nrd-bg);
+  box-shadow: var(--nrd-shadow);
   color: inherit;
   font: inherit;
   text-align: left;
   cursor: pointer;
   -webkit-font-smoothing: antialiased;
-  transition: transform 180ms cubic-bezier(0.22, 1, 0.36, 1);
+  transition: background-color 160ms ease, transform 140ms ease;
+}
+:where(.dark, [data-theme="dark"]) .lilt-nrd {
+  --nrd-bg: #181817;
+  --nrd-hover: #1d1d1b;
+  --nrd-chip: #111110;
+  --nrd-line: rgb(244 244 242 / 0.09);
+  --nrd-muted: #a3a39d;
+  --nrd-faint: #73736e;
+  --nrd-up: #5cc485;
+  --nrd-down: #f05d6c;
+  --nrd-shadow: 0 1px 2px rgb(0 0 0 / 0.28);
+}
+[data-theme="light"] .lilt-nrd {
+  --nrd-bg: #ffffff;
+  --nrd-hover: #fafaf8;
+  --nrd-chip: #f4f4f2;
+  --nrd-line: rgb(26 26 24 / 0.08);
+  --nrd-muted: #6b6b66;
+  --nrd-faint: #8c8c87;
+  --nrd-up: #2d8a4e;
+  --nrd-down: #d93848;
+  --nrd-shadow: 0 1px 2px rgb(26 26 24 / 0.04);
 }
 .lilt-nrd:hover {
-  transform: translateY(-1px);
+  background: var(--nrd-hover);
 }
 .lilt-nrd:active {
-  transform: translateY(1px) scale(0.99);
+  transform: scale(0.99);
 }
 
 .lilt-nrd-head {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 10px;
+  gap: 12px;
 }
 .lilt-nrd-title {
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-  font-size: 12.5px;
-  font-weight: 550;
-  opacity: 0.64;
-}
-.lilt-nrd-led {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  transition: background-color 280ms ease, box-shadow 280ms ease;
+  color: var(--nrd-muted);
+  font-size: 13px;
+  font-weight: 500;
 }
 .lilt-nrd-hint {
   padding: 2px 7px;
   border-radius: 6px;
-  background: var(--nrd-hint-bg);
-  font-size: 11px;
-  font-weight: 500;
-  opacity: 0.56;
-}
-.lilt-nrd-well {
-  display: flex;
-  align-items: center;
-  padding: 10px 14px;
-  border-radius: 12px;
-  background: linear-gradient(180deg, var(--nrd-well-a), var(--nrd-well-b));
-  box-shadow: var(--nrd-well-in), var(--nrd-well-out);
+  background: var(--nrd-chip);
+  color: var(--nrd-faint);
+  font-size: 11.5px;
 }
 .lilt-nrd-foot {
   display: flex;
@@ -254,13 +186,13 @@ const css = /* css */ `
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  height: 23px;
-  padding: 0 8px 0 6px;
-  border-radius: 7px;
-  font-weight: 600;
-  transition: color 240ms ease, background-color 240ms ease, box-shadow 240ms ease;
+  height: 22px;
+  padding: 0 7px 0 5px;
+  border-radius: 6px;
+  font-weight: 500;
+  transition: color 240ms ease, background-color 240ms ease;
 }
 .lilt-nrd-sub {
-  opacity: 0.48;
+  color: var(--nrd-faint);
 }
 `;
