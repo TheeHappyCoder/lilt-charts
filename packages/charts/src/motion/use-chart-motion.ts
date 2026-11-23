@@ -50,14 +50,24 @@ export function useChartTimeline(spec: TimelineSpec, reducedMotion: boolean): nu
 
     setProgress(0);
     if (waiting) return;
+    // Motion reports completion from a promise, after the effect that replaced this run has
+    // started the next one; a stopped run must not land its end state on top of it.
+    let live = true;
     const controls = animate(0, 1, {
       ...(spec.spring
         ? { type: 'spring' as const, duration: spec.duration / 1000, bounce: 0.18 }
         : { duration: spec.duration / 1000, ease: REVEAL_EASE }),
-      onUpdate: (latest) => setProgress(latest),
-      onComplete: () => setProgress(1),
+      onUpdate: (latest) => {
+        if (live) setProgress(latest);
+      },
+      onComplete: () => {
+        if (live) setProgress(1);
+      },
     });
-    return () => controls.stop();
+    return () => {
+      live = false;
+      controls.stop();
+    };
   }, [reducedMotion, spec.active, spec.duration, spec.key, spec.spring, waiting]);
 
   if (reducedMotion) return 1;

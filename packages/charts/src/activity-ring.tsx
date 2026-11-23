@@ -142,19 +142,26 @@ function useEntrance(slots: unknown, ready: boolean, motion: ChartMotion) {
     const from = 0;
     current.current = from;
     setProgress(from);
+    // A stopped fade's completion arrives after the next fade has begun; ignore it.
+    let live = true;
     const controls = animate(from, 1, {
       duration: first ? 1.15 : 0.7,
       ease: REVEAL_EASE,
       onUpdate: (latest) => {
+        if (!live) return;
         current.current = latest;
         setProgress(latest);
       },
       onComplete: () => {
+        if (!live) return;
         current.current = 1;
         setProgress(1);
       },
     });
-    return () => controls.stop();
+    return () => {
+      live = false;
+      controls.stop();
+    };
   }, [slots, ready, reduced]);
   return { progress: reduced ? 1 : progress, sweeping: sweeping && !reduced, reduced };
 }
