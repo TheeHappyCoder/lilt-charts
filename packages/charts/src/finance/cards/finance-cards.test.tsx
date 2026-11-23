@@ -54,12 +54,18 @@ afterEach(async () => {
 
 const render = (element: ReactElement) => act(async () => root.render(element));
 
+/**
+ * Motion writes styles such as the hover band's colour on its next frame. That frame was queued
+ * by the change, before this one, so it has run by the time this resolves.
+ */
+const motionFrame = () =>
+  act(() => new Promise<void>((resolve) => requestAnimationFrame(() => resolve())));
+
 /** Keyboard focus on the main plot inspects the latest observation. */
 async function inspectLatest() {
   const input = host.querySelector<HTMLInputElement>('.lilt-chart__keyboard-input input')!;
   await act(async () => input.focus());
-  // Motion writes the hover band's styles on its next frame, which was queued before this one.
-  await act(() => new Promise<void>((resolve) => requestAnimationFrame(() => resolve())));
+  await motionFrame();
 }
 
 /** The x position of the latest observation's mark in each plot, read from its path data. */
@@ -203,6 +209,7 @@ describe('finance cards', { timeout: 15_000 }, () => {
       setValue.call(input, String(Number(input.value) - 1));
       input.dispatchEvent(new Event('input', { bubbles: true }));
     });
+    await motionFrame();
     expect(band()).toBe('var(--lilt-candle-up)');
   });
 
