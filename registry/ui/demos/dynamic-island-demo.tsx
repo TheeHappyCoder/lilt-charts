@@ -16,9 +16,17 @@ const SCRIPT: readonly [View, number][] = [
 ];
 
 const ORANGE = '#ff9f0a';
-const BLUE = '#0a84ff';
+const BLUE = '#4ea2ff';
 const TWO_DIGITS: Intl.NumberFormatOptions = { minimumIntegerDigits: 2 };
 const PERCENT: Intl.NumberFormatOptions = { style: 'percent', maximumFractionDigits: 0 };
+
+const POOLS: Record<View, { gradient: string; opacity: number }> = {
+  idle: { gradient: 'linear-gradient(90deg, #9fadff, #c8a8e8)', opacity: 0.14 },
+  silent: { gradient: 'linear-gradient(90deg, #ff9f0a, #ffb89e)', opacity: 0.44 },
+  timer: { gradient: 'linear-gradient(90deg, #ff9f0a, #ff7062)', opacity: 0.46 },
+  upload: { gradient: 'linear-gradient(90deg, #4ea2ff, #a3b1ff)', opacity: 0.48 },
+  call: { gradient: 'linear-gradient(90deg, #c8a8e8, #30d158)', opacity: 0.46 },
+};
 
 /** The docs stage's island: plays a phone's afternoon, or holds one view. */
 export function DynamicIslandDemo({
@@ -44,10 +52,38 @@ export function DynamicIslandDemo({
 
   const scripted = cycle ? SCRIPT[step]![0] : view;
   const shown = hungUp ? 'idle' : scripted;
+  const pool = POOLS[shown];
 
   return (
-    <div style={{ display: 'grid', placeItems: 'center', minHeight: 120, ...style }}>
-      <DynamicIsland view={shown}>
+    <div
+      style={{
+        position: 'relative',
+        display: 'grid',
+        placeItems: 'center',
+        minHeight: 132,
+        isolation: 'isolate',
+        ...style,
+      }}
+    >
+      {/* Ambient state-tinted light pool beneath the obsidian island */}
+      <span
+        aria-hidden="true"
+        style={{
+          position: 'absolute',
+          width: shown === 'call' ? 280 : 180,
+          height: 44,
+          borderRadius: '50%',
+          background: pool.gradient,
+          filter: 'blur(26px)',
+          opacity: pool.opacity,
+          transform: 'translateY(22px)',
+          pointerEvents: 'none',
+          zIndex: 0,
+          transition:
+            'width 500ms cubic-bezier(0.22, 1, 0.36, 1), opacity 500ms ease, background 500ms ease',
+        }}
+      />
+      <DynamicIsland view={shown} style={{ position: 'relative', zIndex: 1 }}>
         {shown === 'silent' ? (
           <Silent />
         ) : shown === 'timer' ? (
@@ -57,9 +93,49 @@ export function DynamicIslandDemo({
         ) : shown === 'call' ? (
           <Call onAnswer={() => setHungUp(true)} />
         ) : (
-          <div style={{ width: 118, height: 36 }} />
+          <Idle />
         )}
       </DynamicIsland>
+    </div>
+  );
+}
+
+/** Resting hardware pill with a subtle recessed optical camera lens reflection. */
+function Idle() {
+  return (
+    <div
+      style={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'flex-end',
+        width: 122,
+        height: 36,
+        padding: '0 11px',
+      }}
+    >
+      <span
+        aria-hidden="true"
+        style={{
+          position: 'relative',
+          width: 13,
+          height: 13,
+          borderRadius: '50%',
+          background: 'radial-gradient(circle at 38% 36%, #2a3354 0%, #101322 52%, #05060a 100%)',
+          boxShadow: 'inset 0 0 0 1px rgba(255, 255, 255, 0.08)',
+        }}
+      >
+        <span
+          style={{
+            position: 'absolute',
+            top: 3,
+            left: 3,
+            width: 3,
+            height: 3,
+            borderRadius: '50%',
+            background: 'rgba(154, 184, 255, 0.55)',
+          }}
+        />
+      </span>
     </div>
   );
 }
@@ -72,9 +148,9 @@ function Compact({ children }: { children: ReactNode }) {
         alignItems: 'center',
         justifyContent: 'space-between',
         gap: 28,
-        height: 36,
+        height: 38,
         padding: '0 14px 0 8px',
-        fontSize: 14,
+        fontSize: 13.5,
         fontWeight: 600,
         letterSpacing: '-0.01em',
       }}
@@ -91,10 +167,11 @@ function Silent() {
         style={{
           display: 'grid',
           placeItems: 'center',
-          width: 34,
-          height: 22,
-          borderRadius: 11,
-          background: ORANGE,
+          width: 36,
+          height: 24,
+          borderRadius: 12,
+          background: `linear-gradient(180deg, #ffb43b, ${ORANGE})`,
+          boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.35), 0 0 12px rgba(255, 159, 10, 0.45)',
           color: '#fff',
         }}
       >
@@ -125,6 +202,7 @@ function Timer() {
           height: 24,
           borderRadius: '50%',
           background: `color-mix(in srgb, ${ORANGE} 22%, transparent)`,
+          boxShadow: `inset 0 0 0 1px color-mix(in srgb, ${ORANGE} 35%, transparent)`,
           color: ORANGE,
         }}
       >
@@ -133,7 +211,15 @@ function Timer() {
           <path d="M12 9v4l2.5 1.5M10 2h4" />
         </Glyph>
       </span>
-      <span style={{ display: 'inline-flex', alignItems: 'baseline', color: ORANGE, fontSize: 15 }}>
+      <span
+        style={{
+          display: 'inline-flex',
+          alignItems: 'baseline',
+          color: ORANGE,
+          fontSize: 15,
+          fontVariantNumeric: 'tabular-nums',
+        }}
+      >
         {Math.floor(left / 60)}:
         <NumberRoll value={left % 60} format={TWO_DIGITS} locales="en-US" />
       </span>
@@ -150,8 +236,17 @@ function Upload() {
   return (
     <Compact>
       <span style={{ display: 'inline-flex', alignItems: 'center', gap: 10 }}>
-        <svg width={22} height={22} viewBox="0 0 22 22" fill="none" style={{ rotate: '-90deg' }}>
-          <circle cx="11" cy="11" r="9" stroke={BLUE} strokeOpacity={0.28} strokeWidth={2.5} />
+        <svg
+          width={22}
+          height={22}
+          viewBox="0 0 22 22"
+          fill="none"
+          style={{
+            rotate: '-90deg',
+            filter: 'drop-shadow(0 0 5px rgba(78, 162, 255, 0.55))',
+          }}
+        >
+          <circle cx="11" cy="11" r="9" stroke={BLUE} strokeOpacity={0.24} strokeWidth={2.5} />
           <motion.circle
             cx="11"
             cy="11"
@@ -166,7 +261,7 @@ function Upload() {
         </svg>
         <span>Uploading 3 files</span>
       </span>
-      <span style={{ color: BLUE }}>
+      <span style={{ color: BLUE, fontVariantNumeric: 'tabular-nums' }}>
         <NumberRoll value={done} format={PERCENT} locales="en-US" />
       </span>
     </Compact>
@@ -174,7 +269,7 @@ function Upload() {
 }
 
 function Call({ onAnswer }: { onAnswer: () => void }) {
-  const round = (tone: string, label: string, turn: number) => (
+  const round = (top: string, bottom: string, glow: string, label: string, turn: number) => (
     <button
       type="button"
       aria-label={label}
@@ -187,8 +282,8 @@ function Call({ onAnswer }: { onAnswer: () => void }) {
         padding: 0,
         border: 0,
         borderRadius: '50%',
-        background: tone,
-        boxShadow: 'inset 0 1px 0 rgb(255 255 255 / 0.25)',
+        background: `linear-gradient(180deg, ${top}, ${bottom})`,
+        boxShadow: `inset 0 1.5px 0 rgba(255, 255, 255, 0.34), 0 6px 16px -4px ${glow}`,
         color: '#fff',
         cursor: 'pointer',
       }}
@@ -200,7 +295,7 @@ function Call({ onAnswer }: { onAnswer: () => void }) {
     </button>
   );
   return (
-    <div style={{ display: 'flex', alignItems: 'center', gap: 12, padding: 14, width: 340 }}>
+    <div style={{ display: 'flex', alignItems: 'center', gap: 12, padding: 14, width: 344 }}>
       <span
         style={{
           display: 'grid',
@@ -208,20 +303,24 @@ function Call({ onAnswer }: { onAnswer: () => void }) {
           width: 44,
           height: 44,
           borderRadius: '50%',
-          background: 'linear-gradient(135deg, #8b6cff, #e5489c)',
-          boxShadow: 'inset 0 1px 0 rgb(255 255 255 / 0.22)',
+          background: 'linear-gradient(145deg, #9fadff, #c8a8e8 52%, #ffa3ae)',
+          boxShadow:
+            'inset 0 1.5px 0 rgba(255, 255, 255, 0.42), 0 0 0 2px rgba(255, 255, 255, 0.1)',
           fontSize: 15,
-          fontWeight: 600,
+          fontWeight: 650,
+          textShadow: '0 1px 2px rgba(15, 20, 40, 0.25)',
         }}
       >
         AO
       </span>
       <span style={{ display: 'grid', gap: 1, flex: 1, minWidth: 0 }}>
-        <span style={{ fontSize: 12.5, color: 'rgb(255 255 255 / 0.55)' }}>mobile</span>
+        <span style={{ fontSize: 12, color: 'rgba(255, 255, 255, 0.52)', letterSpacing: '0.01em' }}>
+          mobile
+        </span>
         <span style={{ fontSize: 16, fontWeight: 600, letterSpacing: '-0.015em' }}>Ada Okafor</span>
       </span>
-      {round('#ff3b30', 'Decline', 135)}
-      {round('#30d158', 'Accept', 0)}
+      {round('#ff5e57', '#e5332a', 'rgba(255, 59, 48, 0.55)', 'Decline', 135)}
+      {round('#4be06f', '#24b84b', 'rgba(48, 209, 88, 0.55)', 'Accept', 0)}
     </div>
   );
 }

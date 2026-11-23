@@ -44,9 +44,9 @@ function piecesOf(text: string, from: number): Piece[] {
 /**
  * Text that arrives the way a model writes it. Each new word clears out of a blur, a burst of
  * them a beat apart, while the words already there stay perfectly still; even a word that arrives
- * in halves blurs in half by half. A soft caret rides the end while it streams and blurs away
- * when it stops. Pass the whole text so far each time; if it stops being a continuation, it starts
- * over.
+ * in halves blurs in half by half. A luminous pastel caret rides the end while it streams and
+ * dissolves away when it stops. Pass the whole text so far each time; if it stops being a
+ * continuation, it starts over.
  */
 export function StreamText({
   text,
@@ -86,36 +86,59 @@ export function StreamText({
   }, []);
 
   return (
-    <div
-      className={className}
-      aria-busy={streaming}
-      style={{ whiteSpace: 'pre-wrap', overflowWrap: 'anywhere', ...style }}
-    >
-      {memo.current.pieces.map((piece) => (
-        <span key={piece.at} ref={arrive} data-delay={piece.delay}>
-          {piece.text}
-        </span>
-      ))}
-      <AnimatePresence>
-        {streaming && caret ? (
-          <motion.span
-            aria-hidden="true"
-            initial={{ opacity: 0, scale: 0.4, filter: 'blur(4px)' }}
-            animate={{ opacity: 0.85, scale: 1, filter: 'blur(0px)' }}
-            exit={{ opacity: 0, scale: 0.4, filter: 'blur(4px)' }}
-            transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-            style={{
-              display: 'inline-block',
-              width: '0.62em',
-              height: '0.62em',
-              marginLeft: '0.3em',
-              borderRadius: '50%',
-              verticalAlign: '-0.04em',
-              background: 'currentColor',
-            }}
-          />
-        ) : null}
-      </AnimatePresence>
-    </div>
+    <>
+      <style href="lilt-ui-stream-text" precedence="default">
+        {css}
+      </style>
+      <div
+        className={['lilt-stx', className].filter(Boolean).join(' ')}
+        aria-busy={streaming}
+        style={{ whiteSpace: 'pre-wrap', overflowWrap: 'anywhere', ...style }}
+      >
+        {memo.current.pieces.map((piece) => (
+          <span key={piece.at} ref={arrive} data-delay={piece.delay}>
+            {piece.text}
+          </span>
+        ))}
+        <AnimatePresence>
+          {streaming && caret ? (
+            <motion.span
+              aria-hidden="true"
+              className="lilt-stx-caret"
+              initial={{ opacity: 0, scale: 0.4, filter: 'blur(4px)' }}
+              animate={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
+              exit={{ opacity: 0, scale: 0.4, filter: 'blur(4px)' }}
+              transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+            />
+          ) : null}
+        </AnimatePresence>
+      </div>
+    </>
   );
 }
+
+const css = /* css */ `
+.lilt-stx {
+  -webkit-font-smoothing: antialiased;
+}
+.lilt-stx-caret {
+  display: inline-block;
+  width: 0.62em;
+  height: 0.62em;
+  margin-left: 0.32em;
+  border-radius: 50%;
+  vertical-align: -0.05em;
+  background: radial-gradient(circle at 35% 30%, #ffffff 0%, #c8a8e8 42%, #8e9eff 100%);
+  box-shadow:
+    0 0 10px rgba(159, 173, 255, 0.72),
+    0 0 3px rgba(200, 168, 232, 0.55);
+  animation: lilt-stx-pulse 1.5s ease-in-out infinite;
+}
+@keyframes lilt-stx-pulse {
+  0%, 100% { transform: scale(0.92); opacity: 0.78; }
+  50% { transform: scale(1.08); opacity: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .lilt-stx-caret { animation: none; }
+}
+`;

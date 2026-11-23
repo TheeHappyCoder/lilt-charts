@@ -110,8 +110,11 @@ export function RegistryTile({
     >
       <span
         ref={frameRef}
-        className="lilt-media lilt-showroom-tile__media"
+        className={['lilt-media', 'lilt-showroom-tile__media', night ? 'dark' : '']
+          .filter(Boolean)
+          .join(' ')}
         data-backdrop={night ? 'night' : undefined}
+        data-theme={night ? 'dark' : undefined}
         aria-hidden="true"
       >
         <span

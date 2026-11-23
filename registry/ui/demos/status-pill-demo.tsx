@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState, type CSSProperties } from 'react';
-import { StatusPill, type PillStatus } from '../status-pill';
+import { PILL_STATES, StatusPill, type PillStatus } from '../status-pill';
 
 // A save and a dropped connection, in the order a reader might meet them.
 const SCRIPT: readonly [PillStatus, number][] = [
@@ -28,5 +28,35 @@ export function StatusPillDemo({
     const timer = setTimeout(() => setStep((s) => (s + 1) % SCRIPT.length), SCRIPT[step]![1]);
     return () => clearTimeout(timer);
   }, [cycle, step]);
-  return <StatusPill status={cycle ? SCRIPT[step]![0] : status} style={style} />;
+  const active = cycle ? SCRIPT[step]![0] : status;
+  const tone = PILL_STATES[active].tone ?? '#8e9eff';
+  return (
+    <span
+      style={{
+        position: 'relative',
+        display: 'inline-grid',
+        placeItems: 'center',
+        isolation: 'isolate',
+      }}
+    >
+      <span
+        aria-hidden="true"
+        style={{
+          position: 'absolute',
+          left: '10%',
+          right: '10%',
+          bottom: -10,
+          height: 22,
+          borderRadius: '50%',
+          background: tone,
+          filter: 'blur(16px)',
+          opacity: 0.4,
+          pointerEvents: 'none',
+          zIndex: 0,
+          transition: 'background-color 360ms ease',
+        }}
+      />
+      <StatusPill status={active} style={{ position: 'relative', zIndex: 1, ...style }} />
+    </span>
+  );
 }
