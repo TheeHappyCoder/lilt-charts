@@ -670,7 +670,7 @@
   grid-template-columns: repeat(5, minmax(0, 1fr));
   gap: 20px 28px;
   padding-top: 28px;
-  border-top: 1px solid rgb(255 255 255 / 0.055);
+  border-top: 1px solid rgb(255 255 255 / 0.03);
 }
 .lilt-home-foot__col {
   display: flex;
@@ -712,7 +712,7 @@
   align-items: center;
   gap: 8px 28px;
   padding-top: 18px;
-  border-top: 1px solid rgb(255 255 255 / 0.04);
+  border-top: 1px solid rgb(255 255 255 / 0.024);
   color: #8c8c87;
   font-size: var(--text-sm);
 }
