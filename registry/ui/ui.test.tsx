@@ -9,6 +9,8 @@ import { formatDuration, ToolTrace } from './tool-trace';
 import { ConnectButton } from './connect-button';
 import { HoldToConfirm } from './hold-to-confirm';
 import { Presence } from './presence';
+import { ProfilePhoto } from './profile-photo';
+import { DateRange } from './date-range';
 import { StatusPill } from './status-pill';
 import { Thinking } from './thinking';
 
@@ -185,5 +187,99 @@ describe('ToolTrace', () => {
     expect(formatDuration(340)).toBe('340ms');
     expect(formatDuration(1240)).toBe('1.2s');
     expect(formatDuration(12_400)).toBe('12s');
+  });
+});
+
+describe('ProfilePhoto', () => {
+  const buttonLabels = () =>
+    Array.from(host.querySelectorAll('button')).map((button) => button.textContent?.trim());
+
+  it('stands in with initials and offers an upload until there is a photo', () => {
+    render(<ProfilePhoto name="Nora Vance" />);
+    expect(host.querySelector('.lilt-pph-initials')?.textContent).toBe('NV');
+    expect(host.querySelector('button[aria-label="Add a photo"]')).not.toBeNull();
+    expect(buttonLabels()).toContain('Upload');
+    expect(host.querySelector('input[type="file"]')?.getAttribute('accept')).toBe(
+      'image/png,image/jpeg,image/webp',
+    );
+    expect(host.textContent).toContain('PNG, JPG or WebP, at least 400 × 400');
+  });
+
+  it('offers Change with a photo, and Remove only when it can remove', () => {
+    render(<ProfilePhoto name="Nora Vance" src="/nora.jpg" />);
+    expect(host.querySelector('.lilt-pph-face img')?.getAttribute('src')).toBe('/nora.jpg');
+    expect(buttonLabels()).toContain('Change');
+    expect(buttonLabels()).not.toContain('Remove');
+    render(<ProfilePhoto name="Nora Vance" src="/nora.jpg" onRemove={() => undefined} />);
+    expect(buttonLabels()).toContain('Remove');
+  });
+
+  it('says what a drag holds before the drop, from its count and type alone', () => {
+    render(<ProfilePhoto name="Nora Vance" />);
+    const root = host.querySelector('.lilt-pph')!;
+    const enter = (items: { kind: string; type: string }[]) => {
+      const event = new Event('dragenter', { bubbles: true, cancelable: true });
+      Object.assign(event, { dataTransfer: { types: ['Files'], items, files: [] } });
+      act(() => root.dispatchEvent(event));
+    };
+    enter([{ kind: 'file', type: 'image/jpeg' }]);
+    expect(root.textContent).toContain('Drop to use this photo');
+    expect(root.textContent).toContain('1 JPG image');
+    expect(host.querySelector('.lilt-pph-avatar')?.getAttribute('data-over')).toBe('ok');
+    enter([{ kind: 'file', type: 'application/pdf' }]);
+    expect(root.textContent).toContain('PDF files won’t work here');
+  });
+});
+
+describe('DateRange', () => {
+  const today = new Date(2026, 10, 23);
+  const day = (date: number) =>
+    host.querySelector<HTMLButtonElement>(`button[aria-label$="November ${date}, 2026"]`)!;
+  const summary = () => host.querySelector('.lilt-drp-summary')!.textContent ?? '';
+
+  it('opens on the last 7 days and keeps days after today out of reach', () => {
+    render(<DateRange today={today} locales="en-US" />);
+    expect(host.textContent).toContain('November 2026');
+    expect(summary()).toMatch(/Nov 17\s*–\s*23, 2026 · 7 days/);
+    expect(day(17).getAttribute('data-end')).toBe('');
+    expect(day(20).getAttribute('data-in')).toBe('');
+    expect(day(24).disabled).toBe(true);
+    expect(host.querySelector('.lilt-drp-preset[aria-pressed="true"]')?.textContent).toBe(
+      'Last 7 days',
+    );
+  });
+
+  it('takes two days in either order and starts on the earlier one', () => {
+    const onChange = vi.fn();
+    render(<DateRange today={today} locales="en-US" onChange={onChange} />);
+    act(() => day(20).click());
+    act(() => day(12).click());
+    const range = onChange.mock.calls[0]![0] as { start: Date; end: Date };
+    expect([range.start.getDate(), range.end.getDate()]).toEqual([12, 20]);
+    expect(summary()).toMatch(/Nov 12\s*–\s*20, 2026 · 9 days/);
+    expect(host.querySelector('.lilt-drp-preset[aria-pressed="true"]')?.textContent).toBe('Custom');
+  });
+
+  it('counts the days as you look for the other end, backwards too', () => {
+    render(<DateRange today={today} locales="en-US" />);
+    act(() => day(10).click());
+    expect(day(17).getAttribute('data-in')).toBeNull();
+    act(() => day(18).focus());
+    expect(host.querySelector('.lilt-drp-count')?.textContent).toBe('9 days');
+    expect(day(18).getAttribute('data-target')).toBe('');
+    act(() => day(4).focus());
+    expect(host.querySelector('.lilt-drp-count')?.textContent).toBe('7 days');
+    expect(summary()).toMatch(/Nov 4\s*–\s*10, 2026 · 7 days/);
+  });
+
+  it('draws the period before when comparing', () => {
+    const onApply = vi.fn();
+    render(<DateRange today={today} locales="en-US" onApply={onApply} />);
+    act(() => host.querySelector<HTMLButtonElement>('[role="switch"]')!.click());
+    expect(host.querySelector('.lilt-drp-compare-text')!.textContent).toMatch(/Nov 10\s*–\s*16/);
+    expect(day(12).getAttribute('data-ghost')).toBe('');
+    act(() => host.querySelector<HTMLButtonElement>('.lilt-drp-btn--ink')!.click());
+    const [, compare] = onApply.mock.calls[0]! as [unknown, { start: Date; end: Date }];
+    expect([compare.start.getDate(), compare.end.getDate()]).toEqual([10, 16]);
   });
 });

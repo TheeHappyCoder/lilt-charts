@@ -118,6 +118,8 @@ export type RouteIcon =
   | 'streamtext'
   | 'tooltrace'
   | 'numberroll'
+  | 'profilephoto'
+  | 'daterange'
   | 'starfield'
   | 'matrix'
   | 'dotgrid'
@@ -1578,6 +1580,28 @@ export const appRoutes = [
     href: '/components/command-copy',
     pathname: '/components/command-copy',
     icon: 'commandcopy',
+    navigation: true,
+    badge: 'New',
+  },
+  {
+    id: 'component-profile-photo',
+    group: 'Components',
+    label: 'Profile photo',
+    title: 'Profile photo',
+    href: '/components/profile-photo',
+    pathname: '/components/profile-photo',
+    icon: 'profilephoto',
+    navigation: true,
+    badge: 'New',
+  },
+  {
+    id: 'component-date-range',
+    group: 'Components',
+    label: 'Date range',
+    title: 'Date range',
+    href: '/components/date-range',
+    pathname: '/components/date-range',
+    icon: 'daterange',
     navigation: true,
     badge: 'New',
   },

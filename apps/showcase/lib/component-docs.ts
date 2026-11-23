@@ -5,7 +5,7 @@ import type { AsciiControl, AsciiSceneDoc } from './ascii-scenes';
  * spot in a product with one detail worth stealing. Every control is a prop, and its default must
  * match the component's.
  */
-export const componentShelves = ['AI', 'Status', 'Actions'] as const;
+export const componentShelves = ['AI', 'Status', 'Actions', 'Inputs'] as const;
 export type ComponentShelf = (typeof componentShelves)[number];
 
 export interface ComponentDoc extends Omit<AsciiSceneDoc, 'shelf' | 'kind' | 'layout'> {
@@ -502,6 +502,190 @@ export function Revenue({ total }: { total: number }) {
   return <NumberRoll value={total} format={USD} locales="en-US" />;
 }`,
     usage: `${MOTION_USAGE} It takes its size and weight from the text around it and sets tabular figures, so the width only changes when a column does. Screen readers get the plain formatted number.`,
+  },
+  {
+    id: 'profile-photo',
+    shelf: 'Actions',
+    title: 'Profile photo',
+    component: 'ProfilePhoto',
+    demo: 'ProfilePhotoDemo',
+    lede: 'Upload, crop and save a profile photo in one place, without a modal. Inside the circle the photo stays sharp and outside it blurs and fades back, while live previews show it at the sizes people will see.',
+    touch:
+      'Drop a photo on the circle or try the sample. Drag to move it, scroll or pinch to zoom, then save.',
+    controls: [
+      {
+        kind: 'text',
+        name: 'name',
+        label: 'Name',
+        defaultValue: 'Nora Vance',
+        description: 'Whose photo it is. Their initials stand in until there is one.',
+      },
+    ],
+    props: [
+      {
+        name: 'src',
+        type: 'string',
+        defaultValue: '—',
+        description: 'The photo they have now, if any.',
+      },
+      {
+        name: 'onSave',
+        type: '({ blob, size }) => void | Promise<void>',
+        defaultValue: '—',
+        description:
+          'Called with the cropped square. Return a promise to show the upload while it runs; if it rejects, the old photo comes back.',
+      },
+      {
+        name: 'onRemove',
+        type: '() => void | Promise<void>',
+        defaultValue: '—',
+        description: 'Called when Remove is pressed. Without it there is no Remove button.',
+      },
+      {
+        name: 'description',
+        type: 'string',
+        defaultValue: "'Shown on your profile and comments'",
+        description: 'The line beside the title while nothing is happening.',
+      },
+      {
+        name: 'size',
+        type: 'number',
+        defaultValue: '400',
+        description: 'The side of the saved square, in pixels.',
+      },
+      {
+        name: 'minSide',
+        type: 'number',
+        defaultValue: '400',
+        description:
+          'A photo shorter than this on its short side gets a note that it may look soft.',
+      },
+      {
+        name: 'accept',
+        type: 'string',
+        defaultValue: "'image/png,image/jpeg,image/webp'",
+        description: 'MIME types the picker offers and a drop accepts.',
+      },
+      {
+        name: 'ref',
+        type: 'Ref<ProfilePhotoHandle>',
+        defaultValue: '—',
+        description:
+          'Its `edit(fileOrUrl)` opens the cropper from outside, on a sample photo for instance.',
+      },
+    ],
+    code: `import { ProfilePhoto } from '{from}';
+
+export function AccountPhoto({ user }: { user: { name: string; avatarUrl?: string } }) {
+  return (
+    <ProfilePhoto
+      name={user.name}
+      src={user.avatarUrl}
+      onSave={async ({ blob }) => {
+        const body = new FormData();
+        body.append('photo', blob, 'avatar.jpg');
+        await fetch('/api/avatar', { method: 'POST', body });
+      }}
+    />
+  );
+}`,
+    usage: `${MOTION_USAGE} The circle and the buttons open the file picker, and a drop anywhere on it works. While a file is dragged over, it says what it holds, using only the count and type a browser shares mid-drag. In the cropper, the arrow keys move the photo, plus and minus zoom, R turns it, Enter saves and Escape cancels. The saved square is drawn on a canvas, so a photo from another site needs CORS.`,
+  },
+  {
+    id: 'date-range',
+    shelf: 'Inputs',
+    title: 'Date range',
+    component: 'DateRange',
+    demo: 'DateRangeDemo',
+    lede: 'A date range for the top of a report. Pick two days in either order and the earlier one becomes the start. While you look for the second, the band follows the pointer and a label counts the days. Compare draws the period before as a dashed ghost.',
+    touch:
+      'Click a day, then another before or after it. Hover to see the count, Shift-click to move the nearer end, Escape to let go.',
+    controls: [
+      {
+        kind: 'toggle',
+        name: 'defaultCompare',
+        label: 'Compare',
+        defaultValue: false,
+        description: 'Start with the previous period drawn as a dashed ghost.',
+      },
+    ],
+    props: [
+      {
+        name: 'value / defaultValue',
+        type: '{ start: Date; end: Date }',
+        defaultValue: 'the last 7 days',
+        description:
+          'The applied range. Either order is accepted; the earlier day always becomes the start.',
+      },
+      {
+        name: 'onChange',
+        type: '(value) => void',
+        defaultValue: '—',
+        description: 'Called whenever a whole range is picked: a preset, or two days.',
+      },
+      {
+        name: 'onApply',
+        type: '(value, compare) => void',
+        defaultValue: '—',
+        description:
+          'Called when Apply is pressed, with the period before when comparing, or null.',
+      },
+      {
+        name: 'onCancel',
+        type: '() => void',
+        defaultValue: '—',
+        description:
+          'Called when Cancel is pressed. The picker also goes back to the applied range.',
+      },
+      {
+        name: 'presets',
+        type: '{ label, range(today) }[]',
+        defaultValue: 'Today … Last quarter',
+        description: 'The list beside the month. Pass [] to hide it. Custom is always there.',
+      },
+      {
+        name: 'min / max',
+        type: 'Date | null',
+        defaultValue: 'none / today',
+        description:
+          'The days that can be picked. Days after today are out of reach unless max is null.',
+      },
+      {
+        name: 'weekStartsOn',
+        type: '0 | 1',
+        defaultValue: '1',
+        description: '1 starts weeks on Monday, 0 on Sunday.',
+      },
+      {
+        name: 'locales',
+        type: 'Intl.LocalesArgument',
+        defaultValue: "the reader's",
+        description: 'The locale months and ranges are written in.',
+      },
+      {
+        name: 'today',
+        type: 'Date',
+        defaultValue: "the reader's today",
+        description: 'Set it when you render on the server, so the server and browser agree.',
+      },
+      {
+        name: 'title / note',
+        type: 'string',
+        defaultValue: "'Date range' / —",
+        description: 'The heading, and a quiet line beside the buttons such as the time zone.',
+      },
+    ],
+    code: `import { DateRange } from '{from}';
+
+export function ReportRange({ onRange }: { onRange: (from: Date, to: Date) => void }) {
+  return (
+    <DateRange
+      note="Times are in UTC"
+      onApply={(range) => onRange(range.start, range.end)}
+    />
+  );
+}`,
+    usage: `${MOTION_USAGE} Each day is a button in a grid with one tab stop: the arrow keys move by day and week, Home and End to the week's ends, Page Up and Page Down by month (with Shift, by year), Enter or Space picks, and Escape lets go of a half-picked range. Ranges and counts are announced politely. Days are plain calendar days, so time zones never shift a range by one.`,
   },
 ];
 

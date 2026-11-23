@@ -32,7 +32,23 @@ export {
   type TraceStep,
 } from './tool-trace';
 
+export {
+  ProfilePhoto,
+  type ProfilePhotoHandle,
+  type ProfilePhotoProps,
+  type SavedPhoto,
+} from './profile-photo';
+
+export {
+  DateRange,
+  type DateRangePreset,
+  type DateRangeProps,
+  type DateRangeValue,
+} from './date-range';
+
 export { StatusPillDemo } from './demos/status-pill-demo';
+export { DateRangeDemo } from './demos/date-range-demo';
+export { ProfilePhotoDemo } from './demos/profile-photo-demo';
 export { NumberRollDemo } from './demos/number-roll-demo';
 export { StreamTextDemo } from './demos/stream-text-demo';
 export { ToolTraceDemo } from './demos/tool-trace-demo';

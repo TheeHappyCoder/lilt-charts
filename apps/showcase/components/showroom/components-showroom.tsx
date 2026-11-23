@@ -1,6 +1,6 @@
 'use client';
 
-import { ToolTraceDemo } from '@lilt-ui/registry/ui';
+import { ProfilePhotoDemo } from '@lilt-ui/registry/ui';
 import { useMemo, useState } from 'react';
 import { componentDocs, componentPath, componentShelves } from '@/lib/component-docs';
 import { RegistryTile, type RegistryTileItem } from './registry-tile';
@@ -14,7 +14,7 @@ import {
   type ShowroomFilter,
 } from './showroom-wall';
 
-const FEATURE_ID = 'tool-trace';
+const FEATURE_ID = 'profile-photo';
 
 const items: readonly RegistryTileItem[] = componentDocs.map((doc) => ({
   id: doc.id,
@@ -94,7 +94,23 @@ export function ComponentsShowroom() {
             line={feature.lede}
             cta={`Open ${feature.title}`}
             visualMode="right"
-            visual={<ToolTraceDemo />}
+            visual={
+              // A picture of it in use: the whole panel is a link, so nothing in here takes focus.
+              <div
+                inert
+                style={{
+                  position: 'absolute',
+                  // Left of centre, so its buttons clear the panel's own button in the corner.
+                  left: 'calc(50% - 48px)',
+                  top: '50%',
+                  width: 560,
+                  translate: '-50% -50%',
+                  scale: '0.8',
+                }}
+              >
+                <ProfilePhotoDemo open />
+              </div>
+            }
           />
         ) : null}
 

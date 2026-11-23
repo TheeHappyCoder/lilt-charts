@@ -187,6 +187,8 @@ const uiPages: readonly PageSpec[] = [
   page('components', 'stream-text', 'StreamText', 'stream-text.tsx'),
   page('components', 'tool-trace', 'ToolTrace', 'tool-trace.tsx'),
   page('components', 'number-roll', 'NumberRoll', 'number-roll.tsx'),
+  page('components', 'profile-photo', 'ProfilePhoto', 'profile-photo.tsx'),
+  page('components', 'date-range', 'DateRange', 'date-range.tsx'),
 ];
 
 /**

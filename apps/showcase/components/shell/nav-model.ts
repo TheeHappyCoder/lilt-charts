@@ -95,6 +95,7 @@ import AiMagicIcon from '@hugeicons/core-free-icons/AiMagicIcon';
 import CheckmarkCircle02Icon from '@hugeicons/core-free-icons/CheckmarkCircle02Icon';
 import UserGroupIcon from '@hugeicons/core-free-icons/UserGroupIcon';
 import Delete02Icon from '@hugeicons/core-free-icons/Delete02Icon';
+import UserCircleIcon from '@hugeicons/core-free-icons/UserCircleIcon';
 import CommandLineIcon from '@hugeicons/core-free-icons/CommandLineIcon';
 import AiChat02Icon from '@hugeicons/core-free-icons/AiChat02Icon';
 import WorkflowSquare03Icon from '@hugeicons/core-free-icons/WorkflowSquare03Icon';
@@ -218,6 +219,8 @@ export const icons: Record<RouteIcon, IconSvgElement> = {
   streamtext: AiChat02Icon,
   tooltrace: WorkflowSquare03Icon,
   numberroll: HashtagIcon,
+  profilephoto: UserCircleIcon,
+  daterange: Calendar03Icon,
   scrollmeter: ScrollVerticalIcon,
   dissolve: ImageUpscaleIcon,
   particleword: SparkleIcon,
