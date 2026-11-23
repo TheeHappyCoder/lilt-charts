@@ -4,8 +4,12 @@ import RotateLeft01Icon from '@hugeicons/core-free-icons/RotateLeft01Icon';
 import { HugeiconsIcon } from '@hugeicons/react';
 import * as ascii from '@lilt-ui/registry';
 import * as ui from '@lilt-ui/registry/ui';
-import { useMemo, useState, type ComponentType } from 'react';
+import { useMemo, useState, type ComponentType, type ReactNode } from 'react';
+import { Count, Label } from '@/components/craft/label';
+import { ArrowSwap, Roll } from '@/components/craft/roll';
 import { GuideCode } from '@/components/docs/guide-code';
+import { DetailBar, type AdjacentLink } from '@/components/showroom/detail-bar';
+import { DetailPager } from '@/components/showroom/detail-next';
 import {
   ChoiceField,
   ColorField,
@@ -54,18 +58,33 @@ const backdropOptions = [
 const same = (a: AsciiValue, b: AsciiValue) => JSON.stringify(a) === JSON.stringify(b);
 
 /**
- * A scene or component on its stage, the Customize panel beneath it, and the source for what you
- * see. Every control is a prop; the code lists the ones you changed, imported from where the
- * shadcn CLI puts the component (`from`).
+ * Split studio workbench for every Components and ASCII page (modeled on marksteyn.dev's `.w-view`):
+ * - Sticky sub-bar with All / Previous / Next / Index / Inspector toggle
+ * - Side-by-side plinth stage (with floating dark-glass backdrop & hint bar) + collapsible Inspector
+ * - Editorial 2-column bands below for live generated code, installation files, usage and props
  */
 export function AsciiPlayground({
   id,
   from,
   line = 'ascii',
+  prev = null,
+  next = null,
+  installSlot,
+  filesCount = 0,
+  usageSlot,
+  propsSlot,
+  propsCount = 0,
 }: {
   id: AsciiSceneId;
   from: string;
   line?: keyof typeof lines;
+  prev?: AdjacentLink | null;
+  next?: AdjacentLink | null;
+  installSlot?: ReactNode;
+  filesCount?: number;
+  usageSlot?: ReactNode;
+  propsSlot?: ReactNode;
+  propsCount?: number;
 }) {
   // Components are real DOM, centred on the stage; scenes say for themselves.
   const scene = useMemo(
@@ -84,6 +103,7 @@ export function AsciiPlayground({
   const [values, setValues] = useState(defaults);
   const startBackdrop: Backdrop = scene.backdrop ?? 'theme';
   const [backdrop, setBackdrop] = useState<Backdrop>(startBackdrop);
+  const [panelOpen, setPanelOpen] = useState(true);
   const Scene = lines[line][scene.demo ?? scene.component]!;
   const colours = backdrops[backdrop];
 
@@ -134,68 +154,177 @@ export function Hero() {
   );
 }`;
 
-  return (
-    <div className="lilt-ascii-playground">
-      <figure className="lilt-ascii-stage" style={{ background: colours.background }}>
-        <div
-          className={[
-            'lilt-ascii-stage__canvas',
-            scene.layout === 'center' ? 'lilt-ascii-stage__canvas--center' : '',
-            line === 'components' ? 'lilt-ascii-stage__canvas--piece' : '',
-          ]
-            .filter(Boolean)
-            .join(' ')}
-          style={{ ...scene.stage, color: colours.color, colorScheme: colours.colorScheme }}
-        >
-          <Scene
-            {...values}
-            {...(scene.surfaceProp ? { [scene.surfaceProp]: colours.background } : {})}
-            style={{ color: colours.color }}
-          />
-        </div>
-        <figcaption
-          className="lilt-ascii-stage__touch"
-          style={{ color: `color-mix(in srgb, ${colours.color} 60%, transparent)` }}
-        >
-          {scene.touch}
-        </figcaption>
-      </figure>
+  const noun = line === 'components' ? 'component' : 'scene';
 
-      <section className="lilt-ascii-panel" aria-labelledby={`${id}-customize`}>
-        <header className="lilt-ascii-panel__head">
-          <h2 id={`${id}-customize`}>Customize</h2>
-          <button
-            type="button"
-            className="lilt-ascii-panel__reset"
-            disabled={!dirty}
-            onClick={() => {
-              setValues(defaults);
-              setBackdrop(startBackdrop);
-            }}
-          >
-            <HugeiconsIcon icon={RotateLeft01Icon} size={14} strokeWidth={1.8} />
-            Reset
-          </button>
-        </header>
-        <FieldGrid>
-          {controls.map((control) => (
-            <Control
-              key={control.name}
-              control={control}
-              value={values[control.name]!}
-              onChange={(value) => set(control.name, value)}
-            />
-          ))}
-          <ChoiceField
-            label="Backdrop"
-            value={backdrop}
-            options={backdropOptions}
-            onChange={setBackdrop}
-          />
-        </FieldGrid>
+  return (
+    <div className="lilt-showroom">
+      <DetailBar
+        tab={line}
+        title={scene.title}
+        chip={scene.shelf}
+        prev={prev}
+        next={next}
+        panelOpen={panelOpen}
+        onTogglePanel={() => setPanelOpen((open) => !open)}
+      />
+
+      <section className="lilt-studio" aria-label={`${scene.title} studio`}>
+        <div className="lilt-studio__stage">
+          <div className="lilt-studio__frame" style={{ background: colours.background }}>
+            <div
+              className={[
+                'lilt-studio__canvas',
+                scene.layout === 'center' ? 'lilt-studio__canvas--center' : '',
+                line === 'components' ? 'lilt-studio__canvas--piece' : '',
+              ]
+                .filter(Boolean)
+                .join(' ')}
+              style={{ ...scene.stage, color: colours.color, colorScheme: colours.colorScheme }}
+            >
+              <Scene
+                {...values}
+                {...(scene.surfaceProp ? { [scene.surfaceProp]: colours.background } : {})}
+                style={{ color: colours.color }}
+              />
+            </div>
+
+            <div className="lilt-studio__controls">
+              <p className="lilt-studio__touch">{scene.touch}</p>
+              <div className="lilt-studio__backdrops" role="group" aria-label="Stage backdrop">
+                {backdropOptions.map((option) => (
+                  <button
+                    key={option.value}
+                    type="button"
+                    aria-pressed={backdrop === option.value}
+                    onClick={() => setBackdrop(option.value)}
+                  >
+                    {option.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <aside className="lilt-studio__panel" data-collapsed={!panelOpen || undefined}>
+          <div className="lilt-studio__head">
+            <div className="lilt-studio__title-row">
+              <h1>{scene.title}</h1>
+              <span className="lilt-chip">{scene.shelf}</span>
+            </div>
+            <p className="lilt-studio__lede">{scene.lede}</p>
+          </div>
+
+          {controls.length > 0 ? (
+            <section className="lilt-studio__inspector" aria-labelledby={`${id}-customize`}>
+              <header className="lilt-studio__inspector-head">
+                <h2 id={`${id}-customize`}>
+                  Customize <Count n={controls.length} />
+                </h2>
+                <button
+                  type="button"
+                  className="lilt-ascii-panel__reset"
+                  disabled={!dirty}
+                  onClick={() => {
+                    setValues(defaults);
+                    setBackdrop(startBackdrop);
+                  }}
+                >
+                  <HugeiconsIcon icon={RotateLeft01Icon} size={14} strokeWidth={1.8} />
+                  Reset
+                </button>
+              </header>
+              <FieldGrid>
+                {controls.map((control) => (
+                  <Control
+                    key={control.name}
+                    control={control}
+                    value={values[control.name]!}
+                    onChange={(value) => set(control.name, value)}
+                  />
+                ))}
+              </FieldGrid>
+            </section>
+          ) : null}
+
+          <div className="lilt-studio__actions">
+            <a href="#installation" className="lilt-btn" data-tone="ink" data-size="lg">
+              <Roll>Install & copy source</Roll>
+              <ArrowSwap />
+            </a>
+            <a href="#props" className="lilt-btn" data-size="lg">
+              <Roll>See props</Roll>
+              {propsCount > 0 ? <Count n={propsCount} /> : null}
+            </a>
+          </div>
+        </aside>
       </section>
 
-      <GuideCode code={code} title={canvas ? 'hero.tsx' : 'example.tsx'} />
+      <div className="lilt-detail-body">
+        <section className="lilt-detail-band" id="code" aria-labelledby="code-title">
+          <div className="lilt-detail-band__head">
+            <Label reveal={false}>Live code</Label>
+            <h2 id="code-title">As tuned above.</h2>
+            <p>
+              Every control in the inspector updates this snippet directly. Defaults are omitted to
+              keep your markup minimal.
+            </p>
+          </div>
+          <div className="lilt-detail-band__content">
+            <GuideCode code={code} title={canvas ? 'hero.tsx' : 'example.tsx'} />
+          </div>
+        </section>
+
+        {installSlot ? (
+          <section
+            className="lilt-detail-band"
+            id="installation"
+            aria-labelledby="installation-title"
+          >
+            <div className="lilt-detail-band__head">
+              <Label count={filesCount || undefined} reveal={false}>
+                Installation
+              </Label>
+              <h2 id="installation-title">Source you own.</h2>
+              <p>
+                {line === 'components'
+                  ? 'This is source, not a package: the shadcn CLI copies it into your project and it is yours to change. Take it whole, or lift the one detail you like.'
+                  : 'This is source, not a package: the shadcn CLI copies it into your project with the shared pieces it needs. Its only dependency is React.'}
+              </p>
+            </div>
+            <div className="lilt-detail-band__content">{installSlot}</div>
+          </section>
+        ) : null}
+
+        {usageSlot ? (
+          <section className="lilt-detail-band" id="usage" aria-labelledby="usage-title">
+            <div className="lilt-detail-band__head">
+              <Label reveal={false}>Usage</Label>
+              <h2 id="usage-title">How it behaves.</h2>
+            </div>
+            <div className="lilt-detail-band__content">
+              <div className="lilt-detail-prose-card">{usageSlot}</div>
+            </div>
+          </section>
+        ) : null}
+
+        {propsSlot ? (
+          <section className="lilt-detail-band" id="props" aria-labelledby="props-title">
+            <div className="lilt-detail-band__head">
+              <Label count={propsCount || undefined} reveal={false}>
+                Props
+              </Label>
+              <h2 id="props-title">Every option.</h2>
+              <p>
+                Pass these directly to <code>{scene.component}</code>.
+              </p>
+            </div>
+            <div className="lilt-detail-band__content">{propsSlot}</div>
+          </section>
+        ) : null}
+      </div>
+
+      <DetailPager prev={prev} next={next} noun={noun} />
     </div>
   );
 }

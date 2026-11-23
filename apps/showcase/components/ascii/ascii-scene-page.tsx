@@ -1,18 +1,17 @@
 import { AsciiPlayground } from '@/components/ascii/ascii-stage';
 import { RegistryFiles } from '@/components/ascii/registry-files';
 import { InstallCommand } from '@/components/docs/install-command';
-import { PageHeader } from '@/components/docs/page-header';
-import { GuideSection } from '@/components/guide-page';
+import { adjacentRoutes } from '@/components/shell/nav-model';
 import { canvasControls, literal, typeOf, type AsciiSceneDoc } from '@/lib/ascii-scenes';
 import { registryInstall } from '@/lib/registry';
 
 /**
- * One ASCII page: the playground, how to add its source, how to use it, then its
- * props.
+ * One ASCII detail page: split studio workbench + editorial code, install, usage and props.
  */
 export function AsciiScenePage({ scene }: { scene: AsciiSceneDoc }) {
   const install = registryInstall(scene.id);
   if (!install) throw new Error(`No registry item for the ${scene.id} page.`);
+  const { prev, next } = adjacentRoutes('ascii', `/ascii/${scene.id}`);
   const own = scene.props ?? [];
   const canvas = scene.kind !== 'dom';
   const props = [
@@ -41,19 +40,21 @@ export function AsciiScenePage({ scene }: { scene: AsciiSceneDoc }) {
         : []),
   ];
   return (
-    <article className="lilt-main lilt-docs lilt-ascii-page">
-      <PageHeader title={scene.title} lede={scene.lede} badge="New" />
-      <AsciiPlayground id={scene.id} from={install.importPath} />
-      <GuideSection title="Installation">
-        <p>
-          This is source, not a package: the shadcn CLI copies it into your project, with the shared
-          pieces it needs, and it is yours to change. Its only dependency is React. Or copy the
-          files below yourself, keeping their paths so the imports between them still work.
-        </p>
-        <InstallCommand item={install.url} />
-        <RegistryFiles files={install.files} />
-      </GuideSection>
-      <GuideSection title="Usage">
+    <AsciiPlayground
+      id={scene.id}
+      from={install.importPath}
+      line="ascii"
+      prev={prev ? { href: prev.href, label: prev.label } : null}
+      next={next ? { href: next.href, label: next.label } : null}
+      filesCount={install.files.length}
+      propsCount={props.length}
+      installSlot={
+        <>
+          <InstallCommand item={install.url} />
+          <RegistryFiles files={install.files} />
+        </>
+      }
+      usageSlot={
         <p>
           {scene.usage ?? (
             <>
@@ -63,35 +64,37 @@ export function AsciiScenePage({ scene }: { scene: AsciiSceneDoc }) {
             </>
           )}
         </p>
-      </GuideSection>
-      <GuideSection title="Props">
-        <table className="lilt-ascii-options">
-          <thead>
-            <tr>
-              <th scope="col">Prop</th>
-              <th scope="col">Type</th>
-              <th scope="col">Default</th>
-              <th scope="col">What it does</th>
-            </tr>
-          </thead>
-          <tbody>
-            {props.map((prop) => (
-              <tr key={prop.name}>
-                <th scope="row">
-                  <code>{prop.name}</code>
-                </th>
-                <td>
-                  <code>{prop.type}</code>
-                </td>
-                <td>
-                  <code>{prop.defaultValue}</code>
-                </td>
-                <td>{prop.description}</td>
+      }
+      propsSlot={
+        <div className="lilt-docs__table">
+          <table>
+            <thead>
+              <tr>
+                <th scope="col">Prop</th>
+                <th scope="col">Type</th>
+                <th scope="col">Default</th>
+                <th scope="col">What it does</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
-      </GuideSection>
-    </article>
+            </thead>
+            <tbody>
+              {props.map((prop) => (
+                <tr key={prop.name}>
+                  <th scope="row">
+                    <code>{prop.name}</code>
+                  </th>
+                  <td>
+                    <code>{prop.type}</code>
+                  </td>
+                  <td>
+                    <code>{prop.defaultValue}</code>
+                  </td>
+                  <td>{prop.description}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      }
+    />
   );
 }
