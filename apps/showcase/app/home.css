@@ -674,10 +674,10 @@
   user-select: none;
   mask-image: linear-gradient(
     180deg,
-    transparent 0%,
-    rgb(0 0 0 / 0.5) 34%,
-    rgb(0 0 0 / 0.9) 76%,
-    rgb(0 0 0 / 0.25) 100%
+    transparent 8%,
+    rgb(0 0 0 / 0.32) 45%,
+    rgb(0 0 0 / 0.6) 78%,
+    rgb(0 0 0 / 0.14) 100%
   );
 }
 .lilt-home-foot__name svg {
@@ -687,10 +687,10 @@
   transform: translateY(14%);
 }
 .lilt-home-foot__name .lilt-logo__ink {
-  fill: rgb(255 255 255 / 0.045);
+  fill: rgb(255 255 255 / 0.026);
 }
 .lilt-home-foot__name .lilt-logo__dot {
-  fill: color-mix(in srgb, var(--brand-primary) 24%, rgb(255 255 255 / 0.045));
+  fill: color-mix(in srgb, var(--brand-primary) 5%, transparent);
 }
 
 @media (max-width: 1023px) {
