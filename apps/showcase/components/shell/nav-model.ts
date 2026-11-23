@@ -351,9 +351,29 @@ export const groupsByTab: Record<Tab, readonly TileGroup[]> = {
   ascii: shelvesOf('Ascii', asciiShelves, (id) => asciiScene(id)?.shelf),
 };
 
-/** Where each product opens: the chart gallery, or its first page. */
+/** Where each product opens: its full-width showroom wall. */
 export const tabHref: Record<Tab, string> = {
   charts: '/charts',
-  components: groupsByTab.components[0]!.routes[0]!.href,
-  ascii: groupsByTab.ascii[0]!.routes[0]!.href,
+  components: '/components',
+  ascii: '/ascii',
 };
+
+/** Every item route in showroom order for a product line, used for Previous / Next stepping. */
+export const showroomRoutesByTab: Record<Tab, readonly AppRoute[]> = {
+  charts: familyGroups.flatMap((group) => group.routes),
+  components: groupsByTab.components.flatMap((group) => group.routes),
+  ascii: groupsByTab.ascii.flatMap((group) => group.routes),
+};
+
+/** The immediate neighbours of a page inside its showroom line. */
+export function adjacentRoutes(tab: Tab, href: string) {
+  const list = showroomRoutesByTab[tab];
+  const index = list.findIndex((route) => route.href === href);
+  if (index < 0) return { prev: null, next: null, index: -1, total: list.length };
+  return {
+    prev: index > 0 ? list[index - 1]! : null,
+    next: index < list.length - 1 ? list[index + 1]! : null,
+    index,
+    total: list.length,
+  };
+}

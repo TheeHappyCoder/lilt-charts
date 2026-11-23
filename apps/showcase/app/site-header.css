@@ -35,7 +35,7 @@
   opacity: 1;
 }
 /* The bar's contents share the docs frame's width, so the wordmark sits over the left rail and
-   the actions end over "On this page". */
+   the actions end over "On this page". On showroom pages they align to the `--gut` rhythm. */
 .lilt-header__inner {
   display: flex;
   width: min(var(--lilt-site-max), 100%);
@@ -44,6 +44,14 @@
   gap: 8px;
   margin-inline: auto;
   padding: 0 20px 0 24px;
+}
+.lilt-header[data-wide] .lilt-header__inner {
+  width: 100%;
+  padding: 0 var(--gut);
+}
+/* Showroom pages sit a sticky toolbar or sub-bar flush beneath the bar, so skip the lower fade. */
+.lilt-header[data-wide]::after {
+  display: none;
 }
 
 .lilt-header__brand {

@@ -6,68 +6,20 @@ import { ChartSettingsProvider } from '@/components/docs/chart-settings';
 import { HomeCharts } from '@/components/home/home-charts';
 import { HomeData } from '@/components/home/home-data';
 import { HomeFloatingNav } from '@/components/home/home-floating-nav';
-import { HomeFooter, type FooterColumn } from '@/components/home/home-footer';
 import { HomeHero } from '@/components/home/home-hero';
 import { HomeInterface } from '@/components/home/home-interface';
 import { HomeMedia } from '@/components/home/home-media';
 import { HomeQuickstart } from '@/components/home/home-quickstart';
 import { HomeScenes } from '@/components/home/home-scenes';
-import {
-  customizeRoutes,
-  familyGroups,
-  featureRoutes,
-  groupsByTab,
-  referenceRoutes,
-  startRoutes,
-  type TileGroup,
-} from '@/components/shell/nav-model';
+import { groupsByTab } from '@/components/shell/nav-model';
+import { SiteFooter } from '@/components/shell/site-footer';
 import { SiteShell } from '@/components/shell/site-shell';
 import { chartDocs } from '@/lib/card-docs/registry';
-import { GITHUB_URL, getGitHubStars } from '@/lib/github-stars';
+import { getGitHubStars } from '@/lib/github-stars';
 import { SITE_URL } from '@/lib/llms';
 
 /** What to paste into an agent to get a first card on screen. */
 const AGENT_TASK = 'Add a Lilt AreaChartCard of monthly visitors to my dashboard.';
-
-const shelf = (group: TileGroup) => ({ label: group.heading!, href: group.routes[0]!.href });
-
-/**
- * Footer columns: a handful of ways into each line and the docs, never every page. The rails
- * list everything; the footer only points.
- */
-const footer: FooterColumn[] = [
-  {
-    heading: 'Charts',
-    links: [
-      { label: 'All charts', href: '/charts' },
-      { label: 'Finance', href: familyGroups.at(-1)!.routes[0]!.href },
-      { label: 'Customize', href: customizeRoutes[0]!.href },
-      { label: 'Features', href: featureRoutes[0]!.href },
-    ],
-  },
-  { heading: 'Components', links: groupsByTab.components.map(shelf) },
-  {
-    heading: 'ASCII',
-    links: [
-      { label: 'All scenes', href: groupsByTab.ascii[0]!.routes[0]!.href },
-      ...groupsByTab.ascii
-        .filter((group) =>
-          ['Text', 'Interface', 'Backgrounds', 'Media', 'Data'].includes(group.heading!),
-        )
-        .map(shelf),
-    ],
-  },
-  {
-    heading: 'Docs',
-    links: [
-      ...[...startRoutes, ...referenceRoutes].map((route) => ({
-        label: route.label,
-        href: route.href,
-      })),
-      { label: 'llms.txt', href: '/llms.txt' },
-    ],
-  },
-];
 
 /**
  * One section: a small label with its count, a heading in two tones, a line beside it with the
@@ -121,7 +73,6 @@ export async function HomePage() {
   const pieces = groupsByTab.ascii.filter((group) =>
     ['Interface', 'Text'].includes(group.heading!),
   );
-  const piecesHref = pieces[0]!.routes[0]!.href;
   const pieceCount = pieces.flatMap((group) => group.routes).length;
   const scenes = groupsByTab.ascii.flatMap((group) => group.routes).length;
   return (
@@ -151,7 +102,7 @@ export async function HomePage() {
               claim="A whole sky of scenes."
               dim="Every one of them alive."
               aside="Each one fills its parent, takes its ink from your CSS, follows the pointer, rests off screen, and holds still for reduced motion."
-              more={{ href: '/ascii/koi', label: 'Explore all ASCII scenes', count: scenes }}
+              more={{ href: '/ascii', label: 'Explore all ASCII scenes', count: scenes }}
             >
               <HomeScenes />
             </Section>
@@ -163,7 +114,7 @@ export async function HomePage() {
               claim="Every detail, in type."
               dim="Source you own."
               aside="Loaders, counters, glyph borders, a terminal that types itself, and a curtain for pages to change behind. Add one with the shadcn CLI and the source is yours."
-              more={{ href: piecesHref, label: 'Explore all interface pieces', count: pieceCount }}
+              more={{ href: '/ascii', label: 'Explore all interface pieces', count: pieceCount }}
             >
               <HomeInterface />
             </Section>
@@ -189,9 +140,9 @@ export async function HomePage() {
             </Section>
           </div>
 
-          <HomeFooter github={GITHUB_URL} columns={footer}>
+          <SiteFooter>
             <HomeQuickstart task={AGENT_TASK} docsUrl={`${SITE_URL}/llms.txt`} />
-          </HomeFooter>
+          </SiteFooter>
         </div>
       </SiteShell>
     </ChartSettingsProvider>

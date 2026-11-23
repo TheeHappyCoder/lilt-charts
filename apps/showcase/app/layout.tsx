@@ -18,6 +18,7 @@ import './site-header.css';
 import './site-shell.css';
 import './style-menu.css';
 import './gallery.css';
+import './showroom.css';
 import './landing.css';
 import './home.css';
 import './personality.css';

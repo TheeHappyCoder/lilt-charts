@@ -11,8 +11,16 @@ import { ChartGlyph, hasGlyph } from './chart-glyph';
 import { groupsByTab, icons, tabs, type Tab } from './nav-model';
 
 const SPRING = { type: 'spring', stiffness: 560, damping: 44 } as const;
-/** The chart gallery's own row, above the families; it has no route of its own in the nav. */
+/** Each section's showroom row, above its groups; they have no route of their own in `appRoutes`. */
 export const CHARTS_OVERVIEW = 'charts-overview';
+export const COMPONENTS_OVERVIEW = 'components-overview';
+export const ASCII_OVERVIEW = 'ascii-overview';
+
+const OVERVIEW_ROW: Record<Tab, { href: string; key: string; label: string }> = {
+  charts: { href: '/charts', key: CHARTS_OVERVIEW, label: 'All charts' },
+  components: { href: '/components', key: COMPONENTS_OVERVIEW, label: 'All components' },
+  ascii: { href: '/ascii', key: ASCII_OVERVIEW, label: 'All ASCII' },
+};
 
 /**
  * The open section's pages as a quiet list under small headings. The current page wears a soft
@@ -97,11 +105,11 @@ export function SiteSidebar({
       data-mobile={mobile || undefined}
       data-lilt-palette={(settings.palette as string | undefined) ?? undefined}
     >
-      {tab === 'charts' ? (
-        <section className="lilt-sidebar__group" aria-label="Overview">
-          <ul>{item('/charts', CHARTS_OVERVIEW, 'All charts', 'overview')}</ul>
-        </section>
-      ) : null}
+      <section className="lilt-sidebar__group" aria-label="Overview">
+        <ul>
+          {item(OVERVIEW_ROW[tab].href, OVERVIEW_ROW[tab].key, OVERVIEW_ROW[tab].label, 'overview')}
+        </ul>
+      </section>
       {groupsByTab[tab].map((group) => {
         // When a whole group is new, say so once on its heading rather than dotting every row.
         const allNew =

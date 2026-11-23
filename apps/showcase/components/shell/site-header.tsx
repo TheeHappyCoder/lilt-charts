@@ -35,6 +35,7 @@ export function SiteHeader({
   tab,
   stars = null,
   overlay = false,
+  wide = false,
   onMenu,
 }: {
   /** The place the current page lives under; none on the home page. */
@@ -42,6 +43,8 @@ export function SiteHeader({
   stars?: Stars | null;
   /** The bar sits inside the home page's dark hero, in its colours, and scrolls away with it. */
   overlay?: boolean;
+  /** Aligns the bar to the showroom's `--gut` edges rather than the docs frame. */
+  wide?: boolean;
   /** Opens the navigation drawer on phones; the drawer has no button without it. */
   onMenu?: () => void;
 }) {
@@ -59,6 +62,7 @@ export function SiteHeader({
     <header
       className={overlay ? 'lilt-header dark' : 'lilt-header'}
       data-overlay={overlay || undefined}
+      data-wide={wide || undefined}
       data-scrolled={(scrolled && !overlay) || undefined}
     >
       <div className="lilt-header__inner">
