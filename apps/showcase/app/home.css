@@ -524,13 +524,13 @@
 
 /* ---------- the closing panel ---------- */
 .lilt-home-foot {
-  padding: var(--sec) var(--gut) 0;
+  padding: var(--sec-sm) var(--gut) 0;
 }
 .lilt-home-foot__panel {
   display: flex;
   flex-direction: column;
-  gap: 88px;
-  padding: 104px clamp(20px, 4vw, 56px) 0;
+  gap: 36px;
+  padding: 48px clamp(20px, 4vw, 48px) 0;
   border-radius: var(--radius-panel) var(--radius-panel) 0 0;
   background: var(--dusk-panel);
   container-type: inline-size;
@@ -549,70 +549,77 @@
   mask-image: radial-gradient(80% 90% at 100% 20%, #000 10%, transparent 75%);
 }
 .lilt-home-foot__close {
+  display: grid;
+  grid-template-columns: minmax(0, 560px);
+  align-items: end;
+  gap: 24px 48px;
+}
+.lilt-home-foot__close:has(.lilt-home-foot__install) {
+  grid-template-columns: minmax(0, 1fr) minmax(0, 480px);
+}
+.lilt-home-foot__copy {
   display: flex;
-  max-width: 640px;
+  max-width: 520px;
   flex-direction: column;
   align-items: flex-start;
-  gap: 24px;
+  gap: 14px;
 }
 .lilt-home-foot__close h2 {
-  font-size: clamp(30px, 3.6vw, 52px);
-  line-height: 1.04;
-  letter-spacing: -0.04em;
+  font-size: clamp(26px, 2.8vw, 38px);
+  line-height: 1.08;
+  letter-spacing: -0.035em;
 }
 .lilt-home-foot__close h2 .lilt-dim {
   color: var(--dusk-faint);
 }
-.lilt-home-foot__close > p {
-  max-width: 460px;
+.lilt-home-foot__copy > p {
+  max-width: 400px;
   margin: 0;
   color: var(--dusk-soft);
-  font-size: var(--text-lg);
-  line-height: 24px;
+  font-size: var(--text-md);
+  line-height: 22px;
 }
 .lilt-home-foot__actions {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
-  padding-top: 8px;
+  padding-top: 4px;
 }
 .lilt-home-foot__install {
-  width: min(520px, 100%);
-  padding-top: 16px;
+  width: 100%;
 }
 .lilt-home-foot__bottom {
   display: flex;
   flex-direction: column;
-  gap: 40px;
+  gap: 24px;
 }
 .lilt-home-foot__links {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  gap: 32px 36px;
-  max-width: 1040px;
-  padding-top: 36px;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 20px 28px;
+  padding-top: 28px;
   border-top: 1px solid rgb(255 255 255 / 0.09);
 }
 .lilt-home-foot__col {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 10px;
+  gap: 6px;
 }
 .lilt-home-foot__label {
-  margin-bottom: 5px;
+  margin-bottom: 2px;
   color: var(--dusk-faint);
-  font-size: var(--text-sm);
-  line-height: 18px;
+  font-size: var(--text-xs);
+  line-height: 16px;
 }
 .lilt-home-foot__col a,
 .lilt-home-foot__elsewhere a {
   display: inline-flex;
   align-items: center;
-  gap: 7px;
+  gap: 6px;
   color: #c9c9c4;
-  font-size: var(--text-base);
-  line-height: 22px;
+  font-size: var(--text-sm);
+  line-height: 20px;
   text-decoration: none;
   transition: color 0.3s;
 }
@@ -631,9 +638,11 @@
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 12px 44px;
+  gap: 8px 28px;
+  padding-top: 18px;
+  border-top: 1px solid rgb(255 255 255 / 0.06);
   color: #8c8c87;
-  font-size: var(--text-md);
+  font-size: var(--text-sm);
 }
 .lilt-home-foot__me {
   display: flex;
@@ -642,26 +651,26 @@
   color: #c9c9c4;
 }
 .lilt-home-foot__logo {
-  width: 26px;
+  width: 24px;
   height: auto;
 }
 .lilt-home-foot__elsewhere {
   display: flex;
-  gap: 20px;
+  gap: 18px;
   margin-left: auto;
 }
 /* The wordmark, rising from the foot of the panel, cut off by its edge. */
 .lilt-home-foot__name {
   z-index: 0;
-  height: 13cqi;
-  margin-top: -40px;
+  height: clamp(44px, 6.2cqi, 80px);
+  margin-top: -12px;
   overflow: hidden;
   pointer-events: none;
   user-select: none;
 }
 .lilt-home-foot__name svg {
   display: block;
-  width: 36cqi;
+  width: clamp(140px, 19cqi, 240px);
   height: auto;
 }
 .lilt-home-foot__name .lilt-logo__ink {
@@ -733,6 +742,9 @@
   }
   .lilt-float .lilt-float__nav {
     display: none;
+  }
+  .lilt-home-foot__close:has(.lilt-home-foot__install) {
+    grid-template-columns: minmax(0, 1fr);
   }
   .lilt-home-foot__links {
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -810,21 +822,21 @@
     top: 8px;
   }
   .lilt-home-foot {
-    padding: var(--sec) 6px 0;
+    padding: var(--sec-sm) 6px 0;
   }
   .lilt-home-foot__panel {
-    gap: 56px;
-    padding-top: 64px;
+    gap: 28px;
+    padding-top: 36px;
   }
   .lilt-home-foot__elsewhere {
     margin-left: 0;
   }
   .lilt-home-foot__name {
-    height: 20cqi;
-    margin-top: -24px;
+    height: 13cqi;
+    margin-top: -8px;
   }
   .lilt-home-foot__name svg {
-    width: 56cqi;
+    width: 40cqi;
   }
 }
 @media (prefers-reduced-motion: reduce) {
@@ -833,10 +845,16 @@
   }
 }
 
-/* In the closing panel the quickstart is glass on the dark. */
+/* In the closing panel the quickstart is glass on the dark, tightened to sit beside the CTA. */
 .lilt-home-foot .lilt-quickstart {
   --panel: rgb(255 255 255 / 0.05);
   --panel-deep: rgb(0 0 0 / 0.32);
+  gap: 4px;
+  padding: 5px;
   box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.07);
   backdrop-filter: blur(8px);
+}
+.lilt-home-foot .lilt-quickstart__row {
+  gap: 4px;
+  padding: 6px 5px 5px;
 }

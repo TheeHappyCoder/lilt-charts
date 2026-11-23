@@ -34,33 +34,34 @@ export function HomeFooter({
           <AsciiDotGrid color="#8b6cff" />
         </div>
         <div className="lilt-home-foot__close">
-          <TwoTone
-            id="closing-title"
-            claim="Ready when your data is."
-            dim="Start with one install."
-          />
-          <p data-rv="fade" style={{ '--i': 2 } as CSSProperties}>
-            Install a package, import the stylesheet once, and drop in a card or a scene.
-          </p>
-          <div
-            className="lilt-home-foot__actions"
-            data-rv="fade"
-            style={{ '--i': 3 } as CSSProperties}
-          >
-            <Link href="/guides/installation" className="lilt-btn" data-tone="light" data-size="lg">
-              <Roll>Read the guide</Roll>
-            </Link>
-            <a
-              href={github}
-              className="lilt-btn"
-              data-tone="glass"
-              data-size="lg"
-              target="_blank"
-              rel="noreferrer"
+          <div className="lilt-home-foot__copy">
+            <TwoTone
+              id="closing-title"
+              claim="Ready when your data is."
+              dim="Start with one install."
+            />
+            <p data-rv="fade" style={{ '--i': 2 } as CSSProperties}>
+              Install a package, import the stylesheet once, and drop in a card or a scene.
+            </p>
+            <div
+              className="lilt-home-foot__actions"
+              data-rv="fade"
+              style={{ '--i': 3 } as CSSProperties}
             >
-              <Roll>View on GitHub</Roll>
-              <ArrowSwap />
-            </a>
+              <Link href="/guides/installation" className="lilt-btn" data-tone="light">
+                <Roll>Read the guide</Roll>
+              </Link>
+              <a
+                href={github}
+                className="lilt-btn"
+                data-tone="glass"
+                target="_blank"
+                rel="noreferrer"
+              >
+                <Roll>View on GitHub</Roll>
+                <ArrowSwap />
+              </a>
+            </div>
           </div>
           {children ? (
             <div
