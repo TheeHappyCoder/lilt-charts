@@ -30,10 +30,10 @@
   display: grid;
   gap: 4px;
   margin: 0;
-  padding: 2px 0 4px 16px;
-  border-left: 1px solid var(--line-strong);
-  font-family: var(--font-geist-mono), monospace;
-  font-size: 11.5px;
+  padding: 10px 14px;
+  border-radius: var(--radius-button);
+  background: var(--panel);
+  font-size: var(--text-xs);
   line-height: 18px;
 }
 .lilt-docs__spec div {
@@ -43,26 +43,28 @@
 .lilt-docs__spec dt {
   color: var(--faint);
 }
+/* The values are identifiers, so they keep the code face. */
 .lilt-docs__spec dd {
   margin: 0;
   color: var(--muted-foreground);
+  font-family: var(--font-mono), monospace;
   white-space: nowrap;
 }
 .lilt-docs__spec dd[data-tone='brand'] {
-  color: var(--brand-primary);
+  color: var(--foreground);
 }
 .lilt-breadcrumb {
   display: flex;
   align-items: center;
   gap: 6px;
   color: var(--muted-foreground);
-  font-size: 13px;
+  font-size: var(--text-sm);
   line-height: 20px;
 }
 .lilt-breadcrumb a {
   color: inherit;
   text-decoration: none;
-  transition: color 140ms ease;
+  transition: color 0.2s;
 }
 .lilt-breadcrumb a:hover {
   color: var(--foreground);
@@ -79,43 +81,48 @@
   align-items: center;
   gap: 12px;
   margin: 0;
-  font-size: clamp(28px, 3.2vw, 34px);
-  font-weight: 600;
-  line-height: 1.12;
-  letter-spacing: -0.032em;
+  font-size: clamp(32px, 3.6vw, 44px);
+  font-weight: var(--weight-body);
+  line-height: 1.04;
+  letter-spacing: -0.04em;
+}
+.lilt-docs__title {
+  display: grid;
 }
 .lilt-docs__badge {
-  padding: 2px 8px;
-  border-radius: 999px;
-  background: color-mix(in srgb, var(--brand-primary) 14%, transparent);
-  color: var(--brand-primary);
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.04em;
-  line-height: 18px;
-  text-transform: uppercase;
+  display: inline-flex;
+  height: 20px;
+  align-items: center;
+  padding: 0 6px;
+  border-radius: var(--radius-chip);
+  background: var(--panel);
+  color: var(--chip-foreground);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-strong);
+  letter-spacing: 0;
+  line-height: 16px;
 }
 .lilt-docs__header .lilt-docs__lede {
   max-width: 62ch;
   margin: 0;
   color: var(--muted-foreground);
-  font-size: 16px;
-  line-height: 1.6;
+  font-size: var(--text-lg);
+  line-height: 1.55;
   text-wrap: pretty;
 }
 
 /* Headings and prose */
-.lilt-docs h2 {
+.lilt-docs h2:not(.lilt-label) {
   margin: 0;
-  font-size: 22px;
-  font-weight: 600;
-  line-height: 1.25;
-  letter-spacing: -0.022em;
+  font-size: 26px;
+  font-weight: var(--weight-body);
+  line-height: 1.2;
+  letter-spacing: var(--tracking-h2);
 }
 .lilt-docs h3 {
   margin: 0;
-  font-size: 15px;
-  font-weight: 600;
+  font-size: var(--text-base);
+  font-weight: var(--weight-strong);
   line-height: 22px;
   letter-spacing: -0.01em;
 }
@@ -123,36 +130,33 @@
   color: inherit;
   text-decoration: none;
 }
-.lilt-docs h3 a:hover {
-  text-decoration: underline;
-  text-decoration-color: var(--line-strong);
-}
 /* Prose only: card previews must render exactly as they do in a consumer's app. */
 .lilt-docs :where(p:not([data-lilt-chart] p)) {
   margin: 0;
   max-width: var(--lilt-docs-measure);
   color: var(--muted-foreground);
-  font-size: 15px;
+  font-size: var(--text-base);
   line-height: 1.65;
   text-wrap: pretty;
 }
+/* Links in prose: ink with a hairline that fills in on hover. */
 .lilt-docs :where(a:not([data-lilt-chart] a)) {
   color: var(--foreground);
   text-decoration: underline;
   text-decoration-color: var(--line-strong);
-  text-underline-offset: 3px;
-  transition: text-decoration-color 140ms ease;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 4px;
+  transition: text-decoration-color 0.3s;
 }
 .lilt-docs :where(a:not([data-lilt-chart] a)):hover {
   text-decoration-color: currentColor;
 }
 .lilt-docs :not(pre) > code {
-  padding: 2px 6px;
-  border: 1px solid var(--line);
-  border-radius: 6px;
-  background: var(--hover);
+  padding: 1px 5px;
+  border-radius: var(--radius-chip);
+  background: var(--panel);
   color: var(--foreground);
-  font-family: var(--font-geist-mono), monospace;
+  font-family: var(--font-mono), monospace;
   font-size: 0.86em;
 }
 
@@ -179,25 +183,17 @@
   min-width: 0;
 }
 
-.lilt-tune__dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: var(--brand-primary);
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--brand-primary) 16%, transparent);
-}
-
 /* Variant notes and info popovers */
 .lilt-variant-badge h3 {
   min-width: 0;
-  font-size: 13px;
+  font-size: var(--text-sm);
   font-weight: 500;
   line-height: 20px;
 }
 .lilt-variant-badge :is(a, button):focus-visible,
 .lilt-variant-note__close:focus-visible {
-  outline: 2px solid var(--brand-primary);
-  outline-offset: 3px;
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
 }
 .lilt-variant-note {
   z-index: 60;
@@ -207,22 +203,23 @@
   width: 300px;
   max-width: 100%;
   padding: 16px;
-  border: 1px solid var(--line-strong);
-  border-radius: 16px;
+  border-radius: var(--radius-panel);
   background: var(--surface);
-  box-shadow: 0 16px 40px -12px rgb(0 0 0 / 0.22);
+  box-shadow:
+    var(--shadow-pop),
+    inset 0 0 0 1px var(--line);
   color: var(--foreground);
 }
 .lilt-variant-note__title {
   margin: 0 0 6px;
-  font-size: 13px;
-  font-weight: 600;
+  font-size: var(--text-sm);
+  font-weight: var(--weight-strong);
   line-height: 20px;
 }
 .lilt-variant-note__description {
   margin: 0;
   color: var(--muted-foreground);
-  font-size: 13px;
+  font-size: var(--text-sm);
   line-height: 1.6;
 }
 .lilt-variant-note__description code {
@@ -231,19 +228,20 @@
   overflow-wrap: anywhere;
 }
 .lilt-variant-note__close {
+  height: 28px;
   margin-top: 12px;
-  padding: 4px 10px;
-  border: 1px solid var(--line-strong);
-  border-radius: 999px;
-  background: transparent;
+  padding: 0 10px;
+  border: 0;
+  border-radius: var(--radius-control);
+  background: var(--panel);
   color: var(--foreground);
   font: inherit;
-  font-size: 12px;
+  font-size: var(--text-xs);
   cursor: pointer;
 }
 .lilt-docs-info__footer {
   margin-top: 12px;
-  font-size: 12px;
+  font-size: var(--text-xs);
   line-height: 1.6;
 }
 .lilt-docs-info__footer a {
@@ -251,18 +249,17 @@
   text-underline-offset: 3px;
 }
 .lilt-docs-info__footer a:focus-visible {
-  outline: 2px solid var(--brand-primary);
-  outline-offset: 3px;
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
 }
 
-/* Example stage: one quiet panel; the chart card is the only thing with an edge inside it. */
+/* Example stage: a plinth; the chart card is the only thing with an edge inside it. */
 .lilt-docs-example {
   position: relative;
   display: grid;
   min-width: 0;
-  border-radius: 24px;
+  border-radius: var(--radius-panel);
   background: var(--panel);
-  box-shadow: inset 0 0 0 1px var(--line);
   isolation: isolate;
 }
 .lilt-docs-example__body,
@@ -280,7 +277,7 @@
   align-items: center;
   justify-content: space-between;
   gap: 8px 12px;
-  padding: 12px 12px 0;
+  padding: 8px 8px 0;
 }
 .lilt-docs-example__actions {
   display: flex;
@@ -295,21 +292,19 @@
   flex: none;
   gap: 2px;
   padding: 3px;
-  border-radius: 999px;
+  border-radius: var(--radius-button);
   background: var(--active);
 }
 .lilt-docs-segmented__thumb {
   position: absolute;
   z-index: 0;
   inset: 0;
-  border-radius: 999px;
-  background: var(--surface);
-  box-shadow:
-    0 0 0 1px var(--line),
-    0 1px 2px rgb(0 0 0 / 0.08);
+  border-radius: inherit;
+  background: var(--background);
+  box-shadow: 0 1px 2px rgb(0 0 0 / 0.06);
 }
 .dark .lilt-docs-segmented__thumb {
-  background: #2a2a2a;
+  background: var(--panel-hover);
 }
 .lilt-docs-segmented__text {
   position: relative;
@@ -318,17 +313,17 @@
 .lilt-docs-segmented__tab {
   position: relative;
   z-index: 1;
-  height: 28px;
+  height: 30px;
   min-height: 0;
   padding: 0 14px;
   border: 0;
-  border-radius: 999px;
+  border-radius: var(--radius-control);
   background: transparent;
   color: var(--muted-foreground);
-  font-size: 13px;
-  font-weight: 500;
+  font-size: var(--text-sm);
+  font-weight: var(--weight-strong);
   cursor: pointer;
-  transition: color 150ms ease;
+  transition: color 0.2s;
 }
 .lilt-docs-segmented__tab::after {
   display: none;
@@ -374,11 +369,10 @@
 .lilt-docs-example__code {
   display: grid;
   min-width: 0;
-  margin: 12px;
+  margin: 8px 5px 5px;
   overflow: hidden;
-  border-radius: 16px;
-  background: var(--surface);
-  box-shadow: 0 0 0 1px var(--line);
+  border-radius: var(--radius-media);
+  background: var(--background);
 }
 .lilt-docs-example__file {
   display: flex;
@@ -388,7 +382,7 @@
   padding: 0 16px;
   border-bottom: 1px solid var(--line);
   color: var(--foreground);
-  font-size: 12.5px;
+  font-size: var(--text-sm);
   overflow-wrap: anywhere;
 }
 .lilt-docs-example__file-icon {
@@ -396,8 +390,8 @@
   color: var(--muted-foreground);
 }
 .lilt-docs-example__file-name {
-  font-family: var(--font-geist-mono), monospace;
-  font-size: 12px;
+  font-family: var(--font-mono), monospace;
+  font-size: var(--text-xs);
   font-weight: 500;
 }
 .lilt-docs-example__file-note {
@@ -411,8 +405,8 @@
   max-height: 560px;
   overflow: auto;
   padding: 14px 20px 24px 6px;
-  font-family: var(--font-geist-mono), monospace;
-  font-size: 13px;
+  font-family: var(--font-mono), monospace;
+  font-size: var(--text-sm);
   line-height: 1.7;
   scrollbar-color: var(--line-strong) transparent;
   scrollbar-width: thin;
@@ -426,18 +420,22 @@
   height: 30px;
   padding: 0 12px;
   border: 0;
-  border-radius: 999px;
+  border-radius: var(--radius-control);
   background: var(--active);
   color: var(--muted-foreground);
-  font-size: 12.5px;
-  font-weight: 500;
+  font-size: var(--text-sm);
+  font-weight: var(--weight-strong);
   cursor: pointer;
   transition:
-    color 150ms ease,
-    background-color 150ms ease;
+    color 0.2s,
+    background-color 0.2s,
+    scale 0.2s var(--ease-out);
 }
 .lilt-docs-copy:hover {
   color: var(--foreground);
+}
+.lilt-docs-copy:active {
+  scale: 0.96;
 }
 .lilt-docs-copy[data-compact] {
   width: 30px;
@@ -449,7 +447,7 @@
   background: var(--active);
 }
 .lilt-docs-copy[data-copied] {
-  color: var(--brand-primary);
+  color: var(--status-live);
 }
 .lilt-docs-copy:focus-visible {
   outline: 2px solid var(--ring);
@@ -460,12 +458,9 @@
 .lilt-docs-install {
   min-width: 0;
   overflow: hidden;
-  padding: 8px 8px 10px;
-  border-radius: 16px;
+  padding: 6px;
+  border-radius: var(--radius-panel);
   background: var(--panel);
-  box-shadow:
-    inset 0 0 0 1px var(--line),
-    inset 0 1px 0 color-mix(in srgb, var(--foreground) 5%, transparent);
 }
 .lilt-docs-install__bar {
   display: flex;
@@ -473,7 +468,7 @@
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  padding: 0 0 6px 2px;
+  padding: 2px 0 6px 2px;
 }
 .lilt-docs-install .lilt-docs-segmented {
   overflow-x: auto;
@@ -484,14 +479,14 @@
 .lilt-docs-install .lilt-docs-segmented__tab {
   height: 24px;
   padding: 0 9px;
-  font-family: var(--font-geist-mono), monospace;
-  font-size: 11.5px;
+  font-family: var(--font-mono), monospace;
+  font-size: var(--text-xs);
   font-weight: 400;
 }
 .lilt-docs-install .lilt-docs-segmented__thumb,
 .dark .lilt-docs-install .lilt-docs-segmented__thumb {
   background: var(--active);
-  box-shadow: inset 0 0 0 1px var(--line);
+  box-shadow: none;
 }
 .lilt-docs-install .lilt-docs-copy[data-compact] {
   width: 28px;
@@ -512,12 +507,11 @@
   margin: 0;
   padding: 11px 14px;
   overflow-x: auto;
-  border-radius: 11px;
-  background: color-mix(in srgb, var(--background) 70%, var(--panel));
-  box-shadow: inset 0 0 0 1px var(--line);
+  border-radius: var(--radius-media);
+  background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-geist-mono), monospace;
-  font-size: 13px;
+  font-family: var(--font-mono), monospace;
+  font-size: var(--text-sm);
   line-height: 21px;
 }
 .lilt-docs-install__prompt {
@@ -530,15 +524,14 @@
 .lilt-docs-snippet {
   position: relative;
   min-width: 0;
-  border-radius: 16px;
+  border-radius: var(--radius-panel);
   background: var(--panel);
-  box-shadow: inset 0 0 0 1px var(--line);
 }
 .lilt-docs-snippet .lilt-code-block {
   padding: 16px 56px 16px 18px;
   overflow-x: auto;
-  font-family: var(--font-geist-mono), monospace;
-  font-size: 13px;
+  font-family: var(--font-mono), monospace;
+  font-size: var(--text-sm);
   line-height: 1.7;
 }
 .lilt-docs-snippet .lilt-code-line::before {
@@ -551,16 +544,17 @@
 }
 
 /* Props table */
+/* Props: plinth rows' cousin, a table inside a hairline container. */
 .lilt-docs__table {
   min-width: 0;
   overflow-x: auto;
-  border-radius: 16px;
+  border-radius: var(--radius-panel);
   box-shadow: inset 0 0 0 1px var(--line);
 }
 .lilt-docs__table table {
   width: 100%;
   border-collapse: collapse;
-  font-size: 13.5px;
+  font-size: var(--text-md);
   line-height: 21px;
 }
 .lilt-docs__table th,
@@ -573,14 +567,14 @@
 .lilt-docs__table thead th {
   background: var(--panel);
   color: var(--muted-foreground);
-  font-size: 12px;
+  font-size: var(--text-xs);
   font-weight: 500;
 }
 .lilt-docs__table thead th:first-child {
-  border-top-left-radius: 16px;
+  border-top-left-radius: var(--radius-panel);
 }
 .lilt-docs__table thead th:last-child {
-  border-top-right-radius: 16px;
+  border-top-right-radius: var(--radius-panel);
 }
 .lilt-docs__table tbody tr:last-child > * {
   border-bottom: 0;
@@ -591,9 +585,8 @@
   white-space: nowrap;
 }
 .lilt-docs__table tbody th code {
-  border: 0;
-  background: color-mix(in srgb, var(--brand-primary) 10%, transparent);
-  color: color-mix(in srgb, var(--brand-primary) 80%, var(--foreground));
+  background: var(--panel);
+  color: var(--foreground);
 }
 .lilt-docs__table td {
   color: var(--muted-foreground);
@@ -610,7 +603,7 @@
   padding: 0;
   background: none;
   color: var(--foreground);
-  font-size: 12.5px;
+  font-size: var(--text-sm);
 }
 
 @container (max-width: 640px) {
@@ -632,9 +625,9 @@
     padding-bottom: 20px;
   }
   .lilt-docs__header .lilt-docs__lede {
-    font-size: 15px;
+    font-size: var(--text-base);
   }
   .lilt-docs-example {
-    border-radius: 20px;
+    border-radius: var(--radius-panel);
   }
 }

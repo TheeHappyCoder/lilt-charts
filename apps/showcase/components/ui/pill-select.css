@@ -9,30 +9,30 @@
   gap: 6px;
   height: 36px;
   padding: 0 4px 0 12px;
-  border-radius: 999px;
+  border-radius: var(--radius-button);
   background: var(--lilt-ui-pill-select-surface);
   box-shadow:
     0 0 0 1px rgb(255 255 255 / 0.1),
     inset 0 1px 0 rgb(255 255 255 / 0.06),
     0 12px 32px -12px rgb(0 0 0 / 0.5);
   color: #fff;
-  font-size: 13px;
+  font-size: var(--text-sm);
   backdrop-filter: blur(20px) saturate(170%);
 }
 .lilt-ui-pill-select__leading {
   display: inline-flex;
-  font-weight: 650;
+  font-weight: var(--weight-strong);
   opacity: 0.6;
 }
 .lilt-ui-pill-select select {
   height: 28px;
   padding: 0 10px;
   border: 0;
-  border-radius: 999px;
+  border-radius: var(--radius-control);
   background: var(--lilt-ui-pill-select-fill);
   color: inherit;
   font: inherit;
-  font-weight: 550;
+  font-weight: var(--weight-strong);
   cursor: pointer;
 }
 .lilt-ui-pill-select select:disabled {
@@ -40,7 +40,7 @@
   opacity: 0.5;
 }
 .lilt-ui-pill-select select:focus-visible {
-  outline: 2px solid var(--brand-primary, #8b6dff);
+  outline: 2px solid var(--ring, #8b6dff);
   outline-offset: 2px;
 }
 .lilt-ui-pill-select option {

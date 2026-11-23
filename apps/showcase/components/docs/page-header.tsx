@@ -5,13 +5,16 @@ import { PageEmblem } from './page-emblem';
 /** The title every page shares: where it sits, its name, and one line on what it is. */
 export function PageHeader({
   title,
+  dim,
   lede,
   aside,
   eyebrow,
   badge,
 }: {
-  /** The page name; an <em> inside it takes the site's italic voice. */
+  /** The page name. */
   title: ReactNode;
+  /** A second, quieter line under the name, for a heading in two tones. */
+  dim?: ReactNode;
   /** Replaces the breadcrumb, which otherwise follows the page's place in the navigation. */
   eyebrow?: ReactNode;
   lede?: ReactNode;
@@ -26,7 +29,10 @@ export function PageHeader({
         {eyebrow ?? <PageBreadcrumb />}
         <h1>
           <PageEmblem />
-          <span className="lilt-docs__title">{title}</span>
+          <span className="lilt-docs__title">
+            <span>{title}</span>
+            {dim ? <span className="lilt-dim">{dim}</span> : null}
+          </span>
           {badge ? <span className="lilt-docs__badge">{badge}</span> : null}
         </h1>
         {lede ? <p className="lilt-docs__lede">{lede}</p> : null}

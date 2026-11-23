@@ -1,4 +1,4 @@
-/* Settings tiles: a soft tile per setting, in the sidebar's track material. */
+/* Settings tiles: a filled plinth tile per setting. */
 .lilt-field-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
@@ -16,12 +16,11 @@
   overflow: hidden;
   padding: 0 14px;
   border: 0;
-  border-radius: 12px;
-  background: color-mix(in srgb, var(--foreground) 3%, transparent);
-  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--foreground) 7%, transparent);
+  border-radius: var(--radius-button);
+  background: var(--panel);
   color: var(--foreground);
   font: inherit;
-  font-size: 13px;
+  font-size: var(--text-sm);
   text-align: left;
 }
 
@@ -38,7 +37,7 @@
   position: relative;
   z-index: 1;
   font-family: var(--font-mono), ui-monospace, monospace;
-  font-size: 12.5px;
+  font-size: var(--text-sm);
   font-variant-numeric: tabular-nums;
 }
 
@@ -48,7 +47,7 @@
   inset: 0 auto 0 0;
   width: calc(var(--lilt-field-share) * 100%);
   border-right: 2px solid color-mix(in srgb, var(--foreground) 45%, transparent);
-  background: color-mix(in srgb, var(--foreground) 6%, transparent);
+  background: var(--panel-hover);
   transition: border-color 160ms ease;
 }
 
@@ -64,16 +63,14 @@
 }
 
 .lilt-field--range:focus-within {
-  box-shadow:
-    inset 0 0 0 1px color-mix(in srgb, var(--foreground) 7%, transparent),
-    0 0 0 2px var(--ring);
+  box-shadow: 0 0 0 2px var(--ring);
 }
 
 .lilt-field--range:active .lilt-field__fill {
-  border-color: var(--brand-primary);
+  border-color: var(--foreground);
 }
 
-/* Switch: off is a quiet track; on takes the brand's violet-to-rose. */
+/* Switch: off is a quiet track; on fills with ink. */
 .lilt-field--switch {
   cursor: pointer;
 }
@@ -84,7 +81,7 @@
   width: 34px;
   height: 20px;
   border-radius: 999px;
-  background: color-mix(in srgb, var(--foreground) 12%, transparent);
+  background: color-mix(in srgb, var(--foreground) 14%, transparent);
   transition: background 200ms ease;
 }
 
@@ -101,11 +98,11 @@
 }
 
 .lilt-field--switch[aria-checked='true'] .lilt-field__switch {
-  background: var(--lilt-brand-gradient);
+  background: var(--foreground);
 }
 
 .lilt-field--switch[aria-checked='true'] .lilt-field__switch > span {
-  background: #fff;
+  background: var(--background);
   translate: 14px 0;
 }
 

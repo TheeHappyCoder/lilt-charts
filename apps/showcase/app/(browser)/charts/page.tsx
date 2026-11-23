@@ -10,11 +10,8 @@ export default function ChartsPage() {
     <article className="lilt-docs lilt-docs--wide">
       <PageHeader
         eyebrow={<span className="lilt-breadcrumb">Charts</span>}
-        title={
-          <>
-            Every chart, by the <em>job</em> it does
-          </>
-        }
+        title="Every chart,"
+        dim="by the job it does."
         lede="Each family is one card with the same props, motion and inspection. Pick one to see its situations, its code and its data."
       />
       <ChartGallery />

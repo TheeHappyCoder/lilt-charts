@@ -32,6 +32,7 @@ import {
 } from '@/lib/card-docs/examples';
 import { resolveStage, withoutData } from '@/lib/card-docs/resolve-example';
 import type { TuneControl } from '@/lib/card-docs/tune';
+import { IconLive } from '@/components/craft/status-icon';
 
 /**
  * One situation the chart handles, in the look chosen for it: the default card first, then its
@@ -362,7 +363,7 @@ function StageProps({ tune = [] }: { tune?: readonly TuneControl[] }) {
         <Icon icon={SlidersHorizontalIcon} size={16} strokeWidth={1.7} aria-hidden="true" />
         <span className="lilt-stage__tune-label">Props</span>
         {/* A changed prop is a quiet dot, like an unsaved mark; the number is read out. */}
-        {changedCount ? <span className="lilt-stage__tune-dot" aria-hidden="true" /> : null}
+        {changedCount ? <IconLive size={11} className="lilt-stage__tune-dot" /> : null}
       </PopoverTrigger>
       <PopoverContent
         data-carousel-ignore=""
@@ -403,7 +404,7 @@ function StageProps({ tune = [] }: { tune?: readonly TuneControl[] }) {
                 <div key={control.prop} className="lilt-stage__tune-field">
                   <code className="lilt-tune__prop">
                     {control.prop}
-                    {changed ? <span className="lilt-tune__dot" aria-hidden="true" /> : null}
+                    {changed ? <IconLive size={10} className="lilt-tune__dot" /> : null}
                   </code>
                   {onOff ? (
                     <Switch label={control.prop} checked={current === true} onChange={set} />

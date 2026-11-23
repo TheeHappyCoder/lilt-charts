@@ -1,13 +1,14 @@
 /* Docs controls share one surface and one hover treatment. Chart package styles are separate. */
 :root {
-  --lilt-ui-surface: #26262a;
-  --lilt-ui-foreground: #f4f4f5;
-  --lilt-ui-muted: #a1a1aa;
-  --lilt-ui-border: rgb(255 255 255 / 0.09);
-  --lilt-ui-highlight-dark: rgb(255 255 255 / 0.1);
-  --lilt-ui-shadow: 0 1px 1px rgb(0 0 0 / 0.2), 0 16px 40px rgb(0 0 0 / 0.28);
+  /* Floating surfaces are the portfolio's dark glass: near-black, a white hairline, radius 14. */
+  --lilt-ui-surface: #161617;
+  --lilt-ui-foreground: #f4f4f2;
+  --lilt-ui-muted: #a3a39d;
+  --lilt-ui-border: rgb(255 255 255 / 0.1);
+  --lilt-ui-highlight-dark: rgb(255 255 255 / 0.08);
+  --lilt-ui-shadow: 0 16px 40px rgb(0 0 0 / 0.3);
   --lilt-ui-duration: 150ms;
-  --lilt-ui-ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --lilt-ui-ease: cubic-bezier(0.22, 1, 0.36, 1);
   --lilt-ui-tooltip-in-duration: 150ms;
   --lilt-ui-tooltip-out-duration: 50ms;
   --lilt-ui-tooltip-move-duration: 160ms;
@@ -22,17 +23,19 @@
   --surface: var(--lilt-ui-surface);
   --foreground: var(--lilt-ui-foreground);
   --muted-foreground: var(--lilt-ui-muted);
-  --hover: #343438;
+  --hover: rgb(255 255 255 / 0.08);
   --border: var(--lilt-ui-border);
   --lilt-ui-highlight-bg: var(--lilt-ui-highlight-dark);
   color-scheme: dark;
-  border: 1px solid var(--lilt-ui-border);
-  border-radius: 16px;
+  border: 0;
+  border-radius: var(--radius-panel);
   background: var(--lilt-ui-surface);
-  box-shadow: var(--lilt-ui-shadow);
+  box-shadow:
+    var(--lilt-ui-shadow),
+    inset 0 0 0 1px var(--lilt-ui-border);
   color: var(--lilt-ui-foreground);
   font-family: var(--font-ui), sans-serif;
-  font-size: 13px;
+  font-size: var(--text-sm);
   line-height: 1.5;
 }
 
@@ -100,10 +103,10 @@
   align-items: center;
   gap: 8px;
   padding: 6px 12px;
-  border-radius: 9px;
+  border-radius: var(--radius-control);
   background: transparent;
   color: var(--lilt-ui-foreground);
-  font-size: 13px;
+  font-size: var(--text-sm);
   font-weight: 400;
   line-height: 20px;
   outline: none;
@@ -150,7 +153,7 @@
   grid-column: 2;
   grid-row: 1;
   place-items: center;
-  color: var(--brand-primary);
+  color: var(--lilt-ui-foreground);
 }
 
 .lilt-ui-item-indicator svg {
@@ -171,10 +174,8 @@
 .lilt-ui-group-label {
   padding: 7px 12px 4px;
   color: var(--lilt-ui-muted);
-  font-size: 10px;
-  font-weight: 600;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
+  font-size: var(--text-xs);
+  font-weight: var(--weight-strong);
 }
 
 .lilt-ui-separator {
@@ -191,19 +192,23 @@
   justify-content: center;
   gap: 8px;
   padding: 6px 12px;
-  border: 1px solid var(--border);
-  border-radius: 9px;
-  background: var(--surface);
+  border: 0;
+  border-radius: var(--radius-button);
+  background: var(--panel);
   color: var(--foreground);
   font: inherit;
-  font-size: 12px;
-  font-weight: 500;
+  font-size: var(--text-sm);
+  font-weight: var(--weight-strong);
   line-height: 20px;
   cursor: pointer;
   transition:
     background-color var(--lilt-ui-duration) ease,
-    border-color var(--lilt-ui-duration) ease,
-    color var(--lilt-ui-duration) ease;
+    color var(--lilt-ui-duration) ease,
+    scale 0.2s var(--ease-out);
+}
+
+.lilt-ui-button:active:not(:disabled, [data-disabled]) {
+  scale: 0.96;
 }
 
 .lilt-ui-button[data-variant='ghost'] {
@@ -212,9 +217,8 @@
 }
 
 .lilt-ui-button[data-variant='primary'] {
-  border-color: var(--brand-primary);
-  background: var(--brand-primary);
-  color: #fff;
+  background: var(--foreground);
+  color: var(--background);
 }
 
 .lilt-ui-button[data-size='sm'] {
@@ -237,13 +241,15 @@
 @media (hover: hover) {
   .lilt-ui-button:hover:not(:disabled, [data-disabled]),
   .lilt-ui-select-trigger:hover:not([data-disabled]) {
-    border-color: color-mix(in srgb, var(--foreground) 22%, var(--border));
+    background: var(--panel-hover);
+  }
+
+  .lilt-ui-button[data-variant='ghost']:hover:not(:disabled, [data-disabled]) {
     background: var(--hover);
   }
 
   .lilt-ui-button[data-variant='primary']:hover:not(:disabled, [data-disabled]) {
-    border-color: var(--jade-strong);
-    background: var(--jade-strong);
+    background: color-mix(in srgb, var(--foreground) 86%, var(--background));
   }
 }
 
@@ -251,7 +257,7 @@
 .lilt-ui-select-trigger:focus-visible,
 .lilt-ui-select-trigger[data-focused] {
   outline: 2px solid var(--ring);
-  outline-offset: 3px;
+  outline-offset: 2px;
 }
 
 .lilt-ui-field {
@@ -262,8 +268,8 @@
 
 .lilt-ui-field-label {
   color: var(--muted-foreground);
-  font-size: 12px;
-  font-weight: 500;
+  font-size: var(--text-xs);
+  font-weight: var(--weight-strong);
 }
 
 .lilt-ui-select-trigger {
@@ -274,7 +280,7 @@
 }
 
 .lilt-ui-select-trigger[data-popup-open] {
-  border-color: var(--brand-primary);
+  background: var(--panel-hover);
 }
 
 .lilt-ui-select-value {
@@ -309,12 +315,12 @@
 
 .lilt-ui-select-scroll[data-edge='top'] {
   top: 0;
-  border-radius: 15px 15px 0 0;
+  border-radius: 13px 13px 0 0;
 }
 
 .lilt-ui-select-scroll[data-edge='bottom'] {
   bottom: 0;
-  border-radius: 0 0 15px 15px;
+  border-radius: 0 0 13px 13px;
 }
 
 .lilt-ui-menu-popup {
@@ -332,14 +338,14 @@
 .lilt-ui-popover-title {
   margin: 0 0 6px;
   color: var(--lilt-ui-foreground);
-  font-size: 13px;
-  font-weight: 600;
+  font-size: var(--text-sm);
+  font-weight: var(--weight-strong);
 }
 
 .lilt-ui-popover-description {
   margin: 0;
   color: var(--lilt-ui-muted);
-  font-size: 13px;
+  font-size: var(--text-sm);
   line-height: 1.6;
 }
 
@@ -367,8 +373,8 @@
   max-width: min(280px, var(--available-width));
   overflow: hidden;
   padding: 0;
-  border-radius: 8px;
-  font-size: 11px;
+  border-radius: var(--radius-control);
+  font-size: var(--text-xs);
   font-weight: 500;
   line-height: 17px;
   text-align: center;
@@ -538,7 +544,7 @@
   background: transparent;
   color: var(--lilt-ui-foreground);
   font: inherit;
-  font-size: 14px;
+  font-size: var(--text-md);
   line-height: 24px;
   outline: none;
 }
@@ -579,7 +585,7 @@
 .lilt-ui-command-empty {
   padding: 24px 16px;
   color: var(--lilt-ui-muted);
-  font-size: 12px;
+  font-size: var(--text-xs);
   text-align: center;
 }
 
@@ -595,7 +601,7 @@
   padding: 10px 16px;
   border-top: 1px solid var(--lilt-ui-border);
   color: var(--lilt-ui-muted);
-  font-size: 11px;
+  font-size: var(--text-xs);
 }
 
 .lilt-ui-command-close {
@@ -617,7 +623,7 @@
 }
 
 .lilt-ui-shortcut {
-  font-size: 10px;
+  font-size: var(--text-xs);
 }
 
 .lilt-ui-visually-hidden {
