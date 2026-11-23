@@ -7,7 +7,7 @@ import CubeIcon from '@hugeicons/core-free-icons/CubeIcon';
 import SquareIcon from '@hugeicons/core-free-icons/SquareIcon';
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
 import Link from 'next/link';
-import { useEffect, useId, useRef } from 'react';
+import { useEffect, useId, useLayoutEffect, useRef, useState } from 'react';
 import { AUTO, controls, useChartSettings, type Control } from '@/components/docs/chart-settings';
 import {
   Select,
@@ -122,8 +122,28 @@ export function StyleMenu() {
   const rootRef = useRef<HTMLElement>(null);
   const titleId = useId();
   const depthThumbId = useId();
+  const [anchor, setAnchor] = useState<{ top: number; left: number; originX: number } | null>(null);
   const palette = (settings.palette as string | undefined) ?? AUTO;
   const changed = Object.values(settings).filter((value) => value !== undefined).length;
+
+  useLayoutEffect(() => {
+    if (!open) return;
+    const place = () => {
+      const trigger = document.querySelector<HTMLElement>('[data-style-trigger]');
+      if (!trigger) return;
+      const rect = trigger.getBoundingClientRect();
+      const width = Math.min(360, window.innerWidth - 24);
+      const center = rect.left + rect.width / 2;
+      const left = Math.round(
+        Math.min(Math.max(center - width / 2, 12), window.innerWidth - width - 12),
+      );
+      const top = Math.round(rect.bottom + 8);
+      setAnchor({ top, left, originX: Math.round(center - left) });
+    };
+    place();
+    window.addEventListener('resize', place);
+    return () => window.removeEventListener('resize', place);
+  }, [open]);
 
   useEffect(() => {
     if (!open) return;
@@ -207,6 +227,16 @@ export function StyleMenu() {
           id={PANEL_ID}
           className="lilt-style-menu"
           aria-labelledby={titleId}
+          style={
+            anchor
+              ? {
+                  top: anchor.top,
+                  left: anchor.left,
+                  right: 'auto',
+                  transformOrigin: `${anchor.originX}px 0`,
+                }
+              : undefined
+          }
           initial={reduced ? false : { opacity: 0, y: -6, scale: 0.98 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
           exit={
