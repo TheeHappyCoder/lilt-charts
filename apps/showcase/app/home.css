@@ -734,7 +734,7 @@
       'trail trail'
       'scramble scramble';
   }
-  .lilt-float__nav {
+  .lilt-float .lilt-float__nav {
     display: none;
   }
   .lilt-home-foot__links {
@@ -778,15 +778,16 @@
     height: 320px;
     flex: none;
   }
+  .lilt-home-tile:is([data-area='sankey'], [data-area='skyline']) {
+    height: 400px;
+  }
   .lilt-home-tile:is(
-    [data-area='sankey'],
-    [data-area='skyline'],
     [data-area='radar'],
     [data-area='stat'],
     [data-area='candle'],
     [data-area='card']
   ) {
-    height: 560px;
+    height: 480px;
   }
   .lilt-home-tile:is(
     [data-area='globe'],

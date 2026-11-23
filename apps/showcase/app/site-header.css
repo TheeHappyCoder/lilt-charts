@@ -286,7 +286,8 @@
   .lilt-header__menu {
     display: inline-grid;
   }
-  .lilt-header__nav {
+  /* Doubled up to outrank the NavPill's own display, which loads after this sheet. */
+  .lilt-header .lilt-header__nav {
     display: none;
   }
 }
@@ -301,7 +302,7 @@
   .lilt-header__logo {
     width: 29px;
   }
-  .lilt-header__cta,
+  .lilt-header .lilt-header__cta,
   .lilt-style-trigger__label,
   .lilt-style-trigger__changed {
     display: none;
