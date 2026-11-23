@@ -58,6 +58,8 @@ const render = (element: ReactElement) => act(async () => root.render(element));
 async function inspectLatest() {
   const input = host.querySelector<HTMLInputElement>('.lilt-chart__keyboard-input input')!;
   await act(async () => input.focus());
+  // Motion writes the hover band's styles on its next frame, which was queued before this one.
+  await act(() => new Promise<void>((resolve) => requestAnimationFrame(() => resolve())));
 }
 
 /** The x position of the latest observation's mark in each plot, read from its path data. */
