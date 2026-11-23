@@ -40,32 +40,20 @@ export function HomeInterface() {
   const progress = useProgress();
   return (
     <div className="lilt-bento" data-layout="interface">
-      <HomeTile
-        area="terminal"
-        href="/ascii/terminal"
-        name="Terminal"
-        hint="Types itself"
-        center
-      >
+      <HomeTile area="terminal" href="/ascii/terminal" name="Terminal" hint="Types itself" center>
         <AsciiTerminal lines={SESSION} title="~/my-app" accent="#a58bff" loop />
       </HomeTile>
       <HomeTile
         area="transition"
         href="/ascii/transition"
         name="Transition"
-        hint="Click the card, or follow any link"
+        hint="Click the card to change it"
         center
         live
       >
         <AsciiTransitionDemo />
       </HomeTile>
-      <HomeTile
-        area="loader"
-        href="/ascii/loader"
-        name="Loader"
-        hint="Four ways to wait"
-        center
-      >
+      <HomeTile area="loader" href="/ascii/loader" name="Loader" hint="Four ways to wait" center>
         <span className="lilt-tile__stack">
           <AsciiLoader variant="bar" value={progress} width={14} label="Building" />
           <AsciiLoader variant="spinner" label="Thinking" />
@@ -76,12 +64,7 @@ export function HomeInterface() {
       <HomeTile area="glitch" href="/ascii/glitch" name="Glitch" hint="Hover it" center>
         <AsciiGlitch text="404" intensity={0.6} className="lilt-tile__huge" />
       </HomeTile>
-      <HomeTile
-        area="trail"
-        href="/ascii/cursor-trail"
-        name="Cursor trail"
-        hint="Move through it"
-      >
+      <HomeTile area="trail" href="/ascii/cursor-trail" name="Cursor trail" hint="Move through it">
         <AsciiCursorTrailDemo />
       </HomeTile>
       <HomeTile

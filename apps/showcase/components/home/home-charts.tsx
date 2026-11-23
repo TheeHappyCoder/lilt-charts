@@ -1,6 +1,8 @@
 'use client';
 
 import Link from 'next/link';
+import { Label } from '@/components/craft/label';
+import { ArrowSwap } from '@/components/craft/roll';
 import { FittedPreview } from '@/components/gallery/fitted-preview';
 import { chartDocs } from '@/lib/card-docs/registry';
 import { featureCards } from '@/lib/home-showcase';
@@ -35,7 +37,7 @@ const builtIn = [
   { href: '/features/performance', name: 'Performance', line: 'Four points a pixel' },
 ] as const;
 
-/** Chart cards in the gallery's rooms, then what every one of them can do. */
+/** Chart cards on plinths, then what every one of them can do, as a list of rows. */
 export function HomeCharts() {
   return (
     <div className="lilt-bento" data-layout="charts">
@@ -87,27 +89,26 @@ export function HomeCharts() {
       >
         <Chart href="/finance/candlestick" width={600} height={320} fit="contain" />
       </HomeTile>
-      <HomeTile
-        area="built"
-        href="/features/sync"
-        name="Built in"
-        hint="What every card can do, with no code of yours"
-        tone="room"
-        floor
-        live
-      >
-        <ol className="lilt-built">
+      <div className="lilt-built" style={{ gridArea: 'built' }}>
+        <Label as="h3" reveal={false}>
+          Built in
+          <span className="lilt-built__aside">What every card can do, with no code of yours</span>
+        </Label>
+        <ol data-rv="kids">
           {builtIn.map((item, index) => (
             <li key={item.href}>
-              <Link href={item.href}>
+              <Link href={item.href} className="lilt-built__row">
                 <span className="lilt-built__index">{String(index + 1).padStart(2, '0')}</span>
-                <strong>{item.name}</strong>
-                <small>{item.line}</small>
+                <span className="lilt-built__text">
+                  <strong>{item.name}</strong>
+                  <small>{item.line}</small>
+                </span>
+                <ArrowSwap />
               </Link>
             </li>
           ))}
         </ol>
-      </HomeTile>
+      </div>
     </div>
   );
 }

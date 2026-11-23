@@ -34,11 +34,14 @@ const COUNTS: Record<Tab, number> = {
 export function SiteHeader({
   tab,
   stars = null,
+  overlay = false,
   onMenu,
 }: {
   /** The place the current page lives under; none on the home page. */
   tab?: Tab;
   stars?: Stars | null;
+  /** The bar sits inside the home page's dark hero, in its colours, and scrolls away with it. */
+  overlay?: boolean;
   /** Opens the navigation drawer on phones; the drawer has no button without it. */
   onMenu?: () => void;
 }) {
@@ -53,7 +56,11 @@ export function SiteHeader({
   }, []);
 
   return (
-    <header className="lilt-header" data-scrolled={scrolled || undefined}>
+    <header
+      className={overlay ? 'lilt-header dark' : 'lilt-header'}
+      data-overlay={overlay || undefined}
+      data-scrolled={(scrolled && !overlay) || undefined}
+    >
       <div className="lilt-header__inner">
         {onMenu ? (
           <button

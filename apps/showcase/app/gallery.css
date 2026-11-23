@@ -1,75 +1,36 @@
-/* The chart gallery: live tiles on quiet panels, grouped by job. */
+/* The chart gallery: live tiles on plinths, grouped by job. */
 .lilt-docs--wide {
   width: min(1120px, 100%);
 }
 .lilt-gallery {
   display: grid;
-  gap: 48px;
+  gap: 56px;
   padding-top: 8px;
 }
 .lilt-gallery__group {
   display: grid;
   gap: 16px;
 }
-.lilt-docs .lilt-gallery__heading {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin: 0;
-  font-size: 15px;
-  font-weight: 600;
-  letter-spacing: -0.01em;
-}
-.lilt-gallery__heading span {
-  display: inline-flex;
-  height: 20px;
-  min-width: 22px;
-  align-items: center;
-  justify-content: center;
-  padding: 0 7px;
-  border-radius: 999px;
-  background: var(--hover);
-  color: var(--muted-foreground);
-  font-size: 11.5px;
-  font-weight: 500;
-  font-variant-numeric: tabular-nums;
-}
 .lilt-gallery__grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(min(256px, 100%), 1fr));
-  gap: 12px;
+  gap: var(--gap);
 }
 
-/* A tile: a lit room with the chart rising from its floor, then the family's glyph, name and job.
-   Hover lifts the card and brightens the room. */
+/* A tile: a plinth holding a lit room with the chart rising from its floor, then the family's
+   glyph, name and job underneath. Hover deepens the plinth and lifts the card. */
 .lilt-tile {
   --lilt-tile-lift: 0px;
-  --lilt-tile-light: 0.75;
+  --lilt-tile-light: 0.6;
   position: relative;
-  display: grid;
   min-width: 0;
-  overflow: hidden;
-  border-radius: 24px;
-  background: var(--panel);
-  box-shadow:
-    inset 0 0 0 1px var(--line),
-    inset 0 1px 0 rgb(255 255 255 / 0.04);
-  color: inherit;
-  text-decoration: none;
-  transition:
-    box-shadow 260ms var(--ease-out),
-    transform 260ms var(--ease-out);
 }
 .lilt-tile:hover {
   --lilt-tile-lift: -6px;
-  --lilt-tile-light: 1;
-  box-shadow:
-    inset 0 0 0 1px var(--line-strong),
-    inset 0 1px 0 rgb(255 255 255 / 0.06),
-    0 24px 48px -28px rgb(0 0 0 / 0.45);
+  --lilt-tile-light: 0.95;
 }
 .lilt-tile:active {
-  transform: scale(0.99);
+  scale: 0.99;
 }
 .lilt-tile:focus-visible {
   outline: 2px solid var(--ring);
@@ -78,13 +39,12 @@
 
 /* The room */
 .lilt-tile__stage {
-  position: relative;
-  display: block;
-  aspect-ratio: 5 / 4;
+  aspect-ratio: 16 / 11;
   min-width: 0;
-  overflow: hidden;
-  border-bottom: 1px solid var(--line);
-  /* The card's foot runs out of view into the caption. */
+  background: var(--panel-deep);
+}
+/* The card's foot runs out of view at the room's floor. */
+.lilt-tile__stage > .lilt-fitted {
   mask-image: linear-gradient(to bottom, #000 72%, transparent);
 }
 .lilt-tile[data-wide] .lilt-tile__stage {
@@ -99,12 +59,12 @@
   background:
     radial-gradient(
       60% 55% at 50% 18%,
-      color-mix(in srgb, var(--lilt-series-1) 26%, transparent),
+      color-mix(in srgb, var(--lilt-series-1) 22%, transparent),
       transparent 75%
     ),
     radial-gradient(
       40% 40% at 82% 0%,
-      color-mix(in srgb, var(--lilt-series-2) 16%, transparent),
+      color-mix(in srgb, var(--lilt-series-2) 13%, transparent),
       transparent 75%
     );
   container-type: normal;
@@ -115,95 +75,32 @@
   position: absolute;
   inset: 0;
   background-image: radial-gradient(
-    color-mix(in srgb, var(--foreground) 14%, transparent) 1px,
+    color-mix(in srgb, var(--foreground) 12%, transparent) 1px,
     transparent 1.2px
   );
   background-size: 16px 16px;
   mask-image: radial-gradient(70% 60% at 50% 20%, #000, transparent 80%);
 }
-.lilt-tile__badge {
-  position: absolute;
-  top: 14px;
-  left: 14px;
-  padding: 2px 8px;
-  border-radius: 999px;
-  background: color-mix(in srgb, var(--brand-primary) 18%, var(--panel));
-  color: var(--brand-primary);
-  font-size: 10.5px;
-  font-weight: 600;
-  letter-spacing: 0.04em;
-  line-height: 18px;
-  text-transform: uppercase;
-}
 
-/* Caption: glyph, name and job, and an arrow that arrives on hover. */
-.lilt-tile__caption {
-  display: flex;
-  min-width: 0;
-  align-items: flex-start;
-  gap: 12px;
-  padding: 14px 16px 16px;
-}
+/* A family's mark: its chart drawn as itself, in a small chip. */
 .lilt-tile__glyph {
   display: grid;
-  width: 40px;
-  height: 30px;
+  width: 30px;
+  height: 20px;
   flex: none;
   place-items: center;
   padding: 0;
-  border-radius: 9px;
-  background: var(--surface);
-  box-shadow:
-    inset 0 0 0 1px var(--line-strong),
-    0 1px 2px rgb(0 0 0 / 0.06);
+  border-radius: var(--radius-chip);
+  background: var(--background);
+  color: var(--foreground);
   container-type: normal;
 }
 .lilt-tile__glyph .lilt-chart-glyph {
-  padding: 3px 2px;
+  padding: 2px 1px;
 }
-.lilt-tile__text {
-  display: grid;
-  min-width: 0;
-  flex: 1;
-  gap: 1px;
-}
-.lilt-tile__name {
-  color: var(--foreground);
-  font-size: 14.5px;
-  font-weight: 550;
-  letter-spacing: -0.01em;
-}
-.lilt-tile__lede {
-  display: -webkit-box;
-  /* Two lines, held open, so every caption in a row sits at the same height. */
-  min-height: 38px;
-  overflow: hidden;
-  color: var(--muted-foreground);
-  font-size: 13px;
-  line-height: 19px;
-  text-wrap: pretty;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
-}
-.lilt-tile__go {
-  display: grid;
-  width: 30px;
-  height: 30px;
-  flex: none;
-  place-items: center;
-  border-radius: 999px;
-  background: var(--foreground);
-  color: var(--background);
-  opacity: 0;
-  transform: translate(-6px, 6px) scale(0.85);
-  transition:
-    opacity 220ms var(--ease-out),
-    transform 260ms var(--ease-out);
-}
-.lilt-tile:hover .lilt-tile__go,
-.lilt-tile:focus-visible .lilt-tile__go {
-  opacity: 1;
-  transform: none;
+/* Two lines, held open, so every caption in a row sits at the same height. */
+.lilt-tile .lilt-cap__desc {
+  min-height: 36px;
 }
 
 /* A live card, laid out at full size and scaled to its tile. */
@@ -229,17 +126,18 @@
   transition: opacity 360ms var(--ease-out);
 }
 .lilt-fitted[data-fit='peek'] .lilt-fitted__card {
-  top: 28px;
+  top: 24px;
   transform-origin: top center;
-  filter: drop-shadow(0 18px 28px rgb(0 0 0 / 0.22));
+  filter: drop-shadow(0 14px 24px rgb(26 26 24 / 0.12));
+}
+.dark .lilt-fitted[data-fit='peek'] .lilt-fitted__card {
+  filter: drop-shadow(0 18px 28px rgb(0 0 0 / 0.4));
 }
 .lilt-fitted__card[data-ready] {
   opacity: 1;
 }
 @media (prefers-reduced-motion: reduce) {
-  .lilt-tile,
   .lilt-tile__light,
-  .lilt-tile__go,
   .lilt-fitted,
   .lilt-fitted__card {
     transition: none;

@@ -21,7 +21,13 @@ export function Label({
   id?: string;
 }) {
   return (
-    <Tag className="lilt-label" id={id} data-rv={reveal ? 'fade' : undefined}>
+    <Tag
+      className="lilt-label"
+      id={id}
+      data-rv={reveal ? 'fade' : undefined}
+      // "On this page" reads the name without its count.
+      data-toc-label={typeof children === 'string' ? children : undefined}
+    >
       {children}
       {count === undefined ? null : <Count n={count} />}
     </Tag>

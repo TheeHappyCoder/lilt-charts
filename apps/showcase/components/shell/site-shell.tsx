@@ -63,6 +63,7 @@ export function SiteShell({
         </a>
         <SiteHeader
           tab={bare ? undefined : tab}
+          overlay={bare}
           stars={stars}
           onMenu={() => {
             setMobileTab(tab);

@@ -1,11 +1,10 @@
 'use client';
 
-import { HugeiconsIcon as Icon } from '@hugeicons/react';
-import ArrowRight01Icon from '@hugeicons/core-free-icons/ArrowRight01Icon';
 import { AsciiLogo, CursorGhosts, CursorWarmth, FIRE_GROUND } from '@lilt-ui/registry';
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
-import { BlurFade } from '@/components/motion/blur-fade';
+import { useEffect, useState, type CSSProperties } from 'react';
+import { TwoTone } from '@/components/craft/label';
+import { ArrowSwap, Roll } from '@/components/craft/roll';
 
 /**
  * The share of the sky kept clear under the wordmark. The headline's place in home.css is worked
@@ -17,10 +16,10 @@ const CLEAR_BELOW = 0.3;
 const FIRES = [0.2, 0.8];
 
 /**
- * The hero: the wordmark lettered in solid type under falling snow, which settles on the letters
- * and melts where the pointer passes. A quick pass knocks letters loose; a click sends a shockwave
- * through them. The headline and the ways in sit in the clear space beneath. A few ghost cursors
- * keep the reader company, wandering the sky and hurrying to the fires when they get cold.
+ * The hero, the page's one dark object: the wordmark lettered in solid type under falling snow,
+ * which settles on the letters and melts where the pointer passes. A quick pass knocks letters
+ * loose; a click sends a shockwave through them. The headline and the way in sit over the word's
+ * foot. A few ghost cursors keep the reader company, hurrying to the fires when they get cold.
  */
 export function HomeHero() {
   // Phones get finer cells, so the letters keep their bevels at a quarter of the width.
@@ -33,7 +32,7 @@ export function HomeHero() {
     return () => narrow.removeEventListener('change', update);
   }, []);
   return (
-    <section className="lilt-home-hero dark" aria-labelledby="lilt-home-title">
+    <section className="lilt-home-hero lilt-dusk dark" aria-labelledby="lilt-home-title">
       <div className="lilt-home-hero__stage">
         <AsciiLogo
           text="lilt UI"
@@ -62,22 +61,30 @@ export function HomeHero() {
       />
       <CursorWarmth scope=".lilt-home-hero" />
       <div className="lilt-home-hero__copy">
-        <BlurFade delay={600}>
-          <h1 id="lilt-home-title">
-            React components with a little <em>lilt.</em>
-          </h1>
-        </BlurFade>
-        <BlurFade delay={760}>
-          <div className="lilt-home-hero__ctas">
-            <Link href="/guides/installation" className="lilt-home-button">
-              Get started
-              <Icon icon={ArrowRight01Icon} size={15} strokeWidth={2} aria-hidden="true" />
-            </Link>
-          </div>
-        </BlurFade>
+        <TwoTone
+          as="h1"
+          id="lilt-home-title"
+          claim="React components"
+          dim="with a little lilt."
+          delay={5}
+        />
+        <div className="lilt-home-hero__ctas" data-rv="fade" style={{ '--i': 9 } as CSSProperties}>
+          <Link href="/guides/installation" className="lilt-btn" data-tone="light" data-size="lg">
+            <Roll>Get started</Roll>
+            <ArrowSwap direction="right" />
+          </Link>
+        </div>
       </div>
       <p className="lilt-home-hero__hint" aria-hidden="true">
-        <span>move</span> through the letters <span>·</span> warm up by the <span>fire</span>
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+          <path
+            d="M3 2.5v8.2l2.3-2 1.5 3.3 1.6-.7-1.5-3.2h3.1L3 2.5Z"
+            stroke="currentColor"
+            strokeWidth="1.3"
+            strokeLinejoin="round"
+          />
+        </svg>
+        Move through the letters <span>·</span> warm up by the fire
       </p>
     </section>
   );

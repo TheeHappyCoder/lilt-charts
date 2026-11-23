@@ -1,16 +1,17 @@
 import Link from 'next/link';
-import { HugeiconsIcon as Icon } from '@hugeicons/react';
-import ArrowRight01Icon from '@hugeicons/core-free-icons/ArrowRight01Icon';
+import type { CSSProperties, ReactNode } from 'react';
+import { Count, Label, TwoTone } from '@/components/craft/label';
+import { Roll } from '@/components/craft/roll';
 import { ChartSettingsProvider } from '@/components/docs/chart-settings';
 import { HomeCharts } from '@/components/home/home-charts';
-import { HomeClosing } from '@/components/home/home-closing';
 import { HomeData } from '@/components/home/home-data';
+import { HomeFloatingNav } from '@/components/home/home-floating-nav';
+import { HomeFooter, type FooterColumn } from '@/components/home/home-footer';
 import { HomeHero } from '@/components/home/home-hero';
 import { HomeInterface } from '@/components/home/home-interface';
 import { HomeMedia } from '@/components/home/home-media';
 import { HomeQuickstart } from '@/components/home/home-quickstart';
 import { HomeScenes } from '@/components/home/home-scenes';
-import { LiltLogo } from '@/components/shell/logo';
 import {
   customizeRoutes,
   familyGroups,
@@ -34,7 +35,7 @@ const shelf = (group: TileGroup) => ({ label: group.heading!, href: group.routes
  * Footer columns: a handful of ways into each line and the docs, never every page. The rails
  * list everything; the footer only points.
  */
-const footer = [
+const footer: FooterColumn[] = [
   {
     heading: 'Charts',
     links: [
@@ -68,43 +69,47 @@ const footer = [
   },
 ];
 
-/** One section: its number and name, the headline and a line beside it, then its bento. */
+/**
+ * One section: a small label with its count, a heading in two tones, a line beside it with the
+ * way on, then its bento of tiles.
+ */
 function Section({
-  index,
-  eyebrow,
+  label,
+  count,
   id,
-  title,
+  claim,
+  dim,
   aside,
   more,
   children,
 }: {
-  index: string;
-  eyebrow: string;
+  label: string;
+  count?: number;
   id: string;
-  title: React.ReactNode;
+  claim: ReactNode;
+  dim: ReactNode;
   aside: string;
-  more?: { href: string; label: string };
-  children: React.ReactNode;
+  more?: { href: string; label: string; count?: number };
+  children: ReactNode;
 }) {
   return (
     <section className="lilt-home-section" aria-labelledby={id}>
       <div className="lilt-home-head">
-        <div>
-          <p className="lilt-home-eyebrow">
-            <span>{index}</span>
-            {eyebrow}
-          </p>
-          <h2 id={id}>{title}</h2>
+        <div className="lilt-home-head__main">
+          <Label count={count}>{label}</Label>
+          <TwoTone id={id} claim={claim} dim={dim} />
         </div>
-        <p className="lilt-home-head__aside">{aside}</p>
+        <div className="lilt-home-head__side" data-rv="fade" style={{ '--i': 3 } as CSSProperties}>
+          <p>{aside}</p>
+          {more ? (
+            <Link href={more.href} className="lilt-btn" data-tone="outline">
+              <Roll>{more.label}</Roll>
+              {more.count === undefined ? null : <Count n={more.count} />}
+            </Link>
+          ) : null}
+        </div>
       </div>
       {children}
-      {more ? (
-        <Link href={more.href} className="lilt-landing__more">
-          {more.label}
-          <Icon icon={ArrowRight01Icon} size={14} strokeWidth={2} aria-hidden="true" />
-        </Link>
-      ) : null}
     </section>
   );
 }
@@ -124,117 +129,69 @@ export async function HomePage() {
       <SiteShell stars={stars} bare>
         <div className="lilt-home">
           <HomeHero />
+          <HomeFloatingNav />
 
           <div className="lilt-landing">
             <Section
-              index="01"
-              eyebrow="Chart cards"
+              label="Chart cards"
+              count={families}
               id="charts-title"
-              title={
-                <>
-                  Charts that arrive <em>finished.</em>
-                </>
-              }
+              claim="Charts that arrive finished."
+              dim="One import, nothing left to build."
               aside="Headline, hover readout, legend, loading and motion, from one import. Live cards, not screenshots: hover any of them."
-              more={{ href: '/charts', label: `Browse all ${families} chart families` }}
+              more={{ href: '/charts', label: 'Browse all chart families', count: families }}
             >
               <HomeCharts />
             </Section>
 
             <Section
-              index="02"
-              eyebrow="Living scenes"
+              label="Living scenes"
+              count={scenes}
               id="scenes-title"
-              title={
-                <>
-                  A whole sky of <em>scenes.</em>
-                </>
-              }
+              claim="A whole sky of scenes."
+              dim="Every one of them alive."
               aside="Each one fills its parent, takes its ink from your CSS, follows the pointer, rests off screen, and holds still for reduced motion."
-              more={{ href: '/ascii/koi', label: `Explore all ${scenes} ASCII scenes` }}
+              more={{ href: '/ascii/koi', label: 'Explore all ASCII scenes', count: scenes }}
             >
               <HomeScenes />
             </Section>
 
             <Section
-              index="03"
-              eyebrow="ASCII interface"
+              label="ASCII interface"
+              count={pieceCount}
               id="interface-title"
-              title={
-                <>
-                  Every detail, <em>in type.</em>
-                </>
-              }
-              aside="Loaders, counters, glyph borders, a terminal that types itself, and the curtain every page on this site changes behind. Add one with the shadcn CLI and the source is yours."
-              more={{ href: piecesHref, label: `Explore all ${pieceCount} interface pieces` }}
+              claim="Every detail, in type."
+              dim="Source you own."
+              aside="Loaders, counters, glyph borders, a terminal that types itself, and a curtain for pages to change behind. Add one with the shadcn CLI and the source is yours."
+              more={{ href: piecesHref, label: 'Explore all interface pieces', count: pieceCount }}
             >
               <HomeInterface />
             </Section>
 
             <Section
-              index="04"
-              eyebrow="Data in type"
+              label="Data in type"
               id="data-title"
-              title={
-                <>
-                  Same numbers, <em>set in type.</em>
-                </>
-              }
+              claim="Same numbers, set in type."
+              dim="Two ways to read a year."
               aside="One year of visitors as a chart card and as an area of type, then the charts that only type can draw. Hover either."
             >
               <HomeData />
             </Section>
 
             <Section
-              index="05"
-              eyebrow="3D and media"
+              label="3D and media"
               id="media-title"
-              title={
-                <>
-                  Real geometry, <em>rendered in type.</em>
-                </>
-              }
+              claim="Real geometry, rendered in type."
+              dim="Lit, shaded and set in glyphs."
               aside="A small rasteriser lights each face and sets it in blocks and glyphs. Pick a shape, lean it with the pointer, click to spin."
             >
               <HomeMedia />
             </Section>
-
-            <HomeClosing github={GITHUB_URL}>
-              <div className="lilt-home-closing__install">
-                <HomeQuickstart task={AGENT_TASK} docsUrl={`${SITE_URL}/llms.txt`} />
-              </div>
-            </HomeClosing>
-
-            <footer className="lilt-landing__footer">
-              <div className="lilt-landing__footer-brand">
-                <LiltLogo className="lilt-header__logo" />
-                <p>React components with a little lilt.</p>
-              </div>
-              {footer.map((column) => (
-                <nav
-                  key={column.heading}
-                  className="lilt-landing__footer-column"
-                  aria-label={column.heading}
-                >
-                  <h3>{column.heading}</h3>
-                  <ul>
-                    {column.links.map((link) => (
-                      <li key={link.href}>
-                        <Link href={link.href}>{link.label}</Link>
-                      </li>
-                    ))}
-                  </ul>
-                </nav>
-              ))}
-              <div className="lilt-landing__footer-base">
-                <span>Charts from npm. Components and scenes as source you own.</span>
-                <span className="lilt-landing__footer-links">
-                  <a href={GITHUB_URL}>GitHub</a>
-                  <a href="https://www.npmjs.com/package/@lilt-ui/charts">npm</a>
-                </span>
-              </div>
-            </footer>
           </div>
+
+          <HomeFooter github={GITHUB_URL} columns={footer}>
+            <HomeQuickstart task={AGENT_TASK} docsUrl={`${SITE_URL}/llms.txt`} />
+          </HomeFooter>
         </div>
       </SiteShell>
     </ChartSettingsProvider>
