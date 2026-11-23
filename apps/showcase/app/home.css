@@ -271,10 +271,10 @@
 }
 .lilt-bento[data-layout='charts'] {
   grid-template-areas:
-    'sankey sankey skyline skyline'
-    'sankey sankey skyline skyline'
-    'radar stat candle candle'
-    'radar stat candle candle'
+    'bar bar funnel funnel'
+    'bar bar funnel funnel'
+    'candle candle candle candle'
+    'candle candle candle candle'
     'built built built built';
   grid-template-rows: repeat(4, 250px) auto;
 }
@@ -702,16 +702,14 @@
   }
   .lilt-bento[data-layout='charts'] {
     grid-template-areas:
-      'sankey sankey'
-      'sankey sankey'
-      'skyline skyline'
-      'skyline skyline'
-      'radar stat'
-      'radar stat'
+      'bar bar'
+      'bar bar'
+      'funnel funnel'
+      'funnel funnel'
       'candle candle'
       'candle candle'
       'built built';
-    grid-template-rows: repeat(8, 250px) auto;
+    grid-template-rows: repeat(6, 250px) auto;
   }
   .lilt-built ol {
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -788,16 +786,11 @@
     height: 320px;
     flex: none;
   }
-  .lilt-home-tile:is([data-area='sankey'], [data-area='skyline']) {
-    height: 400px;
+  .lilt-home-tile:is([data-area='bar'], [data-area='funnel']) {
+    height: 420px;
   }
-  .lilt-home-tile:is(
-    [data-area='radar'],
-    [data-area='stat'],
-    [data-area='candle'],
-    [data-area='card']
-  ) {
-    height: 480px;
+  .lilt-home-tile:is([data-area='candle'], [data-area='card']) {
+    height: 460px;
   }
   .lilt-home-tile:is(
     [data-area='globe'],

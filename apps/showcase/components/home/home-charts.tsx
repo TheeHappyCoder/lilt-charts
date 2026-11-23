@@ -9,23 +9,28 @@ import { featureCards } from '@/lib/home-showcase';
 import { HomeTile } from './home-tile';
 
 /**
- * A family's hero card rendered on the ghost surface so it sits directly on the tile without
+ * A family's card rendered on the ghost surface so it sits directly on the tile without
  * nesting a second card frame inside the bento cell.
  */
 function Chart({
   href,
+  variantId,
   width,
   height,
   fit = 'contain',
 }: {
   href: string;
+  variantId?: string;
   width: number;
   height: number;
   fit?: 'peek' | 'contain';
 }) {
   const doc = chartDocs[href];
   if (!doc) return null;
-  const example = featureCards(doc.hero, { height, surface: 'ghost' })[0]!;
+  const source = variantId
+    ? (doc.examples.find((item) => item.id === variantId) ?? doc.hero)
+    : doc.hero;
+  const example = featureCards(source, { height, surface: 'ghost' })[0]!;
   return <FittedPreview example={example} width={width} fit={fit} />;
 }
 
@@ -37,59 +42,39 @@ const builtIn = [
   { href: '/features/performance', name: 'Performance', line: 'Four points a pixel' },
 ] as const;
 
-/** Chart cards on plinths, then what every one of them can do, as a list of rows. */
+/** Three hero chart cards on plinths (two on top, full-width finance below), then built-in capabilities. */
 export function HomeCharts() {
   return (
     <div className="lilt-bento" data-layout="charts">
       <HomeTile
-        area="sankey"
+        area="bar"
         floor
-        href="/charts/sankey"
-        name="Sankey"
-        hint="Where visitors go next"
+        href="/charts/bar"
+        name="Segmented bar"
+        hint="Thirty days of stacked sales, cell by cell"
         tone="room"
       >
-        <Chart href="/charts/sankey" width={560} height={320} />
+        <Chart href="/charts/bar" variantId="segmented" width={580} height={310} />
       </HomeTile>
       <HomeTile
-        area="skyline"
+        area="funnel"
         floor
-        href="/charts/skyline"
-        name="Skyline"
-        hint="A year, stood up in depth"
+        href="/charts/funnel"
+        name="Funnel"
+        hint="Follow conversion from first step to last"
         tone="room"
       >
-        <Chart href="/charts/skyline" width={600} height={320} />
-      </HomeTile>
-      <HomeTile
-        area="radar"
-        floor
-        href="/charts/radar"
-        name="Radar"
-        hint="Strengths at a glance"
-        tone="room"
-      >
-        <Chart href="/charts/radar" width={400} height={300} fit="contain" />
-      </HomeTile>
-      <HomeTile
-        area="stat"
-        floor
-        href="/charts/stat-cards"
-        name="Stat cards"
-        hint="A number and its story"
-        tone="room"
-      >
-        <Chart href="/charts/stat-cards" width={400} height={300} fit="contain" />
+        <Chart href="/charts/funnel" width={580} height={220} />
       </HomeTile>
       <HomeTile
         area="candle"
         floor
         href="/finance/candlestick"
         name="Candlestick"
-        hint="Every session's range"
+        hint="Every session's range and volume"
         tone="room"
       >
-        <Chart href="/finance/candlestick" width={600} height={320} fit="contain" />
+        <Chart href="/finance/candlestick" width={1140} height={330} />
       </HomeTile>
       <div className="lilt-built" style={{ gridArea: 'built' }}>
         <Label as="h3" reveal={false}>
