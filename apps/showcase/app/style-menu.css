@@ -25,14 +25,14 @@
   transform-origin: calc(100% - 110px) 0;
 }
 .dark .lilt-style-menu {
-  --sm-plinth: #0e0e0d;
-  --sm-card: #1c1c1a;
-  --sm-well: #131312;
-  --sm-well-hover: #252522;
-  --sm-active: #282825;
-  --sm-line: rgb(244 244 242 / 0.07);
-  --sm-line-strong: rgb(244 244 242 / 0.15);
-  border-color: rgb(244 244 242 / 0.12);
+  --sm-plinth: #1c1c1a;
+  --sm-card: #111110;
+  --sm-well: #1b1b19;
+  --sm-well-hover: #242421;
+  --sm-active: #111110;
+  --sm-line: rgb(244 244 242 / 0.08);
+  --sm-line-strong: rgb(244 244 242 / 0.16);
+  border-color: rgb(244 244 242 / 0.11);
   box-shadow:
     0 24px 64px rgb(0 0 0 / 0.72),
     0 1px 2px rgb(0 0 0 / 0.45);

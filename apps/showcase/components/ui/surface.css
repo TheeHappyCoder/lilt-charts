@@ -541,16 +541,16 @@
   color: var(--lilt-cmd-ink);
 }
 .dark .lilt-ui-command-dialog {
-  --lilt-cmd-plinth: #0e0e0d;
-  --lilt-cmd-card: #1c1c1a;
-  --lilt-cmd-well: #131312;
+  --lilt-cmd-plinth: #1c1c1a;
+  --lilt-cmd-card: #111110;
+  --lilt-cmd-well: #1a1a18;
   --lilt-cmd-ink: #f4f4f2;
   --lilt-cmd-muted: #a8a8a2;
   --lilt-cmd-faint: #787872;
-  --lilt-cmd-line: rgb(244 244 242 / 0.07);
-  --lilt-cmd-highlight: #272724;
+  --lilt-cmd-line: rgb(244 244 242 / 0.08);
+  --lilt-cmd-highlight: #1d1d1b;
   color-scheme: dark;
-  border-color: rgb(244 244 242 / 0.12);
+  border-color: rgb(244 244 242 / 0.11);
   box-shadow:
     0 24px 64px rgb(0 0 0 / 0.72),
     0 1px 2px rgb(0 0 0 / 0.45);
@@ -660,10 +660,13 @@
 }
 .dark .lilt-ui-command-item[data-highlighted] .lilt-ui-command-icon,
 .dark .lilt-ui-command-item[data-highlighted] .lilt-ui-command-glyph {
-  background: #30302c;
+  background: #262623;
 }
 .dark .lilt-ui-command-input-trailing .lilt-ui-command-kbd {
   background: var(--lilt-cmd-well);
+}
+.dark .lilt-ui-command-footer .lilt-ui-command-kbd {
+  background: var(--lilt-cmd-card);
 }
 
 .lilt-ui-command-item-label {
