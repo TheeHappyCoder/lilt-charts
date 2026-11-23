@@ -118,9 +118,6 @@ export type RouteIcon =
   | 'streamtext'
   | 'tooltrace'
   | 'numberroll'
-  | 'swiperow'
-  | 'themeflip'
-  | 'dynamicisland'
   | 'starfield'
   | 'matrix'
   | 'dotgrid'
@@ -1581,39 +1578,6 @@ export const appRoutes = [
     href: '/components/command-copy',
     pathname: '/components/command-copy',
     icon: 'commandcopy',
-    navigation: true,
-    badge: 'New',
-  },
-  {
-    id: 'component-swipe-row',
-    group: 'Components',
-    label: 'Swipe row',
-    title: 'Swipe row',
-    href: '/components/swipe-row',
-    pathname: '/components/swipe-row',
-    icon: 'swiperow',
-    navigation: true,
-    badge: 'New',
-  },
-  {
-    id: 'component-theme-flip',
-    group: 'Components',
-    label: 'Theme flip',
-    title: 'Theme flip',
-    href: '/components/theme-flip',
-    pathname: '/components/theme-flip',
-    icon: 'themeflip',
-    navigation: true,
-    badge: 'New',
-  },
-  {
-    id: 'component-dynamic-island',
-    group: 'Components',
-    label: 'Dynamic island',
-    title: 'Dynamic island',
-    href: '/components/dynamic-island',
-    pathname: '/components/dynamic-island',
-    icon: 'dynamicisland',
     navigation: true,
     badge: 'New',
   },

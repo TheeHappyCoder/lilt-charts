@@ -187,9 +187,6 @@ const uiPages: readonly PageSpec[] = [
   page('components', 'stream-text', 'StreamText', 'stream-text.tsx'),
   page('components', 'tool-trace', 'ToolTrace', 'tool-trace.tsx'),
   page('components', 'number-roll', 'NumberRoll', 'number-roll.tsx'),
-  page('components', 'swipe-row', 'SwipeRow', 'swipe-row.tsx'),
-  page('components', 'theme-flip', 'ThemeFlip', 'theme-flip.tsx'),
-  page('components', 'dynamic-island', 'DynamicIsland', 'dynamic-island.tsx'),
 ];
 
 /**

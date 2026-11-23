@@ -3,11 +3,8 @@ import { act } from 'react';
 import { createRoot, type Root } from 'react-dom/client';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { CommandCopy } from './command-copy';
-import { DynamicIsland } from './dynamic-island';
 import { NumberRoll } from './number-roll';
 import { StreamText } from './stream-text';
-import { SwipeRow } from './swipe-row';
-import { ThemeFlip } from './theme-flip';
 import { formatDuration, ToolTrace } from './tool-trace';
 import { ConnectButton } from './connect-button';
 import { HoldToConfirm } from './hold-to-confirm';
@@ -148,24 +145,6 @@ describe('NumberRoll', () => {
   });
 });
 
-describe('DynamicIsland', () => {
-  it('shows the content for its view', () => {
-    vi.stubGlobal(
-      'ResizeObserver',
-      class {
-        observe() {}
-        disconnect() {}
-      },
-    );
-    render(
-      <DynamicIsland view="timer">
-        <span>4:59</span>
-      </DynamicIsland>,
-    );
-    expect(host.textContent).toContain('4:59');
-  });
-});
-
 describe('StreamText', () => {
   it('appends what arrives without remounting the words already there', () => {
     render(<StreamText text="Hello" streaming />);
@@ -203,33 +182,5 @@ describe('ToolTrace', () => {
     expect(formatDuration(340)).toBe('340ms');
     expect(formatDuration(1240)).toBe('1.2s');
     expect(formatDuration(12_400)).toBe('12s');
-  });
-});
-
-describe('SwipeRow', () => {
-  it('offers each action as a button on hover, for mice and keyboards', () => {
-    const onAction = vi.fn();
-    render(
-      <SwipeRow end={{ label: 'Archive', tone: '#8b6cff', onAction, dismiss: false }}>
-        <span>Row</span>
-      </SwipeRow>,
-    );
-    const front = host.querySelector<HTMLElement>('[tabindex="0"]')!;
-    act(() => front.focus());
-    const archive = host.querySelector<HTMLButtonElement>('button[aria-label="Archive"]')!;
-    expect(archive).not.toBeNull();
-    act(() => archive.click());
-    expect(onAction).toHaveBeenCalledOnce();
-  });
-});
-
-describe('ThemeFlip', () => {
-  it('names the theme it switches to and switches without view transitions', () => {
-    const onThemeChange = vi.fn();
-    render(<ThemeFlip theme="dark" onThemeChange={onThemeChange} />);
-    const button = host.querySelector('button')!;
-    expect(button.getAttribute('aria-label')).toBe('Switch to light theme');
-    act(() => button.click());
-    expect(onThemeChange).toHaveBeenCalledWith('light');
   });
 });

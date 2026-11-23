@@ -98,9 +98,6 @@ import Delete02Icon from '@hugeicons/core-free-icons/Delete02Icon';
 import CommandLineIcon from '@hugeicons/core-free-icons/CommandLineIcon';
 import AiChat02Icon from '@hugeicons/core-free-icons/AiChat02Icon';
 import WorkflowSquare03Icon from '@hugeicons/core-free-icons/WorkflowSquare03Icon';
-import SwipeLeft01Icon from '@hugeicons/core-free-icons/SwipeLeft01Icon';
-import Sun03Icon from '@hugeicons/core-free-icons/Sun03Icon';
-import SmartPhone01Icon from '@hugeicons/core-free-icons/SmartPhone01Icon';
 import { asciiScene, asciiShelves } from '@/lib/ascii-scenes';
 import { componentDoc, componentShelves } from '@/lib/component-docs';
 import { appRoutes, type AppRoute, type RouteGroup, type RouteIcon } from '@/lib/routes';
@@ -221,9 +218,6 @@ export const icons: Record<RouteIcon, IconSvgElement> = {
   streamtext: AiChat02Icon,
   tooltrace: WorkflowSquare03Icon,
   numberroll: HashtagIcon,
-  swiperow: SwipeLeft01Icon,
-  themeflip: Sun03Icon,
-  dynamicisland: SmartPhone01Icon,
   scrollmeter: ScrollVerticalIcon,
   dissolve: ImageUpscaleIcon,
   particleword: SparkleIcon,
