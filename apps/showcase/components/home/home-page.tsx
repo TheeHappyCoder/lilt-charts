@@ -86,18 +86,6 @@ export async function HomePage() {
 
           <div className="lilt-landing">
             <Section
-              label="Chart cards"
-              count={families}
-              id="charts-title"
-              claim="Charts that arrive finished."
-              dim="One import, nothing left to build."
-              aside="Headline, hover readout, legend, loading and motion, from one import. Live cards, not screenshots: hover any of them."
-              more={{ href: '/charts', label: 'Browse all chart families', count: families }}
-            >
-              <HomeCharts />
-            </Section>
-
-            <Section
               label="Living visuals"
               count={visualCount}
               id="visuals-title"
@@ -107,6 +95,18 @@ export async function HomePage() {
               more={{ href: '/visuals', label: 'Browse all visuals', count: visualCount }}
             >
               <HomeVisuals />
+            </Section>
+
+            <Section
+              label="Chart cards"
+              count={families}
+              id="charts-title"
+              claim="Charts that arrive finished."
+              dim="One import, nothing left to build."
+              aside="Headline, hover readout, legend, loading and motion, from one import. Live cards, not screenshots: hover any of them."
+              more={{ href: '/charts', label: 'Browse all chart families', count: families }}
+            >
+              <HomeCharts />
             </Section>
 
             <Section
