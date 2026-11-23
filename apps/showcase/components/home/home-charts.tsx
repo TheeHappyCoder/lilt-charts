@@ -9,14 +9,14 @@ import { featureCards } from '@/lib/home-showcase';
 import { HomeTile } from './home-tile';
 
 /**
- * A family's hero card, as the gallery shows it, live. Wide rooms let it rise from the floor;
- * tall or short ones hold the whole card, centred above the caption, so none ends mid-room.
+ * A family's hero card rendered on the ghost surface so it sits directly on the tile without
+ * nesting a second card frame inside the bento cell.
  */
 function Chart({
   href,
   width,
   height,
-  fit = 'peek',
+  fit = 'contain',
 }: {
   href: string;
   width: number;
@@ -25,7 +25,7 @@ function Chart({
 }) {
   const doc = chartDocs[href];
   if (!doc) return null;
-  const example = featureCards(doc.hero, { height })[0]!;
+  const example = featureCards(doc.hero, { height, surface: 'ghost' })[0]!;
   return <FittedPreview example={example} width={width} fit={fit} />;
 }
 
@@ -43,21 +43,23 @@ export function HomeCharts() {
     <div className="lilt-bento" data-layout="charts">
       <HomeTile
         area="sankey"
+        floor
         href="/charts/sankey"
         name="Sankey"
         hint="Where visitors go next"
         tone="room"
       >
-        <Chart href="/charts/sankey" width={560} height={340} />
+        <Chart href="/charts/sankey" width={560} height={320} />
       </HomeTile>
       <HomeTile
         area="skyline"
+        floor
         href="/charts/skyline"
         name="Skyline"
         hint="A year, stood up in depth"
         tone="room"
       >
-        <Chart href="/charts/skyline" width={600} height={340} />
+        <Chart href="/charts/skyline" width={600} height={320} />
       </HomeTile>
       <HomeTile
         area="radar"

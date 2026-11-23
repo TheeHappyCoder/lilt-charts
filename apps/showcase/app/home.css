@@ -341,16 +341,13 @@
 .lilt-home-tile[data-tone='room'][data-floor] .lilt-home-tile__stage {
   padding: 8px 8px 0;
 }
-/* A whole card held in the room still rises with it on hover. */
+/* Ghost cards on home tiles sit flush inside the room with no floating card drop-shadow. */
 .lilt-home-tile .lilt-fitted[data-fit='contain'] {
   transform: translateY(var(--lilt-tile-lift, 0px));
   transition: transform 320ms var(--ease-out);
 }
-.lilt-home-tile .lilt-fitted[data-fit='contain'] .lilt-fitted__card {
-  filter: drop-shadow(0 4px 12px rgb(26 26 24 / 0.06));
-}
-.dark .lilt-home-tile .lilt-fitted[data-fit='contain'] .lilt-fitted__card {
-  filter: drop-shadow(0 6px 16px rgb(0 0 0 / 0.25));
+.lilt-home-tile .lilt-fitted__card {
+  filter: none;
 }
 .lilt-home-tile__stage[data-center] {
   display: grid;
