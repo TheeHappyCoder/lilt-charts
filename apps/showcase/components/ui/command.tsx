@@ -52,14 +52,19 @@ export function Command<Value>({
   );
 }
 
-export function CommandInput({ className, ...props }: AutocompletePrimitive.Input.Props) {
+export function CommandInput({
+  className,
+  trailing,
+  ...props
+}: AutocompletePrimitive.Input.Props & { trailing?: ReactNode }) {
   return (
     <div className="lilt-ui-command-input-row">
-      <Icon icon={Search01Icon} size={18} aria-hidden="true" />
+      <Icon icon={Search01Icon} size={16} strokeWidth={1.8} aria-hidden="true" />
       <AutocompletePrimitive.Input
         className={uiClassName('lilt-ui-command-input', className)}
         {...props}
       />
+      {trailing ? <div className="lilt-ui-command-input-trailing">{trailing}</div> : null}
     </div>
   );
 }

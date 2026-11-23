@@ -71,8 +71,8 @@ export function DocsSearchProvider({
           <DocsCommand
             inputRef={inputRef}
             closeAction={
-              <CommandDialogClose className="lilt-ui-command-close">
-                Esc to close
+              <CommandDialogClose className="lilt-ui-command-close" aria-label="Close search">
+                <kbd className="lilt-ui-command-kbd">Esc</kbd>
               </CommandDialogClose>
             }
             onSelect={(route) => {
@@ -108,10 +108,10 @@ export function HeaderSearch({
         aria-label="Search documentation"
         aria-keyshortcuts="Control+K Meta+K"
       >
-        <Icon icon={Search01Icon} aria-hidden="true" size={wide ? 15 : 17} strokeWidth={1.7} />
+        <Icon icon={Search01Icon} aria-hidden="true" size={wide ? 14 : 16} strokeWidth={1.8} />
         {wide ? (
           <>
-            <span className="lilt-header__search-text">Search docs</span>
+            <span className="lilt-header__search-text">Search…</span>
             <kbd className="lilt-header__kbd">{scope.shortcut}</kbd>
           </>
         ) : null}

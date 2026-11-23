@@ -1,6 +1,7 @@
 'use client';
 
 import { HugeiconsIcon as Icon } from '@hugeicons/react';
+import ArrowDown01Icon from '@hugeicons/core-free-icons/ArrowDown01Icon';
 import Cancel01Icon from '@hugeicons/core-free-icons/Cancel01Icon';
 import CubeIcon from '@hugeicons/core-free-icons/CubeIcon';
 import SquareIcon from '@hugeicons/core-free-icons/SquareIcon';
@@ -17,7 +18,6 @@ import {
 } from '@/components/ui/select';
 import { TooltipHint } from '@/components/ui/tooltip';
 import type { ChartDocSettings } from '@/lib/card-docs/resolve-example';
-import { IconLive } from '@/components/craft/status-icon';
 
 const controlFor = (key: keyof ChartDocSettings) =>
   controls.find((control) => control.key === key)!;
@@ -39,13 +39,14 @@ const paletteNames: Record<string, string> = {
 const textOf = (label: unknown, value: string) =>
   typeof label === 'string' ? label : (paletteNames[value] ?? value);
 const PANEL_ID = 'lilt-style-menu';
+const THUMB_SPRING = { type: 'spring', stiffness: 520, damping: 38, mass: 0.7 } as const;
 
 function valueOf(control: Control<keyof ChartDocSettings>, settings: ChartDocSettings) {
   const current = settings[control.key];
   return control.format ? control.format(current) : ((current as string | undefined) ?? AUTO);
 }
 
-/** Actual palette colours, rather than a ring for an unordered setting. */
+/** Actual palette colours as three crisp vertical bars. */
 function PaletteMark({ palette }: { palette: string }) {
   return (
     <span
@@ -62,8 +63,8 @@ function PaletteMark({ palette }: { palette: string }) {
 }
 
 /**
- * The chart style's way in from the header: the palette as three dots, flat or depth as one
- * toggle, and the whole panel behind the label. A tick marks a style changed from the defaults.
+ * The chart style's way in from the header: flat or 3D as one quick toggle, separated by a
+ * hairline from the palette swatch, Style label, active override count, and chevron.
  */
 export function StyleMenuTrigger() {
   const { settings, setSetting, open, setOpen } = useChartSettings();
@@ -72,7 +73,7 @@ export function StyleMenuTrigger() {
   const depth = settings.depth === true;
   return (
     <div className="lilt-style-trigger" role="group" aria-label="Chart style">
-      <TooltipHint content={depth ? 'Depth · on' : 'Depth · off'} side="bottom">
+      <TooltipHint content={depth ? '3D depth · on' : '3D depth · off'} side="bottom">
         <button
           type="button"
           className="lilt-style-trigger__depth"
@@ -80,9 +81,10 @@ export function StyleMenuTrigger() {
           aria-pressed={depth}
           onClick={() => setSetting('depth', depth ? undefined : true)}
         >
-          <Icon icon={depth ? CubeIcon : SquareIcon} size={15} strokeWidth={1.7} aria-hidden />
+          <Icon icon={depth ? CubeIcon : SquareIcon} size={14} strokeWidth={1.8} aria-hidden />
         </button>
       </TooltipHint>
+      <span className="lilt-style-trigger__sep" aria-hidden="true" />
       <button
         type="button"
         className="lilt-style-trigger__open"
@@ -93,21 +95,33 @@ export function StyleMenuTrigger() {
       >
         <PaletteMark palette={palette} />
         <span className="lilt-style-trigger__label">Style</span>
-        {changed ? <IconLive size={11} className="lilt-style-trigger__changed" /> : null}
+        {changed ? (
+          <span className="lilt-style-trigger__count" aria-label={`${changed} custom settings`}>
+            {changed}
+          </span>
+        ) : null}
+        <Icon
+          icon={ArrowDown01Icon}
+          size={12}
+          strokeWidth={1.9}
+          className="lilt-style-trigger__chev"
+          aria-hidden="true"
+        />
       </button>
     </div>
   );
 }
 
 /**
- * Everything that styles every chart, in one panel that slides in beside the page and leaves the
- * chart in view. Chart pages never repeat these controls.
+ * Everything that styles every chart, in one nested warm-stone / dusk inspector beside the page.
+ * Chart pages never repeat these controls.
  */
 export function StyleMenu() {
   const { settings, setSetting, reset, open, setOpen } = useChartSettings();
   const reduced = Boolean(useReducedMotion());
   const rootRef = useRef<HTMLElement>(null);
   const titleId = useId();
+  const depthThumbId = useId();
   const palette = (settings.palette as string | undefined) ?? AUTO;
   const changed = Object.values(settings).filter((value) => value !== undefined).length;
 
@@ -140,14 +154,17 @@ export function StyleMenu() {
   const row = (key: keyof ChartDocSettings) => {
     const control = controlFor(key);
     const value = valueOf(control, settings);
+    const modified = value !== AUTO;
     return (
       <div key={key} className="lilt-style-menu__row">
         <Link
           href={control.href}
           className="lilt-style-menu__row-label"
+          data-changed={modified || undefined}
           onClick={() => setOpen(false)}
         >
-          {control.label}
+          <span>{control.label}</span>
+          {modified ? <span className="lilt-style-menu__dot" aria-hidden="true" /> : null}
         </Link>
         <Select
           items={control.options.map((option) => ({
@@ -166,7 +183,7 @@ export function StyleMenu() {
           <SelectTrigger
             className="lilt-style-menu__select"
             aria-label={control.label}
-            data-changed={value !== AUTO || undefined}
+            data-changed={modified || undefined}
           >
             <SelectValue />
           </SelectTrigger>
@@ -190,19 +207,19 @@ export function StyleMenu() {
           id={PANEL_ID}
           className="lilt-style-menu"
           aria-labelledby={titleId}
-          initial={reduced ? false : { opacity: 0, y: -6, scale: 0.98, filter: 'blur(4px)' }}
-          animate={{ opacity: 1, y: 0, scale: 1, filter: 'blur(0px)' }}
+          initial={reduced ? false : { opacity: 0, y: -6, scale: 0.98 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
           exit={
             reduced
               ? { opacity: 0, transition: { duration: 0 } }
-              : { opacity: 0, y: -4, scale: 0.985, filter: 'blur(2px)' }
+              : { opacity: 0, y: -4, scale: 0.985 }
           }
-          transition={{ duration: reduced ? 0 : 0.26, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: reduced ? 0 : 0.2, ease: [0.22, 1, 0.36, 1] }}
         >
           <header className="lilt-style-menu__head">
             <div>
               <h2 id={titleId}>Chart style</h2>
-              <p>Applies to every chart on the site.</p>
+              <p>Applies across every chart</p>
             </div>
             <button
               type="button"
@@ -210,64 +227,86 @@ export function StyleMenu() {
               aria-label="Close chart style"
               onClick={() => setOpen(false)}
             >
-              <Icon icon={Cancel01Icon} size={15} aria-hidden="true" />
+              <Icon icon={Cancel01Icon} size={14} strokeWidth={1.8} aria-hidden="true" />
             </button>
           </header>
+
           <div className="lilt-style-menu__scroll">
-            <section className="lilt-style-menu__section" aria-label="Palette">
-              <h3>Palette</h3>
-              <div className="lilt-style-menu__palettes">
-                {paletteControl.options.map((option) => (
-                  <button
-                    key={option.value}
-                    type="button"
-                    className="lilt-style-menu__palette"
-                    aria-pressed={palette === option.value}
-                    onClick={() =>
-                      setSetting(
-                        'palette',
-                        option.value === AUTO ? undefined : (option.value as never),
-                      )
-                    }
-                  >
-                    <PaletteMark palette={option.value} />
-                    <span>{paletteNames[option.value]}</span>
-                  </button>
-                ))}
-              </div>
-            </section>
-            <section className="lilt-style-menu__section" aria-label="Depth">
-              <h3>Depth</h3>
-              <div className="lilt-style-menu__seg" role="group" aria-label="Depth">
-                {(
-                  [
-                    [false, 'Flat', SquareIcon],
-                    [true, '3D', CubeIcon],
-                  ] as const
-                ).map(([value, label, icon]) => (
-                  <button
-                    key={label}
-                    type="button"
-                    aria-pressed={(settings.depth === true) === value}
-                    onClick={() => setSetting('depth', value ? true : undefined)}
-                  >
-                    <Icon icon={icon} size={14} strokeWidth={1.7} aria-hidden="true" />
-                    {label}
-                  </button>
-                ))}
-              </div>
-            </section>
+            <div className="lilt-style-menu__card">
+              <section className="lilt-style-menu__block" aria-label="Palette">
+                <div className="lilt-style-menu__block-head">
+                  <h3>Palette</h3>
+                  <span className="lilt-style-menu__block-val">{paletteNames[palette]}</span>
+                </div>
+                <div className="lilt-style-menu__palettes">
+                  {paletteControl.options.map((option) => (
+                    <button
+                      key={option.value}
+                      type="button"
+                      className="lilt-style-menu__palette"
+                      aria-pressed={palette === option.value}
+                      onClick={() =>
+                        setSetting(
+                          'palette',
+                          option.value === AUTO ? undefined : (option.value as never),
+                        )
+                      }
+                    >
+                      <PaletteMark palette={option.value} />
+                      <span>{paletteNames[option.value]}</span>
+                    </button>
+                  ))}
+                </div>
+              </section>
+
+              <section className="lilt-style-menu__block lilt-style-menu__depth" aria-label="Depth">
+                <h3>Depth</h3>
+                <div className="lilt-style-menu__seg" role="group" aria-label="Depth">
+                  {(
+                    [
+                      [false, 'Flat', SquareIcon],
+                      [true, '3D', CubeIcon],
+                    ] as const
+                  ).map(([value, label, icon]) => {
+                    const active = (settings.depth === true) === value;
+                    return (
+                      <button
+                        key={label}
+                        type="button"
+                        aria-pressed={active}
+                        onClick={() => setSetting('depth', value ? true : undefined)}
+                      >
+                        {active ? (
+                          <motion.span
+                            layoutId={depthThumbId}
+                            className="lilt-style-menu__seg-thumb"
+                            transition={reduced ? { duration: 0 } : THUMB_SPRING}
+                            aria-hidden="true"
+                          />
+                        ) : null}
+                        <span className="lilt-style-menu__seg-label">
+                          <Icon icon={icon} size={13} strokeWidth={1.8} aria-hidden="true" />
+                          {label}
+                        </span>
+                      </button>
+                    );
+                  })}
+                </div>
+              </section>
+            </div>
+
             {groups.map((group) => (
               <section
                 key={group.label}
-                className="lilt-style-menu__section"
+                className="lilt-style-menu__card lilt-style-menu__group"
                 aria-label={group.label}
               >
                 <h3>{group.label}</h3>
-                {group.keys.map(row)}
+                <div className="lilt-style-menu__rows">{group.keys.map(row)}</div>
               </section>
             ))}
           </div>
+
           <footer className="lilt-style-menu__foot">
             <span>
               {changed

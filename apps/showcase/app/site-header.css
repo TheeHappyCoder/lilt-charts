@@ -112,31 +112,41 @@
   margin-left: -8px;
 }
 
-/* Search: a filled field with its shortcut. */
+/* Search: a filled warm-stone / dusk field with a crisp nested keycap. */
 .lilt-header__search {
   display: inline-flex;
   height: 36px;
-  min-width: 220px;
+  min-width: 204px;
   align-items: center;
   gap: 8px;
-  padding: 0 6px 0 12px;
-  border: 0;
+  padding: 0 5px 0 11px;
+  border: 1px solid var(--line);
   border-radius: var(--radius-button);
   background: var(--panel);
   color: var(--muted-foreground);
   font-size: var(--text-sm);
   cursor: pointer;
   transition:
-    background-color 0.2s,
-    color 0.2s,
-    scale 0.2s var(--ease-out);
+    background-color 160ms ease,
+    border-color 160ms ease,
+    color 160ms ease,
+    scale 180ms var(--ease-out);
+}
+.lilt-header__search > svg {
+  flex: none;
+  color: var(--faint);
+  transition: color 160ms ease;
 }
 .lilt-header__search:hover {
+  border-color: var(--line-strong);
   background: var(--panel-hover);
   color: var(--foreground);
 }
+.lilt-header__search:hover > svg {
+  color: var(--foreground);
+}
 .lilt-header__search:active {
-  scale: 0.98;
+  scale: 0.985;
 }
 .lilt-header__search-text {
   flex: 1;
@@ -144,15 +154,22 @@
 }
 .lilt-header__kbd {
   display: inline-flex;
-  height: 22px;
+  height: 24px;
   align-items: center;
-  padding: 0 6px;
-  border-radius: var(--radius-chip);
-  background: var(--background);
+  padding: 0 7px;
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  background: var(--surface);
+  box-shadow: 0 1px 0 var(--line);
   color: var(--muted-foreground);
-  font-family: var(--font-ui), sans-serif;
-  font-size: var(--text-xs);
+  font-family: var(--font-mono), monospace;
+  font-size: 11px;
   font-weight: var(--weight-strong);
+  line-height: 1;
+}
+.dark .lilt-header__kbd {
+  background: #222220;
+  border-color: rgb(244 244 242 / 0.1);
 }
 
 /* Theme: three icons on one filled track. */
@@ -223,15 +240,23 @@
   padding: 0;
 }
 
-/* The chart style: depth as one toggle, then the palette and the label that opens the panel. */
+/* The chart style: depth quick toggle + hairline + palette swatch, Style label, count & chevron. */
 .lilt-style-trigger {
   display: inline-flex;
   flex: none;
   align-items: center;
   height: 36px;
-  padding: 3px;
+  gap: 2px;
+  padding: 2px;
+  border: 1px solid var(--line);
   border-radius: var(--radius-button);
   background: var(--panel);
+}
+.lilt-style-trigger__sep {
+  width: 1px;
+  height: 14px;
+  flex: none;
+  background: var(--line);
 }
 .lilt-style-trigger__depth,
 .lilt-style-trigger__open {
@@ -240,18 +265,21 @@
   height: 30px;
   flex: none;
   align-items: center;
-  gap: 8px;
-  padding: 0 10px;
-  border: 0;
-  border-radius: var(--radius-control);
+  gap: 7px;
+  padding: 0 9px;
+  border: 1px solid transparent;
+  border-radius: 9px;
   background: transparent;
   color: var(--muted-foreground);
   font-size: var(--text-sm);
+  font-weight: var(--weight-strong);
   white-space: nowrap;
   cursor: pointer;
   transition:
-    background-color 0.2s,
-    color 0.2s;
+    background-color 160ms ease,
+    border-color 160ms ease,
+    color 160ms ease,
+    box-shadow 160ms ease;
 }
 .lilt-style-trigger__depth {
   width: 30px;
@@ -260,17 +288,49 @@
 }
 .lilt-style-trigger__depth[aria-pressed='true'],
 .lilt-style-trigger__open[aria-expanded='true'] {
-  background: var(--background);
-  box-shadow: 0 1px 2px rgb(0 0 0 / 0.06);
+  border-color: var(--line);
+  background: var(--surface);
+  box-shadow: 0 1px 2px rgb(26 26 24 / 0.06);
   color: var(--foreground);
+}
+.dark .lilt-style-trigger__depth[aria-pressed='true'],
+.dark .lilt-style-trigger__open[aria-expanded='true'] {
+  border-color: rgb(244 244 242 / 0.1);
+  background: #232320;
+  box-shadow: 0 1px 2px rgb(0 0 0 / 0.35);
 }
 .lilt-style-trigger__depth:hover,
 .lilt-style-trigger__open:hover {
   color: var(--foreground);
 }
-/* A changed style says so with a tick beside the label, never a dot. */
-.lilt-style-trigger__changed {
-  margin-left: -3px;
+.lilt-style-trigger__count {
+  display: inline-flex;
+  min-width: 17px;
+  height: 17px;
+  align-items: center;
+  justify-content: center;
+  padding: 0 5px;
+  border-radius: 999px;
+  background: var(--foreground);
+  color: var(--background);
+  font-family: var(--font-mono), monospace;
+  font-size: 10.5px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+.lilt-style-trigger__chev {
+  color: var(--faint);
+  transition:
+    transform 180ms var(--ease-out),
+    color 160ms ease;
+}
+.lilt-style-trigger__open:hover .lilt-style-trigger__chev,
+.lilt-style-trigger__open[aria-expanded='true'] .lilt-style-trigger__chev {
+  color: var(--foreground);
+}
+.lilt-style-trigger__open[aria-expanded='true'] .lilt-style-trigger__chev {
+  transform: rotate(180deg);
 }
 
 @media (max-width: 1279px) {
@@ -312,15 +372,18 @@
   }
   .lilt-header .lilt-header__cta,
   .lilt-style-trigger__label,
-  .lilt-style-trigger__changed {
+  .lilt-style-trigger__count,
+  .lilt-style-trigger__chev {
     display: none;
   }
   .lilt-header__search {
+    border-color: transparent;
     background: transparent;
   }
 }
 @media (max-width: 399px) {
-  .lilt-style-trigger__depth {
+  .lilt-style-trigger__depth,
+  .lilt-style-trigger__sep {
     display: none;
   }
   .lilt-theme-seg__button {
