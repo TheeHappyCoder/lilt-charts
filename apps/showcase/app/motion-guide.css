@@ -2,30 +2,31 @@
 .lilt-timings {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--gap);
   margin: 8px 0 0;
-  border: 1px solid var(--border);
-  border-radius: 16px;
-  background: var(--surface);
-  overflow: hidden;
 }
+/* Each timing is a stat on its own plinth: the number large, what it times beneath. */
 .lilt-timings__item {
-  display: grid;
-  gap: 2px;
-  padding: 14px 18px;
-}
-.lilt-timings__item + .lilt-timings__item {
-  border-left: 1px solid var(--border);
+  display: flex;
+  flex-direction: column-reverse;
+  justify-content: space-between;
+  gap: 20px;
+  min-height: 120px;
+  padding: 18px 20px;
+  border-radius: var(--radius-panel);
+  background: var(--panel);
 }
 .lilt-timings dt {
   color: var(--muted-foreground);
-  font-size: 12.5px;
+  font-size: var(--text-sm);
 }
 .lilt-timings dd {
   margin: 0;
   color: var(--foreground);
-  font-size: 22px;
-  font-weight: 600;
-  letter-spacing: -0.03em;
+  font-size: 32px;
+  font-weight: var(--weight-body);
+  line-height: 34px;
+  letter-spacing: -0.04em;
   font-variant-numeric: tabular-nums;
 }
 
@@ -41,12 +42,12 @@
   gap: 4px 14px;
 }
 .lilt-docs .lilt-behaviors__head h2 {
-  font-size: 20px;
+  font-size: 26px;
 }
 .lilt-behaviors__grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 16px;
+  gap: var(--gap);
 }
 /* An odd one out takes the full row rather than leaving a hole. */
 .lilt-behaviors__grid > .lilt-behavior:last-child:nth-child(odd) {
@@ -57,10 +58,9 @@
   display: grid;
   grid-template-rows: auto 1fr;
   min-width: 0;
-  border: 1px solid var(--border);
-  border-radius: 20px;
-  background: var(--surface);
-  overflow: hidden;
+  padding: 5px;
+  border-radius: var(--radius-panel);
+  background: var(--panel);
 }
 .lilt-behavior__stage {
   position: relative;
@@ -70,6 +70,7 @@
   min-width: 0;
   min-height: 300px;
   padding: 52px 24px 24px;
+  border-radius: var(--radius-media);
   background:
     radial-gradient(
         circle at 1px 1px,
@@ -77,14 +78,13 @@
         transparent 0
       )
       0 0 / 14px 14px,
-    color-mix(in srgb, var(--foreground) 3%, var(--background));
-  border-bottom: 1px solid var(--border);
+    var(--background);
 }
 .lilt-behavior__copy {
   display: grid;
   align-content: start;
   gap: 10px;
-  padding: 18px 22px 22px;
+  padding: 14px 14px 12px;
 }
 .lilt-behavior__copy :not(pre) > code {
   white-space: nowrap;
@@ -100,21 +100,24 @@
   gap: 6px;
   height: 30px;
   padding: 0 12px;
-  border: 1px solid color-mix(in srgb, var(--foreground) 10%, transparent);
-  border-radius: 999px;
-  background: color-mix(in srgb, var(--surface) 82%, transparent);
+  border: 0;
+  border-radius: var(--radius-control);
+  background: var(--panel);
   color: var(--foreground);
   font: inherit;
-  font-size: 12.5px;
-  font-weight: 500;
+  font-size: var(--text-sm);
+  font-weight: var(--weight-strong);
   cursor: pointer;
-  backdrop-filter: blur(10px);
   transition:
-    border-color 150ms ease,
-    opacity 150ms ease;
+    background-color 0.2s,
+    opacity 0.2s,
+    scale 0.2s var(--ease-out);
 }
 .lilt-behavior__action:hover:not(:disabled) {
-  border-color: color-mix(in srgb, var(--brand-primary) 45%, transparent);
+  background: var(--panel-hover);
+}
+.lilt-behavior__action:active:not(:disabled) {
+  scale: 0.96;
 }
 .lilt-behavior__action:disabled {
   opacity: 0.6;
@@ -138,23 +141,32 @@
   display: inline-flex;
   align-items: center;
   gap: 12px;
-  padding: 10px 16px 10px 12px;
-  border: 1px solid var(--border);
-  border-radius: 999px;
-  background: var(--surface);
+  height: 44px;
+  padding: 0 16px 0 12px;
+  border: 0;
+  border-radius: var(--radius-button);
+  background: var(--panel);
   color: var(--foreground);
-  font-size: 14px;
-  font-weight: 500;
+  font-size: var(--text-md);
+  font-weight: var(--weight-strong);
   cursor: pointer;
-  box-shadow: 0 6px 20px rgb(0 0 0 / 0.06);
+  transition:
+    background-color 0.2s,
+    scale 0.2s var(--ease-out);
+}
+.lilt-behavior__switch:hover {
+  background: var(--panel-hover);
+}
+.lilt-behavior__switch:active {
+  scale: 0.96;
 }
 .lilt-docs .lilt-behavior__toggle p {
-  font-size: 13px;
+  font-size: var(--text-sm);
   line-height: 20px;
 }
 .lilt-behavior__system {
   color: var(--muted-foreground);
-  font-size: 12px;
+  font-size: var(--text-xs);
 }
 
 /* Keyboard: the keys a chart answers to, lit as they are pressed on the demo. */
@@ -178,14 +190,14 @@
   min-width: 32px;
   height: 30px;
   padding: 0 9px;
-  border: 1px solid var(--border);
-  border-bottom-width: 2px;
-  border-radius: 8px;
-  background: var(--surface);
+  border: 0;
+  border-radius: var(--radius-chip);
+  background: var(--panel);
+  box-shadow: inset 0 -2px 0 var(--line);
   color: var(--muted-foreground);
   font-family: inherit;
-  font-size: 12.5px;
-  font-weight: 500;
+  font-size: var(--text-sm);
+  font-weight: var(--weight-strong);
   transition:
     background-color 120ms ease,
     border-color 120ms ease,
@@ -193,9 +205,9 @@
     transform 120ms ease;
 }
 .lilt-keycaps kbd[data-pressed] {
-  border-color: var(--brand-primary);
-  background: color-mix(in srgb, var(--brand-primary) 14%, var(--surface));
-  color: var(--brand-primary);
+  background: var(--foreground);
+  box-shadow: none;
+  color: var(--background);
   transform: translateY(1px);
 }
 
@@ -205,12 +217,6 @@
   }
   .lilt-timings {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-  .lilt-timings__item:nth-child(3) {
-    border-left: 0;
-  }
-  .lilt-timings__item:nth-child(n + 3) {
-    border-top: 1px solid var(--border);
   }
 }
 @container (max-width: 480px) {

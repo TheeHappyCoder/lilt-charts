@@ -10,6 +10,7 @@ import {
 import { useEffect, useState } from 'react';
 import { channelRanges, dailyKpis, visitorRanges } from '@/lib/card-docs/data';
 import { LabStudio, type LabOption } from './lab-studio';
+import { IconLive } from '@/components/craft/status-icon';
 
 const variants: readonly LabOption<AnimatedNumberVariant>[] = [
   { value: 'count', label: 'Count', note: 'The value counts to its new total. The default.' },
@@ -75,7 +76,7 @@ function Ticker({
       <div className="lilt-ticker__head">
         <span className="lilt-ticker__label">Revenue today</span>
         <span className="lilt-ticker__live">
-          <span aria-hidden="true" />
+          <IconLive />
           Live
         </span>
       </div>

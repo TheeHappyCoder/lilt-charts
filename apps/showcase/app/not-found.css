@@ -23,10 +23,10 @@
   left: 28px;
   display: block;
   width: 43px;
-  border-radius: 8px;
+  border-radius: var(--radius-control);
 }
 .lilt-lost__brand:focus-visible {
-  outline: 2px solid var(--brand-primary);
+  outline: 2px solid var(--ring);
   outline-offset: 4px;
 }
 .lilt-lost__brand svg {
@@ -45,17 +45,16 @@
 .lilt-lost h1 {
   max-width: 14ch;
   margin: 0;
-  font-size: clamp(40px, 6.2vw, 76px);
-  font-weight: 600;
-  letter-spacing: -0.05em;
-  line-height: 1;
-  text-wrap: balance;
+  font-size: clamp(40px, 6.2vw, 88px);
+  font-weight: var(--weight-body);
+  letter-spacing: var(--tracking-display);
+  line-height: 0.95;
 }
 .lilt-lost__actions {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 10px;
+  gap: 8px;
   margin-top: 10px;
 }
 .lilt-lost__meter {

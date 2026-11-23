@@ -9,13 +9,11 @@
   max-height: calc(100svh - var(--header-height) - 20px);
   flex-direction: column;
   overflow: hidden;
-  border: 1px solid var(--line-strong);
-  border-radius: 22px;
-  background: color-mix(in srgb, var(--surface) 92%, transparent);
+  border-radius: var(--radius-panel);
+  background: color-mix(in srgb, var(--background) 94%, transparent);
   box-shadow:
-    0 1px 0 rgb(255 255 255 / 0.04) inset,
-    0 24px 64px -16px rgb(0 0 0 / 0.24),
-    0 4px 16px -8px rgb(0 0 0 / 0.12);
+    inset 0 0 0 1px var(--line),
+    var(--shadow-pop);
   backdrop-filter: blur(20px) saturate(1.4);
   transform-origin: calc(100% - 120px) 0;
 }
@@ -29,14 +27,14 @@
 }
 .lilt-style-menu__head h2 {
   margin: 0;
-  font-size: 15px;
-  font-weight: 600;
+  font-size: var(--text-base);
+  font-weight: var(--weight-strong);
   letter-spacing: -0.01em;
 }
 .lilt-style-menu__head p {
   margin: 2px 0 0;
   color: var(--muted-foreground);
-  font-size: 12.5px;
+  font-size: var(--text-sm);
 }
 .lilt-style-menu__close {
   display: grid;
@@ -45,8 +43,8 @@
   place-items: center;
   padding: 0;
   border: 0;
-  border-radius: 999px;
-  background: var(--hover);
+  border-radius: var(--radius-control);
+  background: var(--panel);
   color: var(--muted-foreground);
   cursor: pointer;
 }
@@ -72,10 +70,8 @@
 .lilt-style-menu__section h3 {
   margin: 0 0 2px;
   color: var(--faint);
-  font-size: 11px;
-  font-weight: 500;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
+  font-size: var(--text-sm);
+  font-weight: var(--weight-strong);
 }
 
 .lilt-style-menu__palettes {
@@ -89,25 +85,24 @@
   gap: 8px;
   padding: 12px 4px 10px;
   border: 0;
-  border-radius: 14px;
-  background: var(--hover);
+  border-radius: var(--radius-button);
+  background: var(--panel);
   color: var(--muted-foreground);
-  font-size: 12px;
+  font-size: var(--text-xs);
   cursor: pointer;
   transition:
-    background-color 160ms ease,
-    color 160ms ease,
-    box-shadow 160ms ease;
+    background-color 0.2s,
+    color 0.2s,
+    box-shadow 0.2s;
 }
 .lilt-style-menu__palette:hover {
+  background: var(--panel-hover);
   color: var(--foreground);
 }
 .lilt-style-menu__palette[aria-pressed='true'] {
-  background: var(--surface);
+  background: var(--background);
   color: var(--foreground);
-  box-shadow:
-    0 0 0 1px var(--line-strong),
-    0 1px 3px rgb(0 0 0 / 0.08);
+  box-shadow: inset 0 0 0 1.5px var(--foreground);
 }
 
 /* Three bars in the palette's own colours. */
@@ -157,8 +152,8 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   padding: 3px;
-  border-radius: 999px;
-  background: var(--hover);
+  border-radius: var(--radius-button);
+  background: var(--panel);
 }
 .lilt-style-menu__seg button {
   display: inline-flex;
@@ -167,19 +162,17 @@
   justify-content: center;
   gap: 6px;
   border: 0;
-  border-radius: 999px;
+  border-radius: var(--radius-control);
   background: transparent;
   color: var(--muted-foreground);
-  font-size: 12.5px;
-  font-weight: 500;
+  font-size: var(--text-sm);
+  font-weight: var(--weight-strong);
   cursor: pointer;
 }
 .lilt-style-menu__seg button[aria-pressed='true'] {
-  background: var(--surface);
+  background: var(--background);
   color: var(--foreground);
-  box-shadow:
-    0 0 0 1px var(--line),
-    0 1px 2px rgb(0 0 0 / 0.08);
+  box-shadow: 0 1px 2px rgb(0 0 0 / 0.06);
 }
 
 .lilt-style-menu__row {
@@ -195,7 +188,7 @@
   text-overflow: ellipsis;
   white-space: nowrap;
   color: var(--muted-foreground);
-  font-size: 13px;
+  font-size: var(--text-sm);
   text-decoration: none;
 }
 .lilt-style-menu__row-label:hover {
@@ -207,11 +200,12 @@
   min-width: 0;
   flex: none;
   height: 32px;
-  border-radius: 999px;
-  font-size: 12.5px;
+  border-radius: var(--radius-control);
+  font-size: var(--text-sm);
 }
 .lilt-style-menu__select[data-changed] {
-  color: var(--brand-primary);
+  color: var(--foreground);
+  font-weight: var(--weight-strong);
 }
 
 .lilt-style-menu__foot {
@@ -223,21 +217,25 @@
   padding: 12px 14px 14px 20px;
   border-top: 1px solid var(--line);
   color: var(--muted-foreground);
-  font-size: 12.5px;
+  font-size: var(--text-sm);
 }
 .lilt-style-menu__reset {
   height: 32px;
   padding: 0 14px;
   border: 0;
-  border-radius: 999px;
+  border-radius: var(--radius-control);
   background: var(--foreground);
   color: var(--background);
-  font-size: 12.5px;
-  font-weight: 500;
+  font-size: var(--text-sm);
+  font-weight: var(--weight-strong);
   cursor: pointer;
+  transition: scale 0.2s var(--ease-out);
+}
+.lilt-style-menu__reset:active:not(:disabled) {
+  scale: 0.96;
 }
 .lilt-style-menu__reset:disabled {
-  background: var(--hover);
+  background: var(--panel);
   color: var(--faint);
   cursor: default;
 }

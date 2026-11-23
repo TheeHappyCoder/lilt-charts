@@ -67,6 +67,7 @@ import {
   beeswarmExample,
 } from '@/lib/card-docs/observation-variants';
 import { useChartSettings } from '@/components/docs/chart-settings';
+import { IconLive, IconProgress } from '@/components/craft/status-icon';
 
 const docs: readonly CardDocContent[] = [
   treemapDoc,
@@ -212,11 +213,11 @@ export function LoadingLab() {
               <figure className="lilt-studio__cell" key={`${example.kind}-${example.id}-${mount}`}>
                 <figcaption>
                   <span className="lilt-studio__chip">
-                    <span
-                      className="lilt-studio__status"
-                      data-loading={loading || undefined}
-                      aria-hidden="true"
-                    />
+                    {loading ? (
+                      <IconProgress size={12} className="lilt-studio__status" />
+                    ) : (
+                      <IconLive size={12} className="lilt-studio__status" />
+                    )}
                     {title}
                   </span>
                 </figcaption>

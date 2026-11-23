@@ -1,8 +1,8 @@
-import ArrowRight02Icon from '@hugeicons/core-free-icons/ArrowRight02Icon';
-import { HugeiconsIcon as Icon } from '@hugeicons/react';
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { BlurFade } from '@/components/motion/blur-fade';
+import type { CSSProperties } from 'react';
+import { TwoTone } from '@/components/craft/label';
+import { ArrowSwap, Roll } from '@/components/craft/roll';
 import { LostMeter } from '@/components/not-found/lost-meter';
 import { LiltLogo } from '@/components/shell/logo';
 
@@ -16,20 +16,16 @@ export default function NotFound() {
         <LiltLogo className="lilt-shell__brand-logo" />
       </Link>
       <div className="lilt-lost__copy">
-        <BlurFade>
-          <h1 id="lost-title">This page is off the chart.</h1>
-        </BlurFade>
-        <BlurFade delay={80}>
-          <div className="lilt-lost__actions">
-            <Link href="/charts" className="lilt-landing__button">
-              Browse charts
-              <Icon icon={ArrowRight02Icon} aria-hidden="true" size={16} strokeWidth={1.8} />
-            </Link>
-            <Link href="/" className="lilt-landing__button" data-variant="quiet">
-              Home
-            </Link>
-          </div>
-        </BlurFade>
+        <TwoTone as="h1" id="lost-title" claim="This page is" dim="off the chart." />
+        <div className="lilt-lost__actions" data-rv="fade" style={{ '--i': 3 } as CSSProperties}>
+          <Link href="/charts" className="lilt-btn" data-tone="ink" data-size="lg">
+            <Roll>Browse charts</Roll>
+            <ArrowSwap direction="right" />
+          </Link>
+          <Link href="/" className="lilt-btn" data-size="lg">
+            <Roll>Home</Roll>
+          </Link>
+        </div>
       </div>
       <LostMeter />
     </section>

@@ -15,17 +15,16 @@
   gap: 10px;
   height: 48px;
   padding: 0 8px 0 16px;
-  border: 1px solid var(--border);
-  border-radius: 999px;
-  background: color-mix(in srgb, var(--surface) 86%, transparent);
+  border-radius: var(--radius-panel);
+  background: color-mix(in srgb, var(--panel) 92%, transparent);
   backdrop-filter: blur(14px);
-  box-shadow: 0 6px 24px rgb(0 0 0 / 0.06);
+  transition: background-color 0.2s;
+}
+.lilt-api__filter:hover {
+  background: var(--panel-hover);
 }
 .lilt-api__filter:focus-within {
-  border-color: color-mix(in srgb, var(--brand-primary) 55%, var(--border));
-  box-shadow:
-    0 6px 24px rgb(0 0 0 / 0.06),
-    0 0 0 3px color-mix(in srgb, var(--brand-primary) 16%, transparent);
+  box-shadow: 0 0 0 2px var(--ring);
 }
 .lilt-api__filter-icon {
   flex: none;
@@ -40,7 +39,7 @@
   background: transparent;
   color: var(--foreground);
   font: inherit;
-  font-size: 14px;
+  font-size: var(--text-md);
 }
 .lilt-api__filter-input::placeholder {
   color: var(--muted-foreground);
@@ -55,8 +54,8 @@
   width: 28px;
   height: 28px;
   border: 0;
-  border-radius: 999px;
-  background: var(--hover);
+  border-radius: var(--radius-control);
+  background: var(--background);
   color: var(--muted-foreground);
   cursor: pointer;
 }
@@ -69,11 +68,15 @@
 }
 .lilt-api__filter-count {
   flex: none;
-  padding: 4px 10px;
-  border-radius: 999px;
-  background: var(--hover);
+  display: inline-grid;
+  height: 20px;
+  place-items: center;
+  padding: 0 6px;
+  border-radius: var(--radius-chip);
+  background: var(--background);
   color: var(--muted-foreground);
-  font-size: 12px;
+  font-size: var(--text-xs);
+  font-weight: var(--weight-strong);
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
 }
@@ -92,11 +95,11 @@
   gap: 4px 14px;
 }
 .lilt-docs .lilt-api__group-head h2 {
-  font-size: 18px;
-  letter-spacing: -0.02em;
+  font-size: 22px;
+  letter-spacing: -0.03em;
 }
 .lilt-docs .lilt-api__group-head p {
-  font-size: 13.5px;
+  font-size: var(--text-md);
 }
 .lilt-api__grid {
   display: grid;
@@ -116,21 +119,17 @@
   gap: 8px;
   min-width: 0;
   padding: 16px 16px 14px;
-  border: 1px solid var(--border);
-  border-radius: 16px;
-  background: var(--surface);
+  border-radius: var(--radius-panel);
+  background: var(--panel);
   color: var(--foreground);
   text-decoration: none;
-  box-shadow: 0 1px 2px rgb(0 0 0 / 0.03);
   transition:
-    border-color 160ms ease,
-    box-shadow 160ms ease,
-    transform 160ms ease;
+    background-color 0.2s,
+    box-shadow 0.3s var(--ease-out);
 }
 .lilt-docs a.lilt-api__card:hover {
-  border-color: color-mix(in srgb, var(--brand-primary) 40%, var(--border));
-  box-shadow: 0 8px 24px rgb(0 0 0 / 0.07);
-  transform: translateY(-1px);
+  background: var(--panel-hover);
+  box-shadow: var(--shadow-lift);
 }
 .lilt-docs a.lilt-api__card:focus-visible {
   outline: 2px solid var(--ring);
@@ -141,29 +140,23 @@
   align-items: center;
   justify-content: space-between;
   gap: 8px;
-  font-size: 14.5px;
-  font-weight: 600;
+  font-size: var(--text-base);
+  font-weight: var(--weight-strong);
   line-height: 20px;
   letter-spacing: -0.01em;
 }
 .lilt-api__card-arrow {
   flex: none;
-  color: var(--muted-foreground);
-  opacity: 0;
-  transform: translate(-3px, 3px);
-  transition:
-    opacity 160ms ease,
-    transform 160ms ease;
+  color: var(--faint);
+  transition: color 0.3s;
 }
 .lilt-api__card:hover .lilt-api__card-arrow,
 .lilt-api__card:focus-visible .lilt-api__card-arrow {
-  color: var(--brand-primary);
-  opacity: 1;
-  transform: none;
+  color: var(--foreground);
 }
 .lilt-api__card-summary {
   color: var(--muted-foreground);
-  font-size: 13px;
+  font-size: var(--text-sm);
   line-height: 19px;
 }
 .lilt-api__card-exports {
@@ -174,7 +167,8 @@
 }
 .lilt-docs .lilt-api__card-exports code {
   padding: 1px 6px;
-  font-size: 11.5px;
+  background: var(--background);
+  font-size: var(--text-xs);
   line-height: 18px;
 }
 
@@ -183,15 +177,15 @@
   gap: 8px;
   margin-top: 72px;
   padding: 18px 20px;
-  border: 1px dashed var(--border);
-  border-radius: 16px;
+  border-radius: var(--radius-panel);
+  box-shadow: inset 0 0 0 1px var(--line);
 }
 .lilt-docs .lilt-api__limits h2 {
-  font-size: 14px;
+  font-size: var(--text-md);
   letter-spacing: -0.01em;
 }
 .lilt-docs .lilt-api__limits p {
-  font-size: 13.5px;
+  font-size: var(--text-md);
   line-height: 21px;
 }
 
@@ -201,7 +195,7 @@
   align-items: center;
   gap: 8px;
   color: var(--muted-foreground);
-  font-size: 13px;
+  font-size: var(--text-sm);
 }
 .lilt-docs .lilt-api-topic__trail a {
   color: var(--muted-foreground);
@@ -231,14 +225,17 @@
   display: grid;
   gap: 4px;
   padding: 14px 18px;
-  border: 1px solid var(--border);
-  border-radius: 16px;
+  border-radius: var(--radius-panel);
+  background: var(--panel);
   color: var(--foreground);
   text-decoration: none;
-  transition: border-color 160ms ease;
+  transition:
+    background-color 0.2s,
+    box-shadow 0.3s var(--ease-out);
 }
 .lilt-docs a.lilt-api-topic__step:hover {
-  border-color: color-mix(in srgb, var(--brand-primary) 40%, var(--border));
+  background: var(--panel-hover);
+  box-shadow: var(--shadow-lift);
 }
 .lilt-docs a.lilt-api-topic__step:focus-visible {
   outline: 2px solid var(--ring);
@@ -253,11 +250,11 @@
   align-items: center;
   gap: 4px;
   color: var(--muted-foreground);
-  font-size: 12px;
+  font-size: var(--text-xs);
 }
 .lilt-api-topic__step-title {
-  font-size: 14.5px;
-  font-weight: 600;
+  font-size: var(--text-base);
+  font-weight: var(--weight-strong);
 }
 
 @container (max-width: 640px) {
@@ -273,8 +270,5 @@
   .lilt-docs a.lilt-api__card,
   .lilt-api__card-arrow {
     transition: none;
-  }
-  .lilt-docs a.lilt-api__card:hover {
-    transform: none;
   }
 }

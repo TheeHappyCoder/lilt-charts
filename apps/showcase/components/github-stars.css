@@ -45,14 +45,14 @@
 
 .lilt-github-stars[data-variant='card'] .lilt-github-stars__heading {
   color: var(--lilt-muted);
-  font-size: 13px;
+  font-size: var(--text-sm);
   font-weight: 500;
   line-height: 18px;
 }
 
 .lilt-github-stars[data-variant='card'] .lilt-github-stars__total {
   font-size: 28px;
-  font-weight: 600;
+  font-weight: var(--weight-strong);
   line-height: 34px;
   letter-spacing: -0.025em;
 }
@@ -61,11 +61,11 @@
   margin-top: auto;
   padding-top: 20px;
   color: var(--lilt-muted);
-  font-size: 13px;
+  font-size: var(--text-sm);
 }
 
 @media (hover: hover) {
   .lilt-github-stars:hover .lilt-github-stars__caption {
-    color: var(--brand-primary, currentColor);
+    color: var(--foreground, currentColor);
   }
 }
