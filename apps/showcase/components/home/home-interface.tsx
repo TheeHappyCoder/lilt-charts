@@ -3,27 +3,14 @@
 import {
   AsciiCounterDemo,
   AsciiCursorTrailDemo,
-  AsciiFrame,
   AsciiGlitch,
   AsciiLoader,
-  AsciiScramble,
-  AsciiTerminal,
+  AsciiParticleWord,
+  AsciiSplitFlapDemo,
   AsciiTransitionDemo,
 } from '@lilt-ui/registry';
 import { useEffect, useState } from 'react';
 import { HomeTile } from './home-tile';
-
-const SESSION = [
-  '$ pnpm add @lilt-ui/charts',
-  'Packages: +1',
-  '+ @lilt-ui/charts',
-  '',
-  '$ pnpm dlx shadcn@latest add https://liltui.vercel.app/r/loader.json',
-  '✔ Created 6 files: components/lilt/ascii/interface/ascii-loader.tsx …',
-  '',
-  '$ pnpm dev',
-  '✓ Ready in 812ms on http://localhost:3000',
-];
 
 /** A progress value that fills, holds, and starts again, so the bar always has work to show. */
 function useProgress() {
@@ -40,8 +27,16 @@ export function HomeInterface() {
   const progress = useProgress();
   return (
     <div className="lilt-bento" data-layout="interface">
-      <HomeTile area="terminal" href="/ascii/terminal" name="Terminal" hint="Types itself" center>
-        <AsciiTerminal lines={SESSION} title="~/my-app" accent="#a58bff" loop />
+      <HomeTile
+        area="splitflap"
+        href="/ascii/split-flap"
+        name="Split-flap board"
+        hint="Departures in type"
+        center
+      >
+        <div style={{ fontSize: 30 }}>
+          <AsciiSplitFlapDemo />
+        </div>
       </HomeTile>
       <HomeTile
         area="transition"
@@ -68,25 +63,22 @@ export function HomeInterface() {
         <AsciiCursorTrailDemo />
       </HomeTile>
       <HomeTile
-        area="scramble"
-        href="/ascii/scramble"
-        name="Scramble"
-        hint="Hover to decode"
-        center
+        area="particle"
+        href="/ascii/particle-word"
+        name="Particle word"
+        hint="Drag through the letters"
       >
-        <AsciiScramble text="Lilt UI" trigger="hover" className="lilt-tile__big" />
+        <AsciiParticleWord text="lilt" cellSize={10} />
       </HomeTile>
       <HomeTile
         area="counter"
         href="/ascii/counter"
-        name="Counter & frame"
+        name="Counter"
         hint="Click to add readers"
         center
         live
       >
-        <AsciiFrame variant="round" trace="always" color="#e5489c" padding={18}>
-          <AsciiCounterDemo />
-        </AsciiFrame>
+        <AsciiCounterDemo />
       </HomeTile>
     </div>
   );

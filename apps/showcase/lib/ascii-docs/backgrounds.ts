@@ -132,50 +132,6 @@ export const backgroundDocs: readonly AsciiSceneDoc[] = [
     ),
   },
   {
-    id: 'topography',
-    shelf: 'Backgrounds',
-    title: 'Topography',
-    component: 'AsciiTopography',
-    lede: 'Contour lines of slowly drifting land, drawn like a topographic map.',
-    touch:
-      'Move to raise a hill the lines flow around. Click to drop a pit on high ground or a peak on low.',
-    controls: [
-      {
-        kind: 'range',
-        name: 'levels',
-        label: 'Levels',
-        min: 4,
-        max: 30,
-        step: 1,
-        defaultValue: 12,
-        description:
-          'Contour lines from the lowest ground to the highest. Every fifth is a brighter index line.',
-      },
-      {
-        kind: 'color',
-        name: 'color',
-        label: 'Colour',
-        defaultValue: '#8b6cff',
-        description: 'Colour of the index lines, and of the ground the pointer raises.',
-      },
-      {
-        kind: 'range',
-        name: 'drift',
-        label: 'Drift',
-        min: 0,
-        max: 4,
-        step: 0.1,
-        defaultValue: 1,
-        description: 'How fast the land drifts and changes shape. 0 holds it still.',
-      },
-      intensity,
-    ],
-    code: behindHero('Hero'),
-    usage: usage(
-      'Use the map behind an outdoor, travel or data product, or anywhere a page wants texture without a picture. Each line is drawn with the stroke that follows its direction.',
-    ),
-  },
-  {
     id: 'starfield',
     backdrop: 'night',
     shelf: 'Backgrounds',

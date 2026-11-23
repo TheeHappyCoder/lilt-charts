@@ -77,48 +77,6 @@ export const sceneDocs: readonly AsciiSceneDoc[] = [
     ],
   },
   {
-    id: 'shore',
-    shelf: 'Water',
-    title: 'Shore',
-    component: 'AsciiShore',
-    lede: 'Waves that break into foam, run up the sand, and leave it dark and wet as they draw back.',
-    touch:
-      'Draw in the sand with your pointer; the next wave washes it away. Click for a bigger wave.',
-    controls: [
-      {
-        kind: 'color',
-        name: 'water',
-        label: 'Water',
-        defaultValue: '#2a5db0',
-        description: 'Colour of the open sea, deepest at the horizon.',
-      },
-      {
-        kind: 'color',
-        name: 'shallow',
-        label: 'Shallows',
-        defaultValue: '#5cc8d2',
-        description: 'Colour of the water near the shore and of the thin sheet on the sand.',
-      },
-      {
-        kind: 'color',
-        name: 'sand',
-        label: 'Sand',
-        defaultValue: '#dcbb8a',
-        description: 'Colour of the dry sand.',
-      },
-      {
-        kind: 'range',
-        name: 'period',
-        label: 'Period',
-        min: 3,
-        max: 16,
-        step: 0.5,
-        defaultValue: 7,
-        description: 'Seconds between waves.',
-      },
-    ],
-  },
-  {
     id: 'snow',
     shelf: 'Nature',
     title: 'Snow',

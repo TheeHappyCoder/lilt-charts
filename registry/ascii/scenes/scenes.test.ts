@@ -2,7 +2,6 @@ import { describe, expect, it } from 'vitest';
 import { GlyphSurface, LEVELS } from '../engine/surface';
 import type { AsciiPointer, AsciiScene } from '../engine/types';
 import { createEmber } from './ember';
-import { createGlow } from './glow';
 import { createMurmuration } from './murmuration';
 import { createPlanet } from './planet';
 import { createRain } from './rain';
@@ -34,7 +33,6 @@ const scenes: [string, () => AsciiScene][] = [
   ['ember', () => createEmber()],
   ['murmuration', () => createMurmuration()],
   ['rain', () => createRain()],
-  ['glow', () => createGlow()],
   ['koi', () => createKoi()],
   ['jellyfish', () => createJellyfish()],
   ['aurora', () => createAurora()],
@@ -48,8 +46,7 @@ describe.each(scenes)('%s', (_name, create) => {
     const surface = run(create(), 3);
     const share = inked(surface) / (grid.cols * grid.rows);
     expect(share).toBeGreaterThan(0.01);
-    // The glow is a full-bleed background; everything else leaves air around it.
-    expect(share).toBeLessThan(_name === 'glow' ? 0.95 : 0.6);
+    expect(share).toBeLessThan(0.6);
   });
 
   it('only writes colours its palette has', () => {

@@ -3,7 +3,6 @@ import { GlyphSurface, LEVELS } from '../engine/surface';
 import type { AsciiPointer, AsciiScene } from '../engine/types';
 import { createFireworks } from './fireworks';
 import { createLava } from './lava';
-import { createShore } from './shore';
 import { createSnow } from './snow';
 
 const grid = { cols: 150, rows: 50, aspect: 1.9 };
@@ -46,7 +45,6 @@ const scenes: [string, () => AsciiScene][] = [
   ['snow without a word', () => createSnow({ text: '' })],
   ['lava', () => createLava()],
   ['lava full-bleed', () => createLava({ lamp: false })],
-  ['shore', () => createShore()],
 ];
 
 describe.each(scenes)('%s', (_name, create) => {
@@ -159,24 +157,5 @@ describe('snow', () => {
     scene.step(1 / 60, idle);
     expect(before).toBeGreaterThan(0);
     expect(count()).toBeLessThan(before);
-  });
-});
-
-describe('shore', () => {
-  it('lets the pointer write in the sand', () => {
-    const scene = createShore();
-    scene.resize(grid);
-    for (let i = 0; i < 60; i++) {
-      scene.step(1 / 60, { x: 20 + i, y: grid.rows - 4, active: true });
-    }
-    const surface = new GlyphSurface();
-    surface.resize(grid.cols, grid.rows);
-    scene.draw(surface);
-    let grooves = 0;
-    for (let col = 20; col < 80; col++) {
-      // A stroke along the path: the pointer moved sideways.
-      if (surface.glyph[(grid.rows - 4) * grid.cols + col] === '-'.charCodeAt(0)) grooves++;
-    }
-    expect(grooves).toBeGreaterThan(30);
   });
 });

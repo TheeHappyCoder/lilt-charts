@@ -16,9 +16,3 @@ export {
   type AsciiCounterDemoProps,
   type AsciiCounterProps,
 } from './counter';
-export {
-  AsciiSparkline,
-  AsciiSparklineDemo,
-  sparkLevels,
-  type AsciiSparklineProps,
-} from './sparkline';

@@ -1,13 +1,5 @@
 import type { AsciiSceneDoc } from '../ascii-scenes';
 
-const SCRAMBLES = [
-  { value: '01<>/\\{}[]#$%&*+=?~', label: 'Code' },
-  { value: '01', label: 'Binary' },
-  { value: 'abcdefghijklmnopqrstuvwxyz', label: 'Letters' },
-  { value: '+-*/=<>^~', label: 'Operators' },
-  { value: '.:', label: 'Dust' },
-] as const;
-
 const asProp = {
   name: 'as',
   type: 'ElementType',
@@ -15,7 +7,7 @@ const asProp = {
   description: "The element to render, such as 'h1' or 'p'.",
 };
 
-/** Text effects: type that decodes, types itself out, glitches, and logos set in type. */
+/** Text effects: logos set in type and glitching headlines. */
 export const textDocs: readonly AsciiSceneDoc[] = [
   {
     id: 'logo',
@@ -101,135 +93,6 @@ export const textDocs: readonly AsciiSceneDoc[] = [
         defaultValue: '—',
         description:
           'Describes the canvas for screen readers; usually the word itself. Without one it is decorative.',
-      },
-    ],
-  },
-  {
-    id: 'scramble',
-    shelf: 'Text',
-    title: 'Scramble',
-    component: 'AsciiScramble',
-    kind: 'dom',
-    layout: 'center',
-    stage: { fontSize: 48, fontWeight: 600 },
-    lede: 'A line of real text that decodes from random glyphs, letter by letter from the left.',
-    touch: 'Hover the text to stir it. Change the text or duration to watch it decode again.',
-    controls: [
-      {
-        kind: 'text',
-        name: 'text',
-        label: 'Text',
-        defaultValue: 'Charts that feel alive',
-        description: 'The text it decodes into.',
-      },
-      {
-        kind: 'choice',
-        name: 'trigger',
-        label: 'Starts',
-        options: [
-          { value: 'view', label: 'In view' },
-          { value: 'mount', label: 'At once' },
-          { value: 'hover', label: 'On hover' },
-        ],
-        defaultValue: 'view',
-        description:
-          'When it decodes: the first time it scrolls into view, as soon as it renders, or only on hover.',
-      },
-      {
-        kind: 'range',
-        name: 'duration',
-        label: 'Duration',
-        min: 0.3,
-        max: 4,
-        step: 0.1,
-        defaultValue: 1.2,
-        description: 'Seconds from the first letter landing to the last.',
-      },
-      {
-        kind: 'choice',
-        name: 'characters',
-        label: 'Scrambles through',
-        options: SCRAMBLES,
-        defaultValue: SCRAMBLES[0].value,
-        description: 'Characters the letters scramble through.',
-      },
-    ],
-    code: `export function Hero() {
-  return (
-    <h1 style={{ fontSize: 56 }}>
-      {element}
-    </h1>
-  );
-}`,
-    usage:
-      'It is real text: it takes its font, size and colour from where you put it, and screen readers hear the words once, never the scramble. Each letter keeps its own width while it scrambles, so nothing around it moves, in monospace or proportional type. With reduced motion it shows the text at once.',
-    props: [asProp],
-  },
-  {
-    id: 'terminal',
-    shelf: 'Text',
-    title: 'Terminal',
-    component: 'AsciiTerminal',
-    kind: 'dom',
-    layout: 'center',
-    lede: 'A terminal window that types out an install session behind a blinking block cursor.',
-    touch: 'It starts typing when it scrolls into view. Turn on Loop to watch it again.',
-    controls: [
-      {
-        kind: 'range',
-        name: 'speed',
-        label: 'Speed',
-        min: 5,
-        max: 80,
-        step: 1,
-        defaultValue: 32,
-        description: 'Characters typed per second, a little uneven, as people type.',
-      },
-      {
-        kind: 'toggle',
-        name: 'loop',
-        label: 'Loop',
-        defaultValue: false,
-        description: 'Start over a few seconds after the last line.',
-      },
-      {
-        kind: 'text',
-        name: 'prompt',
-        label: 'Prompt',
-        defaultValue: '$',
-        description: 'What the prompt shows before each command.',
-      },
-      {
-        kind: 'color',
-        name: 'accent',
-        label: 'Accent',
-        defaultValue: '#7c5cff',
-        description: 'Colour of the prompt, and of ticks and pluses that start an output line.',
-      },
-      {
-        kind: 'text',
-        name: 'title',
-        label: 'Title',
-        defaultValue: 'zsh',
-        description: "Text in the window's title bar.",
-      },
-    ],
-    code: `export function Install() {
-  return (
-    <section style={{ display: 'grid', placeItems: 'center', padding: 48 }}>
-      {element}
-    </section>
-  );
-}`,
-    usage:
-      'Lines that start with "$ " are commands, typed key by key; the rest are their output and appear at once. The window takes the size of the finished session from the start, so the page never shifts as it types. Its colours come from the text colour around it. Screen readers get the whole session as text, and with reduced motion every line shows at once.',
-    props: [
-      {
-        name: 'lines',
-        type: 'string[]',
-        defaultValue: 'a pnpm install session',
-        description:
-          'The session, a line each. Start a line with "$ " to type it as a command; an empty string is a blank line.',
       },
     ],
   },

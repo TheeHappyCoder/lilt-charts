@@ -1,13 +1,7 @@
 'use client';
 
 import { AreaChartCard } from '@lilt-ui/charts';
-import {
-  AsciiArea,
-  AsciiBars,
-  AsciiClock,
-  AsciiHeatmap,
-  AsciiSparklineDemo,
-} from '@lilt-ui/registry';
+import { AsciiArea, AsciiBars, AsciiClock } from '@lilt-ui/registry';
 import { HomeTile } from './home-tile';
 
 /** A year of visitors: one set of numbers for both voices. */
@@ -28,7 +22,7 @@ const visitors = [
 
 /**
  * Data in both voices: the same year as a chart card and set in type, side by side, then the
- * rest of the charts that are drawn in type.
+ * rest of the data pieces drawn in type.
  */
 export function HomeData() {
   return (
@@ -70,26 +64,6 @@ export function HomeData() {
       </HomeTile>
       <HomeTile area="bars" href="/ascii/bars" name="Bars" hint="Hover a month" floor live>
         <AsciiBars color="#e5489c" cellSize={12} />
-      </HomeTile>
-      <HomeTile
-        area="heatmap"
-        href="/ascii/heatmap"
-        name="Calendar heatmap"
-        hint="A year of days, one glyph each"
-        floor
-        live
-      >
-        <AsciiHeatmap color="#3cc9a8" cellSize={11} />
-      </HomeTile>
-      <HomeTile
-        area="spark"
-        href="/ascii/sparkline"
-        name="Sparkline"
-        hint="A chart the size of a word"
-        center
-        live
-      >
-        <AsciiSparklineDemo />
       </HomeTile>
       <HomeTile area="clock" href="/ascii/clock" name="Clock" hint="Only changed cells scramble">
         <AsciiClock cellSize={8} />

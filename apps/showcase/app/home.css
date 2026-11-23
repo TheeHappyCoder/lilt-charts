@@ -282,8 +282,7 @@
   grid-template-areas:
     'card card type type'
     'card card type type'
-    'bars bars heatmap heatmap'
-    'spark spark clock clock';
+    'bars bars clock clock';
 }
 .lilt-bento[data-layout='media'] {
   grid-template-areas:
@@ -292,10 +291,10 @@
 }
 .lilt-bento[data-layout='interface'] {
   grid-template-areas:
-    'terminal terminal transition transition'
-    'terminal terminal transition transition'
+    'splitflap splitflap transition transition'
+    'splitflap splitflap transition transition'
     'loader glitch counter counter'
-    'trail trail scramble scramble';
+    'trail trail particle particle';
 }
 
 /* A tile: the plinth with the live piece mounted in it, and its caption beneath. */
@@ -713,8 +712,6 @@
       'type type'
       'type type'
       'bars bars'
-      'heatmap heatmap'
-      'spark spark'
       'clock clock';
   }
   .lilt-bento[data-layout='media'] {
@@ -725,14 +722,14 @@
   }
   .lilt-bento[data-layout='interface'] {
     grid-template-areas:
-      'terminal terminal'
-      'terminal terminal'
+      'splitflap splitflap'
+      'splitflap splitflap'
       'transition transition'
       'transition transition'
       'loader glitch'
       'counter counter'
       'trail trail'
-      'scramble scramble';
+      'particle particle';
   }
   .lilt-float .lilt-float__nav {
     display: none;
@@ -797,8 +794,8 @@
   ) {
     height: 440px;
   }
-  .lilt-home-tile[data-area='terminal'] {
-    height: 480px;
+  .lilt-home-tile[data-area='splitflap'] {
+    height: 400px;
   }
   .lilt-built ol {
     grid-template-columns: minmax(0, 1fr);

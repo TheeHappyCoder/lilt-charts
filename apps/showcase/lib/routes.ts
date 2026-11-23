@@ -84,7 +84,6 @@ export type RouteIcon =
   | 'palette'
   | 'loading'
   | 'empty'
-  | 'glow'
   | 'planet'
   | 'ember'
   | 'murmuration'
@@ -99,20 +98,16 @@ export type RouteIcon =
   | 'asciivideo'
   | 'asciiimage'
   | 'snow'
-  | 'shore'
   | 'lavalamp'
   | 'fireworks'
   | 'counter'
   | 'asciiclock'
   | 'globe'
   | 'glitch'
-  | 'terminal'
-  | 'scramble'
   | 'asciilogo'
   | 'cursortrail'
   | 'ghostcursors'
   | 'transition'
-  | 'frame'
   | 'asciiloader'
   | 'connectbutton'
   | 'thinking'
@@ -127,7 +122,6 @@ export type RouteIcon =
   | 'themeflip'
   | 'dynamicisland'
   | 'starfield'
-  | 'topography'
   | 'matrix'
   | 'dotgrid'
   | 'blackhole'
@@ -136,23 +130,14 @@ export type RouteIcon =
   | 'nightcity'
   | 'smoke'
   | 'lighthouse'
-  | 'windowrain'
   | 'bonsai'
   | 'fireflies'
   | 'helix'
   | 'visualizer'
   | 'flag'
   | 'splitflap'
-  | 'redact'
-  | 'wavetext'
-  | 'spotlight'
   | 'particleword'
-  | 'emptystate'
-  | 'countdown'
   | 'dissolve'
-  | 'logocloud'
-  | 'livelog'
-  | 'statusrail'
   | 'scrollmeter'
   | 'effortdial'
   | 'prismrouter'
@@ -986,17 +971,6 @@ export const appRoutes = [
     badge: 'New',
   },
   {
-    id: 'ascii-glow',
-    group: 'Ascii',
-    label: 'Glow',
-    title: 'Glow',
-    href: '/ascii/glow',
-    pathname: '/ascii/glow',
-    icon: 'glow',
-    navigation: true,
-    badge: 'New',
-  },
-  {
     id: 'ascii-planet',
     group: 'Ascii',
     label: 'Planet',
@@ -1129,17 +1103,6 @@ export const appRoutes = [
     badge: 'New',
   },
   {
-    id: 'ascii-heatmap',
-    group: 'Ascii',
-    label: 'Calendar heatmap',
-    title: 'Calendar heatmap',
-    href: '/ascii/heatmap',
-    pathname: '/ascii/heatmap',
-    icon: 'heatmap',
-    navigation: true,
-    badge: 'New',
-  },
-  {
     id: 'ascii-dot-grid',
     group: 'Ascii',
     label: 'Dot grid',
@@ -1162,17 +1125,6 @@ export const appRoutes = [
     badge: 'New',
   },
   {
-    id: 'ascii-topography',
-    group: 'Ascii',
-    label: 'Topography',
-    title: 'Topography',
-    href: '/ascii/topography',
-    pathname: '/ascii/topography',
-    icon: 'topography',
-    navigation: true,
-    badge: 'New',
-  },
-  {
     id: 'ascii-starfield',
     group: 'Ascii',
     label: 'Starfield',
@@ -1191,17 +1143,6 @@ export const appRoutes = [
     href: '/ascii/loader',
     pathname: '/ascii/loader',
     icon: 'asciiloader',
-    navigation: true,
-    badge: 'New',
-  },
-  {
-    id: 'ascii-frame',
-    group: 'Ascii',
-    label: 'Frame',
-    title: 'Frame',
-    href: '/ascii/frame',
-    pathname: '/ascii/frame',
-    icon: 'frame',
     navigation: true,
     badge: 'New',
   },
@@ -1250,28 +1191,6 @@ export const appRoutes = [
     badge: 'New',
   },
   {
-    id: 'ascii-scramble',
-    group: 'Ascii',
-    label: 'Scramble',
-    title: 'Scramble',
-    href: '/ascii/scramble',
-    pathname: '/ascii/scramble',
-    icon: 'scramble',
-    navigation: true,
-    badge: 'New',
-  },
-  {
-    id: 'ascii-terminal',
-    group: 'Ascii',
-    label: 'Terminal',
-    title: 'Terminal',
-    href: '/ascii/terminal',
-    pathname: '/ascii/terminal',
-    icon: 'terminal',
-    navigation: true,
-    badge: 'New',
-  },
-  {
     id: 'ascii-glitch',
     group: 'Ascii',
     label: 'Glitch',
@@ -1316,17 +1235,6 @@ export const appRoutes = [
     badge: 'New',
   },
   {
-    id: 'ascii-sparkline',
-    group: 'Ascii',
-    label: 'Sparkline',
-    title: 'Sparkline',
-    href: '/ascii/sparkline',
-    pathname: '/ascii/sparkline',
-    icon: 'sparkline',
-    navigation: true,
-    badge: 'New',
-  },
-  {
     id: 'ascii-fireworks',
     group: 'Ascii',
     label: 'Fireworks',
@@ -1345,17 +1253,6 @@ export const appRoutes = [
     href: '/ascii/lava-lamp',
     pathname: '/ascii/lava-lamp',
     icon: 'lavalamp',
-    navigation: true,
-    badge: 'New',
-  },
-  {
-    id: 'ascii-shore',
-    group: 'Ascii',
-    label: 'Shore',
-    title: 'Shore',
-    href: '/ascii/shore',
-    pathname: '/ascii/shore',
-    icon: 'shore',
     navigation: true,
     badge: 'New',
   },
@@ -1490,17 +1387,6 @@ export const appRoutes = [
     badge: 'New',
   },
   {
-    id: 'ascii-window-rain',
-    group: 'Ascii',
-    label: 'Rain on glass',
-    title: 'Rain on glass',
-    href: '/ascii/window-rain',
-    pathname: '/ascii/window-rain',
-    icon: 'windowrain',
-    navigation: true,
-    badge: 'New',
-  },
-  {
     id: 'ascii-bonsai',
     group: 'Ascii',
     label: 'Bonsai',
@@ -1567,39 +1453,6 @@ export const appRoutes = [
     badge: 'New',
   },
   {
-    id: 'ascii-redact',
-    group: 'Ascii',
-    label: 'Redact',
-    title: 'Redact',
-    href: '/ascii/redact',
-    pathname: '/ascii/redact',
-    icon: 'redact',
-    navigation: true,
-    badge: 'New',
-  },
-  {
-    id: 'ascii-wave',
-    group: 'Ascii',
-    label: 'Wave text',
-    title: 'Wave text',
-    href: '/ascii/wave',
-    pathname: '/ascii/wave',
-    icon: 'wavetext',
-    navigation: true,
-    badge: 'New',
-  },
-  {
-    id: 'ascii-spotlight',
-    group: 'Ascii',
-    label: 'Spotlight heading',
-    title: 'Spotlight heading',
-    href: '/ascii/spotlight',
-    pathname: '/ascii/spotlight',
-    icon: 'spotlight',
-    navigation: true,
-    badge: 'New',
-  },
-  {
     id: 'ascii-particle-word',
     group: 'Ascii',
     label: 'Particle word',
@@ -1611,28 +1464,6 @@ export const appRoutes = [
     badge: 'New',
   },
   {
-    id: 'ascii-empty-state',
-    group: 'Ascii',
-    label: 'Empty state',
-    title: 'Empty state',
-    href: '/ascii/empty-state',
-    pathname: '/ascii/empty-state',
-    icon: 'emptystate',
-    navigation: true,
-    badge: 'New',
-  },
-  {
-    id: 'ascii-countdown',
-    group: 'Ascii',
-    label: 'Countdown',
-    title: 'Countdown',
-    href: '/ascii/countdown',
-    pathname: '/ascii/countdown',
-    icon: 'countdown',
-    navigation: true,
-    badge: 'New',
-  },
-  {
     id: 'ascii-dissolve',
     group: 'Ascii',
     label: 'Dissolve image',
@@ -1640,39 +1471,6 @@ export const appRoutes = [
     href: '/ascii/dissolve',
     pathname: '/ascii/dissolve',
     icon: 'dissolve',
-    navigation: true,
-    badge: 'New',
-  },
-  {
-    id: 'ascii-logo-cloud',
-    group: 'Ascii',
-    label: 'Logo cloud',
-    title: 'Logo cloud',
-    href: '/ascii/logo-cloud',
-    pathname: '/ascii/logo-cloud',
-    icon: 'logocloud',
-    navigation: true,
-    badge: 'New',
-  },
-  {
-    id: 'ascii-log',
-    group: 'Ascii',
-    label: 'Live log',
-    title: 'Live log',
-    href: '/ascii/log',
-    pathname: '/ascii/log',
-    icon: 'livelog',
-    navigation: true,
-    badge: 'New',
-  },
-  {
-    id: 'ascii-status',
-    group: 'Ascii',
-    label: 'Status rail',
-    title: 'Status rail',
-    href: '/ascii/status',
-    pathname: '/ascii/status',
-    icon: 'statusrail',
     navigation: true,
     badge: 'New',
   },

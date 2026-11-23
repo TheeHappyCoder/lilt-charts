@@ -8,7 +8,6 @@ import { clockGroups, createClock, parseEnd } from './clock';
 import { AsciiCounter, formatCount } from './counter';
 import { createGlobe, describeGlobe } from './globe';
 import { MASK_HEIGHT, MASK_WIDTH, landAt, landMask } from './land-mask';
-import { AsciiSparkline, sparkLevels } from './sparkline';
 
 (globalThis as { IS_REACT_ACT_ENVIRONMENT?: boolean }).IS_REACT_ACT_ENVIRONMENT = true;
 
@@ -164,15 +163,6 @@ describe('clock', () => {
   });
 });
 
-describe('sparkline levels', () => {
-  it('runs from the bottom row to the top', () => {
-    const levels = sparkLevels([0, 5, 10], 3, 5);
-    expect(levels).toEqual([0, 2, 4]);
-    expect(sparkLevels([7, 7], 4, 5)).toEqual([2, 2, 2, 2]);
-    expect(sparkLevels([], 4, 5)).toEqual([]);
-  });
-});
-
 describe('DOM components', () => {
   let host: HTMLDivElement;
   beforeAll(() => {
@@ -207,16 +197,6 @@ describe('DOM components', () => {
     expect(hidden?.textContent).toBe('$48,213');
     act(() => root.render(<AsciiCounter value={50000} prefix="$" />));
     expect(hidden?.textContent).toBe('$50,000');
-    act(() => root.unmount());
-  });
-
-  it('sparkline labels itself with a summary', () => {
-    const root = render(<AsciiSparkline data={[1, 4, 2, 9]} />);
-    const img = host.querySelector('[role="img"]');
-    expect(img?.getAttribute('aria-label')).toBe(
-      'Sparkline of 4 values: lowest 1, highest 9, latest 9.',
-    );
-    expect((img as HTMLElement).style.width).toBe('16ch');
     act(() => root.unmount());
   });
 });

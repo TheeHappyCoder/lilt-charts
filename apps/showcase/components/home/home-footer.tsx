@@ -1,6 +1,6 @@
 'use client';
 
-import { AsciiScramble, AsciiTopography } from '@lilt-ui/registry';
+import { AsciiDotGrid } from '@lilt-ui/registry';
 import Link from 'next/link';
 import type { CSSProperties, ReactNode } from 'react';
 import { TwoTone } from '@/components/craft/label';
@@ -13,9 +13,9 @@ export interface FooterColumn {
 }
 
 /**
- * The page's closing panel, its second dark object: contour lines drifting behind a headline that
- * decodes as it arrives, the two ways in, the quickstart, the links in short columns under a
- * hairline, and the wordmark rising from the foot.
+ * The page's closing panel, its second dark object: an interactive dot grid breathing behind the
+ * closing headline, the two ways in, the quickstart, the links in short columns under a hairline,
+ * and the wordmark rising from the foot.
  */
 export function HomeFooter({
   github,
@@ -31,17 +31,12 @@ export function HomeFooter({
     <footer className="lilt-home-foot">
       <div className="lilt-home-foot__panel lilt-dusk dark">
         <div className="lilt-home-foot__ground" aria-hidden="true">
-          <AsciiTopography color="#8b6cff" />
+          <AsciiDotGrid color="#8b6cff" />
         </div>
         <div className="lilt-home-foot__close">
           <TwoTone
             id="closing-title"
-            claim={
-              <>
-                <AsciiScramble text="Ready when your" as="span" trigger="view" duration={1.1} />{' '}
-                data is.
-              </>
-            }
+            claim="Ready when your data is."
             dim="Start with one install."
           />
           <p data-rv="fade" style={{ '--i': 2 } as CSSProperties}>

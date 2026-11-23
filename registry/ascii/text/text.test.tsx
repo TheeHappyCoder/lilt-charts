@@ -5,8 +5,6 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { GlyphSurface, LEVELS } from '../engine/surface';
 import type { AsciiPointer } from '../engine/types';
 import { AsciiGlitch } from './ascii-glitch';
-import { AsciiScramble } from './ascii-scramble';
-import { AsciiTerminal, DEFAULT_TERMINAL_LINES } from './ascii-terminal';
 import { FIRE_COLORS } from './campfire';
 import { createLogo, FIRE_GROUND } from './logo';
 
@@ -30,12 +28,6 @@ function prefersReducedMotion(reduce: boolean) {
 function render(element: React.ReactElement) {
   act(() => root.render(element));
 }
-
-/** What a sighted reader sees: the text of the parts hidden from assistive technology. */
-const visible = () =>
-  Array.from(host.querySelectorAll('[aria-hidden="true"]'))
-    .map((el) => el.textContent)
-    .join('');
 
 /** Fakes timers, frames and the clock together, so time can be stepped through. */
 function fakeClock() {
@@ -63,83 +55,6 @@ afterEach(() => {
   act(() => root.unmount());
   host.remove();
   vi.useRealTimers();
-});
-
-describe('AsciiScramble', () => {
-  it('gives screen readers the text once, and decodes into it', () => {
-    fakeClock();
-    prefersReducedMotion(false);
-    render(createElement(AsciiScramble, { text: 'Hello there', trigger: 'mount', duration: 0.5 }));
-    const all = host.textContent ?? '';
-    // The readable copy plus the animated one, which is hidden from screen readers.
-    expect(all.startsWith('Hello there')).toBe(true);
-    act(() => {
-      vi.advanceTimersByTime(1200);
-    });
-    expect(visible()).toBe('Hello there');
-  });
-
-  it('shows the final text at once with reduced motion, keeping spaces', () => {
-    prefersReducedMotion(true);
-    render(createElement(AsciiScramble, { text: 'a  b c', as: 'h1' }));
-    const h1 = host.querySelector('h1')!;
-    expect(h1).toBeTruthy();
-    expect(visible()).toBe('a  b c');
-  });
-
-  it('keeps every letter in its own slot while scrambling, so nothing moves', () => {
-    fakeClock();
-    prefersReducedMotion(false);
-    render(createElement(AsciiScramble, { text: 'abc def', trigger: 'mount', duration: 2 }));
-    act(() => {
-      vi.advanceTimersByTime(400);
-    });
-    // Each unfinished letter still holds its own character, hidden, to keep its width.
-    const held = Array.from(host.querySelectorAll('span[style*="visibility: hidden"]')).map(
-      (el) => el.textContent,
-    );
-    expect(held.length).toBeGreaterThan(0);
-    for (const ch of held) expect('abcdef').toContain(ch);
-  });
-});
-
-describe('AsciiTerminal', () => {
-  it('holds the whole session as text for screen readers', () => {
-    prefersReducedMotion(false);
-    render(createElement(AsciiTerminal));
-    const pre = host.querySelector('pre')!;
-    expect(pre.textContent).toBe(DEFAULT_TERMINAL_LINES.join('\n'));
-    expect(host.querySelector('[role="group"]')?.getAttribute('aria-label')).toContain('Terminal');
-  });
-
-  it('types commands out over time', () => {
-    fakeClock();
-    prefersReducedMotion(false);
-    render(createElement(AsciiTerminal, { lines: ['$ echo hi', 'hi'], speed: 20 }));
-    const shown = () =>
-      Array.from(host.querySelectorAll('[aria-hidden="true"] div'))
-        .filter((el) => (el as HTMLElement).style.visibility !== 'hidden')
-        .map((el) => el.textContent)
-        .join('|');
-    act(() => {
-      vi.advanceTimersByTime(100);
-    });
-    expect(shown()).not.toContain('echo hi');
-    act(() => {
-      vi.advanceTimersByTime(3000);
-    });
-    expect(shown()).toContain('echo hi');
-    expect(shown()).toContain('hi');
-  });
-
-  it('shows every line at once with reduced motion', () => {
-    prefersReducedMotion(true);
-    render(createElement(AsciiTerminal, { lines: ['$ ls', 'a.txt', 'b.txt'] }));
-    const hidden = Array.from(host.querySelectorAll('[aria-hidden="true"] div')).filter(
-      (el) => (el as HTMLElement).style.visibility === 'hidden',
-    );
-    expect(hidden).toHaveLength(0);
-  });
 });
 
 describe('AsciiGlitch', () => {

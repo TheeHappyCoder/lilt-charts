@@ -61,21 +61,16 @@ import GalaxyIcon from '@hugeicons/core-free-icons/GalaxyIcon';
 import WebcamIcon from '@hugeicons/core-free-icons/WebcamIcon';
 import Image01Icon from '@hugeicons/core-free-icons/Image01Icon';
 import SnowIcon from '@hugeicons/core-free-icons/SnowIcon';
-import BeachIcon from '@hugeicons/core-free-icons/BeachIcon';
 import Lamp01Icon from '@hugeicons/core-free-icons/Lamp01Icon';
 import FireworksIcon from '@hugeicons/core-free-icons/FireworksIcon';
 import Calculator01Icon from '@hugeicons/core-free-icons/Calculator01Icon';
 import EarthIcon from '@hugeicons/core-free-icons/EarthIcon';
 import ImageNotFound01Icon from '@hugeicons/core-free-icons/ImageNotFound01Icon';
-import ComputerTerminal01Icon from '@hugeicons/core-free-icons/ComputerTerminal01Icon';
-import ShuffleIcon from '@hugeicons/core-free-icons/ShuffleIcon';
 import TextFontIcon from '@hugeicons/core-free-icons/TextFontIcon';
 import CursorMagicSelection02Icon from '@hugeicons/core-free-icons/CursorMagicSelection02Icon';
 import CursorAddSelection02Icon from '@hugeicons/core-free-icons/CursorAddSelection02Icon';
 import TransitionRightIcon from '@hugeicons/core-free-icons/TransitionRightIcon';
-import BorderFullIcon from '@hugeicons/core-free-icons/BorderFullIcon';
 import StarsIcon from '@hugeicons/core-free-icons/StarsIcon';
-import MountainIcon from '@hugeicons/core-free-icons/MountainIcon';
 import BinaryCodeIcon from '@hugeicons/core-free-icons/BinaryCodeIcon';
 import BlackHoleIcon from '@hugeicons/core-free-icons/BlackHoleIcon';
 import Tornado01Icon from '@hugeicons/core-free-icons/Tornado01Icon';
@@ -83,7 +78,6 @@ import SolarSystemIcon from '@hugeicons/core-free-icons/SolarSystemIcon';
 import City01Icon from '@hugeicons/core-free-icons/City01Icon';
 import CloudFogIcon from '@hugeicons/core-free-icons/CloudFogIcon';
 import LighthouseIcon from '@hugeicons/core-free-icons/LighthouseIcon';
-import CloudAngledRainIcon from '@hugeicons/core-free-icons/CloudAngledRainIcon';
 import Plant02Icon from '@hugeicons/core-free-icons/Plant02Icon';
 import Bug01Icon from '@hugeicons/core-free-icons/Bug01Icon';
 import DnaIcon from '@hugeicons/core-free-icons/DnaIcon';
@@ -91,13 +85,9 @@ import AudioWave01Icon from '@hugeicons/core-free-icons/AudioWave01Icon';
 import Flag02Icon from '@hugeicons/core-free-icons/Flag02Icon';
 import AirplaneTakeOff01Icon from '@hugeicons/core-free-icons/AirplaneTakeOff01Icon';
 import EyeOffIcon from '@hugeicons/core-free-icons/EyeOffIcon';
-import WavesIcon from '@hugeicons/core-free-icons/WavesIcon';
 import SpotlightIcon from '@hugeicons/core-free-icons/SpotlightIcon';
 import SparkleIcon from '@hugeicons/core-free-icons/SparkleIcon';
-import InboxCheckIcon from '@hugeicons/core-free-icons/InboxCheckIcon';
-import Timer01Icon from '@hugeicons/core-free-icons/Timer01Icon';
 import ImageUpscaleIcon from '@hugeicons/core-free-icons/ImageUpscaleIcon';
-import CloudIcon from '@hugeicons/core-free-icons/CloudIcon';
 import LogsIcon from '@hugeicons/core-free-icons/LogsIcon';
 import StatusIcon from '@hugeicons/core-free-icons/StatusIcon';
 import ScrollVerticalIcon from '@hugeicons/core-free-icons/ScrollVerticalIcon';
@@ -194,7 +184,6 @@ export const icons: Record<RouteIcon, IconSvgElement> = {
   speed: DashboardSpeed02Icon,
   loading: Loading03Icon,
   empty: InboxIcon,
-  glow: SparklesIcon,
   planet: Saturn01Icon,
   ember: FireIcon,
   murmuration: BirdIcon,
@@ -209,23 +198,18 @@ export const icons: Record<RouteIcon, IconSvgElement> = {
   asciivideo: WebcamIcon,
   asciiimage: Image01Icon,
   snow: SnowIcon,
-  shore: BeachIcon,
   lavalamp: Lamp01Icon,
   fireworks: FireworksIcon,
   counter: Calculator01Icon,
   asciiclock: Clock01Icon,
   globe: EarthIcon,
   glitch: ImageNotFound01Icon,
-  terminal: ComputerTerminal01Icon,
-  scramble: ShuffleIcon,
   asciilogo: TextFontIcon,
   cursortrail: CursorMagicSelection02Icon,
   ghostcursors: CursorAddSelection02Icon,
   transition: TransitionRightIcon,
-  frame: BorderFullIcon,
   asciiloader: Loading03Icon,
   starfield: StarsIcon,
-  topography: MountainIcon,
   matrix: BinaryCodeIcon,
   dotgrid: GridIcon,
   connectbutton: AiMagicIcon,
@@ -241,23 +225,14 @@ export const icons: Record<RouteIcon, IconSvgElement> = {
   themeflip: Sun03Icon,
   dynamicisland: SmartPhone01Icon,
   scrollmeter: ScrollVerticalIcon,
-  statusrail: StatusIcon,
-  livelog: LogsIcon,
-  logocloud: CloudIcon,
   dissolve: ImageUpscaleIcon,
-  countdown: Timer01Icon,
-  emptystate: InboxCheckIcon,
   particleword: SparkleIcon,
-  spotlight: SpotlightIcon,
-  wavetext: WavesIcon,
-  redact: EyeOffIcon,
   splitflap: AirplaneTakeOff01Icon,
   flag: Flag02Icon,
   visualizer: AudioWave01Icon,
   helix: DnaIcon,
   fireflies: Bug01Icon,
   bonsai: Plant02Icon,
-  windowrain: CloudAngledRainIcon,
   lighthouse: LighthouseIcon,
   smoke: CloudFogIcon,
   nightcity: City01Icon,

@@ -130,14 +130,6 @@ export const canvasControls: readonly AsciiControl[] = [
   },
 ];
 
-const SCRAMBLES = [
-  { value: '01<>/\\{}[]#$%&*+=?~', label: 'Code' },
-  { value: '01', label: 'Binary' },
-  { value: 'abcdefghijklmnopqrstuvwxyz', label: 'Letters' },
-  { value: '+-*/=<>^~', label: 'Operators' },
-  { value: '.:', label: 'Dust' },
-] as const;
-
 const chartColor: AsciiControl = {
   kind: 'color',
   name: 'color',
@@ -217,36 +209,6 @@ const asciiChartScenes: readonly AsciiSceneDoc[] = [
       },
     ],
   },
-  {
-    id: 'heatmap',
-    shelf: 'Data',
-    title: 'Calendar heatmap',
-    component: 'AsciiHeatmap',
-    lede: 'A year a glyph a day, denser and brighter on the busy ones.',
-    touch: 'Hover a day to read its date and value.',
-    controls: [chartColor],
-    props: [
-      {
-        name: 'label',
-        type: 'string',
-        defaultValue: 'a summary of the data',
-        description:
-          'Describes the calendar for screen readers. Without one it reads its count, lowest, highest and latest values.',
-      },
-      {
-        name: 'data',
-        type: 'number[]',
-        defaultValue: 'a demo year',
-        description: 'One value a day, oldest first, the last falling on end.',
-      },
-      {
-        name: 'end',
-        type: 'string',
-        defaultValue: 'today',
-        description: 'The day of the last value, as YYYY-MM-DD.',
-      },
-    ],
-  },
 ];
 
 export const asciiScenes: readonly AsciiSceneDoc[] = [
@@ -257,63 +219,6 @@ export const asciiScenes: readonly AsciiSceneDoc[] = [
   ...mediaDocs,
   ...dataDocs,
   ...sceneDocs,
-  {
-    id: 'glow',
-    shelf: 'Light',
-    title: 'Glow',
-    component: 'AsciiGlow',
-    lede: 'Soft gradient light, drawn in type.',
-    touch: 'Move to stir the characters into code. Click to send a ring out.',
-    controls: [
-      {
-        kind: 'colors',
-        name: 'colors',
-        label: 'Colours',
-        min: 1,
-        max: 5,
-        defaultValue: ['#7c5cff', '#e5489c'],
-        description: 'Gradient stops as hex colours, from the coolest light to the warmest.',
-      },
-      {
-        kind: 'choice',
-        name: 'scramble',
-        label: 'Stirs into',
-        options: SCRAMBLES,
-        defaultValue: SCRAMBLES[0].value,
-        description: 'Characters the pointer stirs the type into.',
-      },
-      {
-        kind: 'range',
-        name: 'lights',
-        label: 'Lights',
-        min: 1,
-        max: 8,
-        step: 1,
-        defaultValue: 4,
-        description: 'Soft lights drifting across the field.',
-      },
-      {
-        kind: 'range',
-        name: 'size',
-        label: 'Light size',
-        min: 0.4,
-        max: 2,
-        step: 0.05,
-        defaultValue: 1,
-        description: 'How large the lights are; 1 is about a third of the shorter side.',
-      },
-      {
-        kind: 'range',
-        name: 'reach',
-        label: 'Stir reach',
-        min: 1,
-        max: 12,
-        step: 0.5,
-        defaultValue: 4.5,
-        description: 'Radius of the stir around the pointer, in cells.',
-      },
-    ],
-  },
   {
     id: 'planet',
     backdrop: 'night',

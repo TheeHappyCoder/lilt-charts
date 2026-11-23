@@ -4,7 +4,6 @@ import type { AsciiPointer, AsciiScene } from '../engine/types';
 import { createDotGrid } from './dot-grid';
 import { createMatrix } from './matrix';
 import { createStarfield } from './starfield';
-import { createTopography } from './topography';
 
 const grid = { cols: 120, rows: 40, aspect: 2.1 };
 const idle: AsciiPointer = { x: 0, y: 0, active: false };
@@ -39,7 +38,6 @@ function meanLevel(surface: GlyphSurface) {
 const scenes: [string, () => AsciiScene][] = [
   ['dot grid', () => createDotGrid()],
   ['matrix', () => createMatrix()],
-  ['topography', () => createTopography()],
   ['starfield', () => createStarfield()],
 ];
 
@@ -132,20 +130,6 @@ describe('matrix', () => {
     scene.press?.(60, 5);
     for (let i = 0; i < 30; i++) scene.step(1 / 60, idle);
     expect(inked(frame(scene))).toBeGreaterThan(before);
-  });
-});
-
-describe('topography', () => {
-  it('draws contours with strokes only', () => {
-    const surface = run(createTopography(), 1);
-    const strokes = new Set([...'-_/|\\'].map((c) => c.charCodeAt(0)));
-    for (const g of surface.glyph) if (g) expect(strokes.has(g)).toBe(true);
-  });
-
-  it('more levels draw more lines', () => {
-    const few = inked(run(createTopography({ levels: 6, drift: 0 }), 0.5));
-    const many = inked(run(createTopography({ levels: 24, drift: 0 }), 0.5));
-    expect(many).toBeGreaterThan(few);
   });
 });
 

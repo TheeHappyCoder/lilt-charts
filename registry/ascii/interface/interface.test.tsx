@@ -7,8 +7,6 @@ import type { AsciiPointer } from '../engine/types';
 import {
   AsciiCurtain,
   AsciiCursorTrail,
-  AsciiFrame,
-  AsciiFrameDemo,
   AsciiLoader,
   AsciiTransition,
   AsciiTransitionDemo,
@@ -81,28 +79,6 @@ describe('AsciiLoader', () => {
     render(<AsciiLoader variant="dots" label="Loading" />);
     const shown = container.querySelector('[aria-hidden="true"]')!;
     expect(shown.textContent).toBe('Loading...');
-  });
-});
-
-describe('AsciiFrame', () => {
-  it('keeps its content real and its border decorative', () => {
-    render(
-      <AsciiFrame variant="line">
-        <button type="button">Get started</button>
-      </AsciiFrame>,
-    );
-    expect(container.querySelector('button')?.textContent).toBe('Get started');
-    expect(container.querySelector('canvas')?.getAttribute('aria-hidden')).toBe('true');
-  });
-
-  it('survives hover and focus without a canvas', () => {
-    render(<AsciiFrameDemo trace="always" />);
-    const frame = container.querySelector('.lilt-ascii-frame')!;
-    act(() => {
-      frame.dispatchEvent(new Event('pointerover', { bubbles: true }));
-      container.querySelector('button')!.focus();
-    });
-    expect(container.textContent).toContain('Get started');
   });
 });
 

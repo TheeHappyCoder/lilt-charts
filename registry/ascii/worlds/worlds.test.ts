@@ -11,7 +11,6 @@ import { createNightCity } from './night-city';
 import { createOrrery } from './orrery';
 import { createRidges } from './ridges';
 import { createSmoke } from './smoke';
-import { createWindowRain } from './window-rain';
 import { createWormhole } from './wormhole';
 
 const grid = { cols: 150, rows: 50, aspect: 1.9 };
@@ -48,7 +47,6 @@ const scenes: [string, () => AsciiScene][] = [
   ['bonsai', () => createBonsai()],
   ['smoke', () => createSmoke()],
   ['helix', () => createHelix()],
-  ['window rain', () => createWindowRain()],
   ['orrery', () => createOrrery()],
   ['fireflies', () => createFireflies()],
   ['flag', () => createFlag()],
