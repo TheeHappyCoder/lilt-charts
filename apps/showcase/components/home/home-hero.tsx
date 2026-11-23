@@ -10,7 +10,7 @@ import { ArrowSwap, Roll } from '@/components/craft/roll';
  * The share of the sky kept clear under the wordmark. The headline's place in home.css is worked
  * out from the same number, so change both together.
  */
-const CLEAR_BELOW = 0.3;
+const CLEAR_BELOW = 0.16;
 
 /** Two campfires on the ground, in the lower corners of the sky, clear of the headline. */
 const FIRES = [0.2, 0.8];

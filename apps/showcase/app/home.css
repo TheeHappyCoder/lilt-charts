@@ -119,16 +119,16 @@
   font-family: var(--font-mono), monospace;
 }
 /* The headline covers the bottom quarter of the wordmark, whatever the window. The logo scene
-   sets the word in the band above CLEAR_BELOW (0.3, so 70% of the height), centred, as tall as
+   sets the word in the band above CLEAR_BELOW (0.16, so 84% of the height), centred, as tall as
    about 0.665 of that band or as wide as 82% of the sky, whichever binds first; "lilt UI" is
-   3.84 times as wide as it is tall. So the word's foot is at 35% of the height plus half its
+   3.84 times as wide as it is tall. So the word's foot is at 42% of the height plus half its
    height, and the headline starts a quarter of the word's height above that. */
 .lilt-home-hero__copy {
-  --lilt-word-height: min(46.5cqh, 21.4cqw + 10px);
+  --lilt-word-height: min(55.9cqh, 21.4cqw + 10px);
   position: relative;
   z-index: 1;
   display: grid;
-  margin-top: calc(35cqh + var(--lilt-word-height) * 0.25);
+  margin-top: calc(42cqh + var(--lilt-word-height) * 0.25);
   justify-items: center;
   pointer-events: none;
 }
