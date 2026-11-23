@@ -1,8 +1,9 @@
 import { Analytics } from '@vercel/analytics/next';
 import type { Metadata } from 'next';
-import { Geist, Geist_Mono, Instrument_Serif } from 'next/font/google';
+import { Geist_Mono, Mona_Sans } from 'next/font/google';
 import { ThemeProvider } from 'next-themes';
-import { RouteCurtain } from '@/components/shell/route-curtain';
+import { REVEAL_BOOT, RevealObserver } from '@/components/craft/reveal';
+import { BlurTransition } from '@/components/shell/blur-transition';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import './globals.css';
 import '@lilt-ui/charts/styles.css';
@@ -30,16 +31,11 @@ import '@/components/ui/card-carousel.css';
 import './chart-stage.css';
 import './not-found.css';
 import './ascii.css';
+import '@/components/craft/craft.css';
 
-const geist = Geist({ subsets: ['latin'], variable: '--font-geist', display: 'swap' });
-/** The site's italic voice: one word in a headline, as in the wordmark's Lilt. */
-const serif = Instrument_Serif({
-  subsets: ['latin'],
-  weight: '400',
-  style: 'italic',
-  variable: '--font-serif',
-  display: 'swap',
-});
+/** The site's one face: Mona Sans, read at 450 with tight tracking. */
+const mona = Mona_Sans({ subsets: ['latin'], variable: '--font-mona', display: 'swap' });
+/** Mono is kept for code, install commands and API identifiers. */
 const geistMono = Geist_Mono({
   subsets: ['latin'],
   variable: '--font-geist-mono',
@@ -57,11 +53,11 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html
-      lang="en"
-      suppressHydrationWarning
-      className={`${geist.variable} ${serif.variable} ${geistMono.variable}`}
-    >
+    <html lang="en" suppressHydrationWarning className={`${mona.variable} ${geistMono.variable}`}>
+      <head>
+        {/* Reveals switch on before the first paint, so nothing shows and then hides. */}
+        <script dangerouslySetInnerHTML={{ __html: REVEAL_BOOT }} />
+      </head>
       <body>
         <ThemeProvider
           attribute="class"
@@ -70,7 +66,8 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
           disableTransitionOnChange
         >
           <TooltipProvider>{children}</TooltipProvider>
-          <RouteCurtain />
+          <BlurTransition />
+          <RevealObserver />
         </ThemeProvider>
         <Analytics />
       </body>

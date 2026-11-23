@@ -1,56 +1,33 @@
-/* What makes the site Lilt's: the italic voice, the brand's violet-to-rose, charts drawn as
-   themselves, rooms lit by the palette, and the segmented level meter. */
+/* What makes the site Lilt's: the brand's violet-to-rose (kept for the wordmark and code sigils),
+   charts drawn as themselves, and stages lit softly by the palette. */
 :root {
   --lilt-brand-gradient: linear-gradient(100deg, #7c5cff 10%, #e5489c 90%);
 }
 .dark {
   --lilt-brand-gradient: linear-gradient(100deg, #9b82ff 10%, #f06aae 90%);
 }
-::selection {
-  background: color-mix(in srgb, var(--brand-primary) 28%, transparent);
-}
 
-/* The italic voice: one word in a headline, in the brand's colours. */
-:is(.lilt-docs__title, .lilt-landing h1, .lilt-landing h2, .lilt-home h1, .lilt-home h2) em {
-  padding-right: 0.06em;
-  background: var(--lilt-brand-gradient);
-  background-clip: text;
-  color: transparent;
-  font-family: var(--font-serif), Georgia, serif;
-  font-style: italic;
-  font-weight: 400;
-  letter-spacing: -0.01em;
-  -webkit-background-clip: text;
-}
-.lilt-landing h1 em {
-  font-size: 1.08em;
-}
-
-/* A chart page's family beside its title, drawn as itself. */
+/* A chart page's family beside its title, drawn as itself on a small plinth. */
 .lilt-emblem {
   display: grid;
   width: 52px;
   height: 38px;
   flex: none;
   place-items: center;
-  border-radius: 12px;
-  background: var(--surface);
-  box-shadow:
-    inset 0 0 0 1px var(--line-strong),
-    0 1px 2px rgb(0 0 0 / 0.05),
-    0 8px 20px -12px color-mix(in srgb, var(--brand-primary) 60%, transparent);
+  border-radius: var(--radius-button);
+  background: var(--panel);
   container-type: normal;
 }
 .lilt-emblem .lilt-chart-glyph {
   padding: 4px 3px;
 }
 
-/* The stage takes the colour of its charts: a soft light from the palette's first two series. */
+/* The stage is a plinth that holds the chart: filled, borderless, with a soft light from the
+   palette's first two series where the card stands. */
 .lilt-stage {
   isolation: isolate;
-  border-radius: 24px;
+  border-radius: var(--radius-panel);
   background: var(--panel);
-  box-shadow: inset 0 0 0 1px var(--line);
 }
 .lilt-stage > .lilt-docs-example {
   background: transparent;
@@ -62,34 +39,19 @@
   inset: 0 0 auto;
   height: 70%;
   padding: 0;
-  border-radius: 24px 24px 0 0;
+  border-radius: var(--radius-panel) var(--radius-panel) 0 0;
   background:
     radial-gradient(
       50% 80% at 35% 0%,
-      color-mix(in srgb, var(--lilt-series-1) 16%, transparent),
+      color-mix(in srgb, var(--lilt-series-1) 10%, transparent),
       transparent 70%
     ),
     radial-gradient(
       45% 70% at 70% 0%,
-      color-mix(in srgb, var(--lilt-series-2) 11%, transparent),
+      color-mix(in srgb, var(--lilt-series-2) 7%, transparent),
       transparent 70%
     );
   container-type: normal;
   pointer-events: none;
   transition: opacity 400ms ease;
-}
-
-/* "You are here" in the brand's dot, as on the wordmark. */
-.lilt-toc__link[aria-current='location'] {
-  border-left-color: var(--brand-primary);
-}
-.lilt-header__link[aria-current='page'] .lilt-header__link-text::before {
-  display: inline-block;
-  width: 5px;
-  height: 5px;
-  margin: 0 7px 2px 0;
-  border-radius: 50%;
-  background: var(--brand-primary);
-  content: '';
-  vertical-align: middle;
 }
