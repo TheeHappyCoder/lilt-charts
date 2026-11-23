@@ -6,6 +6,7 @@ import {
   useMemo,
   useRef,
   useState,
+  useSyncExternalStore,
   type CSSProperties,
   type KeyboardEvent,
   type MouseEvent,
@@ -44,7 +45,7 @@ export interface DateRangeProps {
   min?: Date;
   /** The latest day that can be picked. Default today; null for no limit. */
   max?: Date | null;
-  /** Today, for tests and server rendering. Default the reader's today. */
+  /** Pins the calendar to a day, for tests and demos. Default the reader's today. */
   today?: Date;
   /** 1 starts weeks on Monday, 0 on Sunday. Default 1. */
   weekStartsOn?: 0 | 1;
@@ -127,8 +128,45 @@ const DEFAULT_PRESETS: readonly DateRangePreset[] = [
   },
 ];
 
-function useFormats(locales: Intl.LocalesArgument) {
+/**
+ * The server cannot know the reader's day or language, and engines even space formatted dates
+ * differently, so it draws a stand-in month on a fixed day with no formatted text, hidden. The
+ * browser renders the same stand-in while it hydrates, then swaps in the real month.
+ */
+const STAND_IN = new Date(2026, 0, 15);
+const BLANK = ' ';
+interface Format {
+  format: (date: Date) => string;
+}
+const blankFormat: Format = { format: () => BLANK };
+const neverChanges = () => () => {};
+/** False on the server and while hydrating; true once the browser has taken over. */
+const useInBrowser = () =>
+  useSyncExternalStore(
+    neverChanges,
+    () => true,
+    () => false,
+  );
+
+interface Formats {
+  month: Format;
+  weekday: Format;
+  full: Format;
+  short: Format;
+  range: (span: Span, withYear: boolean) => string;
+}
+
+function useFormats(locales: Intl.LocalesArgument, blank: boolean): Formats {
   return useMemo(() => {
+    if (blank) {
+      return {
+        month: blankFormat,
+        weekday: blankFormat,
+        full: blankFormat,
+        short: blankFormat,
+        range: () => BLANK,
+      };
+    }
     const month = new Intl.DateTimeFormat(locales, {
       month: 'long',
       year: 'numeric',
@@ -154,7 +192,7 @@ function useFormats(locales: Intl.LocalesArgument) {
         : format.formatRange(utcOf(span.start), utcOf(span.end));
     };
     return { month, weekday, full, short, range };
-  }, [locales]);
+  }, [locales, blank]);
 }
 
 /** Where a span crosses one week: which columns, and whether it carries on past either edge. */
@@ -177,8 +215,32 @@ const percent = (columns: number) => `${(columns / 7) * 100}%`;
  * with ink at both ends, and two days can be picked in either order: the earlier one becomes the
  * start. While you look for the second day the band follows the pointer and a label counts the
  * days. Compare draws the period before as a dashed ghost.
+ *
+ * On the server it draws a hidden stand-in month in the same frame; the reader's own day and
+ * language blur in as soon as the browser takes over.
  */
-export function DateRange({
+export function DateRange(props: DateRangeProps) {
+  const inBrowser = useInBrowser();
+  // A picker that began as the server's stand-in fades its month in; one opened in the browser
+  // is simply there.
+  const [fromStandIn] = useState(!inBrowser);
+  return inBrowser ? (
+    <Picker key="live" {...props} reveal={fromStandIn} />
+  ) : (
+    <Picker
+      key="stand-in"
+      {...props}
+      value={undefined}
+      defaultValue={undefined}
+      min={undefined}
+      max={undefined}
+      today={STAND_IN}
+      standIn
+    />
+  );
+}
+
+function Picker({
   value,
   defaultValue,
   onChange,
@@ -195,9 +257,11 @@ export function DateRange({
   note,
   className,
   style,
-}: DateRangeProps) {
+  standIn = false,
+  reveal = false,
+}: DateRangeProps & { standIn?: boolean; reveal?: boolean }) {
   const reduced = Boolean(useReducedMotion());
-  const formats = useFormats(locales);
+  const formats = useFormats(locales, standIn);
   const [mountedToday] = useState(() => dayOf(new Date()));
   const todayDay = today ? dayOf(today) : mountedToday;
   const minDay = min ? dayOf(min) : -Infinity;
@@ -234,9 +298,12 @@ export function DateRange({
   const preview = pending ? spanOf(anchor, hover ?? anchor) : null;
   const shown = preview ?? draft;
   const ghost = compare ? previousOf(shown) : null;
-  const active = pending
-    ? -1
-    : presetSpans.findIndex((span) => span.start === draft.start && span.end === draft.end);
+  // The stand-in presses no preset, so the reader's own never jumps from another.
+  const active = standIn
+    ? -2
+    : pending
+      ? -1
+      : presetSpans.findIndex((span) => span.start === draft.start && span.end === draft.end);
 
   // Six weeks from the start of the week holding the 1st, so the grid never changes height.
   const first = monthStart(view.year, view.month);
@@ -451,7 +518,13 @@ export function DateRange({
       <style href="lilt-ui-date-range" precedence="default">
         {css}
       </style>
-      <div className={['lilt-drp', className].filter(Boolean).join(' ')} style={style}>
+      <div
+        className={['lilt-drp', className].filter(Boolean).join(' ')}
+        style={style}
+        inert={standIn || undefined}
+        data-stand-in={standIn ? '' : undefined}
+        data-reveal={reveal ? '' : undefined}
+      >
         <div className="lilt-drp-head">
           <span className="lilt-drp-title">{title}</span>
           <Swap id={summary.key} reduced={reduced} className="lilt-drp-summary">
@@ -1172,6 +1245,18 @@ const css = /* css */ `
   white-space: nowrap;
 }
 
+/* The server's stand-in keeps the frame and hides the month; the reader's blurs in over it. */
+.lilt-drp[data-stand-in] :is(.lilt-drp-summary, .lilt-drp-month-name, .lilt-drp-weekdays, .lilt-drp-viewport, .lilt-drp-compare-text) {
+  visibility: hidden;
+}
+.lilt-drp[data-reveal] :is(.lilt-drp-summary, .lilt-drp-month-name, .lilt-drp-weekdays, .lilt-drp-viewport, .lilt-drp-compare-text) {
+  animation: lilt-drp-reveal 320ms var(--drp-ease);
+}
+.lilt-drp[data-reveal] .lilt-drp-preset[aria-pressed="true"] { animation: lilt-drp-press 320ms var(--drp-ease); }
+@keyframes lilt-drp-reveal { from { opacity: 0; filter: blur(8px); } }
+@keyframes lilt-drp-press { from { background-color: transparent; } }
+@keyframes lilt-drp-fade { from { opacity: 0; } }
+
 /* Narrow: presets become a row of their own above the month. */
 @container (max-width: 470px) {
   .lilt-drp-card { flex-direction: column; }
@@ -1188,5 +1273,8 @@ const css = /* css */ `
 
 @media (prefers-reduced-motion: reduce) {
   .lilt-drp-cap, .lilt-drp-preset, .lilt-drp-step, .lilt-drp-switch, .lilt-drp-knob, .lilt-drp-btn { transition: none; }
+  .lilt-drp[data-reveal] :is(.lilt-drp-summary, .lilt-drp-month-name, .lilt-drp-weekdays, .lilt-drp-viewport, .lilt-drp-compare-text) {
+    animation-name: lilt-drp-fade;
+  }
 }
 `;

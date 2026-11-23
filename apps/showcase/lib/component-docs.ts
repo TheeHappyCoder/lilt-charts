@@ -666,7 +666,8 @@ export function AccountPhoto({ user }: { user: { name: string; avatarUrl?: strin
         name: 'today',
         type: 'Date',
         defaultValue: "the reader's today",
-        description: 'Set it when you render on the server, so the server and browser agree.',
+        description:
+          'Pins the calendar to a day, for tests and demos. The server draws a hidden stand-in month either way, so it never disagrees with the browser.',
       },
       {
         name: 'title / note',

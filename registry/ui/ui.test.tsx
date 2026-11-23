@@ -1,6 +1,7 @@
 // @vitest-environment jsdom
 import { act } from 'react';
-import { createRoot, type Root } from 'react-dom/client';
+import { createRoot, hydrateRoot, type Root } from 'react-dom/client';
+import { renderToString } from 'react-dom/server';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { CommandCopy } from './command-copy';
 import { NumberRoll } from './number-roll';
@@ -281,5 +282,46 @@ describe('DateRange', () => {
     act(() => host.querySelector<HTMLButtonElement>('.lilt-drp-btn--ink')!.click());
     const [, compare] = onApply.mock.calls[0]! as [unknown, { start: Date; end: Date }];
     expect([compare.start.getDate(), compare.end.getDate()]).toEqual([10, 16]);
+  });
+
+  it('hydrates over a page built on another day, then shows the reader’s own week', async () => {
+    vi.useFakeTimers({ toFake: ['Date'] });
+    const element = <DateRange locales="en-US" />;
+    const page = document.createElement('div');
+    document.body.append(page);
+    const recoverable: unknown[] = [];
+    let hydrated: Root | undefined;
+    try {
+      // Built on the 23rd: a hidden stand-in with no dates written.
+      vi.setSystemTime(new Date(2026, 10, 23, 12));
+      page.innerHTML = renderToString(element);
+      expect(page.querySelector('.lilt-drp')!.hasAttribute('data-stand-in')).toBe(true);
+      expect(page.querySelector('.lilt-drp')!.hasAttribute('inert')).toBe(true);
+      expect(page.querySelector('.lilt-drp')!.textContent).not.toMatch(/Nov|Jan|2026/);
+
+      // Read on the 30th.
+      vi.setSystemTime(new Date(2026, 10, 30, 12));
+      await act(async () => {
+        hydrated = hydrateRoot(page, element, {
+          onRecoverableError: (error) => recoverable.push(error),
+        });
+      });
+      expect(recoverable).toEqual([]);
+      const live = page.querySelector('.lilt-drp')!;
+      expect(live.hasAttribute('data-stand-in')).toBe(false);
+      expect(live.hasAttribute('inert')).toBe(false);
+      expect(live.hasAttribute('data-reveal')).toBe(true);
+      expect(page.querySelector('.lilt-drp-summary')!.textContent).toMatch(/30, 2026 · 7 days/);
+      expect(page.querySelector('[aria-current="date"]')!.textContent).toBe('30');
+    } finally {
+      if (hydrated) await act(async () => hydrated!.unmount());
+      page.remove();
+    }
+  });
+
+  it('opens without the fade when the browser renders it first', () => {
+    render(<DateRange today={today} locales="en-US" />);
+    expect(host.querySelector('.lilt-drp')!.hasAttribute('data-reveal')).toBe(false);
+    expect(host.querySelector('.lilt-drp')!.hasAttribute('data-stand-in')).toBe(false);
   });
 });
