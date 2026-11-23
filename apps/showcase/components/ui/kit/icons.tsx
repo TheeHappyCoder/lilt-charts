@@ -1,6 +1,6 @@
 /**
- * The small strokes the kit draws with: a check (its path length is 1, so CSS can draw it in), a
- * chevron, a cross, a dot.
+ * The small strokes the kit draws with: a check (its path length is 1, so CSS can draw it in) and
+ * a chevron.
  */
 
 export function CheckIcon() {
@@ -24,22 +24,6 @@ export function ChevronIcon() {
   return (
     <svg aria-hidden="true" viewBox="0 0 12 12" width="12" height="12">
       <path d="M3 4.5 6 7.5 9 4.5" fill="none" stroke="currentColor" strokeWidth="1.5" />
-    </svg>
-  );
-}
-
-export function CrossIcon() {
-  return (
-    <svg aria-hidden="true" viewBox="0 0 12 12" width="12" height="12">
-      <path d="M3 3l6 6M9 3 3 9" fill="none" stroke="currentColor" strokeWidth="1.5" />
-    </svg>
-  );
-}
-
-export function DotIcon() {
-  return (
-    <svg aria-hidden="true" viewBox="0 0 12 12" width="12" height="12">
-      <circle cx="6" cy="6" r="3" fill="currentColor" />
     </svg>
   );
 }

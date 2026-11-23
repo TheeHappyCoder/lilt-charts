@@ -39,8 +39,3 @@ export function ArrowSwap({ direction = 'up-right' }: { direction?: 'up-right' |
     </span>
   );
 }
-
-/** Text whose underline draws in from the left on hover and leaves to the right. */
-export function LinkLine({ children }: { children: React.ReactNode }) {
-  return <span className="lilt-link">{children}</span>;
-}

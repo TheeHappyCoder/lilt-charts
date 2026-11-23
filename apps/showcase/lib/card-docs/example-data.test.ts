@@ -13,7 +13,6 @@ import {
 } from './examples';
 import { rangesOf } from './periods';
 import { stageExamples } from './resolve-example';
-import { HERO_LOOK, heroSource, heroWithLook, sceneProps } from '../home-hero';
 
 const require = createRequire(import.meta.url);
 type Element = { props: Record<string, unknown> & { children?: Element[] } };
@@ -39,22 +38,6 @@ function renderExample(source: string, name = 'Example'): Element {
 }
 
 describe('copyable data matches preview data', () => {
-  it('copies the home page with its exact rows, formats, styles, and interaction props', () => {
-    for (const scene of ['sync', 'compare', 'forecast'] as const) {
-      for (const depth of [false, true]) {
-        const look = { ...HERO_LOOK, depth };
-        const preview = heroWithLook(look, sceneProps[scene].main);
-        const { code, chosen } = heroSource(look, scene);
-        const rendered = renderExample(code, 'Sales');
-        expect(plain(rendered.props.data)).toEqual(
-          plain(datasets[preview.source as keyof typeof datasets]),
-        );
-        for (const [key, value] of Object.entries(preview.props))
-          expect(plain(rendered.props[key]), `${scene}.${key}`).toEqual(plain(value));
-        for (const line of chosen) expect(code).toContain(line);
-      }
-    }
-  });
   it.each(documentedCharts().map(({ doc }) => [doc.title, doc] as const))(
     '%s preserves every row and value',
     (_title, doc) => {

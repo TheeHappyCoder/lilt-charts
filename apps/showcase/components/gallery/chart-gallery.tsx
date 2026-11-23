@@ -1,9 +1,7 @@
 import Link from 'next/link';
 import type { CSSProperties } from 'react';
-import { Label } from '@/components/craft/label';
 import { ArrowSwap } from '@/components/craft/roll';
 import { ChartGlyph } from '@/components/shell/chart-glyph';
-import { familyGroups } from '@/components/shell/nav-model';
 import { chartDocs } from '@/lib/card-docs/registry';
 import { featureCards } from '@/lib/home-showcase';
 import { appRoutes, type AppRoute } from '@/lib/routes';
@@ -17,8 +15,8 @@ const tileExample = (href: string) => {
 };
 
 /**
- * One tile: a plinth holding a lit room with the chart rising from its floor, live, and beneath it
- * the family's glyph, name and job. Hover deepens the plinth and lifts the card.
+ * One tile: a plinth holding the live chart card, and beneath it the family's glyph, name and job.
+ * Hover lifts the card cleanly.
  */
 export function GalleryTile({
   href,
@@ -68,31 +66,5 @@ export function GalleryTile({
         <span className="lilt-cap__desc">{doc.lede}</span>
       </span>
     </Link>
-  );
-}
-
-/** Every chart family by the job it does, each as a live tile. */
-export function ChartGallery() {
-  let index = 0;
-  return (
-    <div className="lilt-gallery">
-      {familyGroups.map((group) => (
-        <section
-          key={group.key}
-          className="lilt-gallery__group"
-          id={group.key}
-          aria-labelledby={`${group.key}-title`}
-        >
-          <Label as="h2" id={`${group.key}-title`} count={group.routes.length}>
-            {group.heading}
-          </Label>
-          <div className="lilt-gallery__grid">
-            {group.routes.map((route, position) => (
-              <GalleryTile key={route.id} href={route.href} eager={index++ < 6} index={position} />
-            ))}
-          </div>
-        </section>
-      ))}
-    </div>
   );
 }

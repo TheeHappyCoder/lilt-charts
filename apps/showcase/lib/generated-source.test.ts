@@ -66,7 +66,6 @@ import {
 } from './card-docs/cool';
 import { exampleSource } from './card-docs/examples';
 import { resolveSubject, stageExamples } from './card-docs/resolve-example';
-import { HERO_LOOK, heroSource, type SceneId } from './home-hero';
 
 describe('API reference topics', () => {
   it('gives every topic a unique page that keeps the API reference current in the sidebar', () => {
@@ -108,14 +107,6 @@ describe('retained chart previews', () => {
 
   it('typechecks generated components for every retained family against public exports', () => {
     const sources = new Map<string, string>();
-    for (const scene of [undefined, 'sync', 'compare', 'forecast'] as const) {
-      for (const depth of [false, true]) {
-        sources.set(
-          `home-${scene ?? 'default'}-${depth}.tsx`,
-          heroSource({ ...HERO_LOOK, depth }, scene as SceneId | undefined).code,
-        );
-      }
-    }
     // Every card docs example prints a complete consumer file; each must compile on its own.
     for (const doc of [
       treemapDoc,

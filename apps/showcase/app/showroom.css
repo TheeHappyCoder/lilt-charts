@@ -690,10 +690,6 @@
   font-size: var(--text-md);
   font-weight: var(--weight-strong);
 }
-.lilt-studio__inspector .lilt-fields {
-  grid-template-columns: minmax(0, 1fr);
-  gap: 8px;
-}
 .lilt-studio__inspector .lilt-field {
   background: var(--background);
 }

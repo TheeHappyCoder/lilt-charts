@@ -33,22 +33,6 @@ export function IconLive({ size = 12, className }: IconProps) {
   );
 }
 
-/** Ready for you: a tick inside a ring. */
-export function IconAvailable({ size = 14, className }: IconProps) {
-  return (
-    <svg {...base(size, className)}>
-      <circle cx="7" cy="7" r="5.6" stroke="currentColor" strokeWidth="1.4" />
-      <path
-        d="M4.6 7.2 6.3 8.9 9.5 5.4"
-        stroke="currentColor"
-        strokeWidth="1.5"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
-  );
-}
-
 /** Under way, or new and still settling: a dashed ring that turns slowly. */
 export function IconProgress({ size = 14, className }: IconProps) {
   return (

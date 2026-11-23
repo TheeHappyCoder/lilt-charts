@@ -108,12 +108,6 @@ html[data-rv='on'] [data-rv='media'][data-rv-in] .lilt-media {
 .lilt-swap[data-direction='right'] > svg + svg {
   transform: translateX(-110%);
 }
-/* An underline that draws in from the left and leaves to the right. */
-.lilt-link {
-  padding-bottom: 2px;
-  background: linear-gradient(currentColor, currentColor) no-repeat 100% 100% / 0% 1px;
-  transition: background-size 0.5s var(--ease-roll);
-}
 @media (hover: hover) {
   :is(a, button):hover .lilt-roll > span:first-child {
     transform: translateY(-125%);
@@ -129,11 +123,6 @@ html[data-rv='on'] [data-rv='media'][data-rv-in] .lilt-media {
   }
   :is(a, button):hover .lilt-swap > svg + svg {
     transform: none;
-  }
-  a:hover .lilt-link,
-  a.lilt-link:hover {
-    background-position: 0 100%;
-    background-size: 100% 1px;
   }
 }
 :is(a, button):focus-visible .lilt-roll > span:first-child {
@@ -462,7 +451,6 @@ html.lilt-pt-enter #main-content {
 @media (prefers-reduced-motion: reduce) {
   .lilt-roll > span,
   .lilt-swap > svg,
-  .lilt-link,
   .lilt-pill-nav__ind {
     transition: none;
   }

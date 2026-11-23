@@ -1,22 +1,3 @@
-/* The chart gallery: live tiles on plinths, grouped by job. */
-.lilt-docs--wide {
-  width: min(1120px, 100%);
-}
-.lilt-gallery {
-  display: grid;
-  gap: 56px;
-  padding-top: 8px;
-}
-.lilt-gallery__group {
-  display: grid;
-  gap: 16px;
-}
-.lilt-gallery__grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(min(256px, 100%), 1fr));
-  gap: var(--gap);
-}
-
 /* A tile: a quiet plinth holding the chart card, then the family's glyph, name and job beneath.
    Hover lifts the card cleanly. */
 .lilt-tile {

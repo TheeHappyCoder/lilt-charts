@@ -88,37 +88,3 @@ export function ThemeSegmented() {
     </div>
   );
 }
-
-/** A labelled theme row, for footers and templates. */
-export function ThemeModeSwitcher({ start = 'bottom-left' }: { start?: string }) {
-  const { mode, change, reduced } = useThemeMode(start);
-  return (
-    <div className="lilt-theme-mode">
-      <span>Theme</span>
-      <div className="lilt-theme-mode__buttons" aria-label="Theme">
-        {modes.map(([value, icon, label]) => (
-          <TooltipHint key={value} content={`Use ${label.toLowerCase()} theme`} side="top">
-            <button
-              aria-label={`Use ${label.toLowerCase()} theme`}
-              className="lilt-theme-mode__button"
-              data-active={mode === value}
-              onClick={() => change(value)}
-              type="button"
-            >
-              {mode === value ? (
-                <motion.span
-                  className="lilt-theme-mode__thumb"
-                  layoutId="lilt-theme-indicator"
-                  transition={
-                    reduced ? { duration: 0 } : { type: 'spring', stiffness: 520, damping: 38 }
-                  }
-                />
-              ) : null}
-              <Icon icon={icon} aria-hidden="true" size={14} strokeWidth={1.5} />
-            </button>
-          </TooltipHint>
-        ))}
-      </div>
-    </div>
-  );
-}

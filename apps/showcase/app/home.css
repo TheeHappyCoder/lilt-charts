@@ -431,12 +431,6 @@
   font-weight: 800;
   line-height: 1;
 }
-.lilt-tile__big {
-  color: #f4f4f2;
-  font-size: 40px;
-  font-weight: 600;
-  letter-spacing: -0.02em;
-}
 
 /* Built in: one divided architectural spec strip inside a warm-stone / dusk plinth. */
 .lilt-built {

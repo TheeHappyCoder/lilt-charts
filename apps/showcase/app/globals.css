@@ -199,51 +199,6 @@ body {
   color: var(--faint);
 }
 
-.lilt-theme-mode {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
-  color: var(--muted-foreground);
-  font-size: var(--text-xs);
-}
-
-.lilt-theme-mode__buttons {
-  display: flex;
-  padding: 2px;
-  border-radius: var(--radius-control);
-  background: var(--panel);
-}
-
-.lilt-theme-mode__button {
-  position: relative;
-  display: grid;
-  width: 27px;
-  height: 27px;
-  place-items: center;
-  border: 0;
-  border-radius: 7px;
-  background: transparent;
-  color: var(--muted-foreground);
-  cursor: pointer;
-}
-
-/* The sliding thumb draws the selected state; the icon sits above it. */
-.lilt-theme-mode__button[data-active='true'] {
-  color: var(--foreground);
-}
-.lilt-theme-mode__thumb {
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  background: var(--background);
-  box-shadow: 0 1px 2px rgb(0 0 0 / 0.06);
-}
-.lilt-theme-mode__button svg {
-  position: relative;
-  z-index: 1;
-}
-
 .lilt-main {
   width: min(1120px, 100%);
   margin: 0 auto;
