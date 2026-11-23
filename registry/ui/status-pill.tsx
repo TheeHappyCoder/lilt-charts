@@ -107,15 +107,14 @@ function Mark({
     const r = (SIZE - stroke) / 2;
     const around = 2 * Math.PI * r;
     return (
-      <motion.svg
+      <svg
         aria-hidden="true"
         viewBox={`0 0 ${SIZE} ${SIZE}`}
         fill="none"
         stroke="currentColor"
         strokeWidth={stroke}
+        className={reduced ? undefined : 'lilt-stp-spin'}
         style={box}
-        animate={reduced ? undefined : { rotate: 360 }}
-        transition={{ duration: 0.8, ease: 'linear', repeat: Infinity }}
       >
         <circle cx={SIZE / 2} cy={SIZE / 2} r={r} opacity={0.22} />
         <circle
@@ -125,7 +124,7 @@ function Mark({
           strokeLinecap="round"
           strokeDasharray={`${around * 0.28} ${around}`}
         />
-      </motion.svg>
+      </svg>
     );
   }
   if (mark === 'tick')
@@ -197,5 +196,18 @@ const css = /* css */ `
   --stp-bg: #ffffff;
   --stp-line: rgb(26 26 24 / 0.1);
   --stp-shadow: 0 1px 2px rgb(26 26 24 / 0.04);
+}
+@keyframes lilt-stp-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+.lilt-stp-spin {
+  animation: lilt-stp-spin 0.8s linear infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .lilt-stp-spin {
+    animation: none;
+  }
 }
 `;

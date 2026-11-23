@@ -70,11 +70,12 @@ describe('Thinking', () => {
 });
 
 describe('StatusPill', () => {
-  it('speaks each new status politely', () => {
+  it('speaks each new status politely and spins on initial render', () => {
     render(<StatusPill status="saving" />);
     const pill = host.querySelector('[role="status"]')!;
     expect(pill.getAttribute('aria-live')).toBe('polite');
     expect(pill.textContent).toBe('Saving changes');
+    expect(pill.querySelector('svg.lilt-stp-spin')).not.toBeNull();
     render(<StatusPill status="saved" />);
     expect(host.querySelector('[role="status"]')!.textContent).toContain('Saved');
   });
@@ -163,18 +164,20 @@ describe('StreamText', () => {
 });
 
 describe('ToolTrace', () => {
-  it('names the running step while it works and summarises once done', () => {
+  it('names the running step while it works, spins header and running rows on mount, and summarises once done', () => {
     const steps = [
       { id: 'a', label: 'Read', detail: 'a.ts', status: 'done' as const, duration: 340 },
       { id: 'b', label: 'Ran', detail: 'tests', status: 'running' as const },
     ];
-    render(<ToolTrace steps={steps} />);
+    render(<ToolTrace steps={steps} defaultOpen />);
     const header = host.querySelector('button')!;
-    expect(header.getAttribute('aria-expanded')).toBe('false');
+    expect(header.getAttribute('aria-expanded')).toBe('true');
     expect(header.textContent).toContain('Ran');
+    expect(header.querySelector('svg.lilt-ttr-spin')).not.toBeNull();
+    expect(host.querySelectorAll('ol svg.lilt-ttr-spin')).toHaveLength(1);
     render(<ToolTrace steps={steps.map((step) => ({ ...step, status: 'done' as const }))} />);
     expect(host.querySelector('button')!.textContent).toContain('Used 2 tools');
-    act(() => host.querySelector('button')!.click());
+    expect(host.querySelectorAll('svg path[d^="M4.8"]')).toHaveLength(3);
     expect(host.querySelectorAll('li')).toHaveLength(2);
   });
 

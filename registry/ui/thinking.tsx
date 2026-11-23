@@ -206,22 +206,7 @@ export function Thinking({
 
 /** Words with a soft light passing over them, painted through the text. */
 function Sweep({ children }: { children: string }) {
-  return (
-    <motion.span
-      style={{
-        backgroundImage:
-          'linear-gradient(90deg, color-mix(in srgb, currentColor 65%, transparent) 34%, currentColor 50%, color-mix(in srgb, currentColor 65%, transparent) 66%)',
-        backgroundSize: '240% 100%',
-        WebkitBackgroundClip: 'text',
-        backgroundClip: 'text',
-        WebkitTextFillColor: 'transparent',
-      }}
-      animate={{ backgroundPosition: ['100% 0', '-140% 0'] }}
-      transition={{ duration: 1.9, ease: 'linear', repeat: Infinity }}
-    >
-      {children}
-    </motion.span>
-  );
+  return <span className="lilt-thk-sweep">{children}</span>;
 }
 
 const css = /* css */ `
@@ -282,5 +267,32 @@ const css = /* css */ `
   font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
   font-size: 12px;
   font-variant-numeric: tabular-nums;
+}
+@keyframes lilt-thk-sweep {
+  from {
+    background-position: 100% 0;
+  }
+  to {
+    background-position: -140% 0;
+  }
+}
+.lilt-thk-sweep {
+  background-image: linear-gradient(
+    90deg,
+    color-mix(in srgb, currentColor 65%, transparent) 34%,
+    currentColor 50%,
+    color-mix(in srgb, currentColor 65%, transparent) 66%
+  );
+  background-size: 240% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: lilt-thk-sweep 1.9s linear infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .lilt-thk-sweep {
+    animation: none;
+    -webkit-text-fill-color: currentColor;
+  }
 }
 `;

@@ -204,7 +204,7 @@ function Row({
         // The rail to the next step: a faint track that fills in once this step is done.
         <span aria-hidden="true" className="lilt-ttr-rail">
           <motion.span
-            initial={false}
+            initial={{ scaleY: reduced ? 1 : 0 }}
             animate={{ scaleY: step.status === 'running' ? 0 : 1 }}
             transition={reduced ? { duration: 0 } : { duration: 0.45, ease: EASE }}
             style={{
@@ -239,15 +239,14 @@ function StepIcon({ status, reduced }: { status: StepStatus; reduced: boolean })
           style={{ display: 'grid', gridArea: '1 / 1', placeItems: 'center' }}
         >
           {status === 'running' ? (
-            <motion.svg
+            <svg
               width={ICON}
               height={ICON}
               viewBox={`0 0 ${ICON} ${ICON}`}
               fill="none"
               stroke="currentColor"
               strokeWidth={stroke}
-              animate={reduced ? undefined : { rotate: 360 }}
-              transition={{ duration: 0.85, ease: 'linear', repeat: Infinity }}
+              className={reduced ? undefined : 'lilt-ttr-spin'}
             >
               <circle cx={ICON / 2} cy={ICON / 2} r={r} opacity={0.2} />
               <circle
@@ -257,7 +256,7 @@ function StepIcon({ status, reduced }: { status: StepStatus; reduced: boolean })
                 strokeLinecap="round"
                 strokeDasharray={`${around * 0.28} ${around}`}
               />
-            </motion.svg>
+            </svg>
           ) : (
             <svg width={ICON} height={ICON} viewBox="0 0 16 16">
               <circle cx="8" cy="8" r="7.5" fill="currentColor" opacity={0.12} />
@@ -457,5 +456,18 @@ const css = /* css */ `
   width: ${ICON}px;
   height: ${ICON}px;
   flex-shrink: 0;
+}
+@keyframes lilt-ttr-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+.lilt-ttr-spin {
+  animation: lilt-ttr-spin 0.85s linear infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .lilt-ttr-spin {
+    animation: none;
+  }
 }
 `;
