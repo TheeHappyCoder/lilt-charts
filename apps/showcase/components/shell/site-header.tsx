@@ -1,11 +1,12 @@
 'use client';
 
 import { HugeiconsIcon as Icon } from '@hugeicons/react';
-import ArrowRight01Icon from '@hugeicons/core-free-icons/ArrowRight01Icon';
 import Menu01Icon from '@hugeicons/core-free-icons/Menu01Icon';
-import { motion, useReducedMotion } from 'motion/react';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
+import { Count } from '@/components/craft/label';
+import { NavPill } from '@/components/craft/nav-pill';
+import { ArrowSwap, Roll } from '@/components/craft/roll';
 import { GitHubStars } from '@/components/github-stars';
 import type { GitHubStars as Stars } from '@/lib/github-stars';
 import { HeaderSearch } from './docs-search';
@@ -14,8 +15,6 @@ import { familyGroups, groupsByTab, tabHref, tabs, type Tab, type TileGroup } fr
 import { pageScroller } from './page-scroll';
 import { StyleMenuTrigger } from './style-menu';
 import { ThemeSegmented } from './theme-switcher';
-
-const SPRING = { type: 'spring', stiffness: 520, damping: 42 } as const;
 
 const countOf = (groups: readonly TileGroup[]) =>
   groups.reduce((sum, group) => sum + group.routes.length, 0);
@@ -43,7 +42,6 @@ export function SiteHeader({
   /** Opens the navigation drawer on phones; the drawer has no button without it. */
   onMenu?: () => void;
 }) {
-  const reduced = Boolean(useReducedMotion());
   const [scrolled, setScrolled] = useState(false);
   useEffect(() => {
     const scroller = pageScroller();
@@ -70,30 +68,18 @@ export function SiteHeader({
         <Link href="/" className="lilt-header__brand" aria-label="Lilt UI home">
           <LiltLogo className="lilt-header__logo" />
         </Link>
-        <nav className="lilt-header__nav" aria-label="Sections">
-          {tabs.map((option) => {
-            const current = option.value === tab;
-            return (
-              <Link
-                key={option.value}
-                href={tabHref[option.value]}
-                className="lilt-header__link"
-                aria-current={current ? 'page' : undefined}
-              >
-                {current ? (
-                  <motion.span
-                    aria-hidden="true"
-                    className="lilt-header__link-fill"
-                    layoutId="lilt-header-link"
-                    transition={reduced ? { duration: 0 } : SPRING}
-                  />
-                ) : null}
-                <span className="lilt-header__link-text">{option.label}</span>
-                <span className="lilt-header__count">{COUNTS[option.value]}</span>
-              </Link>
-            );
-          })}
-        </nav>
+        <NavPill className="lilt-header__nav" label="Sections">
+          {tabs.map((option) => (
+            <Link
+              key={option.value}
+              href={tabHref[option.value]}
+              aria-current={option.value === tab ? 'page' : undefined}
+            >
+              {option.label}
+              <Count n={COUNTS[option.value]} />
+            </Link>
+          ))}
+        </NavPill>
 
         <div className="lilt-header__actions">
           <HeaderSearch className="lilt-header__search" wide />
@@ -104,9 +90,9 @@ export function SiteHeader({
             {/* A count only says something once it is large; until then the mark stands alone. */}
             <GitHubStars stars={stars && stars.total >= 50 ? stars : null} />
           </span>
-          <Link href="/guides/installation" className="lilt-header__cta">
-            Get started
-            <Icon icon={ArrowRight01Icon} size={14} strokeWidth={2} aria-hidden="true" />
+          <Link href="/guides/installation" className="lilt-btn lilt-header__cta" data-tone="ink">
+            <Roll>Get started</Roll>
+            <ArrowSwap direction="right" />
           </Link>
         </div>
       </div>

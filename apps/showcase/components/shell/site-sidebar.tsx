@@ -115,7 +115,7 @@ export function SiteSidebar({
             {group.heading ? (
               <h3 className="lilt-sidebar__heading">
                 <span>{group.heading}</span>
-                <span className="lilt-sidebar__count">{group.routes.length}</span>
+                <span className="lilt-count">{group.routes.length}</span>
                 {allNew ? <span className="lilt-sidebar__new">New</span> : null}
               </h3>
             ) : null}

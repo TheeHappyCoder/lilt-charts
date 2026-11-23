@@ -17,6 +17,7 @@ import {
 } from '@/components/ui/select';
 import { TooltipHint } from '@/components/ui/tooltip';
 import type { ChartDocSettings } from '@/lib/card-docs/resolve-example';
+import { IconLive } from '@/components/craft/status-icon';
 
 const controlFor = (key: keyof ChartDocSettings) =>
   controls.find((control) => control.key === key)!;
@@ -62,7 +63,7 @@ function PaletteMark({ palette }: { palette: string }) {
 
 /**
  * The chart style's way in from the header: the palette as three dots, flat or depth as one
- * toggle, and the whole panel behind the label. A dot marks a style changed from the defaults.
+ * toggle, and the whole panel behind the label. A tick marks a style changed from the defaults.
  */
 export function StyleMenuTrigger() {
   const { settings, setSetting, open, setOpen } = useChartSettings();
@@ -92,7 +93,7 @@ export function StyleMenuTrigger() {
       >
         <PaletteMark palette={palette} />
         <span className="lilt-style-trigger__label">Style</span>
-        {changed ? <span className="lilt-style-trigger__dot" aria-hidden="true" /> : null}
+        {changed ? <IconLive size={11} className="lilt-style-trigger__changed" /> : null}
       </button>
     </div>
   );

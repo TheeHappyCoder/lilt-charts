@@ -56,14 +56,14 @@
   scroll-margin-top: calc(var(--header-height) + 24px);
 }
 
-/* Section list */
+/* Section list: a small label and count over each group, rows that fill when they are the page. */
 .lilt-sidebar {
   display: grid;
-  gap: 22px;
+  gap: 24px;
 }
 .lilt-sidebar ul {
   display: grid;
-  gap: 1px;
+  gap: 2px;
   margin: 0;
   padding: 0;
   list-style: none;
@@ -75,63 +75,55 @@
   margin: 0 0 6px;
   padding: 0 10px;
   color: var(--faint);
-  font-size: 11.5px;
-  font-weight: 500;
-  letter-spacing: 0.06em;
-  line-height: 16px;
-  text-transform: uppercase;
+  font-size: var(--text-sm);
+  font-weight: var(--weight-strong);
+  line-height: 20px;
 }
-.lilt-sidebar__count {
+.lilt-sidebar__new,
+.lilt-sidebar__badge {
   display: inline-flex;
-  height: 16px;
-  min-width: 18px;
+  height: 18px;
+  flex: none;
   align-items: center;
-  justify-content: center;
   padding: 0 5px;
-  border-radius: 999px;
-  background: var(--hover);
-  color: var(--muted-foreground);
-  font-size: 10.5px;
-  letter-spacing: 0;
-  font-variant-numeric: tabular-nums;
+  border-radius: var(--radius-chip);
+  background: var(--panel);
+  color: var(--chip-foreground);
+  font-size: 11px;
+  font-weight: var(--weight-strong);
+  line-height: 16px;
 }
 .lilt-sidebar__new {
-  display: inline-flex;
-  height: 16px;
-  align-items: center;
   margin-left: auto;
   margin-right: 4px;
-  padding: 0 6px;
-  border-radius: 999px;
-  background: color-mix(in srgb, var(--brand-primary) 16%, transparent);
-  color: var(--brand-primary);
-  font-size: 9.5px;
-  font-weight: 600;
-  letter-spacing: 0.08em;
+}
+.lilt-sidebar__badge {
+  position: relative;
+  margin-left: auto;
+}
+.lilt-sidebar__item[aria-current='page'] .lilt-sidebar__badge {
+  background: var(--background);
 }
 .lilt-sidebar__item {
   position: relative;
   display: flex;
-  min-height: 30px;
+  min-height: 32px;
   align-items: center;
   gap: 10px;
-  padding: 0 10px 0 6px;
-  border-radius: 8px;
+  padding: 0 8px 0 6px;
+  border-radius: var(--radius-control);
   color: var(--muted-foreground);
-  font-size: 14px;
+  font-size: var(--text-md);
   line-height: 20px;
   text-decoration: none;
-  transition: color 140ms ease;
+  transition: color 0.2s;
 }
 .lilt-sidebar__item[data-nested] {
   padding-left: 18px;
 }
-.lilt-sidebar__item:hover {
-  color: var(--foreground);
-}
+.lilt-sidebar__item:hover,
 .lilt-sidebar__item[aria-current='page'] {
   color: var(--foreground);
-  font-weight: 500;
 }
 .lilt-sidebar__item:focus-visible {
   outline-offset: -2px;
@@ -140,7 +132,7 @@
   position: absolute;
   inset: 0;
   border-radius: inherit;
-  background: var(--active);
+  background: var(--panel);
 }
 .lilt-sidebar__label {
   position: relative;
@@ -148,28 +140,13 @@
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-/* New pages carry a small lit dot rather than a word, so a long list stays quiet. */
-.lilt-sidebar__badge {
-  position: relative;
-  width: 6px;
-  height: 6px;
-  flex: none;
-  margin-left: auto;
-  margin-right: 6px;
-  overflow: hidden;
-  border-radius: 50%;
-  background: var(--brand-primary);
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--brand-primary) 16%, transparent);
-  color: transparent;
-  font-size: 0;
-}
 
 /* On this page */
 .lilt-toc__title {
   margin: 0 0 10px;
   color: var(--foreground);
-  font-size: 13px;
-  font-weight: 500;
+  font-size: var(--text-sm);
+  font-weight: var(--weight-strong);
 }
 .lilt-toc ul {
   display: grid;
@@ -185,12 +162,12 @@
   padding: 5px 0 5px 14px;
   border-left: 1px solid transparent;
   color: var(--muted-foreground);
-  font-size: 13px;
+  font-size: var(--text-sm);
   line-height: 18px;
   text-decoration: none;
   transition:
-    color 160ms ease,
-    border-color 160ms ease;
+    color 0.2s,
+    border-color 0.2s;
 }
 .lilt-toc__link:hover {
   color: var(--foreground);
@@ -207,10 +184,10 @@
   top: 10px;
   left: 10px;
   padding: 8px 14px;
-  border-radius: 999px;
+  border-radius: var(--radius-button);
   background: var(--foreground);
   color: var(--background);
-  font-size: 13px;
+  font-size: var(--text-sm);
   text-decoration: none;
   transform: translateY(-200%);
 }
@@ -239,17 +216,20 @@
   width: min(300px, calc(100vw - 48px));
   flex-direction: column;
   overflow: hidden;
-  border: 1px solid var(--line);
-  border-radius: 20px;
+  border-radius: var(--radius-panel);
   background: var(--background);
-  box-shadow: 0 24px 80px rgb(0 0 0 / 0.24);
+  box-shadow:
+    var(--shadow-pop),
+    inset 0 0 0 1px var(--line);
   transition:
     transform 280ms var(--ease-out),
-    opacity 200ms ease;
+    opacity 200ms ease,
+    filter 280ms var(--ease-out);
 }
 .lilt-drawer[data-starting-style],
 .lilt-drawer[data-ending-style] {
   opacity: 0;
+  filter: blur(6px);
   transform: translateX(-16px);
 }
 .lilt-drawer__head {
@@ -266,25 +246,25 @@
   gap: 2px;
   margin: 0 12px 8px;
   padding: 3px;
-  border-radius: 999px;
-  background: var(--hover);
+  border-radius: var(--radius-button);
+  background: var(--panel);
 }
 .lilt-drawer__tab {
   flex: 1;
   height: 30px;
   padding: 0;
   border: 0;
-  border-radius: 999px;
+  border-radius: var(--radius-control);
   background: transparent;
   color: var(--muted-foreground);
-  font-size: 12.5px;
-  font-weight: 500;
+  font-size: var(--text-sm);
+  font-weight: var(--weight-strong);
   cursor: pointer;
 }
 .lilt-drawer__tab[aria-selected='true'] {
-  background: var(--surface);
+  background: var(--background);
+  box-shadow: 0 1px 2px rgb(0 0 0 / 0.06);
   color: var(--foreground);
-  box-shadow: 0 1px 2px rgb(0 0 0 / 0.08);
 }
 .lilt-drawer__scroll {
   flex: 1;
@@ -336,13 +316,10 @@
   flex: none;
   place-items: center;
   overflow: hidden;
-  border-radius: 6px;
-  background: var(--hover);
-  box-shadow: inset 0 0 0 1px var(--line);
+  border-radius: var(--radius-chip);
+  background: var(--panel);
   color: var(--muted-foreground);
-  transition:
-    background-color 200ms ease,
-    box-shadow 200ms ease;
+  transition: background-color 0.2s;
 }
 .lilt-chart-glyph {
   display: block;
@@ -364,10 +341,7 @@
   filter: none;
 }
 .lilt-sidebar__item[aria-current='page'] .lilt-sidebar__mark {
-  background: var(--surface);
-  box-shadow:
-    inset 0 0 0 1px var(--line-strong),
-    0 1px 2px rgb(0 0 0 / 0.06);
+  background: var(--background);
   color: var(--foreground);
 }
 @media (prefers-reduced-motion: reduce) {
@@ -375,13 +349,4 @@
   .lilt-sidebar__mark .lilt-chart-glyph {
     transition: none;
   }
-}
-
-/* The curtain of type that pages change behind; it sits under the bar and never takes the pointer. */
-.lilt-route-curtain {
-  z-index: 39;
-  color: var(--foreground);
-  font:
-    500 13px var(--font-geist-mono),
-    monospace;
 }
