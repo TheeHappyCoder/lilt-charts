@@ -34,6 +34,10 @@ function isShowroomPath(pathname: string): boolean {
     pathname.startsWith('/charts/') ||
     pathname === '/finance' ||
     pathname.startsWith('/finance/') ||
+    pathname === '/features' ||
+    pathname.startsWith('/features/') ||
+    pathname === '/customize' ||
+    pathname.startsWith('/customize/') ||
     pathname === '/components' ||
     pathname.startsWith('/components/') ||
     pathname === '/visuals' ||

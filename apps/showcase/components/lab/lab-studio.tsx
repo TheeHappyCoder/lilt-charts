@@ -1,9 +1,14 @@
 'use client';
 
 import { motion, useReducedMotion } from 'motion/react';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { useId, useState, type ReactNode } from 'react';
-import { PageHeader } from '@/components/docs/page-header';
+import { Label } from '@/components/craft/label';
 import { CopyButton } from '@/components/docs/docs-example';
+import { customizeRoutes, featureRoutes } from '@/components/shell/nav-model';
+import { DetailBar } from '@/components/showroom/detail-bar';
+import { DetailPager } from '@/components/showroom/detail-next';
 import {
   TravelingHighlightScope,
   TravelingHighlightTarget,
@@ -16,7 +21,11 @@ export interface LabOption<Value extends string> {
   note: string;
 }
 
-/** The page frame every lab shares: a title, one line, and the studios below. */
+/**
+ * The showroom editorial frame every Features and Customize lab shares: sticky DetailBar,
+ * display intro, horizontal pill switcher across sibling labs, full-width `--gut` workspace,
+ * and Previous / Next pager cards above the shared footer.
+ */
 export function LabShell({
   title,
   lede,
@@ -26,10 +35,58 @@ export function LabShell({
   lede: string;
   children: ReactNode;
 }) {
+  const pathname = usePathname();
+  const isFeatures = pathname.startsWith('/features');
+  const routes = isFeatures ? featureRoutes : customizeRoutes;
+  const groupLabel = isFeatures ? 'Features' : 'Customize';
+  const noun = isFeatures ? 'feature' : 'setting';
+  const index = routes.findIndex((route) => route.href === pathname);
+  const prev = index > 0 ? routes[index - 1]! : null;
+  const next = index >= 0 && index < routes.length - 1 ? routes[index + 1]! : null;
+
   return (
-    <article className="lilt-main lilt-studio-page">
-      <PageHeader title={title} lede={lede} />
-      {children}
+    <article className="lilt-showroom lilt-studio-page">
+      <DetailBar
+        tab="charts"
+        title={title}
+        chip={groupLabel}
+        prev={prev ? { href: prev.href, label: prev.label } : null}
+        next={next ? { href: next.href, label: next.label } : null}
+      />
+
+      <header className="lilt-detail-intro">
+        <div className="lilt-detail-intro__copy">
+          <Label reveal={false}>
+            {groupLabel}
+            <span className="lilt-chip">{routes.length}</span>
+          </Label>
+          <h1>{title}</h1>
+          <p>{lede}</p>
+        </div>
+      </header>
+
+      <nav className="lilt-lab-nav" aria-label={groupLabel}>
+        <div className="lilt-lab-nav__track">
+          {routes.map((route) => (
+            <Link
+              key={route.id}
+              href={route.href}
+              className="lilt-lab-nav__pill"
+              aria-current={pathname === route.href ? 'page' : undefined}
+            >
+              {route.label}
+            </Link>
+          ))}
+        </div>
+      </nav>
+
+      <div className="lilt-lab-body">{children}</div>
+
+      <DetailPager
+        prev={prev ? { href: prev.href, label: prev.label } : null}
+        next={next ? { href: next.href, label: next.label } : null}
+        noun={noun}
+      />
     </article>
   );
 }

@@ -1,45 +1,74 @@
-/* Lab: one setting per page, explored live on a stage of real cards. */
-/* Same frame as the chart pages, so the shared header sits in exactly the same place. */
-.lilt-main.lilt-studio-page {
-  width: min(1200px, 100%);
-  margin-inline: auto;
-  padding: 12px 0 120px;
+/* Lab: Features & Customize pages on the full-width showroom editorial frame. */
+.lilt-lab-nav {
+  padding: 0 var(--gut) 20px;
 }
-.lilt-studio-page > .lilt-docs__header + .lilt-studio {
-  margin-top: 0;
+.lilt-lab-nav__track {
+  display: inline-flex;
+  max-width: 100%;
+  gap: 2px;
+  overflow-x: auto;
+  padding: 3px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-button);
+  background: var(--panel);
+  scrollbar-width: none;
 }
-@media (max-width: 767px) {
-  .lilt-main.lilt-studio-page {
-    padding: 0 0 64px;
-  }
+.lilt-lab-nav__pill {
+  display: inline-flex;
+  height: 30px;
+  flex: none;
+  align-items: center;
+  padding: 0 12px;
+  border-radius: var(--radius-control);
+  color: var(--muted-foreground);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-strong);
+  text-decoration: none;
+  white-space: nowrap;
+  transition:
+    background-color 150ms ease,
+    color 150ms ease;
+}
+.lilt-lab-nav__pill:hover {
+  color: var(--foreground);
+}
+.lilt-lab-nav__pill[aria-current='page'] {
+  background: var(--foreground);
+  color: var(--background);
 }
 
-.lilt-studio {
+.lilt-lab-body {
+  padding: 0 var(--gut) 12px;
+}
+
+/* Scoped under .lilt-studio-page so showroom.css's split studio workbench never collides. */
+.lilt-studio-page .lilt-studio {
   display: grid;
+  flex-direction: initial;
+  align-items: initial;
   gap: 14px;
-  margin-top: 28px;
+  margin-top: 0;
+  padding: 0;
+  overflow: visible;
 }
 /* A second setting on the same page gets its own breathing room. */
-.lilt-studio + .lilt-studio {
-  margin-top: 64px;
+.lilt-studio-page .lilt-studio + .lilt-studio {
+  margin-top: 48px;
 }
 
-/* Toolbar: frosted glass that stays in reach while the stage scrolls. */
+/* Toolbar: quiet filled plinth that stays in reach below the sticky detail bar. */
 .lilt-studio__bar {
   position: sticky;
-  top: calc(var(--header-height) + 10px);
+  top: calc(var(--header-height) + 56px);
   z-index: 5;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   gap: 10px 14px;
   padding: 5px;
+  border: 1px solid var(--line);
   border-radius: var(--radius-panel);
-  background: color-mix(in srgb, var(--background) 82%, transparent);
-  box-shadow:
-    inset 0 0 0 1px var(--line),
-    var(--shadow-lift);
-  backdrop-filter: blur(16px) saturate(1.4);
+  background: var(--panel);
 }
 .lilt-studio__segmented {
   position: relative;
@@ -47,9 +76,13 @@
   max-width: 100%;
   overflow-x: auto;
   padding: 3px;
+  border: 1px solid var(--line);
   border-radius: var(--radius-button);
-  background: var(--panel);
+  background: var(--surface);
   scrollbar-width: none;
+}
+.dark .lilt-studio__segmented {
+  background: #10100f;
 }
 .lilt-studio__segmented[data-disabled] {
   opacity: 0.5;
@@ -82,9 +115,13 @@
 .lilt-studio__thumb {
   position: absolute;
   inset: 0;
+  border: 1px solid var(--line);
   border-radius: var(--radius-control);
-  background: var(--background);
+  background: var(--surface);
   box-shadow: 0 1px 2px rgb(0 0 0 / 0.06);
+}
+.dark .lilt-studio__thumb {
+  background: #222220;
 }
 .lilt-studio__option-text {
   position: relative;
@@ -112,8 +149,12 @@
   align-items: center;
   gap: 2px;
   padding: 2px 2px 2px 12px;
+  border: 1px solid var(--line);
   border-radius: var(--radius-control);
-  background: var(--panel);
+  background: var(--surface);
+}
+.dark .lilt-studio__code {
+  background: #10100f;
 }
 .lilt-studio__code code {
   font-family: var(--font-mono), monospace;
@@ -226,20 +267,23 @@
   transition: width 320ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-/* Stage: a plinth. Only the cards on it have edges. */
-.lilt-studio__stage {
+/* Stage: a filled plinth with a hairline edge; scoped so showroom.css never overrides it. */
+.lilt-studio-page .lilt-studio__stage {
   position: relative;
+  display: grid;
+  flex: none;
   container-type: inline-size;
   padding: clamp(14px, 3vw, 32px);
+  border: 1px solid var(--line);
   border-radius: var(--radius-panel);
   background: var(--panel);
   overflow: hidden;
 }
-.lilt-studio__stage > * {
+.lilt-studio-page .lilt-studio__stage > * {
   position: relative;
 }
 /* Cards ease between surfaces instead of snapping. */
-.lilt-studio__stage .lilt-card {
+.lilt-studio-page .lilt-studio__stage .lilt-card {
   transition:
     background-color 320ms ease,
     border-color 320ms ease,
@@ -461,7 +505,7 @@
   }
 }
 @media (prefers-reduced-motion: reduce) {
-  .lilt-studio__stage .lilt-card,
+  .lilt-studio-page .lilt-studio__stage .lilt-card,
   .lilt-studio__progress span,
   .lilt-studio__switch-track::after {
     transition: none;
