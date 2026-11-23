@@ -120,6 +120,7 @@ export type RouteIcon =
   | 'numberroll'
   | 'profilephoto'
   | 'daterange'
+  | 'datatable'
   | 'starfield'
   | 'matrix'
   | 'dotgrid'
@@ -1602,6 +1603,17 @@ export const appRoutes = [
     href: '/components/date-range',
     pathname: '/components/date-range',
     icon: 'daterange',
+    navigation: true,
+    badge: 'New',
+  },
+  {
+    id: 'component-data-table',
+    group: 'Components',
+    label: 'Data table',
+    title: 'Data table',
+    href: '/components/data-table',
+    pathname: '/components/data-table',
+    icon: 'datatable',
     navigation: true,
     badge: 'New',
   },

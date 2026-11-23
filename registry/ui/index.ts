@@ -46,8 +46,16 @@ export {
   type DateRangeValue,
 } from './date-range';
 
+export {
+  DataTable,
+  type DataTableColumn,
+  type DataTableProps,
+  type DataTableSort,
+} from './data-table';
+
 export { StatusPillDemo } from './demos/status-pill-demo';
 export { DateRangeDemo } from './demos/date-range-demo';
+export { DataTableDemo } from './demos/data-table-demo';
 export { ProfilePhotoDemo } from './demos/profile-photo-demo';
 export { NumberRollDemo } from './demos/number-roll-demo';
 export { StreamTextDemo } from './demos/stream-text-demo';

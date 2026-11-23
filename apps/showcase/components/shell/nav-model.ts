@@ -39,6 +39,7 @@ import CodeIcon from '@hugeicons/core-free-icons/CodeIcon';
 import FileScriptIcon from '@hugeicons/core-free-icons/FileScriptIcon';
 import GridIcon from '@hugeicons/core-free-icons/GridIcon';
 import GridTableIcon from '@hugeicons/core-free-icons/GridTableIcon';
+import Table01Icon from '@hugeicons/core-free-icons/Table01Icon';
 import PaintBoardIcon from '@hugeicons/core-free-icons/PaintBoardIcon';
 import PipelineIcon from '@hugeicons/core-free-icons/PipelineIcon';
 import RadialIcon from '@hugeicons/core-free-icons/RadialIcon';
@@ -221,6 +222,7 @@ export const icons: Record<RouteIcon, IconSvgElement> = {
   numberroll: HashtagIcon,
   profilephoto: UserCircleIcon,
   daterange: Calendar03Icon,
+  datatable: Table01Icon,
   scrollmeter: ScrollVerticalIcon,
   dissolve: ImageUpscaleIcon,
   particleword: SparkleIcon,

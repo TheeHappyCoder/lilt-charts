@@ -189,6 +189,7 @@ const uiPages: readonly PageSpec[] = [
   page('components', 'number-roll', 'NumberRoll', 'number-roll.tsx'),
   page('components', 'profile-photo', 'ProfilePhoto', 'profile-photo.tsx'),
   page('components', 'date-range', 'DateRange', 'date-range.tsx'),
+  page('components', 'data-table', 'DataTable', 'data-table.tsx'),
 ];
 
 /**

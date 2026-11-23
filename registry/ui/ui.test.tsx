@@ -12,6 +12,7 @@ import { HoldToConfirm } from './hold-to-confirm';
 import { Presence } from './presence';
 import { ProfilePhoto } from './profile-photo';
 import { DateRange } from './date-range';
+import { DataTable, type DataTableColumn } from './data-table';
 import { StatusPill } from './status-pill';
 import { Thinking } from './thinking';
 
@@ -323,5 +324,210 @@ describe('DateRange', () => {
     render(<DateRange today={today} locales="en-US" />);
     expect(host.querySelector('.lilt-drp')!.hasAttribute('data-reveal')).toBe(false);
     expect(host.querySelector('.lilt-drp')!.hasAttribute('data-stand-in')).toBe(false);
+  });
+});
+
+describe('DataTable', () => {
+  const people = [
+    {
+      id: 'nora',
+      name: 'Nora Vance',
+      plan: 'Team',
+      status: 'Active',
+      seats: 12,
+      since: 'Mar 2026',
+      mrr: 1140,
+    },
+    {
+      id: 'kofi',
+      name: 'Kofi Mensah',
+      plan: 'Pro',
+      status: 'Active',
+      seats: 3,
+      since: 'Jan 2026',
+      mrr: 87,
+    },
+    {
+      id: 'lena',
+      name: 'Lena Fischer',
+      plan: 'Team',
+      status: 'Trial',
+      seats: 8,
+      since: 'Nov 2026',
+      mrr: null,
+    },
+    {
+      id: 'mateo',
+      name: 'Mateo Ruiz',
+      plan: 'Enterprise',
+      status: 'Active',
+      seats: 48,
+      since: 'Aug 2025',
+      mrr: 4800,
+    },
+  ];
+  type Person = (typeof people)[number];
+  const columns: DataTableColumn<Person>[] = [
+    { key: 'name', header: 'Customer' },
+    { key: 'plan', header: 'Plan', width: 104, priority: 3 },
+    {
+      key: 'status',
+      header: 'Status',
+      width: 124,
+      priority: 2,
+      compact: (person) => <span role="img" aria-label={person.status} />,
+    },
+    {
+      key: 'seats',
+      header: 'Seats',
+      align: 'end',
+      width: 76,
+      priority: 4,
+      folded: (person) => `${person.seats} seats`,
+    },
+    {
+      key: 'since',
+      header: 'Signed up',
+      width: 136,
+      priority: 5,
+      folded: (person) => `since ${person.since}`,
+    },
+    { key: 'mrr', header: 'MRR', align: 'end', width: 100, priority: 1 },
+  ];
+  const table = (props: Partial<Parameters<typeof DataTable<Person>>[0]> = {}) => (
+    <DataTable
+      label="Customers"
+      rows={people}
+      columns={columns}
+      rowKey={(person) => person.id}
+      {...props}
+    />
+  );
+
+  // jsdom lays nothing out, so the table's width and its resize observer are stood in for.
+  let width = 900;
+  let notify: (() => void)[] = [];
+  beforeEach(() => {
+    width = 900;
+    notify = [];
+    Object.defineProperty(HTMLElement.prototype, 'clientWidth', {
+      configurable: true,
+      get(this: HTMLElement) {
+        return this.classList.contains('lilt-dt') ? width : 0;
+      },
+    });
+    vi.stubGlobal(
+      'ResizeObserver',
+      class {
+        constructor(callback: () => void) {
+          notify.push(callback);
+        }
+        observe() {}
+        disconnect() {}
+      },
+    );
+  });
+  afterEach(() => {
+    // jsdom keeps the real one on Element, so removing ours brings it back.
+    delete (HTMLElement.prototype as { clientWidth?: number }).clientWidth;
+  });
+  const resize = async (next: number) => {
+    width = next;
+    act(() => notify.forEach((callback) => callback()));
+    await wait(450);
+  };
+  const headers = () =>
+    [...host.querySelectorAll('[role="columnheader"]')].map(
+      (cell) => cell.textContent || cell.querySelector('[aria-label]')?.getAttribute('aria-label'),
+    );
+  const names = () =>
+    [...host.querySelectorAll('.lilt-dt-body .lilt-dt-main')].map((cell) => cell.textContent);
+  const line = () =>
+    host.querySelector('.lilt-dt-body [role="row"] .lilt-dt-folded')?.textContent ?? null;
+
+  it('keeps every column with room, folds the least important under the name as it narrows, and brings them back', async () => {
+    render(table());
+    await wait(50);
+    expect(host.querySelector('[role="table"]')!.getAttribute('aria-label')).toBe('Customers');
+    expect(headers()).toEqual(['Customer', 'Plan', 'Status', 'Seats', 'Signed up', 'MRR']);
+    expect(line()).toBeNull();
+
+    await resize(560);
+    expect(headers()).toEqual(['Customer', 'Plan', 'Status', 'MRR']);
+    expect(line()).toBe('12 seats · since Mar 2026');
+
+    // At phone width Plan folds too and Status keeps only its icon, still named for screen readers.
+    await resize(360);
+    expect(headers()).toEqual(['Customer', 'Status', 'MRR']);
+    expect(line()).toBe('Team · 12 seats · since Mar 2026');
+    expect(host.querySelector('[role="cell"] [role="img"]')!.getAttribute('aria-label')).toBe(
+      'Active',
+    );
+
+    await resize(900);
+    expect(headers()).toEqual(['Customer', 'Plan', 'Status', 'Seats', 'Signed up', 'MRR']);
+    expect(line()).toBeNull();
+  });
+
+  it('waits for room to spare before a column comes back', async () => {
+    render(table());
+    await wait(50);
+    // Every column needs 752 (540 of columns, 32 of padding, 180 for the name). At 760 it would
+    // fit again, but a folded column only comes back with 24 to spare.
+    await resize(740);
+    expect(headers()).not.toContain('Signed up');
+    await resize(760);
+    expect(headers()).not.toContain('Signed up');
+    await resize(780);
+    expect(headers()).toContain('Signed up');
+  });
+
+  it('sorts numbers high to low on the first click, flips on the next, and keeps blanks last', async () => {
+    const onSortChange = vi.fn();
+    render(table({ onSortChange }));
+    await wait(50);
+    const mrr = () => host.querySelector<HTMLButtonElement>('[data-col="mrr"] .lilt-dt-sort')!;
+    act(() => mrr().click());
+    expect(names()).toEqual(['Mateo Ruiz', 'Nora Vance', 'Kofi Mensah', 'Lena Fischer']);
+    expect(
+      host.querySelector('[data-col="mrr"][role="columnheader"]')!.getAttribute('aria-sort'),
+    ).toBe('descending');
+    expect(onSortChange).toHaveBeenLastCalledWith({ key: 'mrr', direction: 'desc' });
+    act(() => mrr().click());
+    expect(names()).toEqual(['Kofi Mensah', 'Nora Vance', 'Mateo Ruiz', 'Lena Fischer']);
+    expect(
+      host.querySelector('[data-col="mrr"][role="columnheader"]')!.getAttribute('aria-sort'),
+    ).toBe('ascending');
+    // Text sorts A to Z first.
+    act(() => host.querySelector<HTMLButtonElement>('[data-col="name"] .lilt-dt-sort')!.click());
+    expect(names()).toEqual(['Kofi Mensah', 'Lena Fischer', 'Mateo Ruiz', 'Nora Vance']);
+  });
+
+  it('resizes a column from the keyboard and folds a less important one when the name runs short', async () => {
+    render(table());
+    await wait(50);
+    const grip = () => host.querySelector<HTMLElement>('[aria-label="Resize Seats"]')!;
+    const press = () =>
+      act(() => {
+        grip().dispatchEvent(
+          new KeyboardEvent('keydown', { key: 'ArrowLeft', shiftKey: true, bubbles: true }),
+        );
+      });
+    for (let step = 0; step < 4; step++) press();
+    expect(grip().getAttribute('aria-valuenow')).toBe('204');
+    expect(headers()).toContain('Signed up');
+    press();
+    await wait(450);
+    expect(grip().getAttribute('aria-valuenow')).toBe('236');
+    expect(headers()).toEqual(['Customer', 'Plan', 'Status', 'Seats', 'MRR']);
+    expect(line()).toBe('since Mar 2026');
+    expect(host.querySelector('.lilt-dt')!.getAttribute('style')).toContain('236px');
+  });
+
+  it('says so when there is nothing to show, and turns off resizing on request', async () => {
+    render(table({ rows: [], resizable: false }));
+    await wait(50);
+    expect(host.querySelector('.lilt-dt-empty')!.textContent).toBe('Nothing here yet.');
+    expect(host.querySelector('[role="separator"]')).toBeNull();
   });
 });

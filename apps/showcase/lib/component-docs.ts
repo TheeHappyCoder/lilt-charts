@@ -5,7 +5,7 @@ import type { AsciiControl, AsciiSceneDoc } from './ascii-scenes';
  * spot in a product with one detail worth stealing. Every control is a prop, and its default must
  * match the component's.
  */
-export const componentShelves = ['AI', 'Status', 'Actions', 'Inputs'] as const;
+export const componentShelves = ['AI', 'Status', 'Actions', 'Data'] as const;
 export type ComponentShelf = (typeof componentShelves)[number];
 
 export interface ComponentDoc extends Omit<AsciiSceneDoc, 'shelf' | 'kind' | 'layout'> {
@@ -593,7 +593,7 @@ export function AccountPhoto({ user }: { user: { name: string; avatarUrl?: strin
   },
   {
     id: 'date-range',
-    shelf: 'Inputs',
+    shelf: 'Data',
     title: 'Date range',
     component: 'DateRange',
     demo: 'DateRangeDemo',
@@ -687,6 +687,120 @@ export function ReportRange({ onRange }: { onRange: (from: Date, to: Date) => vo
   );
 }`,
     usage: `${MOTION_USAGE} Each day is a button in a grid with one tab stop: the arrow keys move by day and week, Home and End to the week's ends, Page Up and Page Down by month (with Shift, by year), Enter or Space picks, and Escape lets go of a half-picked range. Ranges and counts are announced politely. Days are plain calendar days, so time zones never shift a range by one.`,
+  },
+  {
+    id: 'data-table',
+    shelf: 'Data',
+    title: 'Data table',
+    component: 'DataTable',
+    demo: 'DataTableDemo',
+    lede: 'Rows that sit on the page, with one warm band for the header. Narrow it and it never squashes: at each width it snaps to the layout that fits, folding its least important columns into a line under each name while every other cell glides to its new place.',
+    touch:
+      'Drag the handle on the right to narrow the table. Click a header to sort; drag a header edge to resize a column, or double-click it to fit.',
+    controls: [
+      {
+        kind: 'toggle',
+        name: 'resizable',
+        label: 'Resizable columns',
+        defaultValue: true,
+        description:
+          'Lets readers drag column edges, and fit a column to its longest value with a double click.',
+      },
+    ],
+    props: [
+      {
+        name: 'rows',
+        type: 'Row[]',
+        defaultValue: '—',
+        description: 'The rows, in the order they arrive. Sorting never changes your array.',
+      },
+      {
+        name: 'columns',
+        type: 'DataTableColumn<Row>[]',
+        defaultValue: '—',
+        description:
+          'The first column is the row’s name: it never folds and takes the room that is left. Each other column has a `width`, a `priority` (lower stays longer), and optionally `align`, `cell`, `value`, `folded` and `compact`.',
+      },
+      {
+        name: 'rowKey',
+        type: '(row) => string',
+        defaultValue: '—',
+        description: 'A stable key for each row, so a sorted row glides to its place.',
+      },
+      {
+        name: 'label',
+        type: 'string',
+        defaultValue: '—',
+        description: 'Names the table for screen readers.',
+      },
+      {
+        name: 'defaultSort',
+        type: "{ key, direction: 'asc' | 'desc' }",
+        defaultValue: 'none',
+        description:
+          'The column to start sorted by. A first click sorts numbers high to low and text A to Z; the next flips it.',
+      },
+      {
+        name: 'onSortChange',
+        type: '(sort) => void',
+        defaultValue: '—',
+        description: 'Called when a reader sorts, to fetch the next page in that order, say.',
+      },
+      {
+        name: 'minPrimaryWidth',
+        type: 'number',
+        defaultValue: '180',
+        description: 'How narrow the first column gets before another column folds into it.',
+      },
+      {
+        name: 'empty',
+        type: 'ReactNode',
+        defaultValue: "'Nothing here yet.'",
+        description: 'Shown in place of rows when there are none.',
+      },
+    ],
+    code: `import { DataTable, type DataTableColumn } from '{from}';
+
+interface Customer {
+  id: string;
+  name: string;
+  plan: string;
+  seats: number;
+  mrr: number;
+}
+
+const columns: DataTableColumn<Customer>[] = [
+  { key: 'name', header: 'Customer' },
+  { key: 'plan', header: 'Plan', width: 104, priority: 3 },
+  {
+    key: 'seats',
+    header: 'Seats',
+    align: 'end',
+    width: 80,
+    priority: 4,
+    folded: (customer) => \`\${customer.seats} seats\`,
+  },
+  {
+    key: 'mrr',
+    header: 'MRR',
+    align: 'end',
+    width: 100,
+    priority: 1,
+    cell: (customer) => \`$\${customer.mrr.toLocaleString()}\`,
+  },
+];
+
+export function Customers({ rows }: { rows: Customer[] }) {
+  return (
+    <DataTable
+      label="Customers"
+      rows={rows}
+      columns={columns}
+      rowKey={(customer) => customer.id}{props}
+    />
+  );
+}`,
+    usage: `${MOTION_USAGE} It measures its own width, not the window’s, so it snaps the same in a sidebar as on a full page. Between snaps the first column simply flexes; only a fold, a sort or a new set of rows sets the cells gliding, and a column comes back only once there is room to spare, so a scrollbar cannot make it flicker. Headers are buttons that sort, with \`aria-sort\` on the sorted one. Each column edge is a separator you can drag, step with the arrow keys (Shift for bigger steps) or fit with Enter or a double click; a dragged edge sticks to the fitted width as you pass it. Folded values stay readable to screen readers in the line under each name. It suits the tens of rows a page shows; page or virtualize past that.`,
   },
 ];
 
