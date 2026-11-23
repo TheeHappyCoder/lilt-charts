@@ -300,20 +300,12 @@
 /* A tile: the plinth with the live piece mounted in it, and its caption beneath. */
 .lilt-home-tile {
   --lilt-tile-lift: 0px;
-  --lilt-tile-light: 0.45;
   position: relative;
   min-width: 0;
   min-height: 0;
 }
 .lilt-home-tile:hover {
-  --lilt-tile-lift: -6px;
-  --lilt-tile-light: 0.8;
-}
-.lilt-home-tile[data-tone='room'] {
-  --lilt-tile-light: 0.6;
-}
-.lilt-home-tile[data-tone='room']:hover {
-  --lilt-tile-light: 0.95;
+  --lilt-tile-lift: -5px;
 }
 .lilt-home-tile:focus-visible,
 .lilt-home-tile__go:focus-visible,
@@ -324,15 +316,12 @@
 .lilt-home-tile__media {
   flex: 1;
   min-height: 0;
+  border: 1px solid var(--line);
   background: var(--lilt-home-night);
   color: var(--foreground);
 }
 .lilt-home-tile[data-tone='room'] .lilt-home-tile__media {
   background: var(--panel-deep);
-}
-/* Night rooms take the palette's light from below, where the scene stands. */
-.lilt-home-tile[data-tone='night'] .lilt-tile__light {
-  transform: scaleY(-1);
 }
 .lilt-home-tile__stage {
   position: absolute;
@@ -358,7 +347,10 @@
   transition: transform 320ms var(--ease-out);
 }
 .lilt-home-tile .lilt-fitted[data-fit='contain'] .lilt-fitted__card {
-  filter: drop-shadow(0 14px 24px rgb(26 26 24 / 0.12));
+  filter: drop-shadow(0 4px 12px rgb(26 26 24 / 0.06));
+}
+.dark .lilt-home-tile .lilt-fitted[data-fit='contain'] .lilt-fitted__card {
+  filter: drop-shadow(0 6px 16px rgb(0 0 0 / 0.25));
 }
 .lilt-home-tile__stage[data-center] {
   display: grid;

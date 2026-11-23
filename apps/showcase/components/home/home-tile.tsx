@@ -73,8 +73,6 @@ export function HomeTile({
             : 'lilt-media lilt-home-tile__media'
         }
       >
-        <TilePalette className="lilt-tile__light" />
-        {tone === 'room' ? <span className="lilt-tile__grid" aria-hidden="true" /> : null}
         <span className="lilt-home-tile__stage" data-center={center || undefined}>
           {children}
         </span>

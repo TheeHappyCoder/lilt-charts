@@ -22,36 +22,14 @@
   padding: 4px 3px;
 }
 
-/* The stage is a plinth that holds the chart: filled, borderless, with a soft light from the
-   palette's first two series where the card stands. */
+/* The stage is a quiet filled plinth holding the chart card, framed by a hairline. */
 .lilt-stage {
   isolation: isolate;
+  border: 1px solid var(--line);
   border-radius: var(--radius-panel);
   background: var(--panel);
 }
 .lilt-stage > .lilt-docs-example {
   background: transparent;
   box-shadow: none;
-}
-.lilt-stage__light {
-  position: absolute;
-  z-index: -1;
-  inset: 0 0 auto;
-  height: 70%;
-  padding: 0;
-  border-radius: var(--radius-panel) var(--radius-panel) 0 0;
-  background:
-    radial-gradient(
-      50% 80% at 35% 0%,
-      color-mix(in srgb, var(--lilt-series-1) 10%, transparent),
-      transparent 70%
-    ),
-    radial-gradient(
-      45% 70% at 70% 0%,
-      color-mix(in srgb, var(--lilt-series-2) 7%, transparent),
-      transparent 70%
-    );
-  container-type: normal;
-  pointer-events: none;
-  transition: opacity 400ms ease;
 }

@@ -199,7 +199,6 @@ export function ChartStage({
   tune?: readonly TuneControl[];
 }) {
   const stage = useStage();
-  const { settings } = useChartSettings();
   const [view, setView] = useState<'preview' | 'code'>('preview');
   const [replay, setReplay] = useState(0);
   const { items, item, resolved, loading } = stage;
@@ -292,13 +291,6 @@ export function ChartStage({
 
   return (
     <div className="lilt-stage">
-      {/* The stage is lit by the site's palette, so the room takes the colour of its charts. */}
-      <span
-        className="lilt-stage__light"
-        data-lilt-chart=""
-        data-lilt-palette={(settings.palette as string | undefined) ?? undefined}
-        aria-hidden="true"
-      />
       <span id="variants" className="lilt-stage__anchor" aria-hidden="true" />
       <DocsExample
         label={label}

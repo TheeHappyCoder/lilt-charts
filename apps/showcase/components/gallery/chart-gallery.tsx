@@ -46,8 +46,6 @@ export function GalleryTile({
       style={{ '--i': index % 4 } as CSSProperties}
     >
       <span className="lilt-media lilt-tile__stage">
-        <TilePalette className="lilt-tile__light" />
-        <span className="lilt-tile__grid" aria-hidden="true" />
         <FittedPreview example={example} eager={eager} width={wide ? 640 : 460} fit="peek" />
       </span>
       <span className="lilt-cap">
