@@ -10,10 +10,10 @@ import { join, posix } from 'node:path';
  * npm dependencies.
  */
 
-export type RegistrySection = 'components' | 'ascii' | 'shared';
+export type RegistrySection = 'components' | 'visuals' | 'ascii' | 'shared';
 
 interface ItemSpec {
-  /** The item's name, and the docs page's id for a Component or scene. */
+  /** The item's name, and the docs page's id for a Component, Visual or scene. */
   name: string;
   section: RegistrySection;
   /** The export a reader renders; shared items have none. */
@@ -21,7 +21,7 @@ interface ItemSpec {
 }
 
 interface PageSpec extends ItemSpec {
-  section: 'components' | 'ascii';
+  section: 'components' | 'visuals' | 'ascii';
   component: string;
   /** The file that exports `component`, relative to the registry folder. */
   entry: string;
@@ -209,6 +209,28 @@ const uiPages: readonly PageSpec[] = [
   page('components', 'dynamic-island', 'DynamicIsland', 'dynamic-island.tsx'),
 ];
 
+/**
+ * One item per Visuals page: self-contained 3:2 living product visuals in glass and machined
+ * metal, with zero external dependencies. They live under `visuals/` and land in
+ * `components/lilt/visuals/`.
+ */
+const visualPages: readonly PageSpec[] = [
+  page('visuals', 'effort-dial', 'EffortDial', 'effort-dial.tsx'),
+  page('visuals', 'prism-router', 'PrismRouter', 'prism-router.tsx'),
+  page('visuals', 'token-stream', 'TokenStream', 'token-stream.tsx'),
+  page('visuals', 'eval-radar', 'EvalRadar', 'eval-radar.tsx'),
+  page('visuals', 'signal-lens', 'SignalLens', 'signal-lens.tsx'),
+  page('visuals', 'growth-bars', 'GrowthBars', 'growth-bars.tsx'),
+  page('visuals', 'usage-capsule', 'UsageCapsule', 'usage-capsule.tsx'),
+  page('visuals', 'passkey-scan', 'PasskeyScan', 'passkey-scan.tsx'),
+  page('visuals', 'guard-shield', 'GuardShield', 'guard-shield.tsx'),
+  page('visuals', 'redaction-glass', 'RedactionGlass', 'redaction-glass.tsx'),
+  page('visuals', 'auto-toggle', 'AutoToggle', 'auto-toggle.tsx'),
+  page('visuals', 'diff-patch', 'DiffPatch', 'diff-patch.tsx'),
+  page('visuals', 'glass-card', 'GlassCard', 'glass-card.tsx'),
+  page('visuals', 'receipt-roll', 'ReceiptRoll', 'receipt-roll.tsx'),
+];
+
 const under = (folder: string) => (path: string) => `${folder}/${path}`;
 const sharedItems: readonly SharedSpec[] = [
   ...asciiShared.map((item) => ({ ...item, files: item.files.map(under('ascii')) })),
@@ -216,6 +238,7 @@ const sharedItems: readonly SharedSpec[] = [
 const pageItems: readonly PageSpec[] = [
   ...asciiPages.map((item) => ({ ...item, entry: under('ascii')(item.entry) })),
   ...uiPages.map((item) => ({ ...item, entry: under('ui')(item.entry) })),
+  ...visualPages.map((item) => ({ ...item, entry: under('visuals')(item.entry) })),
 ];
 
 /** Where every file lands in the reader's project, under their components alias. */

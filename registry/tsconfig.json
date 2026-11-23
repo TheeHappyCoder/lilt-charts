@@ -18,5 +18,5 @@
     "allowImportingTsExtensions": true,
     "types": ["vitest/globals"]
   },
-  "include": ["ascii", "ui", "items.ts", "build.ts", "vitest.config.ts"]
+  "include": ["ascii", "ui", "visuals", "items.ts", "build.ts", "vitest.config.ts"]
 }
