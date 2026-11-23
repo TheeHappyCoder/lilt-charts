@@ -99,7 +99,7 @@
    locked to it, over its foot. */
 .lilt-home-hero {
   display: grid;
-  height: clamp(640px, calc(100svh - 16px), 960px);
+  height: max(640px, calc(100svh - 16px));
   margin: 8px 8px 0;
   align-content: start;
   justify-items: center;
@@ -757,8 +757,7 @@
 }
 @media (max-width: 639px) {
   .lilt-home-hero {
-    /* The word is small on a phone, so the sky is shorter and the poster stays together. */
-    height: clamp(520px, 72svh, 640px);
+    height: max(540px, calc(100svh - 12px));
     margin: 6px 6px 0;
     padding: 0 16px;
     border-radius: 12px;
