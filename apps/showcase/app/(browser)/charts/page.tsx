@@ -1,20 +1,9 @@
 import type { Metadata } from 'next';
-import { PageHeader } from '@/components/docs/page-header';
-import { ChartGallery } from '@/components/gallery/chart-gallery';
+import { ChartsShowroom } from '@/components/showroom/charts-showroom';
 
 export const metadata: Metadata = { title: 'Charts' };
 
-/** Every chart family at a glance, live, grouped by the job it does. */
+/** Every chart and finance family at a glance, live on plinths, grouped by job. */
 export default function ChartsPage() {
-  return (
-    <article className="lilt-docs lilt-docs--wide">
-      <PageHeader
-        eyebrow={<span className="lilt-breadcrumb">Charts</span>}
-        title="Every chart,"
-        dim="by the job it does."
-        lede="Each family is one card with the same props, motion and inspection. Pick one to see its situations, its code and its data."
-      />
-      <ChartGallery />
-    </article>
-  );
+  return <ChartsShowroom />;
 }

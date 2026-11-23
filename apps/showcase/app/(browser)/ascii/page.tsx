@@ -1,6 +1,12 @@
-import { redirect } from 'next/navigation';
+import type { Metadata } from 'next';
+import { AsciiShowroom } from '@/components/showroom/ascii-showroom';
 
-/** The ASCII section opens on its first scene. */
+export const metadata: Metadata = {
+  title: 'ASCII',
+  description: 'Living scenes, text effects, data and interface pieces drawn in type.',
+};
+
+/** Every ASCII scene and piece, live on plinths, grouped by shelf. */
 export default function AsciiPage() {
-  redirect('/ascii/glow');
+  return <AsciiShowroom />;
 }
