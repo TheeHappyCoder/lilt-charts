@@ -114,6 +114,7 @@ import SmartPhone01Icon from '@hugeicons/core-free-icons/SmartPhone01Icon';
 import { asciiScene, asciiShelves } from '@/lib/ascii-scenes';
 import { componentDoc, componentShelves } from '@/lib/component-docs';
 import { appRoutes, type AppRoute, type RouteGroup, type RouteIcon } from '@/lib/routes';
+import { visualDoc, visualShelves } from '@/lib/visual-docs';
 
 /**
  * The site's navigation, as data: the four places to browse, which one a page lives under, and
@@ -263,23 +264,44 @@ export const icons: Record<RouteIcon, IconSvgElement> = {
   orrery: SolarSystemIcon,
   wormhole: Tornado01Icon,
   blackhole: BlackHoleIcon,
+  effortdial: DashboardSpeed02Icon,
+  prismrouter: WorkflowSquare05Icon,
+  tokenstream: LogsIcon,
+  evalradar: ChartRadarIcon,
+  signallens: SpotlightIcon,
+  growthbars: ChartColumnIcon,
+  usagecapsule: Target02Icon,
+  passkeyscan: CheckmarkCircle02Icon,
+  guardshield: StatusIcon,
+  redactionglass: EyeOffIcon,
+  autotoggle: AiMagicIcon,
+  diffpatch: CodeIcon,
+  glasscard: Wallet01Icon,
+  receiptroll: FileScriptIcon,
 };
 
-export type Tab = 'charts' | 'components' | 'ascii';
+export type Tab = 'charts' | 'components' | 'visuals' | 'ascii';
 
 /**
- * The kit's three lines. Charts is the npm library; Components and ASCII are source you add from
- * the registry. Each opens its own rail of pages.
+ * The kit's four lines. Charts is the npm library; Components, Visuals and ASCII are source you
+ * add from the registry. Each opens its own showroom wall and index.
  */
 export const tabs: readonly { value: Tab; label: string; icon: IconSvgElement }[] = [
   { value: 'charts', label: 'Charts', icon: GridViewIcon },
   { value: 'components', label: 'Components', icon: DashboardSquare01Icon },
+  { value: 'visuals', label: 'Visuals', icon: SparklesIcon },
   { value: 'ascii', label: 'ASCII', icon: TerminalIcon },
 ];
 
-/** Which line a page belongs to: a component, an ASCII scene, or charts and everything about them. */
+/** Which line a page belongs to: a component, a visual, an ASCII scene, or charts and docs. */
 export const tabOf = (group: RouteGroup): Tab =>
-  group === 'Components' ? 'components' : group === 'Ascii' ? 'ascii' : 'charts';
+  group === 'Components'
+    ? 'components'
+    : group === 'Visuals'
+      ? 'visuals'
+      : group === 'Ascii'
+        ? 'ascii'
+        : 'charts';
 
 export interface TileGroup {
   key: string;
@@ -320,11 +342,11 @@ export const referenceRoutes = topIn('Reference');
  * comes from its docs.
  */
 function shelvesOf(
-  group: 'Components' | 'Ascii',
+  group: 'Components' | 'Visuals' | 'Ascii',
   shelves: readonly string[],
   shelfOf: (id: string) => string | undefined,
 ): TileGroup[] {
-  const prefix = group === 'Components' ? 'component-' : 'ascii-';
+  const prefix = group === 'Components' ? 'component-' : group === 'Visuals' ? 'visual-' : 'ascii-';
   return shelves
     .map((shelf) => ({
       key: `${group.toLowerCase()}-${shelf}`,
@@ -346,8 +368,9 @@ export const groupsByTab: Record<Tab, readonly TileGroup[]> = {
     { key: 'features', heading: 'Features', routes: featureRoutes },
     { key: 'reference', heading: 'Reference', routes: referenceRoutes },
   ],
-  // Anything drawn in type is ASCII; Components is for pieces that are not.
+  // Anything drawn in type is ASCII; Components and Visuals are not.
   components: shelvesOf('Components', componentShelves, (id) => componentDoc(id)?.shelf),
+  visuals: shelvesOf('Visuals', visualShelves, (id) => visualDoc(id)?.shelf),
   ascii: shelvesOf('Ascii', asciiShelves, (id) => asciiScene(id)?.shelf),
 };
 
@@ -355,6 +378,7 @@ export const groupsByTab: Record<Tab, readonly TileGroup[]> = {
 export const tabHref: Record<Tab, string> = {
   charts: '/charts',
   components: '/components',
+  visuals: '/visuals',
   ascii: '/ascii',
 };
 
@@ -362,6 +386,7 @@ export const tabHref: Record<Tab, string> = {
 export const showroomRoutesByTab: Record<Tab, readonly AppRoute[]> = {
   charts: familyGroups.flatMap((group) => group.routes),
   components: groupsByTab.components.flatMap((group) => group.routes),
+  visuals: groupsByTab.visuals.flatMap((group) => group.routes),
   ascii: groupsByTab.ascii.flatMap((group) => group.routes),
 };
 

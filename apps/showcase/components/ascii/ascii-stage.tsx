@@ -4,6 +4,7 @@ import RotateLeft01Icon from '@hugeicons/core-free-icons/RotateLeft01Icon';
 import { HugeiconsIcon } from '@hugeicons/react';
 import * as ascii from '@lilt-ui/registry';
 import * as ui from '@lilt-ui/registry/ui';
+import * as visuals from '@lilt-ui/registry/visuals';
 import { useMemo, useState, type ComponentType, type ReactNode } from 'react';
 import { Count, Label } from '@/components/craft/label';
 import { ArrowSwap, Roll } from '@/components/craft/roll';
@@ -29,11 +30,16 @@ import {
   type AsciiValue,
 } from '@/lib/ascii-scenes';
 import { componentDoc } from '@/lib/component-docs';
+import { visualDoc } from '@/lib/visual-docs';
 
 // Every component is found by its name in the registry. They take loosely typed props here
 // because the panel builds them from data.
 type Registry = Record<string, ComponentType<Record<string, unknown>>>;
-const lines = { ascii: ascii as unknown as Registry, components: ui as unknown as Registry };
+const lines = {
+  ascii: ascii as unknown as Registry,
+  components: ui as unknown as Registry,
+  visuals: visuals as unknown as Registry,
+};
 
 // `theme` takes its colours from the stage's CSS variables, which follow the site's theme, so the
 // stage matches the page without waiting for the client to know which theme is on.
@@ -86,12 +92,19 @@ export function AsciiPlayground({
   propsSlot?: ReactNode;
   propsCount?: number;
 }) {
-  // Components are real DOM, centred on the stage; scenes say for themselves.
+  // Components and Visuals are real DOM, centred on the stage; ASCII scenes say for themselves.
   const scene = useMemo(
     () =>
       line === 'ascii'
         ? { ...asciiScene(id)!, surfaceProp: undefined }
-        : { ...componentDoc(id)!, kind: 'dom' as const, layout: 'center' as const },
+        : line === 'visuals'
+          ? {
+              ...visualDoc(id)!,
+              kind: 'dom' as const,
+              layout: 'center' as const,
+              surfaceProp: undefined,
+            }
+          : { ...componentDoc(id)!, kind: 'dom' as const, layout: 'center' as const },
     [id, line],
   );
   const canvas = scene.kind !== 'dom';
@@ -154,7 +167,9 @@ export function Hero() {
   );
 }`;
 
-  const noun = line === 'components' ? 'component' : 'scene';
+  const noun = line === 'components' ? 'component' : line === 'visuals' ? 'visual' : 'scene';
+  const frameToneClass =
+    backdrop === 'night' ? 'dark' : backdrop === 'paper' ? 'lilt-studio__frame--light' : '';
 
   return (
     <div className="lilt-showroom">
@@ -170,22 +185,32 @@ export function Hero() {
 
       <section className="lilt-studio" aria-label={`${scene.title} studio`}>
         <div className="lilt-studio__stage">
-          <div className="lilt-studio__frame" style={{ background: colours.background }}>
+          <div
+            className={['lilt-studio__frame', frameToneClass].filter(Boolean).join(' ')}
+            data-theme={backdrop === 'night' ? 'dark' : backdrop === 'paper' ? 'light' : undefined}
+            style={{ background: colours.background }}
+          >
             <div
               className={[
                 'lilt-studio__canvas',
                 scene.layout === 'center' ? 'lilt-studio__canvas--center' : '',
-                line === 'components' ? 'lilt-studio__canvas--piece' : '',
+                line !== 'ascii' ? 'lilt-studio__canvas--piece' : '',
               ]
                 .filter(Boolean)
                 .join(' ')}
               style={{ ...scene.stage, color: colours.color, colorScheme: colours.colorScheme }}
             >
-              <Scene
-                {...values}
-                {...(scene.surfaceProp ? { [scene.surfaceProp]: colours.background } : {})}
-                style={{ color: colours.color }}
-              />
+              {line === 'visuals' ? (
+                <div className="lilt-studio__visual-wrap">
+                  <Scene {...values} />
+                </div>
+              ) : (
+                <Scene
+                  {...values}
+                  {...(scene.surfaceProp ? { [scene.surfaceProp]: colours.background } : {})}
+                  style={{ color: colours.color }}
+                />
+              )}
             </div>
 
             <div className="lilt-studio__controls">
@@ -289,7 +314,9 @@ export function Hero() {
               <p>
                 {line === 'components'
                   ? 'This is source, not a package: the shadcn CLI copies it into your project and it is yours to change. Take it whole, or lift the one detail you like.'
-                  : 'This is source, not a package: the shadcn CLI copies it into your project with the shared pieces it needs. Its only dependency is React.'}
+                  : line === 'visuals'
+                    ? 'One self-contained file with zero dependencies beyond React 19: the shadcn CLI drops it straight into your project, ready to customize or drop into a feature card.'
+                    : 'This is source, not a package: the shadcn CLI copies it into your project with the shared pieces it needs. Its only dependency is React.'}
               </p>
             </div>
             <div className="lilt-detail-band__content">{installSlot}</div>

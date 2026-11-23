@@ -11,6 +11,7 @@ import { HomeInterface } from '@/components/home/home-interface';
 import { HomeMedia } from '@/components/home/home-media';
 import { HomeQuickstart } from '@/components/home/home-quickstart';
 import { HomeScenes } from '@/components/home/home-scenes';
+import { HomeVisuals } from '@/components/home/home-visuals';
 import { groupsByTab } from '@/components/shell/nav-model';
 import { SiteFooter } from '@/components/shell/site-footer';
 import { SiteShell } from '@/components/shell/site-shell';
@@ -74,6 +75,7 @@ export async function HomePage() {
     ['Interface', 'Text'].includes(group.heading!),
   );
   const pieceCount = pieces.flatMap((group) => group.routes).length;
+  const visualCount = groupsByTab.visuals.flatMap((group) => group.routes).length;
   const scenes = groupsByTab.ascii.flatMap((group) => group.routes).length;
   return (
     <ChartSettingsProvider>
@@ -93,6 +95,18 @@ export async function HomePage() {
               more={{ href: '/charts', label: 'Browse all chart families', count: families }}
             >
               <HomeCharts />
+            </Section>
+
+            <Section
+              label="Living visuals"
+              count={visualCount}
+              id="visuals-title"
+              claim="Machined in glass."
+              dim="Zero dependencies, one file each."
+              aside="Self-contained 3:2 product artworks for feature cards and landing pages. Copy one file with the shadcn CLI; React 19 is all it needs."
+              more={{ href: '/visuals', label: 'Browse all visuals', count: visualCount }}
+            >
+              <HomeVisuals />
             </Section>
 
             <Section

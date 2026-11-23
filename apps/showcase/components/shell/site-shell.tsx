@@ -17,7 +17,13 @@ import { tabOf, tabs, type Tab } from './nav-model';
 import { PAGE_SCROLL_ID, pageScroller } from './page-scroll';
 import { SiteFooter } from './site-footer';
 import { SiteHeader } from './site-header';
-import { ASCII_OVERVIEW, CHARTS_OVERVIEW, COMPONENTS_OVERVIEW, SiteSidebar } from './site-sidebar';
+import {
+  ASCII_OVERVIEW,
+  CHARTS_OVERVIEW,
+  COMPONENTS_OVERVIEW,
+  SiteSidebar,
+  VISUALS_OVERVIEW,
+} from './site-sidebar';
 import { SiteToc } from './site-toc';
 import { StyleMenu } from './style-menu';
 
@@ -30,6 +36,8 @@ function isShowroomPath(pathname: string): boolean {
     pathname.startsWith('/finance/') ||
     pathname === '/components' ||
     pathname.startsWith('/components/') ||
+    pathname === '/visuals' ||
+    pathname.startsWith('/visuals/') ||
     pathname === '/ascii' ||
     pathname.startsWith('/ascii/')
   );
@@ -61,18 +69,22 @@ export function SiteShell({
       ? 'charts'
       : pathname === '/components' || pathname.startsWith('/components/')
         ? 'components'
-        : pathname === '/ascii' || pathname.startsWith('/ascii/')
-          ? 'ascii'
-          : tabOf(route.group);
+        : pathname === '/visuals' || pathname.startsWith('/visuals/')
+          ? 'visuals'
+          : pathname === '/ascii' || pathname.startsWith('/ascii/')
+            ? 'ascii'
+            : tabOf(route.group);
 
   const activeId =
     pathname === '/charts'
       ? CHARTS_OVERVIEW
       : pathname === '/components'
         ? COMPONENTS_OVERVIEW
-        : pathname === '/ascii'
-          ? ASCII_OVERVIEW
-          : route.id;
+        : pathname === '/visuals'
+          ? VISUALS_OVERVIEW
+          : pathname === '/ascii'
+            ? ASCII_OVERVIEW
+            : route.id;
 
   const [mobileOpen, setMobileOpen] = useState(false);
   const [mobileTab, setMobileTab] = useState<Tab>(tab);

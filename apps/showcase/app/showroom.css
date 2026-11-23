@@ -331,6 +331,25 @@
   opacity: 1;
 }
 
+/* Visuals tiles: native 3:2 container-query frames — zero JS scaling needed. */
+.lilt-visual-tile__media {
+  aspect-ratio: 3 / 2;
+  min-width: 0;
+  background: var(--background);
+}
+.dark .lilt-visual-tile__media {
+  background: #0d0d0e;
+}
+.lilt-visual-tile__mount {
+  display: block;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+.lilt-studio__visual-wrap {
+  width: min(680px, 100%);
+}
+
 /* Dense 4-column mode trims secondary metadata, matching marksteyn.dev */
 .lilt-showroom-wall[data-size='dense'] .lilt-cap__desc,
 .lilt-showroom-wall[data-size='dense'] .lilt-chip {

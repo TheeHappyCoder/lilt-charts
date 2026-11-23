@@ -23,6 +23,7 @@ const countOf = (groups: readonly TileGroup[]) =>
 const COUNTS: Record<Tab, number> = {
   charts: countOf(familyGroups),
   components: countOf(groupsByTab.components),
+  visuals: countOf(groupsByTab.visuals),
   ascii: countOf(groupsByTab.ascii),
 };
 

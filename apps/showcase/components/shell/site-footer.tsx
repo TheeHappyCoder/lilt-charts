@@ -31,6 +31,10 @@ export const footerColumns: FooterColumn[] = [
     links: [{ label: 'All components', href: '/components' }, ...groupsByTab.components.map(shelf)],
   },
   {
+    heading: 'Visuals',
+    links: [{ label: 'All visuals', href: '/visuals' }, ...groupsByTab.visuals.map(shelf)],
+  },
+  {
     heading: 'ASCII',
     links: [
       { label: 'All scenes', href: '/ascii' },

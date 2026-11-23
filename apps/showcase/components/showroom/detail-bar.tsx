@@ -14,6 +14,7 @@ export interface AdjacentLink {
 const BACK_LABEL: Record<Tab, string> = {
   charts: 'All charts',
   components: 'All components',
+  visuals: 'All visuals',
   ascii: 'All ASCII',
 };
 

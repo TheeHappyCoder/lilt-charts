@@ -1,5 +1,6 @@
 import { asciiScenes, scenePath, type AsciiSceneDoc } from './ascii-scenes';
 import { componentDocs, componentPath, type ComponentDoc } from './component-docs';
+import { visualDocs, visualPath, type VisualDoc } from './visual-docs';
 import {
   sunburstTerracesDoc,
   clusterConstellationDoc,
@@ -204,23 +205,26 @@ function chartsByJob(): string[] {
   ]);
 }
 
-/** Components and ASCII: how to add them, then each page with its export. */
+/** Components, Visuals and ASCII: how to add them, then each page with its export. */
 function registryIndex(): string[] {
   const line = (scene: AsciiSceneDoc) =>
     `- [${scene.title}](${SITE_URL}${scenePath(scene)}): \`${scene.component}\`. ${scene.lede}`;
   const piece = (doc: ComponentDoc) =>
     `- [${doc.title}](${SITE_URL}${componentPath(doc)}): \`${doc.component}\`. ${doc.lede}`;
+  const visual = (doc: VisualDoc) =>
+    `- [${doc.title}](${SITE_URL}${visualPath(doc)}): \`${doc.component}\`. ${doc.lede}`;
   const section = (title: string, lines: readonly string[]) => [`## ${title}`, '', ...lines, ''];
   return [
-    '## Adding components and ASCII pieces',
+    '## Adding components, visuals, and ASCII pieces',
     '',
-    'Components and ASCII pieces are not an npm package. Each page names a registry item; add it with the shadcn CLI and its source lands in your project, with the shared engine it needs:',
+    'Components, visuals, and ASCII pieces are not an npm package. Each page names a registry item; add it with the shadcn CLI and its source lands in your project, with any shared engine it needs:',
     '',
     code('bash', `npx shadcn@latest add ${SITE_URL}/r/<item>.json`),
     '',
-    'Each ASCII canvas fills its parent, takes its type from CSS `font-family` and its ink from `color`, pauses off screen, and holds still for reduced motion.',
+    'Each Visual is a zero-dependency React component sized with CSS container queries inside a 3:2 frame, with built-in dark mode, IntersectionObserver playback, and reduced-motion support. Each ASCII canvas fills its parent, takes its type from CSS `font-family` and its ink from `color`, pauses off screen, and holds still for reduced motion.',
     '',
     ...section('Components', componentDocs.map(piece)),
+    ...section('Visuals', visualDocs.map(visual)),
     ...section('ASCII', asciiScenes.map(line)),
   ];
 }

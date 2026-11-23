@@ -588,9 +588,9 @@
 }
 .lilt-home-foot__links {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 32px 40px;
-  max-width: 920px;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 32px 36px;
+  max-width: 1040px;
   padding-top: 36px;
   border-top: 1px solid rgb(255 255 255 / 0.09);
 }

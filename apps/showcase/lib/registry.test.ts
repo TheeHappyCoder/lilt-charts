@@ -3,6 +3,7 @@ import { describe, expect, it } from 'vitest';
 import { resolveItems, sourceOf } from '@lilt-ui/registry/items';
 import { asciiScenes } from './ascii-scenes';
 import { componentDocs } from './component-docs';
+import { visualDocs } from './visual-docs';
 
 const root = join(import.meta.dirname, '..', '..', '..', 'registry');
 const items = resolveItems(root);
@@ -23,6 +24,21 @@ describe('registry', () => {
       expect(item, doc.id).toBeDefined();
       expect(item!.component, doc.id).toBe(doc.component);
       expect(item!.section, doc.id).toBe('components');
+    }
+  });
+
+  it('has a zero-dependency Visuals item for every Visuals page', () => {
+    for (const doc of visualDocs) {
+      const item = items.find((candidate) => candidate.name === doc.id);
+      expect(item, doc.id).toBeDefined();
+      expect(item!.component, doc.id).toBe(doc.component);
+      expect(item!.section, doc.id).toBe('visuals');
+      expect(
+        item!.files.every((file) => file.startsWith('visuals/')),
+        doc.id,
+      ).toBe(true);
+      expect(item!.dependencies, doc.id).toEqual([]);
+      expect(item!.registryDependencies, doc.id).toEqual([]);
     }
   });
 

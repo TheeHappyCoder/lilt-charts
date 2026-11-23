@@ -14,11 +14,13 @@ const SPRING = { type: 'spring', stiffness: 560, damping: 44 } as const;
 /** Each section's showroom row, above its groups; they have no route of their own in `appRoutes`. */
 export const CHARTS_OVERVIEW = 'charts-overview';
 export const COMPONENTS_OVERVIEW = 'components-overview';
+export const VISUALS_OVERVIEW = 'visuals-overview';
 export const ASCII_OVERVIEW = 'ascii-overview';
 
 const OVERVIEW_ROW: Record<Tab, { href: string; key: string; label: string }> = {
   charts: { href: '/charts', key: CHARTS_OVERVIEW, label: 'All charts' },
   components: { href: '/components', key: COMPONENTS_OVERVIEW, label: 'All components' },
+  visuals: { href: '/visuals', key: VISUALS_OVERVIEW, label: 'All visuals' },
   ascii: { href: '/ascii', key: ASCII_OVERVIEW, label: 'All ASCII' },
 };
 

@@ -5,6 +5,7 @@ export type RouteGroup =
   | 'Customize'
   | 'Features'
   | 'Components'
+  | 'Visuals'
   | 'Ascii'
   | 'Reference';
 /** The job a chart does, which groups the Charts section under quiet subheadings. */
@@ -152,7 +153,21 @@ export type RouteIcon =
   | 'logocloud'
   | 'livelog'
   | 'statusrail'
-  | 'scrollmeter';
+  | 'scrollmeter'
+  | 'effortdial'
+  | 'prismrouter'
+  | 'tokenstream'
+  | 'evalradar'
+  | 'signallens'
+  | 'growthbars'
+  | 'usagecapsule'
+  | 'passkeyscan'
+  | 'guardshield'
+  | 'redactionglass'
+  | 'autotoggle'
+  | 'diffpatch'
+  | 'glasscard'
+  | 'receiptroll';
 
 export interface AppRoute {
   id: string;
@@ -1801,6 +1816,160 @@ export const appRoutes = [
     href: '/components/dynamic-island',
     pathname: '/components/dynamic-island',
     icon: 'dynamicisland',
+    navigation: true,
+    badge: 'New',
+  },
+  {
+    id: 'visual-effort-dial',
+    group: 'Visuals',
+    label: 'Effort dial',
+    title: 'Effort dial',
+    href: '/visuals/effort-dial',
+    pathname: '/visuals/effort-dial',
+    icon: 'effortdial',
+    navigation: true,
+    badge: 'New',
+  },
+  {
+    id: 'visual-prism-router',
+    group: 'Visuals',
+    label: 'Prism router',
+    title: 'Prism router',
+    href: '/visuals/prism-router',
+    pathname: '/visuals/prism-router',
+    icon: 'prismrouter',
+    navigation: true,
+    badge: 'New',
+  },
+  {
+    id: 'visual-token-stream',
+    group: 'Visuals',
+    label: 'Token stream',
+    title: 'Token stream',
+    href: '/visuals/token-stream',
+    pathname: '/visuals/token-stream',
+    icon: 'tokenstream',
+    navigation: true,
+    badge: 'New',
+  },
+  {
+    id: 'visual-eval-radar',
+    group: 'Visuals',
+    label: 'Eval radar',
+    title: 'Eval radar',
+    href: '/visuals/eval-radar',
+    pathname: '/visuals/eval-radar',
+    icon: 'evalradar',
+    navigation: true,
+    badge: 'New',
+  },
+  {
+    id: 'visual-signal-lens',
+    group: 'Visuals',
+    label: 'Signal lens',
+    title: 'Signal lens',
+    href: '/visuals/signal-lens',
+    pathname: '/visuals/signal-lens',
+    icon: 'signallens',
+    navigation: true,
+    badge: 'New',
+  },
+  {
+    id: 'visual-growth-bars',
+    group: 'Visuals',
+    label: 'Growth bars',
+    title: 'Growth bars',
+    href: '/visuals/growth-bars',
+    pathname: '/visuals/growth-bars',
+    icon: 'growthbars',
+    navigation: true,
+    badge: 'New',
+  },
+  {
+    id: 'visual-usage-capsule',
+    group: 'Visuals',
+    label: 'Usage capsule',
+    title: 'Usage capsule',
+    href: '/visuals/usage-capsule',
+    pathname: '/visuals/usage-capsule',
+    icon: 'usagecapsule',
+    navigation: true,
+    badge: 'New',
+  },
+  {
+    id: 'visual-passkey-scan',
+    group: 'Visuals',
+    label: 'Passkey scan',
+    title: 'Passkey scan',
+    href: '/visuals/passkey-scan',
+    pathname: '/visuals/passkey-scan',
+    icon: 'passkeyscan',
+    navigation: true,
+    badge: 'New',
+  },
+  {
+    id: 'visual-guard-shield',
+    group: 'Visuals',
+    label: 'Guard shield',
+    title: 'Guard shield',
+    href: '/visuals/guard-shield',
+    pathname: '/visuals/guard-shield',
+    icon: 'guardshield',
+    navigation: true,
+    badge: 'New',
+  },
+  {
+    id: 'visual-redaction-glass',
+    group: 'Visuals',
+    label: 'Redaction glass',
+    title: 'Redaction glass',
+    href: '/visuals/redaction-glass',
+    pathname: '/visuals/redaction-glass',
+    icon: 'redactionglass',
+    navigation: true,
+    badge: 'New',
+  },
+  {
+    id: 'visual-auto-toggle',
+    group: 'Visuals',
+    label: 'Auto toggle',
+    title: 'Auto toggle',
+    href: '/visuals/auto-toggle',
+    pathname: '/visuals/auto-toggle',
+    icon: 'autotoggle',
+    navigation: true,
+    badge: 'New',
+  },
+  {
+    id: 'visual-diff-patch',
+    group: 'Visuals',
+    label: 'Diff patch',
+    title: 'Diff patch',
+    href: '/visuals/diff-patch',
+    pathname: '/visuals/diff-patch',
+    icon: 'diffpatch',
+    navigation: true,
+    badge: 'New',
+  },
+  {
+    id: 'visual-glass-card',
+    group: 'Visuals',
+    label: 'Glass card',
+    title: 'Glass card',
+    href: '/visuals/glass-card',
+    pathname: '/visuals/glass-card',
+    icon: 'glasscard',
+    navigation: true,
+    badge: 'New',
+  },
+  {
+    id: 'visual-receipt-roll',
+    group: 'Visuals',
+    label: 'Receipt roll',
+    title: 'Receipt roll',
+    href: '/visuals/receipt-roll',
+    pathname: '/visuals/receipt-roll',
+    icon: 'receiptroll',
     navigation: true,
     badge: 'New',
   },
